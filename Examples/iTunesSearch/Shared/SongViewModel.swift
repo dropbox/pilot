@@ -12,6 +12,18 @@ public struct SongViewModel: ViewModel {
         return song.trackName
     }
 
+    public var description: String {
+        if let number = song.trackNumber {
+            if let count = song.trackCount {
+                return "Track \(number)/\(count) · \(collectionName)"
+            } else {
+                return "Track \(number) · \(collectionName)"
+            }
+        } else {
+            return collectionName
+        }
+    }
+
     public var collectionName: String {
         return song.collectionName
     }

@@ -18,7 +18,7 @@ final class SongView: UIView, View {
         let song: SongViewModel = viewModel.typedViewModel()
 
         nameLabel.text = song.name
-        collectionNameLabel.text = song.collectionName
+        descriptionLabel.text = song.description
         durationLabel.text = song.duration
 
         if let artwork = song.artwork {
@@ -35,6 +35,10 @@ final class SongView: UIView, View {
     }
 
     public func unbindFromViewModel() {
+        nameLabel.text = nil
+        descriptionLabel.text = nil
+        durationLabel.text = nil
+        imageView.image = nil
         song = nil
     }
 
@@ -95,19 +99,19 @@ final class SongView: UIView, View {
         nameLabel.rightAnchor.constraint(equalTo: durationLabel.leftAnchor).isActive = true
         nameLabel.setContentCompressionResistancePriority(UILayoutPriorityDefaultHigh-1, for: .horizontal)
 
-        labelContainer.addSubview(collectionNameLabel)
-        collectionNameLabel.font = UIFont.italicSystemFont(ofSize: 10)
-        collectionNameLabel.textColor = .darkGray
-        collectionNameLabel.translatesAutoresizingMaskIntoConstraints = false
-        collectionNameLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor).isActive = true
-        collectionNameLabel.leftAnchor.constraint(equalTo: labelContainer.leftAnchor).isActive = true
-        collectionNameLabel.rightAnchor.constraint(equalTo: durationLabel.leftAnchor).isActive = true
-        collectionNameLabel.bottomAnchor.constraint(equalTo: labelContainer.bottomAnchor).isActive = true
-        collectionNameLabel.setContentCompressionResistancePriority(UILayoutPriorityDefaultHigh-1, for: .horizontal)
+        labelContainer.addSubview(descriptionLabel)
+        descriptionLabel.font = UIFont.italicSystemFont(ofSize: 10)
+        descriptionLabel.textColor = .darkGray
+        descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        descriptionLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor).isActive = true
+        descriptionLabel.leftAnchor.constraint(equalTo: labelContainer.leftAnchor).isActive = true
+        descriptionLabel.rightAnchor.constraint(equalTo: durationLabel.leftAnchor).isActive = true
+        descriptionLabel.bottomAnchor.constraint(equalTo: labelContainer.bottomAnchor).isActive = true
+        descriptionLabel.setContentCompressionResistancePriority(UILayoutPriorityDefaultHigh-1, for: .horizontal)
     }
 
     private let nameLabel = UILabel()
-    private let collectionNameLabel = UILabel()
+    private let descriptionLabel = UILabel()
     private let durationLabel = UILabel()
     private let imageView = UIImageView()
     private let songIcon = UILabel()

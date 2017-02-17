@@ -42,6 +42,8 @@
 		A45F44F21E5271D6001C947F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A45F44F01E5271D6001C947F /* Main.storyboard */; };
 		A45F44FA1E5271D6001C947F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A45F44D31E5271D6001C947F /* Assets.xcassets */; };
 		A45F44FB1E5271D6001C947F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A45F44D31E5271D6001C947F /* Assets.xcassets */; };
+		A49C31FC1E57B20700416296 /* SongViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49C31FB1E57B20700416296 /* SongViewModelTests.swift */; };
+		A49C31FD1E57B20700416296 /* SongViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49C31FB1E57B20700416296 /* SongViewModelTests.swift */; };
 		A4ED44791E54BEDD00DEF227 /* ModelSerialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4ED44781E54BEDD00DEF227 /* ModelSerialization.swift */; };
 		A4ED447A1E54BEDD00DEF227 /* ModelSerialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4ED44781E54BEDD00DEF227 /* ModelSerialization.swift */; };
 /* End PBXBuildFile section */
@@ -179,6 +181,7 @@
 		A45F44EE1E5271D6001C947F /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 		A45F44F11E5271D6001C947F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		A45F44F31E5271D6001C947F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A49C31FB1E57B20700416296 /* SongViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SongViewModelTests.swift; sourceTree = "<group>"; };
 		A4ED44781E54BEDD00DEF227 /* ModelSerialization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModelSerialization.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -228,15 +231,6 @@
 			name = ViewModel;
 			sourceTree = "<group>";
 		};
-		A437EDC11E57920400F67B37 /* New Group */ = {
-			isa = PBXGroup;
-			children = (
-				A4553DEA1E53B9EB00B99345 /* MediaSearchModelCollection.swift */,
-				A4ED44781E54BEDD00DEF227 /* ModelSerialization.swift */,
-			);
-			name = "New Group";
-			sourceTree = "<group>";
-		};
 		A4553D941E529B0800B99345 /* iOS */ = {
 			isa = PBXGroup;
 			children = (
@@ -269,6 +263,7 @@
 			isa = PBXGroup;
 			children = (
 				A4553DAD1E529BCD00B99345 /* ServiceTypes.swift */,
+				A49C31FB1E57B20700416296 /* SongViewModelTests.swift */,
 			);
 			name = Shared;
 			sourceTree = "<group>";
@@ -305,9 +300,10 @@
 			children = (
 				A4553DE31E53975E00B99345 /* Actions.swift */,
 				A45F44D31E5271D6001C947F /* Assets.xcassets */,
-				A437EDC11E57920400F67B37 /* New Group */,
-				A4553D891E5276F300B99345 /* SearchService.swift */,
+				A4553DEA1E53B9EB00B99345 /* MediaSearchModelCollection.swift */,
 				A4553D8C1E5277CF00B99345 /* Models.swift */,
+				A4ED44781E54BEDD00DEF227 /* ModelSerialization.swift */,
+				A4553D891E5276F300B99345 /* SearchService.swift */,
 				A437EDC01E5791F700F67B37 /* ViewModel */,
 			);
 			path = Shared;
@@ -588,6 +584,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A4553DAE1E529BCD00B99345 /* ServiceTypes.swift in Sources */,
+				A49C31FC1E57B20700416296 /* SongViewModelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -596,6 +593,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A4553DAF1E529BCD00B99345 /* ServiceTypes.swift in Sources */,
+				A49C31FD1E57B20700416296 /* SongViewModelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
