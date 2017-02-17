@@ -48,6 +48,8 @@ extension Song: Media {
         } else {
             self.artwork = nil
         }
+        self.trackNumber = json["trackNumber"] as? Int
+        self.trackCount = json["trackCount"] as? Int
         self.release = release
         self.durationMilliseconds = durationMilliseconds
     }

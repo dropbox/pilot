@@ -34,6 +34,8 @@ public struct Song: Model {
     public var trackPrice: Float
     public var release: Date
     public var durationMilliseconds: Int
+    public var trackNumber: Int?
+    public var trackCount: Int?
 
     // MARK: Model
 
