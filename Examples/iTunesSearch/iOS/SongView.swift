@@ -35,6 +35,10 @@ final class SongView: UIView, View {
     }
 
     public func unbindFromViewModel() {
+        nameLabel.text = nil
+        descriptionLabel.text = nil
+        durationLabel.text = nil
+        imageView.image = nil
         song = nil
     }
 
