@@ -1,0 +1,3 @@
+#include "xcconfigs/Base/Configurations/Release.xcconfig"
+
+SWIFT_TREAT_WARNINGS_AS_ERRORS = YES
