@@ -37,6 +37,6 @@ Otherwise, please see type documentation and let us know if anything is unclear.
 
 ## License
 
-[Apache 2.0](LICENCE)
+[Apache 2.0](LICENSE)
 
 
