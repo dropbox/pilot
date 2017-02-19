@@ -29,6 +29,8 @@ Otherwise, please see type documentation and let us know if anything is unclear.
 
 ## Installation
 
+[![Travis CI](https://travis-ci.org/dropbox/Pilot.svg?branch=master)](https://travis-ci.org/dropbox/Pilot.svg)
+
 ### Xcode
 
 - Drag `Pilot.xcodeproj` into Project Navigator
