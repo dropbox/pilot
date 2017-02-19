@@ -425,8 +425,6 @@ open class CollectionViewController: NSViewController, CollectionViewDelegate {
                 if models == nil {
                     showLoadingView()
                 }
-            case .loadingMore:
-                break
             case .loaded:
                 updateEmptyContentViewVisibility()
             case .error(_):
@@ -472,7 +470,7 @@ open class CollectionViewController: NSViewController, CollectionViewDelegate {
             } else {
                 hideEmptyContentView()
             }
-        case .notLoaded, .loading, .loadingMore:
+        case .notLoaded, .loading:
             hideEmptyContentView()
         }
     }
