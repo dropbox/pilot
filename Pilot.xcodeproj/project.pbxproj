@@ -31,6 +31,12 @@
 		02AADF511D6E433E00587167 /* SwitchableModelCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02AADF4F1D6E433E00587167 /* SwitchableModelCollection.swift */; };
 		02AB7E5D1DCA7EF1003F11FE /* TestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02AB7E5C1DCA7EF1003F11FE /* TestModel.swift */; };
 		02AB7E5E1DCA7EF1003F11FE /* TestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02AB7E5C1DCA7EF1003F11FE /* TestModel.swift */; };
+		65032E301E5BDE1B008020BF /* ScoredModelCollectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65107D9E1E5B4373002FF5F0 /* ScoredModelCollectionTests.swift */; };
+		65032E311E5BE01E008020BF /* ScoredModelCollectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65107D9E1E5B4373002FF5F0 /* ScoredModelCollectionTests.swift */; };
+		65032E331E5BE079008020BF /* MultiplexModelCollectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65032E321E5BE079008020BF /* MultiplexModelCollectionTests.swift */; };
+		65032E341E5BE079008020BF /* MultiplexModelCollectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65032E321E5BE079008020BF /* MultiplexModelCollectionTests.swift */; };
+		65107DA21E5B44BB002FF5F0 /* ModelCollectionHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65107DA11E5B44BB002FF5F0 /* ModelCollectionHelpers.swift */; };
+		65107DA31E5B44BB002FF5F0 /* ModelCollectionHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65107DA11E5B44BB002FF5F0 /* ModelCollectionHelpers.swift */; };
 		69048A081C46FF23000CE840 /* Pilot.h in Headers */ = {isa = PBXBuildFile; fileRef = 69048A071C46FF23000CE840 /* Pilot.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		69048A0F1C46FF23000CE840 /* Pilot.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69048A041C46FF23000CE840 /* Pilot.framework */; };
 		69048A361C47045D000CE840 /* PilotUI.h in Headers */ = {isa = PBXBuildFile; fileRef = 69048A351C47045D000CE840 /* PilotUI.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -187,6 +193,9 @@
 		02AADF4F1D6E433E00587167 /* SwitchableModelCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwitchableModelCollection.swift; path = Core/Source/MVVM/SwitchableModelCollection.swift; sourceTree = "<group>"; };
 		02AB7E5C1DCA7EF1003F11FE /* TestModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TestModel.swift; path = Core/Tests/MVVM/TestModel.swift; sourceTree = "<group>"; };
 		02BB0CAA1D551C31001145D2 /* NSCollectionView+Selection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NSCollectionView+Selection.swift"; path = "UI/Source/AppKitExtensions/NSCollectionView+Selection.swift"; sourceTree = "<group>"; };
+		65032E321E5BE079008020BF /* MultiplexModelCollectionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MultiplexModelCollectionTests.swift; path = Core/Tests/MVVM/MultiplexModelCollectionTests.swift; sourceTree = "<group>"; };
+		65107D9E1E5B4373002FF5F0 /* ScoredModelCollectionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ScoredModelCollectionTests.swift; path = Core/Tests/MVVM/ScoredModelCollectionTests.swift; sourceTree = "<group>"; };
+		65107DA11E5B44BB002FF5F0 /* ModelCollectionHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ModelCollectionHelpers.swift; path = Core/Tests/MVVM/ModelCollectionHelpers.swift; sourceTree = "<group>"; };
 		69048A041C46FF23000CE840 /* Pilot.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pilot.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		69048A071C46FF23000CE840 /* Pilot.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Pilot.h; path = Core/Source/Pilot.h; sourceTree = "<group>"; };
 		69048A091C46FF23000CE840 /* iOS-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "iOS-Info.plist"; path = "Core/Source/iOS-Info.plist"; sourceTree = "<group>"; };
@@ -415,6 +424,7 @@
 				D560D44B1D121098000DA826 /* Logging */,
 				D55407481CA5B1A600069CB9 /* MVVM */,
 				0200342C1DA80C1700D47380 /* Observable */,
+				65107DA11E5B44BB002FF5F0 /* ModelCollectionHelpers.swift */,
 			);
 			name = Tests;
 			sourceTree = "<group>";
@@ -603,6 +613,8 @@
 				D55407491CA5B1BC00069CB9 /* EmptyModelCollectionTests.swift */,
 				A4C8D5991CF23F3900F9721A /* FilteredModelCollectionTests.swift */,
 				A4AED3D71D402EBB001F3524 /* MappedModelCollectionTests.swift */,
+				65032E321E5BE079008020BF /* MultiplexModelCollectionTests.swift */,
+				65107D9E1E5B4373002FF5F0 /* ScoredModelCollectionTests.swift */,
 				A437EDA71E56507600F67B37 /* SimpleModelCollection.swift */,
 				02AB7E5C1DCA7EF1003F11FE /* TestModel.swift */,
 			);
@@ -985,11 +997,14 @@
 			files = (
 				A4C8D59A1CF23F3900F9721A /* FilteredModelCollectionTests.swift in Sources */,
 				A437EDB41E56632A00F67B37 /* AsyncModelCollectionTests.swift in Sources */,
+				65032E341E5BE079008020BF /* MultiplexModelCollectionTests.swift in Sources */,
+				65107DA31E5B44BB002FF5F0 /* ModelCollectionHelpers.swift in Sources */,
 				A4AED3DB1D402F27001F3524 /* MappedModelCollectionTests.swift in Sources */,
 				02AB7E5E1DCA7EF1003F11FE /* TestModel.swift in Sources */,
 				A437EDA91E56507600F67B37 /* SimpleModelCollection.swift in Sources */,
 				D554074A1CA5B1BC00069CB9 /* EmptyModelCollectionTests.swift in Sources */,
 				0200342F1DA80C5C00D47380 /* ObservableTests.swift in Sources */,
+				65032E301E5BDE1B008020BF /* ScoredModelCollectionTests.swift in Sources */,
 				022862561DB006EF00FCD03F /* DiffEngineTests.swift in Sources */,
 				D560D4511D123C08000DA826 /* LoggingTests.swift in Sources */,
 			);
@@ -1026,11 +1041,14 @@
 			files = (
 				693F04D41D22E21400CAE010 /* EmptyModelCollectionTests.swift in Sources */,
 				A437EDB31E56632A00F67B37 /* AsyncModelCollectionTests.swift in Sources */,
+				65032E331E5BE079008020BF /* MultiplexModelCollectionTests.swift in Sources */,
+				65107DA21E5B44BB002FF5F0 /* ModelCollectionHelpers.swift in Sources */,
 				A4AED3DA1D402F26001F3524 /* MappedModelCollectionTests.swift in Sources */,
 				02AB7E5D1DCA7EF1003F11FE /* TestModel.swift in Sources */,
 				A437EDA81E56507600F67B37 /* SimpleModelCollection.swift in Sources */,
 				693F04D31D22E21400CAE010 /* FilteredModelCollectionTests.swift in Sources */,
 				0200342E1DA80C5C00D47380 /* ObservableTests.swift in Sources */,
+				65032E311E5BE01E008020BF /* ScoredModelCollectionTests.swift in Sources */,
 				022862551DB006ED00FCD03F /* DiffEngineTests.swift in Sources */,
 				693F04D11D22E21400CAE010 /* LoggingTests.swift in Sources */,
 			);

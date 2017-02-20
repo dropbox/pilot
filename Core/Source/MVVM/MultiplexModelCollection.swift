@@ -138,10 +138,10 @@ public final class MultiplexModelCollection: ModelCollection, ProxyingCollection
             return .notLoaded
         } else if reducedStates.loadedCount == substates.count {
             return .loaded(consolidatedSections)
-        } else if hasEverBeenInLoadedState {
-            return .loading(consolidatedSections)
-        } else {
+        } else if reducedStates.loadingCount + reducedStates.notLoadedCount == substates.count {
             return .loading(nil)
+        } else {
+            return .loading(consolidatedSections)
         }
     }
 
@@ -171,15 +171,8 @@ public final class MultiplexModelCollection: ModelCollection, ProxyingCollection
     public private(set) var state = ModelCollectionState.notLoaded {
         didSet {
             observers.notify(.didChangeState(state))
-            if case .loaded = state {
-                hasEverBeenInLoadedState = true
-            }
         }
     }
-
-    // In order to distinguish between .loading(nil) and .loading([...]),
-    // remember if this instance has ever gotten to the .Loaded state
-    private var hasEverBeenInLoadedState: Bool = false
 
     // modelCollections -- this is the array of collections this object is 'multiplexing'
     private let modelCollections: [ModelCollection]
@@ -189,5 +182,4 @@ public final class MultiplexModelCollection: ModelCollection, ProxyingCollection
 
     // maintain queue to ensure that events are processed serially
     private let eventProcessingQueue: Queue
-
 }
