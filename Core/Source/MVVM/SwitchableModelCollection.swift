@@ -7,7 +7,7 @@ public final class SwitchableModelCollection: ModelCollection, ProxyingCollectio
 
     public init(_ collectionId: ModelCollectionId, _ modelCollection: ModelCollection) {
         self.collectionId = collectionId
-        self.modelCollection = modelCollection
+        self.currentCollection = modelCollection
         self.modelObserver = modelCollection.observe { [weak self] event in
             self?.observers.notify(event)
         }
@@ -16,19 +16,22 @@ public final class SwitchableModelCollection: ModelCollection, ProxyingCollectio
     // MARK: Public
 
     public func switchTo(_ modelCollection: ModelCollection) {
-        self.modelCollection = modelCollection
+        self.currentCollection = modelCollection
         self.modelObserver = modelCollection.observe { [weak self] (event) in
             self?.observers.notify(event)
         }
         observers.notify(.didChangeState(state))
     }
 
+    /// Read-only access to underlying collection, set by `switchTo(_:)`.
+    public private(set) var currentCollection: ModelCollection
+
     // MARK: ModelCollection
 
     public let collectionId: ModelCollectionId
 
     public var state: ModelCollectionState {
-        return self.modelCollection.state
+        return self.currentCollection.state
     }
 
     // MARK: CollectionEventObservable
@@ -38,6 +41,5 @@ public final class SwitchableModelCollection: ModelCollection, ProxyingCollectio
 
     // MARK: Private
 
-    private var modelCollection: ModelCollection
     private var modelObserver: Observer?
 }
