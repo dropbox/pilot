@@ -109,6 +109,8 @@
 		A437EDB41E56632A00F67B37 /* AsyncModelCollectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A437EDB01E56628900F67B37 /* AsyncModelCollectionTests.swift */; };
 		A437EDB51E567AE800F67B37 /* Async.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6974F89B1C504BD50029ED48 /* Async.swift */; };
 		A437EDB61E567AE900F67B37 /* Async.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6974F89B1C504BD50029ED48 /* Async.swift */; };
+		A455A7E61E5F6C3900F63A37 /* PilotUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = A455A7E51E5F6C3900F63A37 /* PilotUI.swift */; };
+		A455A7E71E5F6C3900F63A37 /* PilotUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = A455A7E51E5F6C3900F63A37 /* PilotUI.swift */; };
 		A460CC831E56195F00F9AC6F /* Downcast.swift in Sources */ = {isa = PBXBuildFile; fileRef = A460CC821E56195F00F9AC6F /* Downcast.swift */; };
 		A460CC841E56195F00F9AC6F /* Downcast.swift in Sources */ = {isa = PBXBuildFile; fileRef = A460CC821E56195F00F9AC6F /* Downcast.swift */; };
 		A478F9321D3850EB000B2ADB /* NestedModelCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A478F92A1D3850B5000B2ADB /* NestedModelCollectionView.swift */; };
@@ -249,6 +251,7 @@
 		A437EDAA1E5655AD00F67B37 /* SimpleModelCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SimpleModelCollection.swift; path = Core/Source/MVVM/SimpleModelCollection.swift; sourceTree = "<group>"; };
 		A437EDAD1E5660CE00F67B37 /* AsyncModelCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AsyncModelCollection.swift; path = Core/Source/MVVM/AsyncModelCollection.swift; sourceTree = "<group>"; };
 		A437EDB01E56628900F67B37 /* AsyncModelCollectionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AsyncModelCollectionTests.swift; path = Core/Tests/MVVM/AsyncModelCollectionTests.swift; sourceTree = "<group>"; };
+		A455A7E51E5F6C3900F63A37 /* PilotUI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PilotUI.swift; path = UI/Tests/PilotUI.swift; sourceTree = "<group>"; };
 		A460CC821E56195F00F9AC6F /* Downcast.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Downcast.swift; path = Core/Source/Downcast.swift; sourceTree = "<group>"; };
 		A478F92A1D3850B5000B2ADB /* NestedModelCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; name = NestedModelCollectionView.swift; path = UI/Source/CollectionViews/ios/Nested/NestedModelCollectionView.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		A4AED3D41D402D73001F3524 /* MappedModelCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; name = MappedModelCollection.swift; path = Core/Source/MVVM/MappedModelCollection.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -459,6 +462,7 @@
 			children = (
 				69FADB5A1D30544C001F2E11 /* Info-iOS.plist */,
 				69FADB5B1D30544C001F2E11 /* Info-macOS.plist */,
+				A455A7E51E5F6C3900F63A37 /* PilotUI.swift */,
 			);
 			name = Tests;
 			sourceTree = "<group>";
@@ -839,7 +843,7 @@
 					};
 					69048A3B1C47045D000CE840 = {
 						CreatedOnToolsVersion = 7.2;
-						LastSwiftMigration = 0800;
+						LastSwiftMigration = 0820;
 					};
 					693F04C41D22E1CA00CAE010 = {
 						CreatedOnToolsVersion = 7.3.1;
@@ -855,7 +859,7 @@
 					};
 					69FADB471D30518C001F2E11 = {
 						CreatedOnToolsVersion = 7.3.1;
-						LastSwiftMigration = 0800;
+						LastSwiftMigration = 0820;
 					};
 				};
 			};
@@ -1017,6 +1021,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A455A7E61E5F6C3900F63A37 /* PilotUI.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1096,6 +1101,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A455A7E71E5F6C3900F63A37 /* PilotUI.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1417,10 +1423,12 @@
 		69048A491C47045D000CE840 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = "UI/Tests/Info-iOS.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.Dropbox.PilotUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
@@ -1428,10 +1436,12 @@
 		69048A4A1C47045D000CE840 /* Test */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = "UI/Tests/Info-iOS.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.Dropbox.PilotUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Test;
@@ -1439,6 +1449,7 @@
 		69048A4B1C47045D000CE840 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = "UI/Tests/Info-iOS.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.Dropbox.PilotUITests;
@@ -1648,6 +1659,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = "UI/Tests/Info-macOS.plist";
@@ -1656,6 +1668,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.Dropbox.PilotUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
@@ -1664,6 +1677,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = "UI/Tests/Info-macOS.plist";
@@ -1672,6 +1686,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.Dropbox.PilotUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Test;
@@ -1680,6 +1695,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = "UI/Tests/Info-macOS.plist";

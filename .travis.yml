@@ -10,6 +10,5 @@ script:
   - xcrun simctl list
   - xcodebuild test -project Pilot.xcodeproj -scheme "Pilot iOS" -sdk "iphonesimulator" -destination "platform=iOS Simulator,OS=10.1,name=iPhone 7"
   - xcodebuild test -project Pilot.xcodeproj -scheme "Pilot macOS" -sdk "macosx10.12" -destination "arch=x86_64"
-  # Currently only building the two PilotUI schemes (not running tests). Need to figure out solution to this problem: https://github.com/CocoaPods/CocoaPods/issues/5022
-  - xcodebuild -project Pilot.xcodeproj -scheme "PilotUI iOS" -sdk "iphonesimulator" -destination "platform=iOS Simulator,OS=10.1,name=iPhone 7"
-  - xcodebuild -project Pilot.xcodeproj -scheme "PilotUI macOS" -sdk "macosx10.12" -destination "arch=x86_64"
+  - xcodebuild test -project Pilot.xcodeproj -scheme "PilotUI iOS" -sdk "iphonesimulator" -destination "platform=iOS Simulator,OS=10.1,name=iPhone 7"
+  - xcodebuild test -project Pilot.xcodeproj -scheme "PilotUI macOS" -sdk "macosx10.12" -destination "arch=x86_64"
