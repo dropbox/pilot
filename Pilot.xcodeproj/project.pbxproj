@@ -236,11 +236,7 @@
 		69F89E771C52F06200F08E28 /* ViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ViewModel.swift; path = Core/Source/MVVM/ViewModel.swift; sourceTree = "<group>"; };
 		69F89E781C52F06200F08E28 /* View.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = View.swift; path = Core/Source/MVVM/View.swift; sourceTree = "<group>"; };
 		69FADB3F1D30518C001F2E11 /* PilotUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = PilotUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		69FADB411D30518C001F2E11 /* PilotUI macOS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PilotUI macOS.h"; sourceTree = "<group>"; };
-		69FADB431D30518C001F2E11 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		69FADB481D30518C001F2E11 /* PilotUITests macOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "PilotUITests macOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		69FADB4D1D30518C001F2E11 /* PilotUI_macOSTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PilotUI_macOSTests.swift; sourceTree = "<group>"; };
-		69FADB4F1D30518C001F2E11 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		69FADB581D305440001F2E11 /* Info-iOS.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Info-iOS.plist"; path = "UI/Source/Info-iOS.plist"; sourceTree = "<group>"; };
 		69FADB591D305440001F2E11 /* Info-macOS.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Info-macOS.plist"; path = "UI/Source/Info-macOS.plist"; sourceTree = "<group>"; };
 		69FADB5A1D30544C001F2E11 /* Info-iOS.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Info-iOS.plist"; path = "UI/Tests/Info-iOS.plist"; sourceTree = "<group>"; };
@@ -369,8 +365,6 @@
 				69048A1E1C4700C3000CE840 /* Core */,
 				69048A4C1C470465000CE840 /* UI */,
 				69048A501C47055F000CE840 /* README.md */,
-				69FADB401D30518C001F2E11 /* PilotUI macOS */,
-				69FADB4C1D30518C001F2E11 /* PilotUI macOSTests */,
 				69048AA21C470F5B000CE840 /* Frameworks */,
 				69048A051C46FF23000CE840 /* Products */,
 			);
@@ -556,24 +550,6 @@
 				A4CACF591D6FCBFC003D572D /* LayoutConstraints.swift */,
 			);
 			name = Layout;
-			sourceTree = "<group>";
-		};
-		69FADB401D30518C001F2E11 /* PilotUI macOS */ = {
-			isa = PBXGroup;
-			children = (
-				69FADB411D30518C001F2E11 /* PilotUI macOS.h */,
-				69FADB431D30518C001F2E11 /* Info.plist */,
-			);
-			path = "PilotUI macOS";
-			sourceTree = "<group>";
-		};
-		69FADB4C1D30518C001F2E11 /* PilotUI macOSTests */ = {
-			isa = PBXGroup;
-			children = (
-				69FADB4D1D30518C001F2E11 /* PilotUI_macOSTests.swift */,
-				69FADB4F1D30518C001F2E11 /* Info.plist */,
-			);
-			path = "PilotUI macOSTests";
 			sourceTree = "<group>";
 		};
 		69FADBFD1D305CBA001F2E11 /* mac */ = {
