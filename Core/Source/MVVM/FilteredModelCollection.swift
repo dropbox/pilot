@@ -125,6 +125,7 @@ public final class FilteredModelCollection: ModelCollection, ProxyingCollectionE
 
         let filterCollection = {
             var itemCount = 0
+            // TODO:(danielh) evaluate checking cancelled check to this loop
             for section in originalSections {
                 var newFilteredSection = [Model]()
                 for model in section {
@@ -141,6 +142,7 @@ public final class FilteredModelCollection: ModelCollection, ProxyingCollectionE
         }
 
         let updateCollection = { [weak self] in
+            assert(Thread.isMainThread)
             guard let strongSelf = self else { return }
 
             // Drop work if the cookie is outdated.
