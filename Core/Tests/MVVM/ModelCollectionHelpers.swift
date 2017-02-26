@@ -30,19 +30,19 @@ internal func assertModelCollectionState(
                 }
             }
         } else {
-            XCTFail("Expected .error state, got \(actual)", file: file, line: line)
+            XCTFail("Expected .loading(\(expectedSections))\ngot: \(actual)", file: file, line: line)
         }
     case .loaded(let expectedSections):
         if case .loaded(let actualSections) = actual {
             XCTAssertEqual(
                 expectedSections.count,
                 actualSections.count,
-                "Expected .loaded with \(expectedSections.count) sections, got \(actualSections.count)")
+                "Expected .loaded with \(expectedSections.count) sections got \(actualSections.count)")
             for (e, a) in zip(expectedSections, actualSections) {
                 XCTAssertEqual(e.map({ $0.modelId }), a.map({ $0.modelId }))
             }
         } else {
-            XCTFail("Expected .error state, got \(actual)", file: file, line: line)
+            XCTFail("Expected .loaded with \(expectedSections))\ngot: \(actual)", file: file, line: line)
         }
     }
 }
