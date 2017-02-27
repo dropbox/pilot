@@ -37,6 +37,8 @@
 		65032E341E5BE079008020BF /* MultiplexModelCollectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65032E321E5BE079008020BF /* MultiplexModelCollectionTests.swift */; };
 		65107DA21E5B44BB002FF5F0 /* ModelCollectionHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65107DA11E5B44BB002FF5F0 /* ModelCollectionHelpers.swift */; };
 		65107DA31E5B44BB002FF5F0 /* ModelCollectionHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65107DA11E5B44BB002FF5F0 /* ModelCollectionHelpers.swift */; };
+		654229B61E63D68E00C053FE /* SwitchableModelCollectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654229B51E63D68E00C053FE /* SwitchableModelCollectionTests.swift */; };
+		654229B71E63D68E00C053FE /* SwitchableModelCollectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654229B51E63D68E00C053FE /* SwitchableModelCollectionTests.swift */; };
 		69048A081C46FF23000CE840 /* Pilot.h in Headers */ = {isa = PBXBuildFile; fileRef = 69048A071C46FF23000CE840 /* Pilot.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		69048A0F1C46FF23000CE840 /* Pilot.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69048A041C46FF23000CE840 /* Pilot.framework */; };
 		69048A361C47045D000CE840 /* PilotUI.h in Headers */ = {isa = PBXBuildFile; fileRef = 69048A351C47045D000CE840 /* PilotUI.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -198,6 +200,7 @@
 		65032E321E5BE079008020BF /* MultiplexModelCollectionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MultiplexModelCollectionTests.swift; path = Core/Tests/MVVM/MultiplexModelCollectionTests.swift; sourceTree = "<group>"; };
 		65107D9E1E5B4373002FF5F0 /* ScoredModelCollectionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ScoredModelCollectionTests.swift; path = Core/Tests/MVVM/ScoredModelCollectionTests.swift; sourceTree = "<group>"; };
 		65107DA11E5B44BB002FF5F0 /* ModelCollectionHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ModelCollectionHelpers.swift; path = Core/Tests/MVVM/ModelCollectionHelpers.swift; sourceTree = "<group>"; };
+		654229B51E63D68E00C053FE /* SwitchableModelCollectionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwitchableModelCollectionTests.swift; path = Core/Tests/MVVM/SwitchableModelCollectionTests.swift; sourceTree = "<group>"; };
 		69048A041C46FF23000CE840 /* Pilot.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pilot.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		69048A071C46FF23000CE840 /* Pilot.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Pilot.h; path = Core/Source/Pilot.h; sourceTree = "<group>"; };
 		69048A091C46FF23000CE840 /* iOS-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "iOS-Info.plist"; path = "Core/Source/iOS-Info.plist"; sourceTree = "<group>"; };
@@ -596,6 +599,7 @@
 				65032E321E5BE079008020BF /* MultiplexModelCollectionTests.swift */,
 				65107D9E1E5B4373002FF5F0 /* ScoredModelCollectionTests.swift */,
 				A437EDA71E56507600F67B37 /* SimpleModelCollection.swift */,
+				654229B51E63D68E00C053FE /* SwitchableModelCollectionTests.swift */,
 				02AB7E5C1DCA7EF1003F11FE /* TestModel.swift */,
 			);
 			name = MVVM;
@@ -975,6 +979,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				654229B71E63D68E00C053FE /* SwitchableModelCollectionTests.swift in Sources */,
 				A4C8D59A1CF23F3900F9721A /* FilteredModelCollectionTests.swift in Sources */,
 				A437EDB41E56632A00F67B37 /* AsyncModelCollectionTests.swift in Sources */,
 				65032E341E5BE079008020BF /* MultiplexModelCollectionTests.swift in Sources */,
@@ -1020,6 +1025,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				654229B61E63D68E00C053FE /* SwitchableModelCollectionTests.swift in Sources */,
 				693F04D41D22E21400CAE010 /* EmptyModelCollectionTests.swift in Sources */,
 				A437EDB31E56632A00F67B37 /* AsyncModelCollectionTests.swift in Sources */,
 				65032E331E5BE079008020BF /* MultiplexModelCollectionTests.swift in Sources */,

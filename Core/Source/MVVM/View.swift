@@ -28,7 +28,6 @@ public protocol View: class {
     func unbindFromViewModel()
 
     /// Invoked by view binding systems before the view will be laid out with the given available size.
-    /// TODO:(wkiefer) Replace `CGSize` with `AvailableSize` here.
     func willLayoutWithAvailableSize(_ availableSize: AvailableSize)
 
     /// Returns the preferred layout for the given `viewModel` if rendered by this `View`. This is a static method

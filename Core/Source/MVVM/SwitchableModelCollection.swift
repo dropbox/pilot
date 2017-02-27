@@ -5,12 +5,23 @@ public final class SwitchableModelCollection: ModelCollection, ProxyingCollectio
 
     // MARK: Init
 
-    public init(_ collectionId: ModelCollectionId, _ modelCollection: ModelCollection) {
-        self.collectionId = collectionId
+    public init(collectionId: ModelCollectionId, modelCollection: ModelCollection) {
         self.currentCollection = modelCollection
+        self.collectionId = collectionId
         self.modelObserver = modelCollection.observe { [weak self] event in
             self?.observers.notify(event)
         }
+    }
+
+    convenience init(modelCollection: ModelCollection) {
+        self.init(
+            collectionId: "Switchable-\(modelCollection.collectionId)",
+            modelCollection: modelCollection)
+    }
+
+    // TODO:(danielh) deprecate/remove
+    convenience init(_ collectionId: ModelCollectionId, _ modelCollection: ModelCollection) {
+        self.init(collectionId: collectionId, modelCollection: modelCollection)
     }
 
     // MARK: Public
