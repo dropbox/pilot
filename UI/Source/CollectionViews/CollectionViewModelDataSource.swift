@@ -88,7 +88,7 @@ public class CollectionViewModelDataSource: NSObject, ProxyingObservable {
         context: Context,
         reuseIdProvider: CollectionViewCellReuseIdProvider
     ) {
-        let underlyingCollection = SwitchableModelCollection("CVMDS-Switch", model)
+        let underlyingCollection = SwitchableModelCollection(collectionId: "CVMDS-Switch", modelCollection: model)
         self.underlyingCollection = underlyingCollection
         self.currentCollection = CurrentCollection("CVMDS-Current")
         self.modelBinder = modelBinder
