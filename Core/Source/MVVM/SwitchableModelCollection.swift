@@ -19,6 +19,11 @@ public final class SwitchableModelCollection: ModelCollection, ProxyingCollectio
             modelCollection: modelCollection)
     }
 
+    // TODO:(danielh) deprecate/remove
+    convenience init(_ collectionId: ModelCollectionId, _ modelCollection: ModelCollection) {
+        self.init(collectionId: collectionId, modelCollection: modelCollection)
+    }
+
     // MARK: Public
 
     public func switchTo(_ modelCollection: ModelCollection) {
