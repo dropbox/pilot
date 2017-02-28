@@ -538,7 +538,6 @@ extension CollectionViewModelDataSource: UICollectionViewDataSource {
 
         // Determine if this should be animated.
         let shouldAnimate = shouldAnimateUpdates(updates) && !fullReloadFallback
-        collectionView.dataSourceBatchUpdateState = shouldAnimate ? .animated : .notAnimated
 
         // Set transaction start if animated.
         if !shouldAnimate {
@@ -566,7 +565,6 @@ extension CollectionViewModelDataSource: UICollectionViewDataSource {
                 }
             }
 
-            collectionView.dataSourceBatchUpdateState = .none
             completion()
         }
 
@@ -867,7 +865,6 @@ extension CollectionViewModelDataSource: NSCollectionViewDataSource {
 
         // Determine if this should be animated.
         let shouldAnimate = shouldAnimateUpdates(updates)
-        scrollView.dataSourceBatchUpdateState = shouldAnimate ? .animated : .notAnimated
 
         if shouldAnimate {
             NSAnimationContext.beginGrouping()
@@ -935,8 +932,6 @@ extension CollectionViewModelDataSource: NSCollectionViewDataSource {
         }) { [weak self] (finished: Bool) in
             // Restore alpha on item views.
             forceHiddenItems.forEach { $0.view.animator().alphaValue = 1.0 }
-
-            scrollView.dataSourceBatchUpdateState = .none
 
             didProcessUpdatesWithLog(updates)
 
@@ -1230,46 +1225,6 @@ extension CollectionViewModelDataSource: NSCollectionViewDataSource {
     }
 }
 #endif  // os(OSX)
-
-// MARK: - Associated data.
-
-public extension PlatformScrollView {
-
-    /// Possible mid-batch-update states for a given `PlatformScrollView`.
-    public enum BatchUpdateState: Int {
-        case none
-        case animated
-        case notAnimated
-    }
-
-    fileprivate struct AssociatedKey {
-        static var collectionViewBatchUpdateState = "collectionViewBatchUpdateState"
-    }
-
-    /// Returns whether this scrollview is in the middle of batch updates (for a table or collection view).
-    /// TODO:(wkiefer) Move to a more common location to handle non-collection views.
-    public var dataSourceBatchUpdateState: BatchUpdateState {
-        get {
-            if let number = objc_getAssociatedObject(self, &AssociatedKey.collectionViewBatchUpdateState) as? NSNumber {
-                if let state = BatchUpdateState(rawValue: number.intValue) {
-                    return state
-                }
-            }
-            return .none
-        }
-        set {
-            var value: NSNumber? = nil
-            if case .none = newValue {} else {
-                value = NSNumber(value: newValue.rawValue as Int)
-            }
-            objc_setAssociatedObject(
-                self,
-                &AssociatedKey.collectionViewBatchUpdateState,
-                value,
-                objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-        }
-    }
-}
 
 /// Helper struct representing cached data for a `ViewModel`.
 private struct CachedViewModel {
