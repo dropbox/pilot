@@ -5,12 +5,12 @@ import Foundation
 public protocol CollectionViewDelegate: NSCollectionViewDelegate {
 
     /// Invoked when the return or enter key is invoked - clients may check the selection state to determine if an
-    /// action should be taken.
-    @objc optional func collectionViewDidReceiveReturnKey(_ collectionView: NSCollectionView)
+    /// action should be taken. If true is returned from this function event is consumed.
+    @objc optional func collectionViewDidReceiveReturnKey(_ collectionView: NSCollectionView) -> Bool
 
     /// Invoked when the return or space key is invoked - clients may check the selection state to determine if an
-    /// action should be taken.
-    @objc optional func collectionViewDidReceiveSpaceKey(_ collectionView: NSCollectionView)
+    /// action should be taken. If true is returned from this function event is consumed.
+    @objc optional func collectionViewDidReceiveSpaceKey(_ collectionView: NSCollectionView) -> Bool
 
     /// Invoked when a specific index path is clicked upon - this allows the client to handle clicks without breaking
     /// the typical `NSCollectionView` selection state (otherwise, underlying item views do not get all mouse events).
@@ -42,33 +42,31 @@ public final class CollectionView: NSCollectionView {
     // MARK: NSResponder
 
     public override func keyDown(with event: NSEvent) {
-        let oldSelectionIndexPaths = selectionIndexPaths
-
-        if !keyboardSelectionDisabled {
-            super.keyDown(with: event)
-        }
-
-        // Determine if the key down event changed selection.
-        var selectionDidChange = false
-        if oldSelectionIndexPaths != selectionIndexPaths {
-            selectionDidChange = true
-        }
-
         switch event.eventKeyCode {
         case .return, .enter:
-            internalDelegate?.collectionViewDidReceiveReturnKey?(self)
+            guard internalDelegate?.collectionViewDidReceiveReturnKey?(self) != true else { return }
+            super.keyDown(with: event)
         case .space:
-            internalDelegate?.collectionViewDidReceiveSpaceKey?(self)
-        case .upArrow:
-            if !selectionDidChange {
-                internalDelegate?.collectionViewShouldLoseFocusFromArrowKey?(self, key: .upArrow)
+            guard internalDelegate?.collectionViewDidReceiveSpaceKey?(self) != true else { return }
+            super.keyDown(with: event)
+        case .upArrow, .downArrow:
+            let oldSelectionIndexPaths = selectionIndexPaths
+
+            if !keyboardSelectionDisabled {
+                super.keyDown(with: event)
             }
-        case .downArrow:
-            if !selectionDidChange {
-                internalDelegate?.collectionViewShouldLoseFocusFromArrowKey?(self, key: .downArrow)
+
+            // Determine if the key down event changed selection.
+            var selectionDidChange = false
+            if oldSelectionIndexPaths != selectionIndexPaths {
+                selectionDidChange = true
+            }
+
+            if !selectionDidChange, let code = EventKeyCode(rawValue: event.keyCode) {
+                internalDelegate?.collectionViewShouldLoseFocusFromArrowKey?(self, key: code)
             }
         default:
-            break
+            super.keyDown(with: event)
         }
     }
 
