@@ -52,6 +52,8 @@ public final class CollectionView: NSCollectionView {
         case .upArrow, .downArrow:
             let oldSelectionIndexPaths = selectionIndexPaths
 
+            // TODO:(danielh) investigate whether this should have an else that forwards events while skipping super's
+            // selection behavior.
             if !keyboardSelectionDisabled {
                 super.keyDown(with: event)
             }
