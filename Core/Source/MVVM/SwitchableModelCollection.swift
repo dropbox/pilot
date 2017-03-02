@@ -13,14 +13,14 @@ public final class SwitchableModelCollection: ModelCollection, ProxyingCollectio
         }
     }
 
-    convenience init(modelCollection: ModelCollection) {
+    public convenience init(modelCollection: ModelCollection) {
         self.init(
             collectionId: "Switchable-\(modelCollection.collectionId)",
             modelCollection: modelCollection)
     }
 
     // TODO:(danielh) deprecate/remove
-    convenience init(_ collectionId: ModelCollectionId, _ modelCollection: ModelCollection) {
+    public convenience init(_ collectionId: ModelCollectionId, _ modelCollection: ModelCollection) {
         self.init(collectionId: collectionId, modelCollection: modelCollection)
     }
 
