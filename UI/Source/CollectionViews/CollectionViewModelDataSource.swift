@@ -57,11 +57,9 @@ public final class CurrentCollection: ModelCollection, ProxyingCollectionEventOb
     // MARK: Private
 
     fileprivate func beginUpdate(_ collection: ModelCollection) -> (CollectionEventUpdates, () -> Void){
-        state = collection.state
-
         let updates = diffEngine.update(collection.sections, debug: false)
         return (updates, {
-            self.currentSections = collection.state.sections
+            self.state = collection.state
         })
     }
 
@@ -71,7 +69,6 @@ public final class CurrentCollection: ModelCollection, ProxyingCollectionEventOb
     }
 
     private var diffEngine = DiffEngine()
-    private var currentSections: [[Model]] = []
 }
 
 /// Data source for collection views which handles all the necessary binding between models -> view models, and view
