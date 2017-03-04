@@ -58,6 +58,10 @@ public final class CurrentCollection: ModelCollection, ProxyingCollectionEventOb
 
     fileprivate func beginUpdate(_ collection: ModelCollection) -> (CollectionEventUpdates, () -> Void){
         let updates = diffEngine.update(collection.sections, debug: false)
+        // TODO:(danielh) this needs test coverage
+        if collection.state.isLoading {
+            self.state = self.state.makeLoading()
+        }
         return (updates, {
             self.state = collection.state
         })
