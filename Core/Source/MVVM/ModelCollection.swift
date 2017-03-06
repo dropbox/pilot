@@ -25,16 +25,6 @@ public enum ModelCollectionState {
             return models
         }
     }
-
-    public var isNotLoaded: Bool {
-        if case .notLoaded = self { return true }
-        return false
-    }
-
-    public var isLoading: Bool {
-        if case .loading = self { return true }
-        return false
-    }
 }
 
 /// Event types sent to `CollectionEventObserver` types.
@@ -198,6 +188,41 @@ public func generateModelIdToIndexPathMapForSections(_ sections: [[Model]]) -> [
         sectionIndex += 1
     }
     return map
+}
+
+extension ModelCollectionState {
+    public var isNotLoaded: Bool {
+        if case .notLoaded = self { return true }
+        return false
+    }
+
+    public var isLoading: Bool {
+        if case .loading = self { return true }
+        return false
+    }
+
+    public var isLoaded: Bool {
+        if case .loaded = self { return true }
+        return false
+    }
+
+    public var isEmpty: Bool {
+        switch self {
+        case .notLoaded, .error:
+            return true
+        case .loading(let models):
+            guard let models = models else { return true }
+            for section in models {
+                if !section.isEmpty { return false }
+            }
+            return true
+        case .loaded(let models):
+            for section in models {
+                if !section.isEmpty { return false }
+            }
+            return true
+        }
+    }
 }
 
 extension ModelCollection {

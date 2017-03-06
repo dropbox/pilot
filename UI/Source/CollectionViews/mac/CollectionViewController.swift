@@ -426,7 +426,7 @@ open class CollectionViewController: NSViewController, CollectionViewDelegate {
             case .notLoaded:
                 break
             case .loading(let models):
-                if models == nil {
+                if models == nil || state.isEmpty {
                     showLoadingView()
                 }
             case .loaded:

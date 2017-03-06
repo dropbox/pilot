@@ -58,8 +58,9 @@ public final class CurrentCollection: ModelCollection, ProxyingCollectionEventOb
 
     fileprivate func beginUpdate(_ collection: ModelCollection) -> (CollectionEventUpdates, () -> Void){
         let updates = diffEngine.update(collection.sections, debug: false)
+        let commitState = collection.state
         return (updates, {
-            self.state = collection.state
+            self.state = commitState
         })
     }
 
