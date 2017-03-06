@@ -35,6 +35,20 @@ public enum ModelCollectionState {
         if case .loading = self { return true }
         return false
     }
+
+    /// Returns correct progression of current state to a loading one (ie preserving sections).
+    public func makeLoading() -> ModelCollectionState {
+        switch self {
+        case .notLoaded:
+            return .loading(nil)
+        case .loaded(let models):
+            return .loading(models)
+        case .loading:
+            return self
+        case .error:
+            return .loading(nil)
+        }
+    }
 }
 
 /// Event types sent to `CollectionEventObserver` types.
