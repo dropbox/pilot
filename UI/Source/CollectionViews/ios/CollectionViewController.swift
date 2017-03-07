@@ -246,8 +246,8 @@ open class CollectionViewController: UIViewController, UICollectionViewDelegate 
             switch state {
             case .notLoaded:
                 break
-            case .loading(let sections):
-                if sections == nil {
+            case .loading(let models):
+                if models == nil || state.isEmpty {
                     showSpinner()
                 }
             case .loaded:
@@ -257,7 +257,6 @@ open class CollectionViewController: UIViewController, UICollectionViewDelegate 
             }
         }
     }
-
 
     /// Spinner to show when in the `Loading` state.
     fileprivate var spinner: UIActivityIndicatorView?
