@@ -41,7 +41,11 @@ public final class ScoredModelCollection: ModelCollection, ProxyingCollectionEve
         return "scored-\(sourceCollection.collectionId)"
     }
 
-    public private(set) var state: ModelCollectionState = .notLoaded
+    public private(set) var state: ModelCollectionState = .notLoaded {
+        didSet {
+            observers.notify(.didChangeState(state))
+        }
+    }
 
     // MARK: CollectionEventObservable
 
