@@ -225,6 +225,29 @@ extension ModelCollectionState {
     }
 }
 
+extension ModelCollectionState: CustomDebugStringConvertible {
+    public var debugDescription: String {
+        switch self {
+        case .notLoaded:
+            return ".notLoaded"
+        case .error(let e):
+            return ".error(\(String(reflecting: e)))"
+        case .loading(let models):
+            return ".loading(\(describe(sections: models)))"
+        case .loaded(let models):
+            return ".loaded(\(describe(sections: models)))"
+        }
+    }
+
+    private func describe(sections: [[Model]]?) -> String {
+        guard let sections = sections else { return "nil" }
+        let counts = sections
+            .map({ String($0.count) })
+            .joined(separator: ",")
+        return "[\(counts)]"
+    }
+}
+
 extension ModelCollection {
 
     public var sections: [[Model]] { return state.sections }
