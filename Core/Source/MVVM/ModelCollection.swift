@@ -15,6 +15,7 @@ public enum ModelCollectionState {
     /// The model collection encountered an error loading data.
     case error(Error)
 
+    /// Unpacks and returns any associated model sections.
     public var sections: [[Model]] {
         switch self {
         case .notLoaded, .error:
@@ -23,6 +24,20 @@ public enum ModelCollectionState {
             return models ?? []
         case .loaded(let models):
             return models
+        }
+    }
+
+    /// Returns whether or not the underlying enum case is different than the target. Ignores associated model
+    /// objects.
+    public func isDifferentCase(than other: ModelCollectionState) -> Bool {
+        switch (self, other) {
+        case (.notLoaded, .notLoaded),
+             (.loading(_), .loading(_)),
+             (.loaded(_), .loaded(_)),
+             (.error(_), .error(_)):
+            return false
+        default:
+            return true
         }
     }
 }
