@@ -459,8 +459,12 @@ public class CollectionViewModelDataSource: NSObject, ProxyingObservable {
 
         let (updates, commitCollectionChanges) = currentCollection.beginUpdate(underlyingCollection)
         guard updates.hasUpdates else {
-            // still synced
-            // no need to update lastKnownCollectionViewContents
+            // Still synced - no need to fire a collection view update pass.
+            // However, if there are no updates, the underlying case may still change (e.g. .loading(_) -> .error(_)),
+            // so a commit is still needed.
+            if underlyingCollection.state.isDifferentCase(than: currentCollection.state) {
+                commitCollectionChanges()
+            }
             return
         }
 
