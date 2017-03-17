@@ -279,6 +279,15 @@ open class CollectionViewController: NSViewController, CollectionViewDelegate {
 
     open func collectionView(
         _ collectionView: NSCollectionView,
+        didEndDisplaying item: NSCollectionViewItem,
+        forRepresentedObjectAt indexPath: IndexPath
+    ) {
+        // Intentionally a noop - implemented as an extra safeguard against an internal nscollectionview crash during
+        // animations where the collection view is deallocated before completion.
+    }
+
+    open func collectionView(
+        _ collectionView: NSCollectionView,
         didSelectItemsAt indexPaths: Set<IndexPath>
     ) {
         guard let indexPath = indexPaths.first , indexPaths.count == 1 else { return }
