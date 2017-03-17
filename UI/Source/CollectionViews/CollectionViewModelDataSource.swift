@@ -869,7 +869,16 @@ extension CollectionViewModelDataSource: NSCollectionViewDataSource {
         let shouldAnimate = shouldAnimateUpdates(updates)
 
         if shouldAnimate {
+            // BUGFIX: If the collection view is deallocated during the timespan of the animation, NSCollectionView
+            // internals will end up calling the non-zeroing weak delegate back and crashing. So retain both the
+            // delegate and the collection view until the animation completes.
+            // This is easy to repro by removing the completion handler and increasing the animation duration.
+            let retainedDelegate = collectionView.delegate
             NSAnimationContext.beginGrouping()
+            NSAnimationContext.current().completionHandler =  { [collectionView, retainedDelegate] in
+                _ = collectionView
+                _ = retainedDelegate
+            }
             NSAnimationContext.current().duration = 0.2
         }
 
