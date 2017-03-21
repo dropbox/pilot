@@ -58,11 +58,13 @@ public protocol View: class {
     var highlightStyle: ViewHighlightStyle { get set }
 }
 
-/// Represents the binding from a ViewModel to a View.
+/// Represents the binding from a ViewModel to a View. By default will automatically create the View instance for you
+/// or alternativly a custom closure can be provided to intialize the view. This is useful if the view takes
+/// additional arguments on init.
 public struct ViewBinding {
-    public init<T: View>(_ viewType: T.Type) {
+    public init<T: View>(_ viewType: T.Type, make: @escaping () -> T = { return T() }) {
         self.viewType = viewType
-        generate = { $0 as? T ?? viewType.init() }
+        self.generate = { $0 as? T ?? make() }
     }
 
     public let viewType: View.Type
