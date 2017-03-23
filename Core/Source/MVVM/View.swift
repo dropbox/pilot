@@ -27,14 +27,19 @@ public protocol View: class {
     /// `viewModel` back to `nil`.
     func unbindFromViewModel()
 
-    /// Invoked by view binding systems before the view will be laid out with the given available size.
-    func willLayoutWithAvailableSize(_ availableSize: AvailableSize)
+    /// Invoked by view binding systems before the view will be laid out with the given available size. The `object`
+    /// argument allows the caller to provide any context to the view that may affect its layout. For example it's
+    /// position in a collection view, or information about the preceding view.
+    func willLayoutWithAvailableSize(_ availableSize: AvailableSize, with object: Any?)
 
     /// Returns the preferred layout for the given `viewModel` if rendered by this `View`. This is a static method
-    /// for optimized performance so view size estimation does not require an actual bound instance of a view.
+    /// for optimized performance so view size estimation does not require an actual bound instance of a view. The 
+    /// `object` argument allows the caller to provide any context to the view that may affect its layout. For
+    /// example it's position in a collection view, or information about the preceding view.
     static func preferredLayout(
         fitting availableSize: AvailableSize,
-        for viewModel: ViewModel
+        for viewModel: ViewModel,
+        with object: Any?
     ) -> PreferredLayout
 
     /// Applies the given `ViewLayout` to the target view type. This is the same `ViewLayout` object as returned by
@@ -129,7 +134,7 @@ public extension ViewBindingProvider {
         context: Context
     ) -> PreferredLayout {
         let viewType = viewTypeForViewModel(viewModel, context: context)
-        return viewType.preferredLayout(fitting: availableSize, for: viewModel)
+        return viewType.preferredLayout(fitting: availableSize, for: viewModel, with: context)
     }
 }
 
@@ -241,13 +246,14 @@ public struct AvailableSize {
 /// that they may not need.
 public extension View {
 
-    public func willLayoutWithAvailableSize(_ availableSize: AvailableSize) { }
+    public func willLayoutWithAvailableSize(_ availableSize: AvailableSize, with object: Any? = nil) { }
 
     public func applyLayout(_ layout: ViewLayout) {}
 
     public static func preferredLayout(
         fitting availableSize: AvailableSize,
-        for viewModel: ViewModel
+        for viewModel: ViewModel,
+        with object: Any? = nil
     ) -> PreferredLayout {
         return .none
     }
