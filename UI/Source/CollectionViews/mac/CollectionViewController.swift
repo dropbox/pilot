@@ -485,9 +485,13 @@ open class CollectionViewController: NSViewController, CollectionViewDelegate {
             return nil
         case .text(let string, let font, let color):
             let label = NSTextField()
-            let attributes: [String: AnyObject] = [NSFontAttributeName: font, NSForegroundColorAttributeName: color]
-            let attributedString = NSAttributedString(string: string, attributes: attributes)
-            label.attributedStringValue = attributedString
+            label.isEditable = false
+            label.isBordered = false
+            label.backgroundColor = .clear
+            label.alignment = .center
+            label.font = font
+            label.textColor = color
+            label.stringValue = string
             return label
         case .viewWithCustomConstraints(let view, _):
             return view
@@ -499,12 +503,21 @@ open class CollectionViewController: NSViewController, CollectionViewDelegate {
     private func emptyContentViewConstraints(
         for display: EmptyCollectionDisplay
     ) -> (NSView, NSView) -> [NSLayoutConstraint] {
-        if case .viewWithCustomConstraints(_, let constraints) = display {
+        switch display {
+        case .viewWithCustomConstraints(_, let constraints):
             return constraints
-        }
-        return { parent, child in
-            return [child.centerXAnchor.constraint(equalTo: parent.centerXAnchor),
-                    child.centerYAnchor.constraint(equalTo: parent.centerYAnchor)]
+        case .text(_, _, _):
+            return { parent, child in
+                return [child.widthAnchor.constraint(equalTo: parent.widthAnchor),
+                        child.heightAnchor.constraint(lessThanOrEqualTo: parent.widthAnchor),
+                        child.centerXAnchor.constraint(equalTo: parent.centerXAnchor),
+                        child.centerYAnchor.constraint(equalTo: parent.centerYAnchor)]
+            }
+        default:
+            return { parent, child in
+                return [child.centerXAnchor.constraint(equalTo: parent.centerXAnchor),
+                        child.centerYAnchor.constraint(equalTo: parent.centerYAnchor)]
+            }
         }
     }
 }
