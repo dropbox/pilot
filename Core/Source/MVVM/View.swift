@@ -57,8 +57,13 @@ public protocol View: class {
 /// or alternativly a custom closure can be provided to intialize the view. This is useful if the view takes
 /// additional arguments on init.
 public struct ViewBinding {
-    public init<T: View>(_ viewType: T.Type, make: @escaping () -> T = { return T() }) {
+    public init<T: View>(_ viewType: T.Type) {
         self.viewType = viewType
+        self.generate = { $0 as? T ?? T() }
+    }
+
+    public init<T: View>(_ make: @escaping () -> T = { return T() }) {
+        self.viewType = T.self
         self.generate = { $0 as? T ?? make() }
     }
 
