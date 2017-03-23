@@ -248,14 +248,14 @@ public struct AvailableSize {
 /// that they may not need.
 public extension View {
 
-    public func willLayoutWithAvailableSize(_ availableSize: AvailableSize, with object: Any? = nil) { }
+    public func willLayoutWithAvailableSize(_ availableSize: AvailableSize, with object: Any?) { }
 
     public func applyLayout(_ layout: ViewLayout) {}
 
     public static func preferredLayout(
         fitting availableSize: AvailableSize,
         for viewModel: ViewModel,
-        with object: Any? = nil
+        with object: Any?
     ) -> PreferredLayout {
         return .none
     }
