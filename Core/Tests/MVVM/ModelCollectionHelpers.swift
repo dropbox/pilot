@@ -23,14 +23,14 @@ internal func assertModelCollectionState(
             XCTAssertEqual(
                 expectedSections?.count,
                 actualSections?.count,
-                "Expected .loading with \(expectedSections?.count) sections, got \(actualSections?.count)")
+                "Expected .loading with \(expectedSections?.count ?? 0) sections, got \(actualSections?.count ?? 0)")
             if let expectedSections = expectedSections, let actualSections = actualSections {
                 for (e, a) in zip(expectedSections, actualSections) {
                     XCTAssertEqual(e.map({ $0.modelId }), a.map({ $0.modelId }))
                 }
             }
         } else {
-            XCTFail("Expected .loading(\(expectedSections))\ngot: \(actual)", file: file, line: line)
+            XCTFail("Expected .loading(\(String(describing: expectedSections)))\ngot: \(actual)", file: file, line: line)
         }
     case .loaded(let expectedSections):
         if case .loaded(let actualSections) = actual {
