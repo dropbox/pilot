@@ -56,7 +56,6 @@ public final class CollectionViewHostItem: NSCollectionViewItem {
         super.prepareForReuse()
 
         menuTrackingCookie += 1
-        cachedLayoutAttributes = nil
         highlightStyle = .none
 
         if let cvt = hostedView as? CollectionSupportingView {

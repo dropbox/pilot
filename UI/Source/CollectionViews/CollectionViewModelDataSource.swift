@@ -665,11 +665,6 @@ extension CollectionViewModelDataSource: UICollectionViewDataSource {
 
         willRebindViewModel(viewModel)
         cell.hostedView?.bindToViewModel(viewModel)
-
-        // When rebinding, re-apply attributes so that the updated ViewModel is notified.
-        if let attributes = collectionView.layoutAttributesForItem(at: indexPath) {
-            cell.apply(attributes)
-        }
     }
 
     // MARK: UICollectionViewDataSource
@@ -1066,11 +1061,6 @@ extension CollectionViewModelDataSource: NSCollectionViewDataSource {
 
         willRebindViewModel(viewModel)
         item.hostedView?.bindToViewModel(viewModel)
-
-        // When rebinding, re-apply attributes so that the updated ViewModel is notified.
-        if let attributes = collectionView.layoutAttributesForItem(at: indexPath) {
-            item.apply(attributes)
-        }
     }
 
     private func shouldFakeMoves(updates: CollectionEventUpdates) -> Bool {

@@ -42,12 +42,6 @@ internal final class CollectionViewHostResuableView: UICollectionReusableView {
 
     // MARK: UICollectionReusableView
 
-    internal override func prepareForReuse() {
-        super.prepareForReuse()
-
-        cachedLayoutAttributes = nil
-    }
-
     internal override func apply(_ layoutAttributes: UICollectionViewLayoutAttributes) {
         super.apply(layoutAttributes)
 
