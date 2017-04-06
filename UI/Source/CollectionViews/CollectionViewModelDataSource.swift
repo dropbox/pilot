@@ -1057,7 +1057,7 @@ extension CollectionViewModelDataSource: NSCollectionViewDataSource {
 
     private func rebindViewAtIndexPath(_ indexPath: IndexPath, toViewModel viewModel: ViewModel) {
         guard let collectionView = collectionView else { return }
-        guard let item = collectionView.item(at: indexPath as IndexPath) as? CollectionViewHostItem else { return }
+        guard let item = collectionView.item(at: indexPath) as? CollectionViewHostItem else { return }
 
         willRebindViewModel(viewModel)
         item.hostedView?.bindToViewModel(viewModel)
