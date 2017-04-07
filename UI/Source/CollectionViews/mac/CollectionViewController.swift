@@ -533,6 +533,14 @@ private final class FullWidthScroller: NSScroller {
         return true
     }
 
+    override class func preferredScrollerStyle() -> NSScrollerStyle {
+        return .overlay
+    }
+
+    override func drawKnobSlot(in slotRect: NSRect, highlight flag: Bool) {
+        // Nop
+    }
+
     override class func scrollerWidth(
         for controlSize: NSControlSize,
         scrollerStyle: NSScrollerStyle
