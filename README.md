@@ -8,14 +8,14 @@ These components are not overly-prescriptive to any particular application archi
 
 ## Component Libraries
 
-Pilot is modularized into components providing building blocks for fast and safe application development (see [flight plan](Documentation/Flight%20Plan.md) for upcoming components).
+Pilot is modularized into components providing building blocks for fast and safe application development (see [flight plan](Documentation/FlightPlan.md) for upcoming components).
 
 - **Pilot**: Provides a core MVVM stack, various model collections, diff engine, action handling, along with some minimal async, observable, and logging components. This is a Foundation-only framework (i.e. No UIKit or AppKit)
 - **PilotUI**: UI layer components built atop `Pilot` for both Mac and iOS. Contains collection view bindings and other macOS/iOS extensions for Pilot development.
 
 ## Usage
 
-See the [Getting Started](Documentation/Getting%20Started.md) guide for a basic walkthrough of core concepts.
+See the [Getting Started](Documentation/GettingStarted.md) guide for a basic walkthrough of core concepts.
 
 There is a [Sample Project](Examples/iTunesSearch) which demonstrates macOS app and iOS app built from the same Pilot MVVM stack.
 
