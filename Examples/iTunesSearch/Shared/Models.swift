@@ -43,7 +43,7 @@ public struct Song: Model {
         return String(trackId)
     }
 
-    public var modelVersion: Pilot.ModelVersion {
+    public var modelVersion: ModelVersion {
         var mixer = ModelVersionMixer()
         mixer.mix(artistId)
         mixer.mix(collectionId)
@@ -62,6 +62,12 @@ public struct Song: Model {
         mixer.mix(Float64(trackPrice))
         mixer.mix(release.timeIntervalSince1970)
         mixer.mix(durationMilliseconds)
+        if let trackNumber = trackNumber {
+            mixer.mix(trackNumber)
+        }
+        if let trackCount = trackCount {
+            mixer.mix(trackCount)
+        }
         return mixer.result()
     }
 }
