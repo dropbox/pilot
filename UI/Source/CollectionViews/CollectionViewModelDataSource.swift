@@ -471,14 +471,57 @@ public class CollectionViewModelDataSource: NSObject, ProxyingObservable {
         observers.notify(.willUpdateItems(updates))
         commitCollectionChanges()
 
-        for invalidatedModelId in updates.removedModelIds {
-            viewModelCache[invalidatedModelId] = nil
-        }
         handleUpdateItems(updates) { [weak self] in
             self?.observers.notify(.didUpdateItems(updates))
         }
     }
-    
+
+
+    fileprivate var collectionViewSectionCount: Int {
+        return collectionView?.numberOfSections ?? 0
+    }
+
+    /// Clears any applicable cached view models (in `viewModelCache`) based on a set of `CollectionEventUpdates`.
+    /// This method should only be called once the `CollectionEventUpdates` have been committed to `currentCollection`,
+    /// typically in `handleUpdateItems(...)` as it assumes the updates are already reflected in the current collection.
+    /// Returns the invalidated view models.
+    fileprivate func invalidateViewModelCache(for updates: CollectionEventUpdates) -> [ModelId: CachedViewModel] {
+        // Removals.
+        for invalidatedModelId in updates.removedModelIds {
+            viewModelCache[invalidatedModelId] = nil
+        }
+
+        var invalidatedViewModelCache: [ModelId: CachedViewModel] = [:]
+
+        // At this point, `currentCollection` has been updated, and update/move.to index paths are based on post-removal
+        // indices. So can clear based on state of current collection.
+        for updatedPath in updates.updatedModelPaths {
+            if let model: Model = currentCollection.atModelPath(updatedPath) {
+                if let invalidViewModel = viewModelCache.removeValue(forKey: model.modelId) {
+                    invalidatedViewModelCache[model.modelId] = invalidViewModel
+                }
+            }
+        }
+
+        for move in updates.movedModelPaths {
+            if let model: Model = currentCollection.atModelPath(move.to) {
+                if let invalidViewModel = viewModelCache.removeValue(forKey: model.modelId) {
+                    invalidatedViewModelCache[model.modelId] = invalidViewModel
+                }
+            }
+        }
+        return invalidatedViewModelCache
+    }
+}
+
+#if os(iOS)
+
+// MARK: - iOS Data and Batch Updates
+
+extension CollectionViewModelDataSource: UICollectionViewDataSource {
+
+    // MARK: Private
+
     fileprivate func updatesShouldFallbackOnFullReload(_ updates: CollectionEventUpdates) -> Bool {
         // If `NoneReloadOnly` is specified, always reload.
         if case .noneReloadOnly = updateAnimationStyle {
@@ -491,19 +534,6 @@ public class CollectionViewModelDataSource: NSObject, ProxyingObservable {
         return updates.containsFirstAddInSection || updates.containsLastRemoveInSection
     }
 
-    fileprivate var collectionViewSectionCount: Int {
-        return collectionView?.numberOfSections ?? 0
-    }
-}
-
-#if os(iOS)
-
-// MARK: - iOS Data and Batch Updates
-
-extension CollectionViewModelDataSource: UICollectionViewDataSource {
-
-    // MARK: Private
-
     public func handleUpdateItems(_ updates: CollectionEventUpdates, completion: @escaping () -> Void) {
         // preconditions
         precondition(collectionViewState == .synced) // but not for long!
@@ -512,13 +542,13 @@ extension CollectionViewModelDataSource: UICollectionViewDataSource {
             fatalError("handleUpdateItems should never be called without a collectionView")
         }
 
+        let invalidatedViewModelCache = invalidateViewModelCache(for: updates)
+
         // If the collection view is not part of the window hierarchy or the application is in the background,
         // then just do a basic reload. This avoids potential exceptions inside `UICollectionView` when a batch
         // update spans the view being added to the hierarchy and avoids core animation queuing up animations
         // of changes from when the app was in the background.
         if collectionView.window == nil || inBackground {
-            viewModelCache.removeAll()
-
             // Disable animations during background/offscreen reload.
             CATransaction.begin()
             CATransaction.setDisableActions(true)
@@ -576,8 +606,6 @@ extension CollectionViewModelDataSource: UICollectionViewDataSource {
             let oldSectionCount = collectionViewSectionCount
             let newSectionCount = currentCollection.sections.count
 
-            viewModelCache.removeAll()
-
             collectionViewState = .animating
             collectionView.performBatchUpdates({
                 collectionView.deleteSections(IndexSet(integersIn: 0..<oldSectionCount))
@@ -626,13 +654,10 @@ extension CollectionViewModelDataSource: UICollectionViewDataSource {
                 var oldCachedViewModel: CachedViewModel?
                 var newCachedViewModel: CachedViewModel?
 
-                // Clear cache for updated items.
-                if let item: Model = currentCollection.atModelPath(indexPath) {
-                    oldCachedViewModel = viewModelCache.removeValue(forKey: item.modelId)
-                }
-
                 // Create new view models from the updated models.
                 if let model: Model = currentCollection.atModelPath(indexPath) {
+                    oldCachedViewModel = invalidatedViewModelCache[model.modelId]
+
                     _ = cachedViewModel(for: model)
 
                     // Update the size.
@@ -826,9 +851,9 @@ extension CollectionViewModelDataSource: NSCollectionViewDataSource {
             completion()
         }
 
-        if shouldPerformFullReload(withCollectionView: collectionView, scrollView: scrollView, updates: updates) {
-            viewModelCache.removeAll()
+        let invalidatedViewModelCache = invalidateViewModelCache(for: updates)
 
+        if shouldPerformFullReload(withCollectionView: collectionView, scrollView: scrollView, updates: updates) {
             guard !OSInfo.isAtLeastSierra else {
                 let oldSectionCount = collectionView.numberOfSections
                 let newSectionCount = numberOfSections(in: collectionView)
@@ -927,11 +952,6 @@ extension CollectionViewModelDataSource: NSCollectionViewDataSource {
             if !movedModels.isEmpty {
                 let usingFakeMoves = shouldFakeMoves(updates: updates)
                 for move in movedModels {
-                    // Clear cache for moved items.
-                    // NOTE: currentCollection has been updated to the latest data at this point.
-                    if let item: Model = currentCollection.atModelPath(move.to) {
-                        viewModelCache[item.modelId] = nil
-                    }
                     if usingFakeMoves {
                         collectionView.deleteItems(at: [move.from.indexPath])
                         collectionView.insertItems(at: [move.to.indexPath])
@@ -961,13 +981,10 @@ extension CollectionViewModelDataSource: NSCollectionViewDataSource {
                 var oldCachedViewModel: CachedViewModel?
                 var newCachedViewModel: CachedViewModel?
 
-                // Clear cache for updated items.
-                if let item: Model = currentCollection.atModelPath(indexPath) {
-                    oldCachedViewModel = viewModelCache.removeValue(forKey: item.modelId)
-                }
-
                 // Create new view models from the updated models.
                 if let model: Model = currentCollection.atModelPath(indexPath) {
+                    oldCachedViewModel = invalidatedViewModelCache[model.modelId]
+
                     _ = cachedViewModel(for: model)
 
                     // Update the size.
