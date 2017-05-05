@@ -22,8 +22,8 @@ public final class CollectionViewHostItem: NSCollectionViewItem {
         didSet {
             // Only add the view if it isn't already added (i.e. hit the noop case in `willSet`.)
             if let theView = hostedView as? NSView , theView.superview != view {
-                view.addSubview(theView)
                 theView.translatesAutoresizingMaskIntoConstraints = false
+                view.addSubview(theView)
                 theView.constrain(edgesEqualToView: view)
             }
             hostedView?.selected = isSelected
