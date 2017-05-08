@@ -20,22 +20,22 @@ internal struct CollectionZeroItemModel: Model {
 }
 
 /// `ViewModel` representing an empty section "item" - typically for supplementary view binding for empty sections.
-internal struct CollectionZeroItemViewModel: ViewModel {
+public struct CollectionZeroItemViewModel: ViewModel {
 
-    internal init(indexPath: IndexPath) {
+    public init(indexPath: IndexPath) {
         self.indexPath = indexPath
     }
 
-    // MARK: Internal
+    // MARK: Public
 
-    let indexPath: IndexPath
+    public let indexPath: IndexPath
 
     // MARK: ViewModel
 
     @available(*, unavailable, message: "Unsupported initializer")
-    init(model: Model, context: Context) {
+    public init(model: Model, context: Context) {
         fatalError("Unsupported initializer")
     }
 
-    let context = Context()
+    public let context = Context()
 }
