@@ -49,5 +49,20 @@ class CompoundActionTests: XCTestCase {
         XCTAssertEqual(result, .handled)
         _ = obs
     }
+
+    func testWithFuncFlattensOutCompoundActions() {
+        let s1 = StubAction()
+        let s2 = StubAction()
+        let subject = CompoundAction(childActions: [s1])
+        let result = subject.with(CompoundAction(childActions: [s2]))
+        let identifiers = result.childActions.flatMap { (action) -> Token? in
+            if let act = action as? StubAction {
+                return act.identifier
+            }
+            XCTFail("Unexpected action type \(action)")
+            return nil
+        }
+        XCTAssertEqual([s1.identifier, s2.identifier], identifiers)
+    }
 }
 

@@ -9,23 +9,14 @@ public struct CompoundAction: Action {
     }
 
     public let childActions: [Action]
-
-    @discardableResult
-    public func send(from sender: ActionSender) -> ActionResult {
-        var result: ActionResult = .notHandled
-        for action in childActions {
-            if case .handled = action.send(from: sender) {
-                result = .handled
-            }
-        }
-        return result
-    }
 }
 
 extension Action {
 
+    /// Chains two actions together creating a compound action, flattening if either or both are compound actions.
     public func with(_ other: Action) -> CompoundAction {
-        return CompoundAction(childActions: [self, other])
+        let lhs = (self as? CompoundAction)?.childActions ?? [self]
+        let rhs = (other as? CompoundAction)?.childActions ?? [other]
+        return CompoundAction(childActions: lhs + rhs)
     }
 }
-
