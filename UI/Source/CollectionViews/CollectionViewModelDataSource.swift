@@ -544,29 +544,12 @@ extension CollectionViewModelDataSource: UICollectionViewDataSource {
 
         let invalidatedViewModelCache = invalidateViewModelCache(for: updates)
 
-        // If the collection view is not part of the window hierarchy or the application is in the background,
-        // then just do a basic reload. This avoids potential exceptions inside `UICollectionView` when a batch
-        // update spans the view being added to the hierarchy and avoids core animation queuing up animations
-        // of changes from when the app was in the background.
-        if collectionView.window == nil || inBackground {
-            // Disable animations during background/offscreen reload.
-            CATransaction.begin()
-            CATransaction.setDisableActions(true)
 
-            // CollectionView.reloadData does not synchronously fetch new information from the data source, so
-            // don't call performBatchUpdates until it does.
-            // NOTE: this path does not fire any observable events
-            collectionViewState = .loading
-            collectionView.reloadData()
-
-            CATransaction.commit()
-
-            completion()
-            return
-        }
-
-        // Workaround classic collection view bug where some updates require using a full reload.
-        let fullReloadFallback = updatesShouldFallbackOnFullReload(updates)
+        // Workaround classic collection view bugs where some updates require using a full reload. This includes
+        // reloading when the collection view is not part of the window hierarchy or the application is in the
+        // background.
+        let fullReloadFallback =
+            updatesShouldFallbackOnFullReload(updates) || collectionView.window == nil || inBackground
 
         // Determine if this should be animated.
         let shouldAnimate = shouldAnimateUpdates(updates) && !fullReloadFallback
