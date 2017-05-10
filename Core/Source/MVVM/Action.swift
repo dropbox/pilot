@@ -24,7 +24,14 @@ public extension Action {
     /// ```
     @discardableResult
     func send(from sender: ActionSender) -> ActionResult {
-        return sender.send(self)
+        // TODO:(danielh) add comment here explaining why this has to be here
+        if let wrappedAction = self as? AnalyticsEventWrappedAction {
+            let res = sender.send(self)
+            _ = SendAnalyticsEventAction(event: wrappedAction.event)
+            return res
+        } else {
+            return sender.send(self)
+        }
     }
 }
 

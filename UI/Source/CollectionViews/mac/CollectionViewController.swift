@@ -369,6 +369,9 @@ open class CollectionViewController: NSViewController, CollectionViewDelegate {
             return
         }
         action.send(from: context)
+        if let event = menuItem.representedEvent else {
+            SendAnalyticsEventAction(event: event).send(from: context)
+        }
     }
 
     private func registerForMenuTrackingEnd(_ menu: NSMenu, item: CollectionViewHostItem) {

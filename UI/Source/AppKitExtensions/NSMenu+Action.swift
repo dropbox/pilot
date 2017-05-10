@@ -19,7 +19,7 @@ extension NSMenu {
                 let menuItem = NSMenuItem(title: info.title, action: action, keyEquivalent: "")
                 menuItem.isEnabled = info.enabled
                 menuItem.state = info.state.toNSState()
-                menuItem.representedObject = MenuItemActionWrapper(info.action)
+                menuItem.representedObject = MenuItemActionWrapper(info.action, event: info.event)
                 menu.addItem(menuItem)
 
             case .info(let string):
@@ -46,6 +46,14 @@ extension NSMenuItem {
         }
         return nil
     }
+
+    /// TODO:(danielh) docs
+    public var representedEvent: AnalyticsEvent? {
+        if let wrapper = representedObject as? MenuItemActionWrapper {
+            return wrapper.wrappedEvent
+        }
+        return nil
+    }
 }
 
 extension SecondaryActionInfo.State {
@@ -64,10 +72,12 @@ extension SecondaryActionInfo.State {
 /// Helper class to wrap value-type `Action`s.
 fileprivate final class MenuItemActionWrapper: NSObject {
 
-    fileprivate convenience init(_ action: Action) {
+    fileprivate convenience init(_ action: Action, event: AnalyticsEvent?) {
         self.init()
         wrappedAction = action
+        wrappedEvent = event
     }
     fileprivate var wrappedAction: Action?
+    fileprivate var wrappedEvent: AnalyticsEvent?
 }
 
