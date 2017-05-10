@@ -15,7 +15,6 @@ public protocol Action {
 
 public extension Action {
 
-
     /// Convenience method to send an action with the given `sender`. e.g.
     /// ```
     ///   MyAction().send(from: context)

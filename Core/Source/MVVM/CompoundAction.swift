@@ -1,7 +1,7 @@
 
 /// Action implementation which fires all its child actions serially in send(from:).
 ///
-/// Note: returns .handled as the ActionResult if any of the child actions return .handled in send(from:).
+/// Note: returns .handled as the ActionResult if any of the child actions are handled.
 public struct CompoundAction: Action {
 
     public init(childActions: [Action]) {
