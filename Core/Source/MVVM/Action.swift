@@ -11,9 +11,6 @@ import Foundation
 public protocol Action {
     // This space intentionally left blank to support future `Action` behavior as the breadth of Pilot increases to
     // support stores and services.
-}
-
-public extension Action {
 
     /// Convenience method to send an action with the given `sender`. e.g.
     /// ```
@@ -22,6 +19,12 @@ public extension Action {
     /// // as a more readable alternative to:
     ///   context.send(MyAction())
     /// ```
+    func send(from sender: ActionSender) -> ActionResult
+}
+
+public extension Action {
+
+    /// Default implementation of send(from:)
     @discardableResult
     func send(from sender: ActionSender) -> ActionResult {
         return sender.send(self)
