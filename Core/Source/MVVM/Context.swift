@@ -161,7 +161,7 @@ open class Context: ActionSender {
 
         if let compound = action as? CompoundAction {
             var result: ActionResult = .notHandled
-            for action in compound.childActions {
+            for action in compound.actions {
                 if case .handled = send(action) {
                     result = .handled
                 }

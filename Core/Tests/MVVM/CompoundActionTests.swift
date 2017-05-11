@@ -8,15 +8,15 @@ class CompoundActionTests: XCTestCase {
     }
 
     func testSendsAllChildActions() {
-        let childOne = StubAction()
-        let childTwo = StubAction()
-        let subject = CompoundAction(childActions: [childOne, childTwo])
+        let actionOne = StubAction()
+        let actionTwo = StubAction()
+        let subject = CompoundAction([actionOne, actionTwo])
         let context = Context()
         var receivedOne = false
         var receivedTwo = false
         let obs = context.receive({ (action: StubAction) -> ActionResult in
-            if action.identifier == childOne.identifier { receivedOne = true }
-            if action.identifier == childTwo.identifier { receivedTwo = true }
+            if action.identifier == actionOne.identifier { receivedOne = true }
+            if action.identifier == actionTwo.identifier { receivedTwo = true }
             return .handled
         })
         subject.send(from: context)
@@ -26,9 +26,9 @@ class CompoundActionTests: XCTestCase {
     }
 
     func testNotHandled() {
-        let childOne = StubAction()
-        let childTwo = StubAction()
-        let subject = CompoundAction(childActions: [childOne, childTwo])
+        let actionOne = StubAction()
+        let actionTwo = StubAction()
+        let subject = CompoundAction([actionOne, actionTwo])
         let context = Context()
         let obs = context.receiveAll { _ in return .notHandled }
         let result = subject.send(from: context)
@@ -37,12 +37,12 @@ class CompoundActionTests: XCTestCase {
     }
 
     func testHandled() {
-        let childOne = StubAction()
-        let childTwo = StubAction()
-        let subject = CompoundAction(childActions: [childOne, childTwo])
+        let actionOne = StubAction()
+        let actionTwo = StubAction()
+        let subject = CompoundAction([actionOne, actionTwo])
         let context = Context()
         let obs = context.receive { (action: StubAction) -> ActionResult in
-            if action.identifier == childTwo.identifier { return .handled }
+            if action.identifier == actionTwo.identifier { return .handled }
             return .notHandled
         }
         let result = subject.send(from: context)
@@ -53,9 +53,9 @@ class CompoundActionTests: XCTestCase {
     func testWithFuncFlattensOutCompoundActions() {
         let s1 = StubAction()
         let s2 = StubAction()
-        let subject = CompoundAction(childActions: [s1])
-        let result = subject.with(CompoundAction(childActions: [s2]))
-        let identifiers = result.childActions.flatMap { (action) -> Token? in
+        let subject = CompoundAction([s1])
+        let result = subject.with(CompoundAction([s2]))
+        let identifiers = result.actions.flatMap { (action) -> Token? in
             if let act = action as? StubAction {
                 return act.identifier
             }
@@ -65,4 +65,3 @@ class CompoundActionTests: XCTestCase {
         XCTAssertEqual([s1.identifier, s2.identifier], identifiers)
     }
 }
-
