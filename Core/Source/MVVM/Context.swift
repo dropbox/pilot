@@ -158,6 +158,17 @@ open class Context: ActionSender {
     @discardableResult
     open func send(_ action: Action) -> ActionResult {
         precondition(Thread.isMainThread, "`Context.send` must run on main thread")
+
+        if let compound = action as? CompoundAction {
+            var result: ActionResult = .notHandled
+            for action in compound.actions {
+                if case .handled = send(action) {
+                    result = .handled
+                }
+            }
+            return result
+        }
+
         for receiverPair in receiverStack.reversed() {
             let receiver = receiverPair.1
             if .handled == receiver(action) {
