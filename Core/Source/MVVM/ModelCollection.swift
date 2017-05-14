@@ -15,8 +15,8 @@ public enum ModelCollectionState {
     /// The model collection encountered an error loading data.
     case error(Error)
 
-    /// Unpacks and returns any associated model sections.
-    public var sections: [Model] {
+    /// Unpacks and returns any associated model models.
+    public var models: [Model] {
         switch self {
         case .notLoaded, .error:
             return []
@@ -160,7 +160,7 @@ public protocol IndexedModelProvider {
 
 // MARK: ModelCollection
 
-/// Generic protocol defining a collection of `Model` items grouped into sections. This is the core Pilot
+/// Generic protocol defining a collection of `Model` items grouped into models. This is the core Pilot
 /// collection protocol for representing a collection of model items. View-specific bindings are provided by the
 /// PilotUI framework.
 public protocol ModelCollection: class {
@@ -190,10 +190,10 @@ public extension ModelCollection {
 
 // MARK: Common helper methods.
 
-/// Returns a dictionary mapping `ModelId`s to their index path within the given `sections` object.
-public func generateModelIdToIndexPathMapForSections(_ sections: [Model]) -> [ModelId: ModelPath] {
+/// Returns a dictionary mapping `ModelId`s to their index path within the given `models` object.
+public func generateModelIdToIndexPathMapForSections(_ models: [Model]) -> [ModelId: ModelPath] {
     var map: [ModelId: ModelPath] = [:]
-    for (idx, model) in sections.enumerated() {
+    for (idx, model) in models.enumerated() {
         map[model.modelId] = ModelPath(sectionIndex: 0, itemIndex: idx)
     }
     return map
@@ -236,44 +236,44 @@ extension ModelCollectionState: CustomDebugStringConvertible {
         case .error(let e):
             return ".error(\(String(reflecting: e)))"
         case .loading(let models):
-            return ".loading(\(describe(sections: models)))"
+            return ".loading(\(describe(models: models)))"
         case .loaded(let models):
-            return ".loaded(\(describe(sections: models)))"
+            return ".loaded(\(describe(models: models)))"
         }
     }
 
-    private func describe(sections: [Model]?) -> String {
-        guard let models = sections else { return "nil" }
+    private func describe(models: [Model]?) -> String {
+        guard let models = models else { return "nil" }
         return "[\(models.count) Models]"
     }
 }
 
 extension ModelCollection {
 
-    public var sections: [Model] { return state.sections }
+    public var models: [Model] { return state.models }
 
     /// Returns a dictionary mapping item `ModelId`s to their index path within the target `ModelCollection`.
     public var modelIdToIndexPathMap: [ModelId: ModelPath] {
-        return generateModelIdToIndexPathMapForSections(sections)
+        return generateModelIdToIndexPathMapForSections(models)
     }
 
     /// Convenience methods to return the total number of items in a `ModelCollection`.
     /// TODO:(danielh) deprecate?
     public var totalItemCount: Int {
-        return sections.count
+        return models.count
     }
 
     /// Returns `true` if the collection is completely empty, `false` otherwise.
     public var isEmpty: Bool {
-        return sections.isEmpty
+        return models.isEmpty
     }
 
     /// Returns a typed cast of the model value at the given index path, or nil if the model is not of that type or
     /// the index path is out of bounds.
     public func atIndexPath<T>(_ indexPath: IndexPath) -> T? {
         guard indexPath.modelSection == 0 else { return nil } // TODO:(danielh) throw/log error?
-        if sections.indices.contains(indexPath.modelItem) {
-            return sections[indexPath.modelItem] as? T
+        if models.indices.contains(indexPath.modelItem) {
+            return models[indexPath.modelItem] as? T
         }
         return nil
     }
@@ -282,8 +282,8 @@ extension ModelCollection {
     /// the index path is out of bounds.
     public func atModelPath<T>(_ modelPath: ModelPath) -> T? {
         guard modelPath.sectionIndex == 0 else { return nil } // TODO:(danielh) throw/log error?
-        if case sections.indices = modelPath.itemIndex {
-            return sections[modelPath.itemIndex] as? T
+        if case models.indices = modelPath.itemIndex {
+            return models[modelPath.itemIndex] as? T
         }
         return nil
     }
@@ -297,7 +297,7 @@ extension ModelCollection {
     /// Returns the index path for first item matching the provided closure
     /// - Complexity: O(n)
     public func indexPathOf(matching: (Model) -> Bool) -> IndexPath? {
-        if let idx = sections.index(where: matching) {
+        if let idx = models.index(where: matching) {
             return IndexPath(forModelItem: idx, inSection: 0)
         }
         return nil

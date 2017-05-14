@@ -45,7 +45,7 @@ class DiffEngineTests: XCTestCase {
         assertUpdates(CollectionEventUpdates(), [])
     }
 
-    func test_add_and_remove_sections() {
+    func test_add_and_remove_models() {
         var expected1 = CollectionEventUpdates()
         expected1.addedSections = [0, 1]
         assertUpdates(expected1, [[], []])

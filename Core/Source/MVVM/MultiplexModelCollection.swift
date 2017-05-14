@@ -6,12 +6,12 @@ import Foundation
 /// mapping each section of those ModelCollections to a section of the ModelCollection
 /// it represents.
 /// Example: if it represents three ModelCollections, each with a single section,
-/// The resulting ModelCollection will have three sections, mapped like this:
+/// The resulting ModelCollection will have three models, mapped like this:
 ///  Collection[0], section[0] -> section[0]
 ///  Collection[1], section[0] -> section[1]
 ///  Collection[2], section[0] -> section[2]
-/// If the component ModelCollections have multiple sections, they should be slotted in in order.
-/// Example, if one of the collections has 2 sections:
+/// If the component ModelCollections have multiple models, they should be slotted in in order.
+/// Example, if one of the collections has 2 models:
 ///  Collection[0], section[0] -> section[0]
 ///  Collection[1], section[0] -> section[1]
 ///  Collection[1], section[1] -> section[2]
@@ -61,11 +61,11 @@ public final class MultiplexModelCollection: ModelCollection, ProxyingCollection
            if subcollection.collectionId == collection.collectionId {
                 return sectionIndex
             } else {
-                if subcollection.sections.isEmpty {
+                if subcollection.models.isEmpty {
                     // Account for the empty section added when subcollection is empty.
                     sectionIndex = sectionIndex + 1
                 } else {
-                    sectionIndex = sectionIndex + subcollection.sections.count
+                    sectionIndex = sectionIndex + subcollection.models.count
                 }
             }
         }
@@ -78,7 +78,7 @@ public final class MultiplexModelCollection: ModelCollection, ProxyingCollection
     ///    if all substates are .NotLoaded, then result is .NotLoaded
     ///    else if all substates are .Loaded, then result is .Loaded
     ///    else if any of substates are .Error(x), then result is .Error(MultiplexedError(errors: [x]))
-    ///    else if this instance has been previously loaded, then result is .loading(<combined sections>)
+    ///    else if this instance has been previously loaded, then result is .loading(<combined models>)
     ///    else result is .loading(nil)
     ///
     /// The most straightforward approach seems to be to reduce into a struct that maintains a count
@@ -92,10 +92,10 @@ public final class MultiplexModelCollection: ModelCollection, ProxyingCollection
         var consolidatedSections: [Model] = []
         for substate in substates {
             // For model collections that are completely empty insert an empty section as a placeholder.
-            if substate.sections.isEmpty {
+            if substate.models.isEmpty {
                 consolidatedSections.append([])
             } else {
-                substate.sections.forEach {
+                substate.models.forEach {
                     consolidatedSections.append($0)
                 }
             }

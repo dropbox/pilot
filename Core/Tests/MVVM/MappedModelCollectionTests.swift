@@ -50,7 +50,7 @@ class MappedModelCollectionTests: XCTestCase {
                 print("ERROR: \(error)")
             }
         }
-        zip(testData, modelCollection.sections).forEach { inModel, outputModel in
+        zip(testData, modelCollection.models).forEach { inModel, outputModel in
             let out: Model = outputModel.typedModel()
             XCTAssertEqual(inModel.data.uppercased(), out.data)
         }

@@ -63,7 +63,7 @@ public final class ScoredModelCollection: ModelCollection, ProxyingCollectionEve
 
     private func updateSections() {
         var scoredSections: [Model] = []
-        for section in sourceCollection.sections {
+        for section in sourceCollection.models {
             
             var scores: [(Int, Double)] = []
             scores.reserveCapacity(section.count)

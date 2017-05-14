@@ -22,9 +22,9 @@ class AsyncModelCollectionTests: XCTestCase {
         }
         let subject = AsyncModelCollection(modelProvider: provider)
         subject.fetch()
-        if case .loaded(let sections) = subject.state {
-            XCTAssertEqual(sections.count, 1)
-            XCTAssertEqual(sections.first?.modelId, testModel.modelId)
+        if case .loaded(let models) = subject.state {
+            XCTAssertEqual(models.count, 1)
+            XCTAssertEqual(models.first?.modelId, testModel.modelId)
         } else {
             XCTFail("Async model collection failed to load")
         }
@@ -60,8 +60,8 @@ class AsyncModelCollectionTests: XCTestCase {
         }
         let subject = AsyncModelCollection(modelProvider: provider)
         subject.fetch()
-        if case .loading(let sections) = subject.state {
-            XCTAssertNil(sections, "Sections should be nil first time fetch() is called before modelProvider returns")
+        if case .loading(let models) = subject.state {
+            XCTAssertNil(models, "Sections should be nil first time fetch() is called before modelProvider returns")
         } else {
             XCTFail("State should be .loading(nil) got \(subject.state)")
         }
@@ -70,10 +70,10 @@ class AsyncModelCollectionTests: XCTestCase {
         capturedCallback?(.success([testModel]))
         // Start second load
         subject.fetch()
-        if case .loading(let sections) = subject.state {
-            XCTAssertNotNil(sections, "sections should not be nil the if fetch() is called after a successful load")
-            XCTAssertEqual(sections?.count, 1)
-            XCTAssertEqual(sections?.first?.modelId, testModel.modelId)
+        if case .loading(let models) = subject.state {
+            XCTAssertNotNil(models, "models should not be nil the if fetch() is called after a successful load")
+            XCTAssertEqual(models?.count, 1)
+            XCTAssertEqual(models?.first?.modelId, testModel.modelId)
         } else {
             XCTFail("State should be .loading(nil) got \(subject.state)")
         }
@@ -92,9 +92,9 @@ class AsyncModelCollectionTests: XCTestCase {
         subject.fetch()
         let testModel2 = TM(id: "someId2", version: 43)
         capturedCallback?(.success([testModel2]))
-        if case .loaded(let sections) = subject.state {
-            XCTAssertEqual(sections.count, 1)
-            XCTAssertEqual(sections.first?.modelId, testModel2.modelId)
+        if case .loaded(let models) = subject.state {
+            XCTAssertEqual(models.count, 1)
+            XCTAssertEqual(models.first?.modelId, testModel2.modelId)
         } else {
             XCTFail("Async model collection failed to load")
         }

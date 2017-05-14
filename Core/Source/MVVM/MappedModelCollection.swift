@@ -70,11 +70,11 @@ public final class MappedModelCollection: ModelCollection, ProxyingCollectionEve
     private func runTransform() {
         assert(Thread.isMainThread)
 
-        let originalSections = sourceCollection.sections
+        let originalSections = sourceCollection.models
         let originalTranform = transform
         let originalCookie = mapCookie
 
-        state = .loading(state.sections)
+        state = .loading(state.models)
 
         var newSections: [Model] = []
 

@@ -114,12 +114,12 @@ public final class FilteredModelCollection: ModelCollection, ProxyingCollectionE
     private func runFilter() {
         assert(Thread.isMainThread)
 
-        let originalSections = sourceCollection.sections
+        let originalSections = sourceCollection.models
         let originalFilter = filter
         let originalCookie = filterCookie
         let originalLimit = limit
 
-        state = .loading(state.sections)
+        state = .loading(state.models)
 
         var newFilteredSections: [Model] = []
 

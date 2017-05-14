@@ -27,7 +27,7 @@ public final class AsyncModelCollection: SimpleModelCollection {
         case .notLoaded:
             onNext(.loading(nil))
         default:
-            onNext(.loading(sections))
+            onNext(.loading(models))
         }
 
         modelProvider { [weak self] (result) in

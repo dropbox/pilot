@@ -18,7 +18,7 @@ class SimpleModelCollectionTests: XCTestCase {
         let simple = SimpleModelCollection()
         let test = TM(id: "stub", version: 1)
         simple.onNext(.loaded([test]))
-        let first = simple.state.sections
+        let first = simple.state.models
         XCTAssertEqual(first.first?.modelId, test.modelId)
         XCTAssertEqual(first.count, 1)
     }
@@ -27,7 +27,7 @@ class SimpleModelCollectionTests: XCTestCase {
         let simple = SimpleModelCollection()
         let test = TM(id: "stub", version: 1)
         simple.onNext(.loading([test]))
-        let first = simple.state.sections
+        let first = simple.state.models
         XCTAssert(simple.state.isLoading)
         XCTAssertEqual(first.first?.modelId, test.modelId)
         XCTAssertEqual(first.count, 1)
