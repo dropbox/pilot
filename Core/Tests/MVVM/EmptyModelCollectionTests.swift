@@ -10,16 +10,15 @@ class EmptyModelCollectionTests: XCTestCase {
             observerCallCount = observerCallCount + 1
         }
         XCTAssertTrue(emptyModelCollection.collectionId.hasPrefix("empty"))
-        XCTAssertEqual(emptyModelCollection.sections.count, 1)
         XCTAssertTrue(emptyModelCollection.totalItemCount == 0)
         if case .loaded(let sections) = emptyModelCollection.state {
-            XCTAssertTrue(sections.count == 1 && sections.first?.count == 0, "Should include one empty section.")
+            XCTAssertTrue(sections.count == 0, "Should be an empty section.")
         } else {
             XCTFail("State should be .loaded got \(emptyModelCollection.state)")
         }
 
         if case .loaded(let sections) = emptyModelCollection.state {
-            XCTAssertTrue(sections.count == 1 && sections.first?.count == 0, "Should include one empty section.")
+            XCTAssertTrue(sections.count == 0, "Should be an empty section.")
         } else {
             XCTFail("State should be .loaded got \(emptyModelCollection.state)")
         }

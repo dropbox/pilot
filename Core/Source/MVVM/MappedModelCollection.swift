@@ -76,10 +76,10 @@ public final class MappedModelCollection: ModelCollection, ProxyingCollectionEve
 
         state = .loading(state.sections)
 
-        var newSections: [[Model]] = []
+        var newSections: [Model] = []
 
         Async.onUserInitiated {
-            newSections = originalSections.map { $0.map(originalTranform) }
+            newSections = originalSections.map(originalTranform)
         }.onMain { [weak self] in
             guard let strongSelf = self else { return }
 

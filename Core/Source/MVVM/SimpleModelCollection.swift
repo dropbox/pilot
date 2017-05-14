@@ -11,9 +11,9 @@ open class SimpleModelCollection: ModelCollection, ProxyingCollectionEventObserv
     /// SimpleModelCollection will begin as a notLoaded ModelCollection, the other event cases match 1:1 with
     /// state values.
     public enum Event {
-        case loading([[Model]]?)
+        case loading([Model]?)
         case error(Error)
-        case loaded([[Model]])
+        case loaded([Model])
     }
 
     /// Public called to notify the model collection of an event.

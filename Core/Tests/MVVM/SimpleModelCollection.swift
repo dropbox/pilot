@@ -17,19 +17,19 @@ class SimpleModelCollectionTests: XCTestCase {
     func testShouldPropegateModels() {
         let simple = SimpleModelCollection()
         let test = TM(id: "stub", version: 1)
-        simple.onNext(.loaded([[test]]))
-        let first = simple.state.sections.first
-        XCTAssertEqual(first?.first?.modelId, test.modelId)
-        XCTAssertEqual(first?.count, 1)
+        simple.onNext(.loaded([test]))
+        let first = simple.state.sections
+        XCTAssertEqual(first.first?.modelId, test.modelId)
+        XCTAssertEqual(first.count, 1)
     }
 
     func testShouldPropegateLoadingMore() {
         let simple = SimpleModelCollection()
         let test = TM(id: "stub", version: 1)
-        simple.onNext(.loading([[test]]))
-        let first = simple.state.sections.first
+        simple.onNext(.loading([test]))
+        let first = simple.state.sections
         XCTAssert(simple.state.isLoading)
-        XCTAssertEqual(first?.first?.modelId, test.modelId)
-        XCTAssertEqual(first?.count, 1)
+        XCTAssertEqual(first.first?.modelId, test.modelId)
+        XCTAssertEqual(first.count, 1)
     }
 }

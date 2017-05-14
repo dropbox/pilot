@@ -3,7 +3,7 @@
 public final class AsyncModelCollection: SimpleModelCollection {
 
     public enum Result {
-        case success([[Model]])
+        case success([Model])
         case error(Error)
     }
     public typealias Callback = (Result) -> Void

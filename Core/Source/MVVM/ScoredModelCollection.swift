@@ -62,9 +62,9 @@ public final class ScoredModelCollection: ModelCollection, ProxyingCollectionEve
     }
 
     private func updateSections() {
-        var scoredSections: [[Model]] = []
+        var scoredSections: [Model] = []
         for section in sourceCollection.sections {
-
+            
             var scores: [(Int, Double)] = []
             scores.reserveCapacity(section.count)
             for (index, model) in section.enumerated() {

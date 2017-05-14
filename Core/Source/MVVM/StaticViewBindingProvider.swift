@@ -11,7 +11,7 @@ import Foundation
 /// custom view.
 ///
 /// ```swift
-/// let data: [[Model]] = [[
+/// let data: [Model] = [[
 ///     "Item 1", "Item 2", "Item 3"
 ///  ]]
 ///

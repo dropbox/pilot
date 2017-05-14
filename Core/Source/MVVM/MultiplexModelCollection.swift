@@ -89,7 +89,7 @@ public final class MultiplexModelCollection: ModelCollection, ProxyingCollection
         _ substates: [ModelCollectionState]
     ) -> ModelCollectionState {
 
-        var consolidatedSections: [[Model]] = []
+        var consolidatedSections: [Model] = []
         for substate in substates {
             // For model collections that are completely empty insert an empty section as a placeholder.
             if substate.sections.isEmpty {

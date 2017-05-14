@@ -121,23 +121,19 @@ public final class FilteredModelCollection: ModelCollection, ProxyingCollectionE
 
         state = .loading(state.sections)
 
-        var newFilteredSections: [[Model]] = []
+        var newFilteredSections: [Model] = []
 
         let filterCollection = {
             var itemCount = 0
             // TODO:(danielh) evaluate checking cancelled check to this loop
-            for section in originalSections {
-                var newFilteredSection = [Model]()
-                for model in section {
-                    if originalFilter(model) {
-                        newFilteredSection.append(model)
-                        itemCount += 1
-                        if let limit = originalLimit, itemCount >= limit {
-                            break
-                        }
+            for model in originalSections {
+                if originalFilter(model) {
+                    newFilteredSections.append(model)
+                    itemCount += 1
+                    if let limit = originalLimit, itemCount >= limit {
+                        break
                     }
                 }
-                newFilteredSections.append(newFilteredSection)
             }
         }
 
