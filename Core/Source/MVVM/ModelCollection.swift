@@ -251,6 +251,7 @@ extension ModelCollectionState: CustomDebugStringConvertible {
 extension ModelCollection {
 
     public var models: [Model] { return state.models }
+    public var sections: [[Model]] { return [models] }
 
     /// Returns a dictionary mapping item `ModelId`s to their index path within the target `ModelCollection`.
     public var modelIdToIndexPathMap: [ModelId: ModelPath] {
