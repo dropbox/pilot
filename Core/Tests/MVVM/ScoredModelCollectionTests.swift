@@ -33,12 +33,12 @@ class ScoredModelCollectionTests: XCTestCase {
         let stub1 = StaticModel(modelId: "1", data: "")
         let stub2 = StaticModel(modelId: "2", data: "")
         let stub3 = StaticModel(modelId: "3", data: "")
-        let stub4 = StaticModel(modelId: "3", data: "")
+        let stub4 = StaticModel(modelId: "4", data: "")
         let source = StaticModelCollection(collectionId: "source", initialData: [stub1, stub2, stub3, stub4])
         let subject = ScoredModelCollection(source)
-        subject.sectionLimit = 1
+        subject.limit = 1
         subject.scorer = scorer
-        let expected = ModelCollectionState.loaded([stub2, stub4])
+        let expected = ModelCollectionState.loaded([stub4])
         assertModelCollectionState(expected: expected, actual: subject.state)
     }
 }
