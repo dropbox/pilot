@@ -33,3 +33,6 @@ playground.xcworkspace
 ## Swift Package Manager
 Packages/
 .build/
+
+# macOS
+.DS_Store
