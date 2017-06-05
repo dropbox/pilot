@@ -19,7 +19,7 @@ public protocol CollectionViewDelegate: NSCollectionViewDelegate {
     /// Invoked when a specific index path is right-clicked upon.
     @objc optional func collectionView(_ collectionView: NSCollectionView, menuForIndexPath: IndexPath) -> NSMenu?
 
-    /// Invoked when NSDraggignSource method of parallel signature is called.
+    /// Invoked when NSDraggingSource method of parallel signature is called.
     ///
     /// This is provided since NSCV delegate method has a corresponding function for -begin and -end functions in
     /// NSDraggingSource, but no equivelant for -movedTo.
