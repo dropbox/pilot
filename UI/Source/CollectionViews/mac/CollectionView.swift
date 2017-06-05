@@ -19,6 +19,12 @@ public protocol CollectionViewDelegate: NSCollectionViewDelegate {
     /// Invoked when a specific index path is right-clicked upon.
     @objc optional func collectionView(_ collectionView: NSCollectionView, menuForIndexPath: IndexPath) -> NSMenu?
 
+    /// Invoked when NSDraggignSource method of parallel signature is called.
+    ///
+    /// This is provided since NSCV delegate method has a corresponding function for -begin and -end functions in
+    /// NSDraggingSource, but no equivelant for -movedTo.
+    @objc optional func collectionView(_ collectionView: NSCollectionView, session: NSDraggingSession, movedTo: NSPoint)
+
     /// Invoked when an arrow key goes off the end of a collection view. Delegate may respond by changing the responder
     /// focus.
     @objc optional func collectionViewShouldLoseFocusFromArrowKey(_ collectionView: NSCollectionView, key: EventKeyCode)
@@ -117,6 +123,13 @@ public final class CollectionView: NSCollectionView {
         guard (indexPath as NSIndexPath).section < numberOfSections else { return false }
         guard (indexPath as NSIndexPath).item < numberOfItems(inSection: (indexPath as NSIndexPath).section) else { return false }
         return true
+    }
+
+    // MARK: NSDraggingSource
+
+    public override func draggingSession(_ session: NSDraggingSession, movedTo screenPoint: NSPoint) {
+        super.draggingSession(session, movedTo: screenPoint)
+        internalDelegate?.collectionView?(self, session: session, movedTo: screenPoint)
     }
 
     // MARK: Private
