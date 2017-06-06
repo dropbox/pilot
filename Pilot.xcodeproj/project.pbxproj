@@ -41,6 +41,8 @@
 		655664B81EC90529005DB413 /* ComposedModelCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 655664B61EC90074005DB413 /* ComposedModelCollection.swift */; };
 		655664BA1EC90654005DB413 /* MultiplexModelCollectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65032E321E5BE079008020BF /* MultiplexModelCollectionTests.swift */; };
 		655664BB1EC90677005DB413 /* MultiplexModelCollectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65032E321E5BE079008020BF /* MultiplexModelCollectionTests.swift */; };
+		65645FD11EE776E400ED694A /* SectionedModelCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65645FCD1EE775A800ED694A /* SectionedModelCollection.swift */; };
+		65645FD21EE776E500ED694A /* SectionedModelCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65645FCD1EE775A800ED694A /* SectionedModelCollection.swift */; };
 		69048A081C46FF23000CE840 /* Pilot.h in Headers */ = {isa = PBXBuildFile; fileRef = 69048A071C46FF23000CE840 /* Pilot.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		69048A0F1C46FF23000CE840 /* Pilot.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69048A041C46FF23000CE840 /* Pilot.framework */; };
 		69048A361C47045D000CE840 /* PilotUI.h in Headers */ = {isa = PBXBuildFile; fileRef = 69048A351C47045D000CE840 /* PilotUI.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -206,6 +208,7 @@
 		65107DA11E5B44BB002FF5F0 /* ModelCollectionHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ModelCollectionHelpers.swift; path = Core/Tests/MVVM/ModelCollectionHelpers.swift; sourceTree = "<group>"; };
 		654229B51E63D68E00C053FE /* SwitchableModelCollectionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwitchableModelCollectionTests.swift; path = Core/Tests/MVVM/SwitchableModelCollectionTests.swift; sourceTree = "<group>"; };
 		655664B61EC90074005DB413 /* ComposedModelCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ComposedModelCollection.swift; path = Core/Source/MVVM/ComposedModelCollection.swift; sourceTree = "<group>"; };
+		65645FCD1EE775A800ED694A /* SectionedModelCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SectionedModelCollection.swift; path = Core/Source/MVVM/SectionedModelCollection.swift; sourceTree = "<group>"; };
 		69048A041C46FF23000CE840 /* Pilot.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pilot.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		69048A071C46FF23000CE840 /* Pilot.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Pilot.h; path = Core/Source/Pilot.h; sourceTree = "<group>"; };
 		69048A091C46FF23000CE840 /* iOS-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "iOS-Info.plist"; path = "Core/Source/iOS-Info.plist"; sourceTree = "<group>"; };
@@ -545,6 +548,7 @@
 				A4AED3D41D402D73001F3524 /* MappedModelCollection.swift */,
 				69F89E761C52F06200F08E28 /* Model.swift */,
 				69F89E741C52F06200F08E28 /* ModelCollection.swift */,
+				65645FCD1EE775A800ED694A /* SectionedModelCollection.swift */,
 				022120341DFB807C007C4039 /* ScoredModelCollection.swift */,
 				A437EDAA1E5655AD00F67B37 /* SimpleModelCollection.swift */,
 				698F3F7E1CE543DB00076B8C /* StaticModel.swift */,
@@ -971,6 +975,7 @@
 				A437EDAC1E5655AD00F67B37 /* SimpleModelCollection.swift in Sources */,
 				A437EDB61E567AE900F67B37 /* Async.swift in Sources */,
 				A460CC841E56195F00F9AC6F /* Downcast.swift in Sources */,
+				65645FD21EE776E500ED694A /* SectionedModelCollection.swift in Sources */,
 				698F3F7F1CE543DB00076B8C /* StaticModel.swift in Sources */,
 				655664AF1EC8FCEE005DB413 /* ScoredModelCollection.swift in Sources */,
 				69F89E791C52F06200F08E28 /* ModelCollection.swift in Sources */,
@@ -1076,6 +1081,7 @@
 				A460CC831E56195F00F9AC6F /* Downcast.swift in Sources */,
 				A437EDB51E567AE800F67B37 /* Async.swift in Sources */,
 				696534AB1D1710D400DF97CB /* View.swift in Sources */,
+				65645FD11EE776E400ED694A /* SectionedModelCollection.swift in Sources */,
 				022862581DB0070100FCD03F /* DiffEngine.swift in Sources */,
 				655664AE1EC8FCED005DB413 /* ScoredModelCollection.swift in Sources */,
 				692936111E130468001303D2 /* Action.swift in Sources */,

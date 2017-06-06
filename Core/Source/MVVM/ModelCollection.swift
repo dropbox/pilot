@@ -188,6 +188,25 @@ public extension ModelCollection {
     }
 }
 
+public protocol SectionedModelCollection: class {
+    var sections: [[Model]] { get }
+}
+
+public extension SectionedModelCollection where Self : ModelCollection {
+    public var sections: [[Model]] {
+        return [self.state.models]
+    }
+}
+
+public extension ModelCollection {
+    public func withSections() -> SectionedModelCollection {
+        if let sectioned = self as? SectionedModelCollection {
+            return sectioned
+        }
+        return StaticSectionedModelCollection(self)
+    }
+}
+
 // MARK: Common helper methods.
 
 /// Returns a dictionary mapping `ModelId`s to their index path within the given `models` object.
@@ -251,7 +270,6 @@ extension ModelCollectionState: CustomDebugStringConvertible {
 extension ModelCollection {
 
     public var models: [Model] { return state.models }
-    public var sections: [[Model]] { return [models] }
 
     /// Returns a dictionary mapping item `ModelId`s to their index path within the target `ModelCollection`.
     public var modelIdToIndexPathMap: [ModelId: ModelPath] {
