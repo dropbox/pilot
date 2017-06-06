@@ -32,7 +32,6 @@ public struct CollectionZeroItemViewModel: ViewModel {
 
     // MARK: ViewModel
 
-    @available(*, unavailable, message: "Unsupported initializer")
     public init(model: Model, context: Context) {
         fatalError("Unsupported initializer")
     }
