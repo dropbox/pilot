@@ -38,8 +38,8 @@ extension ModelPath {
 public struct CollectionEventUpdates {
     public var removedSections: [Int] = []
     public var addedSections: [Int] = []
-    // The diff algorithm does not move models around at this time.  If models had IDs,
-    // moving models would be possible.
+    // The diff algorithm does not move sections around at this time.  If models had IDs,
+    // moving sections would be possible.
 
     public var removedModelPaths = [ModelPath]()
     public var addedModelPaths = [ModelPath]()
@@ -151,7 +151,7 @@ public struct DiffEngine {
 
         updates.removedModelIds = Array(Set(oldModelInfo.keys).subtracting(Set(newModelInfo.keys)))
 
-        // First, make sure there are the right number of models.  This code always adds or removes models
+        // First, make sure there are the right number of sections.  This code always adds or removes sections
         // from the end.  In the future, if models themselves had IDs, it would be possible to support
         // section moves or section insertions or deletions anywhere.
         if oldState.count < models.count {
@@ -164,7 +164,7 @@ public struct DiffEngine {
 
         var stragglers: [ModelPath] = []
 
-        // Since models don't have IDs, this code keeps the same section cursor on the left and right.
+        // Since sections don't have IDs, this code keeps the same section cursor on the left and right.
         // If models had IDs this code could be smarter.
         var currentSection = 0
         while currentSection < newState.count {

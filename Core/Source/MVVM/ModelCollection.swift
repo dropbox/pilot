@@ -188,35 +188,7 @@ public extension ModelCollection {
     }
 }
 
-public protocol SectionedModelCollection: class {
-    var sections: [[Model]] { get }
-}
-
-public extension SectionedModelCollection where Self : ModelCollection {
-    public var sections: [[Model]] {
-        return [self.state.models]
-    }
-}
-
-public extension ModelCollection {
-    public func withSections() -> SectionedModelCollection {
-        if let sectioned = self as? SectionedModelCollection {
-            return sectioned
-        }
-        return StaticSectionedModelCollection(self)
-    }
-}
-
 // MARK: Common helper methods.
-
-/// Returns a dictionary mapping `ModelId`s to their index path within the given `models` object.
-public func generateModelIdToIndexPathMapForSections(_ models: [Model]) -> [ModelId: ModelPath] {
-    var map: [ModelId: ModelPath] = [:]
-    for (idx, model) in models.enumerated() {
-        map[model.modelId] = ModelPath(sectionIndex: 0, itemIndex: idx)
-    }
-    return map
-}
 
 extension ModelCollectionState {
     public var isNotLoaded: Bool {
@@ -268,59 +240,7 @@ extension ModelCollectionState: CustomDebugStringConvertible {
 }
 
 extension ModelCollection {
-
     public var models: [Model] { return state.models }
-
-    /// Returns a dictionary mapping item `ModelId`s to their index path within the target `ModelCollection`.
-    public var modelIdToIndexPathMap: [ModelId: ModelPath] {
-        return generateModelIdToIndexPathMapForSections(models)
-    }
-
-    /// Convenience methods to return the total number of items in a `ModelCollection`.
-    /// TODO:(danielh) deprecate?
-    public var totalItemCount: Int {
-        return models.count
-    }
-
-    /// Returns `true` if the collection is completely empty, `false` otherwise.
-    public var isEmpty: Bool {
-        return models.isEmpty
-    }
-
-    /// Returns a typed cast of the model value at the given index path, or nil if the model is not of that type or
-    /// the index path is out of bounds.
-    public func atIndexPath<T>(_ indexPath: IndexPath) -> T? {
-        guard indexPath.modelSection == 0 else { return nil } // TODO:(danielh) throw/log error?
-        if models.indices.contains(indexPath.modelItem) {
-            return models[indexPath.modelItem] as? T
-        }
-        return nil
-    }
-
-    /// Returns a typed cast of the model value at the given index path, or nil if the model is not of that type or
-    /// the index path is out of bounds.
-    public func atModelPath<T>(_ modelPath: ModelPath) -> T? {
-        guard modelPath.sectionIndex == 0 else { return nil } // TODO:(danielh) throw/log error?
-        if case models.indices = modelPath.itemIndex {
-            return models[modelPath.itemIndex] as? T
-        }
-        return nil
-    }
-
-    /// Returns the index path for the given model id, if present.
-    /// - Complexity: O(n)
-    public func indexPath(forModelId modelId: ModelId) -> IndexPath? {
-        return indexPathOf() { $0.modelId == modelId }
-    }
-
-    /// Returns the index path for first item matching the provided closure
-    /// - Complexity: O(n)
-    public func indexPathOf(matching: (Model) -> Bool) -> IndexPath? {
-        if let idx = models.index(where: matching) {
-            return IndexPath(forModelItem: idx, inSection: 0)
-        }
-        return nil
-    }
 }
 
 // Pilot does not depend on UIKit, so redefine similar section/item accessors and initializers here.

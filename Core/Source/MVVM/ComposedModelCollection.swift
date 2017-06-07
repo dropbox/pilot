@@ -65,24 +65,22 @@ extension ComposedModelCollection {
             }
             // swiftlint:enable nesting
 
-            let initialReducedStates = CollectionStateReduction()
-            let reducedStates = substates.reduce(initialReducedStates) { prevCollectionStateCounts, state in
-                var newCollectionStateCounts = prevCollectionStateCounts
-                switch state {
+            var reducedStates = CollectionStateReduction()
+            for substate in substates {
+                switch substate {
                 case .notLoaded:
-                    newCollectionStateCounts.notLoadedCount += 1
+                    reducedStates.notLoadedCount += 1
                 case .loaded:
-                    newCollectionStateCounts.loadedCount += 1
+                    reducedStates.loadedCount += 1
                 case .error(let error):
-                    newCollectionStateCounts.errorArray.append(error)
+                    reducedStates.errorArray.append(error)
                 case .loading(let models):
                     if models == nil {
-                        newCollectionStateCounts.loadingCount += 1
+                        reducedStates.loadingCount += 1
                     } else {
-                        newCollectionStateCounts.loadingMoreCount += 1
+                        reducedStates.loadingMoreCount += 1
                     }
                 }
-                return newCollectionStateCounts
             }
 
             if !reducedStates.errorArray.isEmpty {

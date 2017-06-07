@@ -10,7 +10,8 @@ class EmptyModelCollectionTests: XCTestCase {
             observerCallCount = observerCallCount + 1
         }
         XCTAssertTrue(emptyModelCollection.collectionId.hasPrefix("empty"))
-        XCTAssertTrue(emptyModelCollection.totalItemCount == 0)
+        XCTAssertTrue(emptyModelCollection.state.isEmpty)
+
         if case .loaded(let models) = emptyModelCollection.state {
             XCTAssertTrue(models.count == 0, "Should be an empty section.")
         } else {
