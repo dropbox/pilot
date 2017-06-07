@@ -3,6 +3,7 @@ language: objective-c
 branches:
   only:
     - master
+    - 0.9-dev
 notifications:
   email: false
 script:
