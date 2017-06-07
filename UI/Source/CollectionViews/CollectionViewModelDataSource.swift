@@ -33,7 +33,7 @@ private enum CollectionViewState {
     case synced
 }
 
-public final class CurrentCollection: ModelCollection, ProxyingCollectionEventObservable {
+public final class CurrentCollection: ModelCollection, SectionedModelCollection, ProxyingCollectionEventObservable {
 
     // MARK: Init
 
@@ -57,7 +57,7 @@ public final class CurrentCollection: ModelCollection, ProxyingCollectionEventOb
     // MARK: Private
 
     fileprivate func beginUpdate(_ collection: ModelCollection) -> (CollectionEventUpdates, () -> Void){
-        let updates = diffEngine.update(collection.sections, debug: false)
+        let updates = diffEngine.update(collection.withSections().sections, debug: false)
         let commitState = collection.state
         return (updates, {
             self.state = commitState

@@ -4,7 +4,7 @@ import XCTest
 /// Fails test case if `actual` model collection state isn't equivelant to `expected`.
 ///
 /// Checks that the case for both is the same (ex: .loading(*) != .loaded(*)), but if the case is the same then it
-/// checks the sections have same number of models with the same model ids.
+/// checks the models have same number of models with the same model ids.
 internal func assertModelCollectionState(
     expected: ModelCollectionState,
     actual: ModelCollectionState,
@@ -23,11 +23,9 @@ internal func assertModelCollectionState(
             XCTAssertEqual(
                 expectedSections?.count,
                 actualSections?.count,
-                "Expected .loading with \(expectedSections?.count ?? 0) sections, got \(actualSections?.count ?? 0)")
+                "Expected .loading with \(expectedSections?.count ?? 0) models, got \(actualSections?.count ?? 0)")
             if let expectedSections = expectedSections, let actualSections = actualSections {
-                for (e, a) in zip(expectedSections, actualSections) {
-                    XCTAssertEqual(e.map({ $0.modelId }), a.map({ $0.modelId }))
-                }
+                XCTAssertEqual(expectedSections.map({ $0.modelId }), actualSections.map({ $0.modelId }))
             }
         } else {
             XCTFail("Expected .loading(\(String(describing: expectedSections)))\ngot: \(actual)", file: file, line: line)
@@ -37,10 +35,8 @@ internal func assertModelCollectionState(
             XCTAssertEqual(
                 expectedSections.count,
                 actualSections.count,
-                "Expected .loaded with \(expectedSections.count) sections got \(actualSections.count)")
-            for (e, a) in zip(expectedSections, actualSections) {
-                XCTAssertEqual(e.map({ $0.modelId }), a.map({ $0.modelId }))
-            }
+                "Expected .loaded with \(expectedSections.count) models got \(actualSections.count)")
+            XCTAssertEqual(expectedSections.map({ $0.modelId }), actualSections.map({ $0.modelId }))
         } else {
             XCTFail("Expected .loaded with \(expectedSections))\ngot: \(actual)", file: file, line: line)
         }

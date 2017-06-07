@@ -469,7 +469,7 @@ open class CollectionViewController: NSViewController, CollectionViewDelegate {
     private func updateEmptyContentViewVisibility() {
         switch collection.state {
         case .error(_), .loaded:
-            if collection.isEmpty {
+            if collection.state.isEmpty {
                 showEmptyContentView()
             } else {
                 hideEmptyContentView()

@@ -70,16 +70,16 @@ public final class MappedModelCollection: ModelCollection, ProxyingCollectionEve
     private func runTransform() {
         assert(Thread.isMainThread)
 
-        let originalSections = sourceCollection.sections
+        let originalSections = sourceCollection.models
         let originalTranform = transform
         let originalCookie = mapCookie
 
-        state = .loading(state.sections)
+        state = .loading(state.models)
 
-        var newSections: [[Model]] = []
+        var newSections: [Model] = []
 
         Async.onUserInitiated {
-            newSections = originalSections.map { $0.map(originalTranform) }
+            newSections = originalSections.map(originalTranform)
         }.onMain { [weak self] in
             guard let strongSelf = self else { return }
 

@@ -7,16 +7,16 @@ public enum ModelCollectionState {
     case notLoaded
 
     /// The model collection is loading content, models will be nil if loading for the first time.
-    case loading([[Model]]?)
+    case loading([Model]?)
 
     /// The model collection has successfully loaded data.
-    case loaded([[Model]])
+    case loaded([Model])
 
     /// The model collection encountered an error loading data.
     case error(Error)
 
-    /// Unpacks and returns any associated model sections.
-    public var sections: [[Model]] {
+    /// Unpacks and returns any associated model models.
+    public var models: [Model] {
         switch self {
         case .notLoaded, .error:
             return []
@@ -160,7 +160,7 @@ public protocol IndexedModelProvider {
 
 // MARK: ModelCollection
 
-/// Generic protocol defining a collection of `Model` items grouped into sections. This is the core Pilot
+/// Generic protocol defining a collection of `Model` items grouped into models. This is the core Pilot
 /// collection protocol for representing a collection of model items. View-specific bindings are provided by the
 /// PilotUI framework.
 public protocol ModelCollection: class {
@@ -190,21 +190,6 @@ public extension ModelCollection {
 
 // MARK: Common helper methods.
 
-/// Returns a dictionary mapping `ModelId`s to their index path within the given `sections` object.
-public func generateModelIdToIndexPathMapForSections(_ sections: [[Model]]) -> [ModelId: ModelPath] {
-    var map: [ModelId: ModelPath] = [:]
-    var sectionIndex = 0
-    for sectionItem in sections {
-        var itemIndex = 0
-        for item in sectionItem {
-            map[item.modelId] = ModelPath(sectionIndex: sectionIndex, itemIndex: itemIndex)
-            itemIndex += 1
-        }
-        sectionIndex += 1
-    }
-    return map
-}
-
 extension ModelCollectionState {
     public var isNotLoaded: Bool {
         if case .notLoaded = self { return true }
@@ -227,15 +212,9 @@ extension ModelCollectionState {
             return true
         case .loading(let models):
             guard let models = models else { return true }
-            for section in models {
-                if !section.isEmpty { return false }
-            }
-            return true
+            return models.isEmpty
         case .loaded(let models):
-            for section in models {
-                if !section.isEmpty { return false }
-            }
-            return true
+            return models.isEmpty
         }
     }
 }
@@ -248,97 +227,20 @@ extension ModelCollectionState: CustomDebugStringConvertible {
         case .error(let e):
             return ".error(\(String(reflecting: e)))"
         case .loading(let models):
-            return ".loading(\(describe(sections: models)))"
+            return ".loading(\(describe(models: models)))"
         case .loaded(let models):
-            return ".loaded(\(describe(sections: models)))"
+            return ".loaded(\(describe(models: models)))"
         }
     }
 
-    private func describe(sections: [[Model]]?) -> String {
-        guard let sections = sections else { return "nil" }
-        let counts = sections
-            .map({ String($0.count) })
-            .joined(separator: ",")
-        return "[\(counts)]"
+    private func describe(models: [Model]?) -> String {
+        guard let models = models else { return "nil" }
+        return "[\(models.count) Models]"
     }
 }
 
 extension ModelCollection {
-
-    public var sections: [[Model]] { return state.sections }
-
-    /// Returns a dictionary mapping item `ModelId`s to their index path within the target `ModelCollection`.
-    public var modelIdToIndexPathMap: [ModelId: ModelPath] {
-        return generateModelIdToIndexPathMapForSections(sections)
-    }
-
-    /// Convenience methods to return the total number of items in a `ModelCollection`.
-    public var totalItemCount: Int {
-        return sections.reduce(0) { count, items in
-            return count + items.count
-        }
-    }
-
-    /// Returns `true` if the collection is completely empty, `false` otherwise.
-    public var isEmpty: Bool {
-        for section in sections {
-            if !section.isEmpty {
-                return false
-            }
-        }
-        return true
-    }
-
-    /// Returns a typed cast of the model value at the given index path, or nil if the model is not of that type or
-    /// the index path is out of bounds.
-    public func atIndexPath<T>(_ indexPath: IndexPath) -> T? {
-        if case sections.indices = indexPath.modelSection {
-            let section = sections[indexPath.modelSection]
-            if case section.indices = indexPath.modelItem {
-                if let typed = section[indexPath.modelItem] as? T {
-                    return typed
-                }
-            }
-        }
-        return nil
-    }
-
-    /// Returns a typed cast of the model value at the given index path, or nil if the model is not of that type or
-    /// the index path is out of bounds.
-    public func atModelPath<T>(_ modelPath: ModelPath) -> T? {
-        if case sections.indices = modelPath.sectionIndex {
-            let section = sections[modelPath.sectionIndex]
-            if case section.indices = modelPath.itemIndex {
-                if let typed = section[modelPath.itemIndex] as? T {
-                    return typed
-                }
-            }
-        }
-        return nil
-    }
-
-    /// Returns the index path for the given model id, if present.
-    /// - Complexity: O(n)
-    public func indexPath(forModelId modelId: ModelId) -> IndexPath? {
-        return indexPathOf() { $0.modelId == modelId }
-    }
-
-    /// Returns the index path for first item matching the provided closure
-    /// - Complexity: O(n)
-    public func indexPathOf(matching: (Model) -> Bool) -> IndexPath? {
-        var sectionIndex = 0
-        for section in sections {
-            var itemIndex = 0
-            for item in section {
-                if matching(item) {
-                    return IndexPath(forModelItem: itemIndex, inSection: sectionIndex)
-                }
-                itemIndex += 1
-            }
-            sectionIndex += 1
-        }
-        return nil
-    }
+    public var models: [Model] { return state.models }
 }
 
 // Pilot does not depend on UIKit, so redefine similar section/item accessors and initializers here.

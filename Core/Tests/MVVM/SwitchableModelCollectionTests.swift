@@ -18,9 +18,8 @@ class SwitchableModelCollectionTests: XCTestCase {
         let exp = expectation(description: "observer event")
         let observer = subject.observe { (event) in
             if case .didChangeState(let state) = event {
-                if case .loaded(let sections) = state {
-                    XCTAssertEqual(sections.count, 1)
-                    XCTAssert(sections.first?.isEmpty == true, "Should be empty collection")
+                if case .loaded(let models) = state {
+                    XCTAssert(models.isEmpty == true, "Should be empty collection")
                     exp.fulfill()
                 }
             }

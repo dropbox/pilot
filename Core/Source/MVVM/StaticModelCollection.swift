@@ -8,12 +8,12 @@ public final class StaticModelCollection: ModelCollection {
 
     // MARK: Init
 
-    public init(collectionId: ModelCollectionId, initialData: [[Model]]) {
+    public init(collectionId: ModelCollectionId, initialData: [Model]) {
         self.collectionId = collectionId
         self.state = .loaded(initialData)
     }
 
-    public convenience init(_ initialData: [[Model]]) {
+    public convenience init(_ initialData: [Model]) {
         self.init(collectionId: "StaticModelCollection-\(UUID().uuidString)", initialData: initialData)
     }
 

@@ -114,30 +114,26 @@ public final class FilteredModelCollection: ModelCollection, ProxyingCollectionE
     private func runFilter() {
         assert(Thread.isMainThread)
 
-        let originalSections = sourceCollection.sections
+        let originalSections = sourceCollection.models
         let originalFilter = filter
         let originalCookie = filterCookie
         let originalLimit = limit
 
-        state = .loading(state.sections)
+        state = .loading(state.models)
 
-        var newFilteredSections: [[Model]] = []
+        var newFilteredSections: [Model] = []
 
         let filterCollection = {
             var itemCount = 0
             // TODO:(danielh) evaluate checking cancelled check to this loop
-            for section in originalSections {
-                var newFilteredSection = [Model]()
-                for model in section {
-                    if originalFilter(model) {
-                        newFilteredSection.append(model)
-                        itemCount += 1
-                        if let limit = originalLimit, itemCount >= limit {
-                            break
-                        }
+            for model in originalSections {
+                if originalFilter(model) {
+                    newFilteredSections.append(model)
+                    itemCount += 1
+                    if let limit = originalLimit, itemCount >= limit {
+                        break
                     }
                 }
-                newFilteredSections.append(newFilteredSection)
             }
         }
 

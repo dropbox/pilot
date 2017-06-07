@@ -3,25 +3,19 @@ import XCTest
 
 private typealias Model = StaticModel<String>
 
-private let testData: [[Model]] = [
-    [
+private let testData: [Model] = [
         StaticModel(modelId: "454", data: "Archon"),
         StaticModel(modelId: "455", data: "Destiny"),
         StaticModel(modelId: "456", data: "Nine Fives"),
         StaticModel(modelId: "457", data: "Focus"),
-    ],
-    [
         StaticModel(modelId: "354", data: "R.I.C.E."),
         StaticModel(modelId: "355", data: "Chai Time"),
         StaticModel(modelId: "356", data: "Flavor of the Day"),
         StaticModel(modelId: "357", data: "Scooter's"),
-    ],
-    [
         StaticModel(modelId: "254", data: "Bikeshed"),
         StaticModel(modelId: "255", data: "Dropboat"),
         StaticModel(modelId: "256", data: "Emperor Norton Bridge"),
         StaticModel(modelId: "257", data: "Client Someday"),
-    ],
 ]
 
 class MappedModelCollectionTests: XCTestCase {
@@ -56,17 +50,15 @@ class MappedModelCollectionTests: XCTestCase {
                 print("ERROR: \(error)")
             }
         }
-        zip(testData, modelCollection.sections).forEach { inputSection, outputSection in
-            zip(inputSection, outputSection).forEach { inModel, outModel in
-                let outModel: Model = outModel.typedModel()
-                XCTAssertEqual(inModel.data.uppercased(), outModel.data)
-            }
+        zip(testData, modelCollection.models).forEach { inModel, outputModel in
+            let out: Model = outputModel.typedModel()
+            XCTAssertEqual(inModel.data.uppercased(), out.data)
         }
     }
 
     // MARK: Helpers
 
-    fileprivate func createFilteredModelCollection(_ data: [[Model]] = testData) -> MappedModelCollection {
+    fileprivate func createFilteredModelCollection(_ data: [Model] = testData) -> MappedModelCollection {
         let source = StaticModelCollection(collectionId: "source", initialData: data)
         let modelCollection = MappedModelCollection(sourceCollection: source)
         modelCollection.transform = { model in return model }
