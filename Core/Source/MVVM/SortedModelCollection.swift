@@ -16,6 +16,7 @@ public final class SortedModelCollection: ModelCollection, ProxyingCollectionEve
         sourceObserver = self.sourceCollection.observe { [weak self] event in
             self?.updateSections()
         }
+        updateSections()
     }
 
     // MARK: Public
