@@ -107,6 +107,10 @@
 		69FADC901D30BDB9001F2E11 /* Pilot.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 696534871D17100900DF97CB /* Pilot.framework */; };
 		69FADC921D30BDBE001F2E11 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69FADC911D30BDBE001F2E11 /* Foundation.framework */; };
 		69FADC941D30BDC2001F2E11 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69FADC931D30BDC2001F2E11 /* AppKit.framework */; };
+		8E0E6F251EE894FD00D1CB86 /* SortedModelCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E0E6F241EE894FD00D1CB86 /* SortedModelCollection.swift */; };
+		8E0E6F261EE8951500D1CB86 /* SortedModelCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E0E6F241EE894FD00D1CB86 /* SortedModelCollection.swift */; };
+		8E0E6F281EE89A3D00D1CB86 /* SortedModelCollectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E0E6F271EE89A3D00D1CB86 /* SortedModelCollectionTests.swift */; };
+		8E0E6F291EE89A3D00D1CB86 /* SortedModelCollectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E0E6F271EE89A3D00D1CB86 /* SortedModelCollectionTests.swift */; };
 		A437EDA81E56507600F67B37 /* SimpleModelCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = A437EDA71E56507600F67B37 /* SimpleModelCollection.swift */; };
 		A437EDA91E56507600F67B37 /* SimpleModelCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = A437EDA71E56507600F67B37 /* SimpleModelCollection.swift */; };
 		A437EDAB1E5655AD00F67B37 /* SimpleModelCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = A437EDAA1E5655AD00F67B37 /* SimpleModelCollection.swift */; };
@@ -259,6 +263,8 @@
 		69FADC8B1D30BBF0001F2E11 /* CollectionViewInternals.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; name = CollectionViewInternals.swift; path = UI/Source/CollectionViews/CollectionViewInternals.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		69FADC911D30BDBE001F2E11 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		69FADC931D30BDC2001F2E11 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk/System/Library/Frameworks/AppKit.framework; sourceTree = DEVELOPER_DIR; };
+		8E0E6F241EE894FD00D1CB86 /* SortedModelCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SortedModelCollection.swift; path = Core/Source/MVVM/SortedModelCollection.swift; sourceTree = "<group>"; };
+		8E0E6F271EE89A3D00D1CB86 /* SortedModelCollectionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SortedModelCollectionTests.swift; path = Core/Tests/MVVM/SortedModelCollectionTests.swift; sourceTree = "<group>"; };
 		A437EDA71E56507600F67B37 /* SimpleModelCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SimpleModelCollection.swift; path = Core/Tests/MVVM/SimpleModelCollection.swift; sourceTree = "<group>"; };
 		A437EDAA1E5655AD00F67B37 /* SimpleModelCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SimpleModelCollection.swift; path = Core/Source/MVVM/SimpleModelCollection.swift; sourceTree = "<group>"; };
 		A437EDAD1E5660CE00F67B37 /* AsyncModelCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AsyncModelCollection.swift; path = Core/Source/MVVM/AsyncModelCollection.swift; sourceTree = "<group>"; };
@@ -547,6 +553,7 @@
 				D5DF48131CAAC2F200F611E6 /* MultiplexModelCollection.swift */,
 				022120341DFB807C007C4039 /* ScoredModelCollection.swift */,
 				A437EDAA1E5655AD00F67B37 /* SimpleModelCollection.swift */,
+				8E0E6F241EE894FD00D1CB86 /* SortedModelCollection.swift */,
 				698F3F7E1CE543DB00076B8C /* StaticModel.swift */,
 				021CB8E91D6767D90062D5B3 /* StaticModelCollection.swift */,
 				6988476A1CE6459B0075D205 /* StaticViewBindingProvider.swift */,
@@ -607,6 +614,7 @@
 				65032E321E5BE079008020BF /* MultiplexModelCollectionTests.swift */,
 				65107D9E1E5B4373002FF5F0 /* ScoredModelCollectionTests.swift */,
 				A437EDA71E56507600F67B37 /* SimpleModelCollection.swift */,
+				8E0E6F271EE89A3D00D1CB86 /* SortedModelCollectionTests.swift */,
 				654229B51E63D68E00C053FE /* SwitchableModelCollectionTests.swift */,
 				02AB7E5C1DCA7EF1003F11FE /* TestModel.swift */,
 			);
@@ -964,6 +972,7 @@
 				02AADF511D6E433E00587167 /* SwitchableModelCollection.swift in Sources */,
 				A4AED3D61D402D73001F3524 /* MappedModelCollection.swift in Sources */,
 				6988476B1CE6459B0075D205 /* StaticViewBindingProvider.swift in Sources */,
+				8E0E6F261EE8951500D1CB86 /* SortedModelCollection.swift in Sources */,
 				690E1AAA1E54CDB600B257CA /* Token.swift in Sources */,
 				A468F8031EC3B7EF009717A4 /* CompoundAction.swift in Sources */,
 				692936121E130468001303D2 /* Action.swift in Sources */,
@@ -988,6 +997,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8E0E6F291EE89A3D00D1CB86 /* SortedModelCollectionTests.swift in Sources */,
 				654229B71E63D68E00C053FE /* SwitchableModelCollectionTests.swift in Sources */,
 				A4C8D59A1CF23F3900F9721A /* FilteredModelCollectionTests.swift in Sources */,
 				A437EDB41E56632A00F67B37 /* AsyncModelCollectionTests.swift in Sources */,
@@ -1035,6 +1045,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8E0E6F281EE89A3D00D1CB86 /* SortedModelCollectionTests.swift in Sources */,
 				654229B61E63D68E00C053FE /* SwitchableModelCollectionTests.swift in Sources */,
 				693F04D41D22E21400CAE010 /* EmptyModelCollectionTests.swift in Sources */,
 				A437EDB31E56632A00F67B37 /* AsyncModelCollectionTests.swift in Sources */,
@@ -1069,6 +1080,7 @@
 				02AADF501D6E433E00587167 /* SwitchableModelCollection.swift in Sources */,
 				696534A11D1710D400DF97CB /* EmptyModelCollection.swift in Sources */,
 				A4AED3D51D402D73001F3524 /* MappedModelCollection.swift in Sources */,
+				8E0E6F251EE894FD00D1CB86 /* SortedModelCollection.swift in Sources */,
 				690E1AA91E54CDB600B257CA /* Token.swift in Sources */,
 				A468F7FE1EC3B61D009717A4 /* CompoundAction.swift in Sources */,
 				A437EDAB1E5655AD00F67B37 /* SimpleModelCollection.swift in Sources */,
