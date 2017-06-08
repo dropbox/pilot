@@ -46,7 +46,7 @@ public final class SortedModelCollection: ModelCollection, ProxyingCollectionEve
 
     // MARK: Private
 
-    let sourceCollection: ModelCollection
+    private let sourceCollection: ModelCollection
     private var sourceObserver: Observer?
 
     private func updateSections() {
