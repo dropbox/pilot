@@ -672,7 +672,7 @@ extension CollectionViewModelDataSource: UICollectionViewDataSource {
         guard let cell = collectionView.cellForItem(at: indexPath) as? CollectionViewHostCell else { return }
 
         willRebindViewModel(viewModel)
-        cell.hostedView?.bindToViewModel(viewModel)
+        cell.hostedView?.rebindToViewModel(viewModel)
     }
 
     // MARK: UICollectionViewDataSource
@@ -1060,7 +1060,7 @@ extension CollectionViewModelDataSource: NSCollectionViewDataSource {
         guard let item = collectionView.item(at: indexPath) as? CollectionViewHostItem else { return }
 
         willRebindViewModel(viewModel)
-        item.hostedView?.bindToViewModel(viewModel)
+        item.hostedView?.rebindToViewModel(viewModel)
     }
 
     private func shouldFakeMoves(updates: CollectionEventUpdates) -> Bool {

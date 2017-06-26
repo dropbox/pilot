@@ -27,6 +27,10 @@ public protocol View: class {
     /// `viewModel` back to `nil`.
     func unbindFromViewModel()
 
+    /// Rebind is called on a view when it is going to be reused with a new `ViewModel`. The default implementation is
+    /// to call `unbindFromViewModel` and then `bindToViewModel` but views can override.
+    func rebindToViewModel(_ viewModel: ViewModel)
+
     /// Invoked by view binding systems before the view will be laid out with the given available size.
     func willLayoutWithAvailableSize(_ availableSize: AvailableSize)
 
@@ -247,6 +251,11 @@ public struct AvailableSize {
 /// Default implementations of view-specific methods so that all `Views` don't have to support specific scenarios
 /// that they may not need.
 public extension View {
+
+    public func rebindToViewModel(_ viewModel: ViewModel) {
+        unbindFromViewModel()
+        bindToViewModel(viewModel)
+    }
 
     public func willLayoutWithAvailableSize(_ availableSize: AvailableSize) { }
 
