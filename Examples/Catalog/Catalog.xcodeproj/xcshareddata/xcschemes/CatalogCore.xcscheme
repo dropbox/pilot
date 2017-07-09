@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "69FDDF171F11715C00984BD2"
-               BuildableName = "CatalogiOS.app"
-               BlueprintName = "CatalogiOS"
+               BlueprintIdentifier = "691CB1681F12CB080069F1F5"
+               BuildableName = "CatalogCore.framework"
+               BlueprintName = "CatalogCore"
                ReferencedContainer = "container:Catalog.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -33,59 +33,19 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "69FDDF2A1F11715C00984BD2"
-               BuildableName = "CatalogiOSTests.xctest"
-               BlueprintName = "CatalogiOSTests"
+               BlueprintIdentifier = "691CB1701F12CB080069F1F5"
+               BuildableName = "CatalogCoreTests.xctest"
+               BlueprintName = "CatalogCoreTests"
                ReferencedContainer = "container:Catalog.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "69FDDF351F11715C00984BD2"
-               BuildableName = "CatalogiOSUITests.xctest"
-               BlueprintName = "CatalogiOSUITests"
-               ReferencedContainer = "container:Catalog.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "691CB19A1F12CCAC0069F1F5"
-               BuildableName = "CatalogCoreiOSTests.xctest"
-               BlueprintName = "CatalogCoreiOSTests"
-               ReferencedContainer = "container:Catalog.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "69048A0D1C46FF23000CE840"
-               BuildableName = "PilotTests iOS.xctest"
-               BlueprintName = "PilotTests iOS"
-               ReferencedContainer = "container:../../Pilot.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "69048A3B1C47045D000CE840"
-               BuildableName = "PilotUITests iOS.xctest"
-               BlueprintName = "PilotUITests iOS"
-               ReferencedContainer = "container:../../Pilot.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "69FDDF171F11715C00984BD2"
-            BuildableName = "CatalogiOS.app"
-            BlueprintName = "CatalogiOS"
+            BlueprintIdentifier = "691CB1681F12CB080069F1F5"
+            BuildableName = "CatalogCore.framework"
+            BlueprintName = "CatalogCore"
             ReferencedContainer = "container:Catalog.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -103,16 +63,15 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "69FDDF171F11715C00984BD2"
-            BuildableName = "CatalogiOS.app"
-            BlueprintName = "CatalogiOS"
+            BlueprintIdentifier = "691CB1681F12CB080069F1F5"
+            BuildableName = "CatalogCore.framework"
+            BlueprintName = "CatalogCore"
             ReferencedContainer = "container:Catalog.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
@@ -122,16 +81,15 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "69FDDF171F11715C00984BD2"
-            BuildableName = "CatalogiOS.app"
-            BlueprintName = "CatalogiOS"
+            BlueprintIdentifier = "691CB1681F12CB080069F1F5"
+            BuildableName = "CatalogCore.framework"
+            BlueprintName = "CatalogCore"
             ReferencedContainer = "container:Catalog.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

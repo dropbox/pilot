@@ -49,6 +49,36 @@
                ReferencedContainer = "container:Catalog.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "691CB1701F12CB080069F1F5"
+               BuildableName = "CatalogCoreTests.xctest"
+               BlueprintName = "CatalogCoreTests"
+               ReferencedContainer = "container:Catalog.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "693F04C41D22E1CA00CAE010"
+               BuildableName = "PilotTests macOS.xctest"
+               BlueprintName = "PilotTests macOS"
+               ReferencedContainer = "container:../../Pilot.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "69FADB471D30518C001F2E11"
+               BuildableName = "PilotUITests macOS.xctest"
+               BlueprintName = "PilotUITests macOS"
+               ReferencedContainer = "container:../../Pilot.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
