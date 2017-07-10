@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		691CB1481F11846F0069F1F5 /* RootWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 691CB1471F11846F0069F1F5 /* RootWindowController.swift */; };
+		691CB1481F11846F0069F1F5 /* WindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 691CB1471F11846F0069F1F5 /* WindowController.swift */; };
 		691CB1551F11B0500069F1F5 /* Catalog.xib in Resources */ = {isa = PBXBuildFile; fileRef = 691CB1541F11B0500069F1F5 /* Catalog.xib */; };
 		691CB15F1F11B3A50069F1F5 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 691CB15E1F11B39A0069F1F5 /* QuartzCore.framework */; };
 		691CB1621F11B5300069F1F5 /* ColorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 691CB1611F11B5300069F1F5 /* ColorView.swift */; };
@@ -19,6 +19,21 @@
 		691CB19C1F12CCAC0069F1F5 /* CatalogCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 691CB1931F12CCAC0069F1F5 /* CatalogCore.framework */; };
 		6956CA691F12CE2E003E4F34 /* CatalogCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 691CB1931F12CCAC0069F1F5 /* CatalogCore.framework */; };
 		6956CA6A1F12CE2E003E4F34 /* CatalogCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 691CB1931F12CCAC0069F1F5 /* CatalogCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		6956CA6F1F12D084003E4F34 /* Pilot.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 699329AF1F1178240004537C /* Pilot.framework */; };
+		6956CA741F12D09F003E4F34 /* Pilot.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 699329B31F1178240004537C /* Pilot.framework */; };
+		6956CA761F12D0BF003E4F34 /* Topic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6956CA751F12D0BF003E4F34 /* Topic.swift */; };
+		6956CA771F12D0BF003E4F34 /* Topic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6956CA751F12D0BF003E4F34 /* Topic.swift */; };
+		6956CA791F12D791003E4F34 /* WindowRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6956CA781F12D791003E4F34 /* WindowRouter.swift */; };
+		6956CA7C1F12D7B8003E4F34 /* CatalogContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6956CA7B1F12D7B8003E4F34 /* CatalogContext.swift */; };
+		6956CA7D1F12D7B8003E4F34 /* CatalogContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6956CA7B1F12D7B8003E4F34 /* CatalogContext.swift */; };
+		6956CA7F1F12DAA2003E4F34 /* EmptyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6956CA7E1F12DAA2003E4F34 /* EmptyViewController.swift */; };
+		6956CA821F12DE50003E4F34 /* TopicViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6956CA811F12DE50003E4F34 /* TopicViewModel.swift */; };
+		6956CA831F12DE50003E4F34 /* TopicViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6956CA811F12DE50003E4F34 /* TopicViewModel.swift */; };
+		6956CA851F12DF4E003E4F34 /* CommonModelCollections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6956CA841F12DF4E003E4F34 /* CommonModelCollections.swift */; };
+		6956CA861F12DF4E003E4F34 /* CommonModelCollections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6956CA841F12DF4E003E4F34 /* CommonModelCollections.swift */; };
+		6956CA881F12E224003E4F34 /* TopicCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6956CA871F12E224003E4F34 /* TopicCollectionViewController.swift */; };
+		6956CA8A1F12E452003E4F34 /* TopicView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6956CA891F12E452003E4F34 /* TopicView.swift */; };
+		6956CA8E1F12E939003E4F34 /* CollectionViewListLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6956CA8D1F12E939003E4F34 /* CollectionViewListLayout.swift */; };
 		696FC3C91F04A91E008E6A13 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696FC3C81F04A91E008E6A13 /* AppDelegate.swift */; };
 		696FC3CB1F04A91E008E6A13 /* RootSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696FC3CA1F04A91E008E6A13 /* RootSplitViewController.swift */; };
 		696FC3CD1F04A91E008E6A13 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 696FC3CC1F04A91E008E6A13 /* Assets.xcassets */; };
@@ -69,6 +84,20 @@
 			proxyType = 1;
 			remoteGlobalIDString = 691CB1921F12CCAC0069F1F5;
 			remoteInfo = CatalogCoreiOS;
+		};
+		6956CA701F12D08D003E4F34 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 699329A31F1178240004537C /* Pilot.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 696534861D17100900DF97CB;
+			remoteInfo = "Pilot macOS";
+		};
+		6956CA721F12D094003E4F34 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 699329A31F1178240004537C /* Pilot.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 69048A031C46FF23000CE840;
+			remoteInfo = "Pilot iOS";
 		};
 		696FC3D81F04A91E008E6A13 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -228,7 +257,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		691CB1471F11846F0069F1F5 /* RootWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootWindowController.swift; sourceTree = "<group>"; };
+		691CB1471F11846F0069F1F5 /* WindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowController.swift; sourceTree = "<group>"; };
 		691CB1541F11B0500069F1F5 /* Catalog.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = Catalog.xib; sourceTree = "<group>"; };
 		691CB15E1F11B39A0069F1F5 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		691CB1611F11B5300069F1F5 /* ColorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorView.swift; sourceTree = "<group>"; };
@@ -244,6 +273,15 @@
 		691CB1961F12CCAC0069F1F5 /* Info-iOS.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info-iOS.plist"; sourceTree = "<group>"; };
 		691CB19B1F12CCAC0069F1F5 /* CatalogCoreiOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CatalogCoreiOSTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		691CB1A21F12CCAC0069F1F5 /* Info-iOS.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info-iOS.plist"; sourceTree = "<group>"; };
+		6956CA751F12D0BF003E4F34 /* Topic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Topic.swift; sourceTree = "<group>"; };
+		6956CA781F12D791003E4F34 /* WindowRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = WindowRouter.swift; path = macOS/Source/WindowControllers/WindowRouter.swift; sourceTree = SOURCE_ROOT; };
+		6956CA7B1F12D7B8003E4F34 /* CatalogContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogContext.swift; sourceTree = "<group>"; };
+		6956CA7E1F12DAA2003E4F34 /* EmptyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyViewController.swift; sourceTree = "<group>"; };
+		6956CA811F12DE50003E4F34 /* TopicViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopicViewModel.swift; sourceTree = "<group>"; };
+		6956CA841F12DF4E003E4F34 /* CommonModelCollections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonModelCollections.swift; sourceTree = "<group>"; };
+		6956CA871F12E224003E4F34 /* TopicCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopicCollectionViewController.swift; sourceTree = "<group>"; };
+		6956CA891F12E452003E4F34 /* TopicView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopicView.swift; sourceTree = "<group>"; };
+		6956CA8D1F12E939003E4F34 /* CollectionViewListLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewListLayout.swift; sourceTree = "<group>"; };
 		696FC3C51F04A91E008E6A13 /* Catalog.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Catalog.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		696FC3C81F04A91E008E6A13 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		696FC3CA1F04A91E008E6A13 /* RootSplitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootSplitViewController.swift; sourceTree = "<group>"; };
@@ -282,6 +320,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6956CA6F1F12D084003E4F34 /* Pilot.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -297,6 +336,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6956CA741F12D09F003E4F34 /* Pilot.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -363,7 +403,7 @@
 		691CB1421F11844C0069F1F5 /* WindowControllers */ = {
 			isa = PBXGroup;
 			children = (
-				691CB1471F11846F0069F1F5 /* RootWindowController.swift */,
+				691CB1471F11846F0069F1F5 /* WindowController.swift */,
 			);
 			path = WindowControllers;
 			sourceTree = "<group>";
@@ -380,6 +420,7 @@
 			isa = PBXGroup;
 			children = (
 				691CB1611F11B5300069F1F5 /* ColorView.swift */,
+				6956CA891F12E452003E4F34 /* TopicView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -399,6 +440,10 @@
 		691CB1851F12CB790069F1F5 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				6956CA7A1F12D7A7003E4F34 /* Context */,
+				6956CA6E1F12D06E003E4F34 /* Model */,
+				6956CA6D1F12CFCA003E4F34 /* ModelCollections */,
+				6956CA801F12DE3A003E4F34 /* ViewModels */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -411,6 +456,46 @@
 				691CB1781F12CB080069F1F5 /* Info-macOS.plist */,
 			);
 			path = Tests;
+			sourceTree = "<group>";
+		};
+		6956CA6D1F12CFCA003E4F34 /* ModelCollections */ = {
+			isa = PBXGroup;
+			children = (
+				6956CA841F12DF4E003E4F34 /* CommonModelCollections.swift */,
+			);
+			path = ModelCollections;
+			sourceTree = "<group>";
+		};
+		6956CA6E1F12D06E003E4F34 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				6956CA751F12D0BF003E4F34 /* Topic.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		6956CA7A1F12D7A7003E4F34 /* Context */ = {
+			isa = PBXGroup;
+			children = (
+				6956CA7B1F12D7B8003E4F34 /* CatalogContext.swift */,
+			);
+			path = Context;
+			sourceTree = "<group>";
+		};
+		6956CA801F12DE3A003E4F34 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				6956CA811F12DE50003E4F34 /* TopicViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		6956CA8C1F12E924003E4F34 /* Layout */ = {
+			isa = PBXGroup;
+			children = (
+				6956CA8D1F12E939003E4F34 /* CollectionViewListLayout.swift */,
+			);
+			path = Layout;
 			sourceTree = "<group>";
 		};
 		696FC3BA1F04A8B0008E6A13 = {
@@ -522,6 +607,7 @@
 			isa = PBXGroup;
 			children = (
 				69FDDF0F1F116EC400984BD2 /* App */,
+				6956CA8C1F12E924003E4F34 /* Layout */,
 				69FDDF101F116ECC00984BD2 /* ViewControllers */,
 				691CB1601F11B51B0069F1F5 /* Views */,
 				691CB1421F11844C0069F1F5 /* WindowControllers */,
@@ -534,6 +620,7 @@
 			isa = PBXGroup;
 			children = (
 				696FC3C81F04A91E008E6A13 /* AppDelegate.swift */,
+				6956CA781F12D791003E4F34 /* WindowRouter.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -541,7 +628,9 @@
 		69FDDF101F116ECC00984BD2 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				6956CA7E1F12DAA2003E4F34 /* EmptyViewController.swift */,
 				696FC3CA1F04A91E008E6A13 /* RootSplitViewController.swift */,
+				6956CA871F12E224003E4F34 /* TopicCollectionViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -652,6 +741,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				6956CA711F12D08D003E4F34 /* PBXTargetDependency */,
 			);
 			name = CatalogCore;
 			productName = CatalogCore;
@@ -688,6 +778,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				6956CA731F12D094003E4F34 /* PBXTargetDependency */,
 			);
 			name = CatalogCoreiOS;
 			productName = CatalogCoreiOS;
@@ -839,12 +930,14 @@
 				TargetAttributes = {
 					691CB1681F12CB080069F1F5 = {
 						CreatedOnToolsVersion = 9.0;
+						LastSwiftMigration = 0900;
 					};
 					691CB1701F12CB080069F1F5 = {
 						CreatedOnToolsVersion = 9.0;
 					};
 					691CB1921F12CCAC0069F1F5 = {
 						CreatedOnToolsVersion = 9.0;
+						LastSwiftMigration = 0900;
 					};
 					691CB19A1F12CCAC0069F1F5 = {
 						CreatedOnToolsVersion = 9.0;
@@ -1048,6 +1141,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6956CA851F12DF4E003E4F34 /* CommonModelCollections.swift in Sources */,
+				6956CA761F12D0BF003E4F34 /* Topic.swift in Sources */,
+				6956CA821F12DE50003E4F34 /* TopicViewModel.swift in Sources */,
+				6956CA7C1F12D7B8003E4F34 /* CatalogContext.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1063,6 +1160,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6956CA861F12DF4E003E4F34 /* CommonModelCollections.swift in Sources */,
+				6956CA771F12D0BF003E4F34 /* Topic.swift in Sources */,
+				6956CA831F12DE50003E4F34 /* TopicViewModel.swift in Sources */,
+				6956CA7D1F12D7B8003E4F34 /* CatalogContext.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1077,9 +1178,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6956CA7F1F12DAA2003E4F34 /* EmptyViewController.swift in Sources */,
 				691CB1621F11B5300069F1F5 /* ColorView.swift in Sources */,
 				696FC3CB1F04A91E008E6A13 /* RootSplitViewController.swift in Sources */,
-				691CB1481F11846F0069F1F5 /* RootWindowController.swift in Sources */,
+				6956CA791F12D791003E4F34 /* WindowRouter.swift in Sources */,
+				6956CA8A1F12E452003E4F34 /* TopicView.swift in Sources */,
+				6956CA8E1F12E939003E4F34 /* CollectionViewListLayout.swift in Sources */,
+				6956CA881F12E224003E4F34 /* TopicCollectionViewController.swift in Sources */,
+				691CB1481F11846F0069F1F5 /* WindowController.swift in Sources */,
 				696FC3C91F04A91E008E6A13 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1147,6 +1253,16 @@
 			isa = PBXTargetDependency;
 			target = 691CB1921F12CCAC0069F1F5 /* CatalogCoreiOS */;
 			targetProxy = 6956CA6B1F12CE2E003E4F34 /* PBXContainerItemProxy */;
+		};
+		6956CA711F12D08D003E4F34 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Pilot macOS";
+			targetProxy = 6956CA701F12D08D003E4F34 /* PBXContainerItemProxy */;
+		};
+		6956CA731F12D094003E4F34 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Pilot iOS";
+			targetProxy = 6956CA721F12D094003E4F34 /* PBXContainerItemProxy */;
 		};
 		696FC3D91F04A91E008E6A13 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -1360,6 +1476,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 699329E41F117BD60004537C /* Catalog-Project-Test.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -1422,6 +1539,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 699329E41F117BD60004537C /* Catalog-Project-Test.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -1611,6 +1729,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 699329E41F117BD60004537C /* Catalog-Project-Test.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -1673,6 +1792,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 699329E41F117BD60004537C /* Catalog-Project-Test.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
