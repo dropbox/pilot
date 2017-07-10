@@ -1,4 +1,5 @@
 import Cocoa
+import PilotUI
 
 public final class RootSplitViewController: NSSplitViewController {
     
@@ -15,6 +16,28 @@ public final class RootSplitViewController: NSSplitViewController {
     }
     
     private func commonInit() {
+        sidebarItem = NSSplitViewItem(sidebarWithViewController: sidebarContainerViewController)
+        sidebarItem.canCollapse = false
+
+        contentListItem = NSSplitViewItem(contentListWithViewController: contentListContainerViewController)
+        detailItem = NSSplitViewItem(viewController: detailViewController)
+    }
+    
+    // MARK: Public
+    
+    public var sidebarViewController: NSViewController = EmptyViewController() {
+        willSet { detachChildViewController(sidebarViewController) }
+        didSet { attachChildViewController(sidebarViewController, to: sidebarContainerViewController) }
+    }
+    
+    public var contentListViewController: NSViewController = EmptyViewController() {
+        willSet { detachChildViewController(contentListViewController) }
+        didSet { attachChildViewController(contentListViewController, to: contentListContainerViewController) }
+    }
+    
+    public var detailViewController: NSViewController = EmptyViewController() {
+        willSet { detachChildViewController(detailViewController) }
+        didSet { attachChildViewController(detailViewController, to: detailContainerViewController) }
     }
     
     // MARK: NSViewController
@@ -22,34 +45,43 @@ public final class RootSplitViewController: NSSplitViewController {
     public override func viewDidLoad() {
         super.viewDidLoad()
         
-        let item1 = NSSplitViewItem(sidebarWithViewController: EmptyViewController())
-        let item2 = NSSplitViewItem(contentListWithViewController: EmptyViewController())
-        let item3 = NSSplitViewItem(viewController: EmptyViewController())
-        
         // `NSSplitViewController` has constraint warnings unless the items are set after the stack unwinds.
         DispatchQueue.main.async {
-            self.splitViewItems = [item1, item2, item3]
+            self.splitViewItems = [self.sidebarItem, self.contentListItem, self.detailItem]
         }
     }
-}
-
-public final class EmptyViewController: NSViewController {
     
-    // MARK: Init
+    // MARK: Private
     
-    public override init(nibName nibNameOrNil: NSNib.Name?, bundle nibBundleOrNil: Bundle?) {
-        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+    private var sidebarItem: NSSplitViewItem!
+    private var contentListItem: NSSplitViewItem!
+    private var detailItem: NSSplitViewItem!
+    
+    private let sidebarContainerViewController = EmptyViewController()
+    private let contentListContainerViewController = EmptyViewController()
+    private let detailContainerViewController = EmptyViewController()
+    
+    private func detachChildViewController(_ childViewController: NSViewController) {
+        guard childViewController.parent != nil else { return }
+        childViewController.view.removeFromSuperview()
+        childViewController.removeFromParentViewController()
     }
-    public required init?(coder: NSCoder) {
-        fatalError()
-    }
-    public convenience init() {
-        self.init(nibName: nil, bundle: nil)
-    }
     
-    // MARK: NSViewController
-    
-    public override func loadView() {
-        view = ColorView()
+    private func attachChildViewController(
+        _ childViewController: NSViewController,
+        to parentViewController: NSViewController
+    ) {
+        let parentView = parentViewController.view
+        let childView = childViewController.view
+        
+        childView.translatesAutoresizingMaskIntoConstraints = false
+        parentView.addSubview(childView)
+        
+        NSLayoutConstraint.activate([
+            childView.leadingAnchor.constraint(equalTo: parentView.leadingAnchor),
+            childView.trailingAnchor.constraint(equalTo: parentView.trailingAnchor),
+            childView.topAnchor.constraint(equalTo: parentView.topAnchor),
+            childView.bottomAnchor.constraint(equalTo: parentView.bottomAnchor),
+        ])
     }
 }
