@@ -124,6 +124,8 @@
 		A437EDB41E56632A00F67B37 /* AsyncModelCollectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A437EDB01E56628900F67B37 /* AsyncModelCollectionTests.swift */; };
 		A437EDB51E567AE800F67B37 /* Async.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6974F89B1C504BD50029ED48 /* Async.swift */; };
 		A437EDB61E567AE900F67B37 /* Async.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6974F89B1C504BD50029ED48 /* Async.swift */; };
+		A43E720C1F01AD1000EC443F /* ViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A43E720B1F01AD1000EC443F /* ViewTests.swift */; };
+		A43E720D1F01AD1000EC443F /* ViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A43E720B1F01AD1000EC443F /* ViewTests.swift */; };
 		A455A7E61E5F6C3900F63A37 /* PilotUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = A455A7E51E5F6C3900F63A37 /* PilotUI.swift */; };
 		A455A7E71E5F6C3900F63A37 /* PilotUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = A455A7E51E5F6C3900F63A37 /* PilotUI.swift */; };
 		A460CC831E56195F00F9AC6F /* Downcast.swift in Sources */ = {isa = PBXBuildFile; fileRef = A460CC821E56195F00F9AC6F /* Downcast.swift */; };
@@ -273,6 +275,7 @@
 		A437EDAA1E5655AD00F67B37 /* SimpleModelCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SimpleModelCollection.swift; path = Core/Source/MVVM/SimpleModelCollection.swift; sourceTree = "<group>"; };
 		A437EDAD1E5660CE00F67B37 /* AsyncModelCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AsyncModelCollection.swift; path = Core/Source/MVVM/AsyncModelCollection.swift; sourceTree = "<group>"; };
 		A437EDB01E56628900F67B37 /* AsyncModelCollectionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AsyncModelCollectionTests.swift; path = Core/Tests/MVVM/AsyncModelCollectionTests.swift; sourceTree = "<group>"; };
+		A43E720B1F01AD1000EC443F /* ViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ViewTests.swift; path = Core/Tests/MVVM/ViewTests.swift; sourceTree = "<group>"; };
 		A455A7E51E5F6C3900F63A37 /* PilotUI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PilotUI.swift; path = UI/Tests/PilotUI.swift; sourceTree = "<group>"; };
 		A460CC821E56195F00F9AC6F /* Downcast.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Downcast.swift; path = Core/Source/Downcast.swift; sourceTree = "<group>"; };
 		A468F7FD1EC3B61D009717A4 /* CompoundAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CompoundAction.swift; path = Core/Source/MVVM/CompoundAction.swift; sourceTree = "<group>"; };
@@ -621,6 +624,7 @@
 				8E0E6F271EE89A3D00D1CB86 /* SortedModelCollectionTests.swift */,
 				654229B51E63D68E00C053FE /* SwitchableModelCollectionTests.swift */,
 				02AB7E5C1DCA7EF1003F11FE /* TestModel.swift */,
+				A43E720B1F01AD1000EC443F /* ViewTests.swift */,
 			);
 			name = MVVM;
 			sourceTree = "<group>";
@@ -1009,6 +1013,7 @@
 				65107DA31E5B44BB002FF5F0 /* ModelCollectionHelpers.swift in Sources */,
 				A4AED3DB1D402F27001F3524 /* MappedModelCollectionTests.swift in Sources */,
 				A468F8021EC3B7E5009717A4 /* CompoundActionTests.swift in Sources */,
+				A43E720D1F01AD1000EC443F /* ViewTests.swift in Sources */,
 				02AB7E5E1DCA7EF1003F11FE /* TestModel.swift in Sources */,
 				A437EDA91E56507600F67B37 /* SimpleModelCollection.swift in Sources */,
 				655664B31EC8FDC8005DB413 /* ScoredModelCollectionTests.swift in Sources */,
@@ -1057,6 +1062,7 @@
 				65107DA21E5B44BB002FF5F0 /* ModelCollectionHelpers.swift in Sources */,
 				A4AED3DA1D402F26001F3524 /* MappedModelCollectionTests.swift in Sources */,
 				A468F8011EC3B7E4009717A4 /* CompoundActionTests.swift in Sources */,
+				A43E720C1F01AD1000EC443F /* ViewTests.swift in Sources */,
 				02AB7E5D1DCA7EF1003F11FE /* TestModel.swift in Sources */,
 				A437EDA81E56507600F67B37 /* SimpleModelCollection.swift in Sources */,
 				655664B21EC8FDC7005DB413 /* ScoredModelCollectionTests.swift in Sources */,
