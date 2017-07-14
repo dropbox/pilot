@@ -20,7 +20,7 @@ public final class RootSplitViewController: NSSplitViewController {
         sidebarItem.canCollapse = false
 
         contentListItem = NSSplitViewItem(contentListWithViewController: contentListContainerViewController)
-        detailItem = NSSplitViewItem(viewController: detailViewController)
+        detailItem = NSSplitViewItem(viewController: detailContainerViewController)
     }
     
     // MARK: Public
@@ -30,12 +30,12 @@ public final class RootSplitViewController: NSSplitViewController {
         didSet { attachChildViewController(sidebarViewController, to: sidebarContainerViewController) }
     }
     
-    public var contentListViewController: NSViewController = EmptyViewController() {
+    public var contentListViewController: NSViewController = EmptyViewController(backgroundColor: .white) {
         willSet { detachChildViewController(contentListViewController) }
         didSet { attachChildViewController(contentListViewController, to: contentListContainerViewController) }
     }
     
-    public var detailViewController: NSViewController = EmptyViewController() {
+    public var detailViewController: NSViewController = EmptyViewController(backgroundColor: .white) {
         willSet { detachChildViewController(detailViewController) }
         didSet { attachChildViewController(detailViewController, to: detailContainerViewController) }
     }
@@ -58,8 +58,8 @@ public final class RootSplitViewController: NSSplitViewController {
     private var detailItem: NSSplitViewItem!
     
     private let sidebarContainerViewController = EmptyViewController()
-    private let contentListContainerViewController = EmptyViewController()
-    private let detailContainerViewController = EmptyViewController()
+    private let contentListContainerViewController = EmptyViewController(backgroundColor: .white)
+    private let detailContainerViewController = EmptyViewController(backgroundColor: .white)
     
     private func detachChildViewController(_ childViewController: NSViewController) {
         guard childViewController.parent != nil else { return }
@@ -76,6 +76,7 @@ public final class RootSplitViewController: NSSplitViewController {
         
         childView.translatesAutoresizingMaskIntoConstraints = false
         parentView.addSubview(childView)
+        parentViewController.addChildViewController(childViewController)
         
         NSLayoutConstraint.activate([
             childView.leadingAnchor.constraint(equalTo: parentView.leadingAnchor),

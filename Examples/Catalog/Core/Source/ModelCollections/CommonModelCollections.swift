@@ -7,4 +7,11 @@ public struct CommonModelCollections {
             Topic.modelCollections
         ])
     }
+    
+    public static func makeModelCollectionExamples() -> ModelCollection {
+        return StaticModelCollection(collectionId: "ModelCollectionExamples", initialData: [
+            ModelCollectionExample.filtered,
+            ModelCollectionExample.sorted,
+        ])
+    }
 }

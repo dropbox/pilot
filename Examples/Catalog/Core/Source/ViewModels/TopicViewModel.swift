@@ -26,6 +26,12 @@ public struct TopicViewModel: ViewModel {
     
     public let context: Context
     
+    public func handleUserEvent(_ event: ViewModelUserEvent) {
+        if context.shouldNavigate(for: event) {
+            NavigateAction(destination: .topic(topic)).send(from: context)
+        }
+    }
+    
     // MARK: Private
     
     private let topic: Topic

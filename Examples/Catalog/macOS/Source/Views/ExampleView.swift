@@ -2,7 +2,7 @@ import AppKit
 import CatalogCore
 import Pilot
 
-public final class TopicView: NSView, View {
+public final class ExampleView: ColorView, View {
     
     public override init(frame frameRect: NSRect) {
         super.init(frame: frameRect)
@@ -26,57 +26,43 @@ public final class TopicView: NSView, View {
         textField.backgroundColor = .clear
         textField.drawsBackground = true
         textField.isBordered = false
-        
-        selectionView.selectionHighlightStyle = .sourceList
-        
-        
+
         textField.translatesAutoresizingMaskIntoConstraints = false
-        selectionView.translatesAutoresizingMaskIntoConstraints = false
-        
-        addSubview(selectionView)
-        addSubview(textField, positioned: .above, relativeTo: selectionView)
+        addSubview(textField)
         
         NSLayoutConstraint.activate([
             textField.centerYAnchor.constraint(equalTo: centerYAnchor),
             textField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8),
             textField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8),
-            
-            selectionView.topAnchor.constraint(equalTo: topAnchor),
-            selectionView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            selectionView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            selectionView.trailingAnchor.constraint(equalTo: trailingAnchor),
         ])
     }
     
     // MARK: View
     
     public func bindToViewModel(_ viewModel: ViewModel) {
-        let tvm: TopicViewModel = viewModel.typedViewModel()
-        topicViewModel = tvm
-        textField.stringValue = tvm.title
+        guard let evm: ExampleViewModel = viewModel as? ExampleViewModel else { fatalError() }
+        exampleViewModel = evm
+        textField.stringValue = evm.exampleTitle
     }
     
     public func unbindFromViewModel() {
-        topicViewModel = nil
+        exampleViewModel = nil
         textField.stringValue = ""
     }
     
     public var viewModel: ViewModel? {
-        return topicViewModel
+        return exampleViewModel
     }
     
-    public var selected: Bool {
-        set {
-            selectionView.isSelected = newValue
-        }
-        get {
-            return selectionView.isSelected
+    public var selected: Bool = false {
+        didSet {
+            backgroundColor = selected ? NSColor.selectedControlColor : NSColor.white
         }
     }
     
     // MARK: Private
     
-    private var topicViewModel: TopicViewModel?
+    private var exampleViewModel: ExampleViewModel?
     private let textField = NSTextField()
-    private let selectionView = NSTableRowView()
 }
+
