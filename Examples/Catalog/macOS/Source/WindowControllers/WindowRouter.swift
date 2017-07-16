@@ -34,7 +34,7 @@ public final class WindowRouter {
     }
     
     private func handleNavigate(_ action: NavigateAction) -> ActionResult {
-        switch action.destination {
+        switch action {
         case .topic(let topic):
             show(topic)
         case .modelCollectionExample(let example):
