@@ -28,7 +28,7 @@ public struct TopicViewModel: ViewModel {
     
     public func handleUserEvent(_ event: ViewModelUserEvent) {
         if context.shouldNavigate(for: event) {
-            NavigateAction(destination: .topic(topic)).send(from: context)
+            NavigateAction.topic(topic).send(from: context)
         }
     }
     
