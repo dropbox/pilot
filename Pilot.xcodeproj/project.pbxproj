@@ -31,6 +31,8 @@
 		02AADF511D6E433E00587167 /* SwitchableModelCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02AADF4F1D6E433E00587167 /* SwitchableModelCollection.swift */; };
 		02AB7E5D1DCA7EF1003F11FE /* TestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02AB7E5C1DCA7EF1003F11FE /* TestModel.swift */; };
 		02AB7E5E1DCA7EF1003F11FE /* TestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02AB7E5C1DCA7EF1003F11FE /* TestModel.swift */; };
+		3C6C9E231F31257F00D13B52 /* AlertAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C6C9E221F31257F00D13B52 /* AlertAction.swift */; };
+		3C6C9E261F32982C00D13B52 /* UIAlertController+AlertAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C6C9E251F32982C00D13B52 /* UIAlertController+AlertAction.swift */; };
 		65032E301E5BDE1B008020BF /* ScoredModelCollectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65107D9E1E5B4373002FF5F0 /* ScoredModelCollectionTests.swift */; };
 		65032E311E5BE01E008020BF /* ScoredModelCollectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65107D9E1E5B4373002FF5F0 /* ScoredModelCollectionTests.swift */; };
 		65032E331E5BE079008020BF /* MultiplexModelCollectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65032E321E5BE079008020BF /* MultiplexModelCollectionTests.swift */; };
@@ -205,6 +207,8 @@
 		02AADF4F1D6E433E00587167 /* SwitchableModelCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwitchableModelCollection.swift; path = Core/Source/MVVM/SwitchableModelCollection.swift; sourceTree = "<group>"; };
 		02AB7E5C1DCA7EF1003F11FE /* TestModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TestModel.swift; path = Core/Tests/MVVM/TestModel.swift; sourceTree = "<group>"; };
 		02BB0CAA1D551C31001145D2 /* NSCollectionView+Selection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NSCollectionView+Selection.swift"; path = "UI/Source/AppKitExtensions/NSCollectionView+Selection.swift"; sourceTree = "<group>"; };
+		3C6C9E221F31257F00D13B52 /* AlertAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AlertAction.swift; path = UI/Source/Alerts/AlertAction.swift; sourceTree = "<group>"; };
+		3C6C9E251F32982C00D13B52 /* UIAlertController+AlertAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIAlertController+AlertAction.swift"; path = "UI/Source/Alerts/UIAlertController+AlertAction.swift"; sourceTree = "<group>"; };
 		65032E321E5BE079008020BF /* MultiplexModelCollectionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MultiplexModelCollectionTests.swift; path = Core/Tests/MVVM/MultiplexModelCollectionTests.swift; sourceTree = "<group>"; };
 		65107D9E1E5B4373002FF5F0 /* ScoredModelCollectionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ScoredModelCollectionTests.swift; path = Core/Tests/MVVM/ScoredModelCollectionTests.swift; sourceTree = "<group>"; };
 		65107DA11E5B44BB002FF5F0 /* ModelCollectionHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ModelCollectionHelpers.swift; path = Core/Tests/MVVM/ModelCollectionHelpers.swift; sourceTree = "<group>"; };
@@ -376,6 +380,23 @@
 			name = Hash;
 			sourceTree = "<group>";
 		};
+		3C6C9E211F31254F00D13B52 /* Alerts */ = {
+			isa = PBXGroup;
+			children = (
+				3C6C9E221F31257F00D13B52 /* AlertAction.swift */,
+				3C6C9E241F3297D900D13B52 /* ios */,
+			);
+			name = Alerts;
+			sourceTree = "<group>";
+		};
+		3C6C9E241F3297D900D13B52 /* ios */ = {
+			isa = PBXGroup;
+			children = (
+				3C6C9E251F32982C00D13B52 /* UIAlertController+AlertAction.swift */,
+			);
+			name = ios;
+			sourceTree = "<group>";
+		};
 		690489FA1C46FF23000CE840 = {
 			isa = PBXGroup;
 			children = (
@@ -464,6 +485,7 @@
 		69048A4D1C470489000CE840 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				3C6C9E211F31254F00D13B52 /* Alerts */,
 				697D0FCC1D37006300310F81 /* AppKitExtensions */,
 				69048A9A1C470F08000CE840 /* CollectionViews */,
 				69FADB581D305440001F2E11 /* Info-iOS.plist */,
@@ -1021,10 +1043,12 @@
 			files = (
 				69FADC8C1D30BBF0001F2E11 /* CollectionViewInternals.swift in Sources */,
 				69FADC371D3068A1001F2E11 /* CollectionViewHostCell.swift in Sources */,
+				3C6C9E261F32982C00D13B52 /* UIAlertController+AlertAction.swift in Sources */,
 				690E1AA61E54CAA000B257CA /* Collection.swift in Sources */,
 				A47FC6691D909DFB00529DA9 /* LayoutConstraints.swift in Sources */,
 				69FADC381D3068A1001F2E11 /* CollectionViewHostReusableView.swift in Sources */,
 				A478F9321D3850EB000B2ADB /* NestedModelCollectionView.swift in Sources */,
+				3C6C9E231F31257F00D13B52 /* AlertAction.swift in Sources */,
 				69FADC891D30B7FC001F2E11 /* CollectionHostedView.swift in Sources */,
 				697D10761D3D8FD300310F81 /* CollectionViewModelDataSource.swift in Sources */,
 				690E1AA41E54CAA000B257CA /* AssociatedObjects.swift in Sources */,
