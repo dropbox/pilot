@@ -653,8 +653,12 @@ extension CollectionViewModelDataSource: UICollectionViewDataSource {
                 }
 
                 // If the size hasn't changed, simply rebind the view rather than perform a full cell reload.
-                if let old = oldCachedViewModel,
-                    let new = newCachedViewModel , old.preferredLayout == new.preferredLayout {
+                if
+                    let old = oldCachedViewModel,
+                    let new = newCachedViewModel,
+                    type(of: old.viewModel) == type(of: new.viewModel) &&
+                    old.preferredLayout == new.preferredLayout
+                {
                     rebindViewAtIndexPath(indexPath.indexPath, toViewModel: new.viewModel)
                 } else {
                     indexPathsToReload.append(indexPath.indexPath)
@@ -980,8 +984,12 @@ extension CollectionViewModelDataSource: NSCollectionViewDataSource {
                 }
 
                 // If the size hasn't changed, simply rebind the view rather than perform a full cell reload.
-                if let old = oldCachedViewModel,
-                    let new = newCachedViewModel , old.preferredLayout == new.preferredLayout {
+                if
+                    let old = oldCachedViewModel,
+                    let new = newCachedViewModel,
+                    type(of: old.viewModel) == type(of: new.viewModel) &&
+                    old.preferredLayout == new.preferredLayout
+                {
                     rebindViewAtIndexPath(indexPath.indexPath, toViewModel: new.viewModel)
                 } else {
                     reloadSet.insert(indexPath.indexPath)
