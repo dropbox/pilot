@@ -71,7 +71,7 @@ open class CollectionViewController: NSViewController, CollectionViewDelegate {
     @available(*, unavailable,
         message: "Use `init(model:modelBinder:viewBinder:layout:context:)`")
     public required init?(coder: NSCoder) {
-        fatalError("Use `init(model:modelBinder:viewBinder:layout:context:)` instead")
+        Log.fatal(message: "Use `init(model:modelBinder:viewBinder:layout:context:)` instead")
     }
 
     deinit {

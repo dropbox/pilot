@@ -211,7 +211,7 @@ public class CollectionViewModelDataSource: NSObject, ProxyingObservable {
         availableSize: AvailableSize
     ) -> PreferredLayout {
         guard let supplementaryViewBinder = supplementaryViewBinderMap[kind] else {
-            fatalError("Request for supplementary kind (\(kind)) that has no registered view binder.")
+            Log.fatal(message: "Request for supplementary kind (\(kind)) that has no registered view binder.")
         }
         let viewModel = viewModelForSupplementaryElementAtIndexPath(kind, indexPath: indexPath)
 
@@ -539,7 +539,7 @@ extension CollectionViewModelDataSource: UICollectionViewDataSource {
         precondition(collectionViewState == .synced) // but not for long!
         precondition(updates.hasUpdates)
         guard let collectionView = collectionView else {
-            fatalError("handleUpdateItems should never be called without a collectionView")
+            Log.fatal(message: "handleUpdateItems should never be called without a collectionView")
         }
 
         let invalidatedViewModelCache = invalidateViewModelCache(for: updates)
@@ -569,14 +569,14 @@ extension CollectionViewModelDataSource: UICollectionViewDataSource {
             if let strongSelf = self {
                 switch strongSelf.collectionViewState {
                 case .loading:
-                    fatalError("Precondition failure - state cannot transition from animating to loading")
+                    Log.fatal(message: "Precondition failure - state cannot transition from animating to loading")
                 case .animating:
                     strongSelf.collectionViewState = .synced
                 case .animatingWithPendingChanges:
                     strongSelf.collectionViewState = .synced // applyCurrentDataToCollectionView will update
                     strongSelf.applyCurrentDataToCollectionView()
                 case .synced:
-                    fatalError("Precondition failure - state cannot transition from animating to synced")
+                    Log.fatal(message: "Precondition failure - state cannot transition from animating to synced")
                 }
             }
 
@@ -757,7 +757,7 @@ extension CollectionViewModelDataSource: UICollectionViewDataSource {
         at indexPath: IndexPath
     ) -> UICollectionReusableView {
         guard let supplementaryViewBinder = supplementaryViewBinderMap[kind] else {
-            fatalError("Request for supplementary kind (\(kind)) that has no registered view binder.")
+            Log.fatal(message: "Request for supplementary kind (\(kind)) that has no registered view binder.")
         }
 
         let viewModel = viewModelForSupplementaryElementAtIndexPath(kind, indexPath: indexPath)
@@ -806,7 +806,7 @@ private class EmptyCollectionViewItem: NSCollectionViewItem {
     }
 
     required init(coder: NSCoder) {
-        fatalError("Unsupported initializer")
+        Log.fatal(message: "Unsupported initializer")
     }
 
     override func loadView() {
@@ -823,12 +823,12 @@ extension CollectionViewModelDataSource: NSCollectionViewDataSource {
         precondition(collectionViewState == .synced) // but not for long!
         precondition(updates.hasUpdates)
         guard let collectionView = collectionView else {
-            fatalError("handleUpdateItems should never run without a collectionView")
+            Log.fatal(message: "handleUpdateItems should never run without a collectionView")
         }
         // The standard collection view hierarchy is `NSScrollView`->`NSClipView`->`NSCollectionView`, so finding
         // the scroll view via super view chaining is expected.
         guard let scrollView = collectionView.superview?.superview as? NSScrollView else {
-            fatalError("CollectionViewModelDataSource requires an outer scrollview.")
+            Log.fatal(message: "CollectionViewModelDataSource requires an outer scrollview.")
         }
 
         log(event: "HandleUpdateItems", updates: updates)
@@ -1051,14 +1051,14 @@ extension CollectionViewModelDataSource: NSCollectionViewDataSource {
     private func advanceCollectionViewStateAfterPerformUpdates() {
         switch collectionViewState {
         case .loading:
-            fatalError("Precondition failure - state cannot transition from animating to loading")
+            Log.fatal(message: "Precondition failure - state cannot transition from animating to loading")
         case .animating:
             collectionViewState = .synced
         case .animatingWithPendingChanges:
             collectionViewState = .synced // applyCurrentDataToCollectionView will update
             applyCurrentDataToCollectionView()
         case .synced:
-            fatalError("Precondition failure - state cannot transition from animating to synced")
+            Log.fatal(message: "Precondition failure - state cannot transition from animating to synced")
         }
 
     }
@@ -1162,7 +1162,7 @@ extension CollectionViewModelDataSource: NSCollectionViewDataSource {
         at indexPath: IndexPath
     ) -> NSView {
         guard let supplementaryViewBinder = supplementaryViewBinderMap[kind] else {
-            fatalError("Request for supplementary kind (\(kind)) that has no registered view binder.")
+            Log.fatal(message: "Request for supplementary kind (\(kind)) that has no registered view binder.")
         }
 
         let viewModel = viewModelForSupplementaryElementAtIndexPath(kind, indexPath: indexPath)

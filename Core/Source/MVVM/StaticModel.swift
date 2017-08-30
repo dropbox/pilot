@@ -46,7 +46,7 @@ public struct StaticViewModel<StaticData>: ViewModel {
 
     public init(model: Model, context: Context) {
         guard let staticModel = model as? StaticModel<StaticData> else {
-            fatalError("StaticModel StaticData type does not match StaticViewModel StaticData type")
+            Log.fatal(message: "StaticModel StaticData type does not match StaticViewModel StaticData type")
         }
         self.model = staticModel
         self.context = context

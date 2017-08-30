@@ -25,10 +25,10 @@ public protocol Observable: class {
 /// NOTE: does not expose the notifyObserversOfEvent method because this is read-only.
 open class GenericObservable<Event>: Observable {
     open func addObserver(_ observer: @escaping (Event) -> Void) -> ObserverToken {
-        fatalError("addObserver must be overridden")
+        Log.fatal(message: "addObserver must be overridden")
     }
     open func removeObserver(with token: ObserverToken) {
-        fatalError("removeObserverWithToken must be overridden")
+        Log.fatal(message: "removeObserverWithToken must be overridden")
     }
 }
 

@@ -94,6 +94,11 @@ public struct Log {
         log(.metadata, category: category, message: message)
     }
 
+    static public func fatal(_ category: Category = .none, message: String) -> Never {
+        log(.error, category: category, message: message)
+        fatalError(message)
+    }
+
     static public func removeLogger(_ token: LoggerToken) {
         Async.on(loggingQueue) {
             loggers[token] = nil
