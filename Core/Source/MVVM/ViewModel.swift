@@ -122,6 +122,32 @@ public protocol ViewModelBindingProvider {
 
     /// Returns a `ViewModel` for the given `Model` and context.
     func viewModel(for model: Model, context: Context) -> ViewModel
+
+    /// Returns the `SelectionViewModel` for given collection of models and a context. The default implementation
+    /// returns selection view model that works for a single model.
+    func selectionViewModel(for models: [Model], context: Context) -> SelectionViewModel?
+}
+
+extension ViewModelBindingProvider {
+    public func selectionViewModel(for models: [Model], context: Context) -> SelectionViewModel? {
+        if let firstModel = models.first, models.count == 1 {
+            return ViewModelSelectionShim(viewModels: [viewModel(for: firstModel, context: context)])
+        }
+        return nil
+    }
+}
+
+/// Represents a selection of one or more view models.
+public protocol SelectionViewModel {
+    /// Initialize with a collection of view models.
+    init(viewModels: [ViewModel])
+    /// Returns `true` if the selection can handle the given user event, `false` if it cannot.
+    func canHandleUserEvent(_ event: ViewModelUserEvent) -> Bool
+    /// Invoked on the selection when the view layer wants it to handle a given user event.
+    func handleUserEvent(_ event: ViewModelUserEvent)
+    /// An array of secondary actions for the selection - typically displayed as a context menu or long-press menu
+    /// depending on platform.
+    func secondaryActions(for event: ViewModelUserEvent) -> [SecondaryAction]
 }
 
 /// A `ViewModelBindingProvider` which provides default behavior to check the `Model` for conformance to
@@ -156,4 +182,26 @@ public struct BlockViewModelBindingProvider: ViewModelBindingProvider {
     }
 
     private let binder: (Model, Context) -> ViewModel?
+}
+
+/// Simple shim that forwards methods from `SelectionViewModel` to a single `ViewModel`.
+fileprivate struct ViewModelSelectionShim: SelectionViewModel {
+    init(viewModels: [ViewModel]) {
+        guard let vm = viewModels.first else { fatalError("Shim constructed with empty view model collection") }
+        self.viewModel = vm
+    }
+
+    func canHandleUserEvent(_ event: ViewModelUserEvent) -> Bool {
+        return viewModel.canHandleUserEvent(event)
+    }
+
+    func handleUserEvent(_ event: ViewModelUserEvent) {
+        return viewModel.handleUserEvent(event)
+    }
+
+    func secondaryActions(for event: ViewModelUserEvent) -> [SecondaryAction] {
+        return viewModel.secondaryActions(for: event)
+    }
+
+    var viewModel: ViewModel
 }
