@@ -6,7 +6,11 @@ extension NSMenu {
     /// Returns a `NSMenu` configured from the given `SecondaryAction` array. The given action will be invoked for
     /// each menu item selection. The receiver can call `NSMenuItem.representedAction` to get the action represented
     /// by the menu item in the implementation of the provided selector.
-    public static func fromSecondaryActions(_ actions: [SecondaryAction], action: Selector) -> NSMenu {
+    public static func fromSecondaryActions(
+        _ actions: [SecondaryAction],
+        action: Selector,
+        target: AnyObject? = nil
+    ) -> NSMenu {
         let menu = NSMenu()
 
         // Enabling is set explicitly per-item below.
@@ -20,12 +24,14 @@ extension NSMenu {
                 menuItem.isEnabled = info.enabled
                 menuItem.state = info.state.toNSState()
                 menuItem.representedObject = MenuItemActionWrapper(info.action)
+                menuItem.target = target
                 menu.addItem(menuItem)
 
             case .info(let string):
                 let menuItem = NSMenuItem(title: string, action: action, keyEquivalent: "")
                 menuItem.isEnabled = false
                 menuItem.state = NSOffState
+                menuItem.target = target
                 menu.addItem(menuItem)
 
             case .separator:
