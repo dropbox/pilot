@@ -92,6 +92,7 @@ public enum SecondaryAction {
     case action(SecondaryActionInfo)
     case info(String)
     case separator
+    case subactions(title: String, [SecondaryAction])
 }
 
 /// Default implementations so `ViewModel`s may opt-in to only interactions they care about.
