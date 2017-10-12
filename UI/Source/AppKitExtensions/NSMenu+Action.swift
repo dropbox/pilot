@@ -36,6 +36,12 @@ extension NSMenu {
 
             case .separator:
                 menu.addItem(NSMenuItem.separator())
+
+            case .subactions(let title, let subactions):
+                let menuItem = NSMenuItem(title: title, action: nil, keyEquivalent: "")
+                menu.addItem(menuItem)
+                let submenu = NSMenu.fromSecondaryActions(subactions, action: action, target: target)
+                menu.setSubmenu(submenu, for: menuItem)
             }
         }
         return menu
