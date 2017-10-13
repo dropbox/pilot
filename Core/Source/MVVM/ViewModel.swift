@@ -66,11 +66,12 @@ public enum ViewModelUserEvent {
 /// menus.
 public struct SecondaryActionInfo {
 
-    public init(action: Action, title: String, state: State = .off, enabled: Bool = true) {
+    public init(action: Action, title: String, state: State = .off, enabled: Bool = true, imageName: String? = nil) {
         self.action = action
         self.title = title
         self.state = state
         self.enabled = enabled
+        self.imageName = imageName
     }
 
     /// State of the secondary action. Note that this differs from enabled, but instead represents whether the action
@@ -85,6 +86,7 @@ public struct SecondaryActionInfo {
     public let title: String
     public let state: State
     public let enabled: Bool
+    public let imageName: String?
 }
 
 /// Represents a secondary action to be displayed in a list to the user (typically from right-click or long-press).
