@@ -218,23 +218,16 @@ open class CollectionViewController: NSViewController, CollectionViewDelegate {
 
     // MARK: CollectionViewDelegate
 
-    open func collectionViewDidReceiveReturnKey(_ collectionView: NSCollectionView) -> Bool {
-        // Right now, only a single selected item is supported for the return/enter keys.
+    open func collectionViewDidReceiveKeyEvent(
+        _ collectionView: NSCollectionView,
+        key: EventKeyCode,
+        modifiers: NSEvent.ModifierFlags
+    ) -> Bool {
         guard let indexPath = collectionView.selectionIndexPaths.first else { return false }
         guard let vm = viewModelAtIndexPath(indexPath) else { return false }
-        if vm.canHandleUserEvent(.enterKey) {
-            vm.handleUserEvent(.enterKey)
-            return true
-        }
-        return false
-    }
-
-    open func collectionViewDidReceiveSpaceKey(_ collectionView: NSCollectionView) -> Bool {
-        // Right now, only a single selected item is supported for the space keys.
-        guard let indexPath = collectionView.selectionIndexPaths.first else { return false }
-        guard let vm = viewModelAtIndexPath(indexPath) else { return false }
-        if vm.canHandleUserEvent(.spaceKey) {
-            vm.handleUserEvent(.spaceKey)
+        let event = ViewModelUserEvent.keyDown(key, modifiers.eventKeyModifierFlags)
+        if vm.canHandleUserEvent(event) {
+            vm.handleUserEvent(event)
             return true
         }
         return false
