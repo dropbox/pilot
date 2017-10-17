@@ -166,10 +166,7 @@ public struct BlockModelProvider: IndexedModelProvider {
     }
 
     public func model(for indexPath: IndexPath, context: Context) -> Model? {
-        if let result = binder(indexPath, context) {
-            return result
-        }
-        return nil
+        return binder(indexPath, context)
     }
 
     private let binder: (IndexPath, Context) -> Model?
