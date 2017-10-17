@@ -409,6 +409,14 @@ public class CollectionViewModelDataSource: NSObject, ProxyingObservable {
     fileprivate func viewModelForSupplementaryElementAtIndexPath(_ kind: String, indexPath: IndexPath) -> ViewModel {
         let model = modelForSupplementaryIndexPath(indexPath, ofKind: kind)
         if let bindingProvider = supplementaryViewModelBinderMap[kind] {
+            // Supplementary items don't necessarily have an item associated with them (think section headers for empty
+            // sections) - so handle the "zero" case here.
+            if let zeroModel = model as? CollectionZeroItemModel {
+                return CachedViewModel(
+                    viewModel: CollectionZeroItemViewModel(indexPath: zeroModel.indexPath),
+                    preferredLayout: .none).viewModel
+            }
+
             return bindingProvider.viewModel(for: model, context: context)
         } else {
             return cachedViewModel(for: model).viewModel
