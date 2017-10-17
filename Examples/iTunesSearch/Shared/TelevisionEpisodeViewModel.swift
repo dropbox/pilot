@@ -32,10 +32,11 @@ public struct TelevisionEpisodeViewModel: ViewModel {
 
     public let context: Context
 
-    public func handleUserEvent(_ event: ViewModelUserEvent) {
+    public func action(_ event: ViewModelUserEvent) -> Action? {
         if case .select = event {
-            ViewMediaAction(url: episode.preview).send(from: context)
+            return ViewMediaAction(url: episode.preview)
         }
+        return nil
     }
 
     // MARK: Private

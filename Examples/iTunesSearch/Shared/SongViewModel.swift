@@ -50,10 +50,11 @@ public struct SongViewModel: ViewModel {
 
     public let context: Context
 
-    public func handleUserEvent(_ event: ViewModelUserEvent) {
+    public func action(_ event: ViewModelUserEvent) -> Action? {
         if case .select = event {
-            ViewMediaAction(url: song.preview).send(from: context)
+            return ViewMediaAction(url: song.preview)
         }
+        return nil
     }
 
     // MARK: Private

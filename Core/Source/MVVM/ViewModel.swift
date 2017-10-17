@@ -25,11 +25,17 @@ public protocol ViewModel {
 
     // MARK: Interactions
 
+    /// Returns the `Action` that should be fired for a given `ViewModelUserEvent`. The default implementation returns
+    /// nil.
+    func action(_ event: ViewModelUserEvent) -> Action?
+
     /// Returns `true` if the target view model type can handle the given user event, `false` if it cannot. The default
-    /// implementation returns `true` for everything.
+    /// implementation calls action(_:) passing in the event and returns `true` if the function returns a non-nil
+    /// action.
     func canHandleUserEvent(_ event: ViewModelUserEvent) -> Bool
 
-    /// Invoked on the view model when the view layer wants it to handle a given user event.
+    /// Invoked on the view model when the view layer wants it to handle a given user event. The default implementation
+    /// sends the action from action(_:) to the context. For most usecases implementing this is unnecessary.
     func handleUserEvent(_ event: ViewModelUserEvent)
 
     // MARK: Actions
@@ -122,14 +128,16 @@ public enum SecondaryAction {
 /// Default implementations so `ViewModel`s may opt-in to only interactions they care about.
 public extension ViewModel {
 
-    func handleUserEvent(_ event: ViewModelUserEvent) {}
+    func action(_ event: ViewModelUserEvent) -> Action? {
+        return nil
+    }
 
-    /// By default returns true for all non-keyboard and pasteboard events.
+    func handleUserEvent(_ event: ViewModelUserEvent) {
+        action(event)?.send(from: context)
+    }
+
     func canHandleUserEvent(_ event: ViewModelUserEvent) -> Bool {
-        switch event {
-        case .click, .longPress, .secondaryClick, .select, .tap: return true
-        case .keyDown, .copy: return false
-        }
+        return action(event) != nil
     }
 
     func secondaryActions(for event: ViewModelUserEvent) -> [SecondaryAction] {
