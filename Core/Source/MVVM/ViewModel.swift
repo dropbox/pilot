@@ -143,3 +143,18 @@ public struct DefaultViewModelBindingProvider: ViewModelBindingProvider {
         return convertible.viewModelWithContext(context)
     }
 }
+
+/// A `ViewModelBindingProvider` that delegates to a closure to provide the appropriate `ViewModel` for the
+/// supplied `Model` and `Context`. It will fallback to the `DefaultViewModelBindingProvider` implementation
+/// if no `ViewModel` is returned.
+public struct BlockViewModelBindingProvider: ViewModelBindingProvider {
+    public init(binder: @escaping (Model, Context) -> ViewModel?) {
+        self.binder = binder
+    }
+
+    public func viewModel(for model: Model, context: Context) -> ViewModel {
+        return self.binder(model, context) ?? DefaultViewModelBindingProvider().viewModel(for: model, context: context)
+    }
+
+    private let binder: (Model, Context) -> ViewModel?
+}
