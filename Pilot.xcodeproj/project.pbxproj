@@ -133,6 +133,8 @@
 		A468F8031EC3B7EF009717A4 /* CompoundAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = A468F7FD1EC3B61D009717A4 /* CompoundAction.swift */; };
 		A478F9321D3850EB000B2ADB /* NestedModelCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A478F92A1D3850B5000B2ADB /* NestedModelCollectionView.swift */; };
 		A47FC6691D909DFB00529DA9 /* LayoutConstraints.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4CACF591D6FCBFC003D572D /* LayoutConstraints.swift */; };
+		A4897B631F95582100727514 /* ViewModelUserEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4897B621F95582100727514 /* ViewModelUserEvents.swift */; };
+		A4897B641F95582100727514 /* ViewModelUserEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4897B621F95582100727514 /* ViewModelUserEvents.swift */; };
 		A4AED3D51D402D73001F3524 /* MappedModelCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4AED3D41D402D73001F3524 /* MappedModelCollection.swift */; };
 		A4AED3D61D402D73001F3524 /* MappedModelCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4AED3D41D402D73001F3524 /* MappedModelCollection.swift */; };
 		A4AED3DA1D402F26001F3524 /* MappedModelCollectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4AED3D71D402EBB001F3524 /* MappedModelCollectionTests.swift */; };
@@ -278,6 +280,7 @@
 		A468F7FD1EC3B61D009717A4 /* CompoundAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CompoundAction.swift; path = Core/Source/MVVM/CompoundAction.swift; sourceTree = "<group>"; };
 		A468F7FF1EC3B7AE009717A4 /* CompoundActionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CompoundActionTests.swift; path = Core/Tests/MVVM/CompoundActionTests.swift; sourceTree = "<group>"; };
 		A478F92A1D3850B5000B2ADB /* NestedModelCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; name = NestedModelCollectionView.swift; path = UI/Source/CollectionViews/ios/Nested/NestedModelCollectionView.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		A4897B621F95582100727514 /* ViewModelUserEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ViewModelUserEvents.swift; path = Core/Source/MVVM/ViewModelUserEvents.swift; sourceTree = "<group>"; };
 		A4AED3D41D402D73001F3524 /* MappedModelCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; name = MappedModelCollection.swift; path = Core/Source/MVVM/MappedModelCollection.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		A4AED3D71D402EBB001F3524 /* MappedModelCollectionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MappedModelCollectionTests.swift; path = Core/Tests/MVVM/MappedModelCollectionTests.swift; sourceTree = "<group>"; };
 		A4C8D5991CF23F3900F9721A /* FilteredModelCollectionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; name = FilteredModelCollectionTests.swift; path = Core/Tests/MVVM/FilteredModelCollectionTests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -583,6 +586,7 @@
 				69F89E781C52F06200F08E28 /* View.swift */,
 				693A60C91CAC80F800E0D2A3 /* ViewLayout.swift */,
 				69F89E771C52F06200F08E28 /* ViewModel.swift */,
+				A4897B621F95582100727514 /* ViewModelUserEvents.swift */,
 			);
 			name = MVVM;
 			sourceTree = "<group>";
@@ -1001,6 +1005,7 @@
 				A437EDAC1E5655AD00F67B37 /* SimpleModelCollection.swift in Sources */,
 				A437EDB61E567AE900F67B37 /* Async.swift in Sources */,
 				A460CC841E56195F00F9AC6F /* Downcast.swift in Sources */,
+				A4897B641F95582100727514 /* ViewModelUserEvents.swift in Sources */,
 				698F3F7F1CE543DB00076B8C /* StaticModel.swift in Sources */,
 				69F89E791C52F06200F08E28 /* ModelCollection.swift in Sources */,
 				D560D4611D136E11000DA826 /* ConsoleLogger.swift in Sources */,
@@ -1111,6 +1116,7 @@
 				A460CC831E56195F00F9AC6F /* Downcast.swift in Sources */,
 				A437EDB51E567AE800F67B37 /* Async.swift in Sources */,
 				696534AB1D1710D400DF97CB /* View.swift in Sources */,
+				A4897B631F95582100727514 /* ViewModelUserEvents.swift in Sources */,
 				022862581DB0070100FCD03F /* DiffEngine.swift in Sources */,
 				692936111E130468001303D2 /* Action.swift in Sources */,
 				696534A41D1710D400DF97CB /* Context.swift in Sources */,
