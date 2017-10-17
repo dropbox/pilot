@@ -158,6 +158,23 @@ public protocol IndexedModelProvider {
     func model(for indexPath: IndexPath, context: Context) -> Model?
 }
 
+/// An `IndexedModelProvider` implementation that delegates to a closure to provide the
+/// appropriate model for the supplied `IndexPath` and `Context`.
+public struct BlockModelProvider: IndexedModelProvider {
+    public init(binder: @escaping (IndexPath, Context) -> Model?) {
+        self.binder = binder
+    }
+
+    public func model(for indexPath: IndexPath, context: Context) -> Model? {
+        if let result = binder(indexPath, context) {
+            return result
+        }
+        return nil
+    }
+
+    private let binder: (IndexPath, Context) -> Model?
+}
+
 // MARK: ModelCollection
 
 /// Generic protocol defining a collection of `Model` items grouped into sections. This is the core Pilot
