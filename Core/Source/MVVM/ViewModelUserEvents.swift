@@ -21,6 +21,67 @@ public enum ViewModelUserEvent {
     case tap
 }
 
+/// Simple wrapper around NSEvent.ModifierFlags to avoid importing AppKit.
+public struct EventKeyModifierFlags: OptionSet {
+
+    // MARK: OptionSet
+
+    public init(rawValue: UInt) {
+        self.rawValue = rawValue
+    }
+
+    public let rawValue: UInt
+
+    // MARK: Values
+
+    /// Set if Caps Lock key is pressed.
+    public static var capsLock = EventKeyModifierFlags(rawValue: 1<<0)
+    /// Set if Shift key is pressed.
+    public static var shift = EventKeyModifierFlags(rawValue: 1<<1)
+    /// Set if Control key is pressed.
+    public static var control = EventKeyModifierFlags(rawValue: 1<<2)
+    /// Set if Option or Alternate key is pressed.
+    public static var option = EventKeyModifierFlags(rawValue: 1<<3)
+    /// Set if Command key is pressed.
+    public static var command = EventKeyModifierFlags(rawValue: 1<<4)
+    /// Set if Function key is pressed.
+    public static var function = EventKeyModifierFlags(rawValue: 1<<5)
+}
+
+extension ViewModelUserEvent: Hashable {
+    public var hashValue: Int {
+        switch self {
+        case .click:
+            return 1<<0
+        case .keyDown(let key, let flags):
+            return "keyDown-\(key)-\(flags)".hashValue
+        case .longPress:
+            return 1<<1
+        case .secondaryClick:
+            return 1<<2
+        case .select:
+            return 1<<3
+        case .tap:
+            return 1<<4
+        }
+    }
+
+    public static func ==(lhs: ViewModelUserEvent, rhs: ViewModelUserEvent) -> Bool {
+        switch (lhs, rhs) {
+        case (.click, .click), (.longPress, .longPress), (.secondaryClick, .secondaryClick), (.select, .select),
+             (.tap, .tap):
+            return true
+        case (.keyDown(let lKey, let lModifiers), .keyDown(let rKey, let rModifiers)):
+            return lKey == rKey && lModifiers == rModifiers
+        case (.click, _), (.longPress, _), (.secondaryClick, _), (.select, _), (.tap, _), (.keyDown, _):
+            return false
+        }
+    }
+
+    public static var spaceKey = ViewModelUserEvent.keyDown(.space, [])
+    public static var enterKey = ViewModelUserEvent.keyDown(.enter, [])
+}
+
 // swiftlint:disable type_name
 
 /// Possible key code values for `NSEvent.keyCode` - taken from <HIToolbox/Events.h>.
@@ -142,65 +203,4 @@ public enum EventKeyCode: UInt16, RawRepresentable {
     // Pilot Additions
     case enter                     = 0x4C
     case unknown                   = 0xFF
-}
-
-/// Simple wrapper around NSEvent.ModifierFlags to avoid importing AppKit.
-public struct EventKeyModifierFlags: OptionSet {
-
-    // MARK: OptionSet
-
-    public init(rawValue: UInt) {
-        self.rawValue = rawValue
-    }
-
-    public let rawValue: UInt
-
-    // MARK: Values
-
-    /// Set if Caps Lock key is pressed.
-    public static var capsLock = EventKeyModifierFlags(rawValue: 1<<0)
-    /// Set if Shift key is pressed.
-    public static var shift = EventKeyModifierFlags(rawValue: 1<<1)
-    /// Set if Control key is pressed.
-    public static var control = EventKeyModifierFlags(rawValue: 1<<2)
-    /// Set if Option or Alternate key is pressed.
-    public static var option = EventKeyModifierFlags(rawValue: 1<<3)
-    /// Set if Command key is pressed.
-    public static var command = EventKeyModifierFlags(rawValue: 1<<4)
-    /// Set if Function key is pressed.
-    public static var function = EventKeyModifierFlags(rawValue: 1<<5)
-}
-
-extension ViewModelUserEvent: Hashable {
-    public var hashValue: Int {
-        switch self {
-        case .click:
-            return 1<<0
-        case .keyDown(let key, let flags):
-            return 1<<2 ^ key.rawValue.hashValue ^ flags.rawValue.hashValue
-        case .longPress:
-            return 1<<2
-        case .secondaryClick:
-            return 1<<3
-        case .select:
-            return 1<<4
-        case .tap:
-            return 1<<5
-        }
-    }
-
-    public static func ==(lhs: ViewModelUserEvent, rhs: ViewModelUserEvent) -> Bool {
-        switch (lhs, rhs) {
-        case (.click, .click), (.longPress, .longPress), (.secondaryClick, .secondaryClick), (.select, .select),
-             (.tap, .tap):
-            return true
-        case (.keyDown(let lKey, let lModifiers), .keyDown(let rKey, let rModifiers)):
-            return lKey == rKey && lModifiers == rModifiers
-        case (.click, _), (.longPress, _), (.secondaryClick, _), (.select, _), (.tap, _), (.keyDown, _):
-            return false
-        }
-    }
-
-    public static var spaceKey = ViewModelUserEvent.keyDown(.space, [])
-    public static var enterKey = ViewModelUserEvent.keyDown(.enter, [])
 }

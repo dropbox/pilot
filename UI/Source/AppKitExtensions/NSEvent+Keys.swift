@@ -1,6 +1,12 @@
 import Foundation
 import Pilot
 
+#if swift(>=3.2)
+public typealias AppKitEventModifierFlags = NSEvent.ModifierFlags
+#else
+public typealias AppKitEventModifierFlags = NSEventModifierFlags
+#endif
+
 public extension NSEvent {
 
     /// Returns a semantic `EventKeyCode` value (or .Unknown) for the target event.
@@ -13,7 +19,7 @@ public extension NSEvent {
     }
 }
 
-extension NSEvent.ModifierFlags {
+extension AppKitEventModifierFlags {
     public var eventKeyModifierFlags: EventKeyModifierFlags {
         var result = EventKeyModifierFlags(rawValue: 0)
         if contains(.capsLock) {
@@ -39,8 +45,8 @@ extension NSEvent.ModifierFlags {
 }
 
 extension EventKeyModifierFlags {
-    public var modifierFlags: NSEvent.ModifierFlags {
-        var result = NSEvent.ModifierFlags(rawValue: 0)
+    public var modifierFlags: AppKitEventModifierFlags {
+        var result = AppKitEventModifierFlags(rawValue: 0)
         if contains(.capsLock) {
             result.formUnion(.capsLock)
         }

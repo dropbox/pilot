@@ -10,7 +10,7 @@ public protocol CollectionViewDelegate: NSCollectionViewDelegate {
     @objc optional func collectionViewDidReceiveKeyEvent(
         _ collectionView: NSCollectionView,
         key: EventKeyCode,
-        modifiers: NSEvent.ModifierFlags
+        modifiers: AppKitEventModifierFlags
     ) -> Bool
 
     /// Invoked when a specific index path is clicked upon - this allows the client to handle clicks without breaking

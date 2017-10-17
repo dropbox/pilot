@@ -221,7 +221,7 @@ open class CollectionViewController: NSViewController, CollectionViewDelegate {
     open func collectionViewDidReceiveKeyEvent(
         _ collectionView: NSCollectionView,
         key: EventKeyCode,
-        modifiers: NSEvent.ModifierFlags
+        modifiers: AppKitEventModifierFlags
     ) -> Bool {
         guard let indexPath = collectionView.selectionIndexPaths.first else { return false }
         guard let vm = viewModelAtIndexPath(indexPath) else { return false }
