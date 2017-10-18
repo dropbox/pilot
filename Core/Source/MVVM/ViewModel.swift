@@ -65,12 +65,26 @@ public struct SecondaryActionInfo {
     public let imageName: String?
 }
 
+/// Describes the parent item of a list of SecondaryActions.
+public struct SubactionsRootInfo {
+
+    public init(title: String, enabled: Bool = true, imageName: String? = nil) {
+        self.title = title
+        self.enabled = enabled
+        self.imageName = imageName
+    }
+
+    public let title: String
+    public let enabled: Bool
+    public let imageName: String?
+}
+
 /// Represents a secondary action to be displayed in a list to the user (typically from right-click or long-press).
 public enum SecondaryAction {
     case action(SecondaryActionInfo)
     case info(String)
     case separator
-    case subactions(title: String, [SecondaryAction])
+    case subactions(SubactionsRootInfo, [SecondaryAction])
 }
 
 /// Default implementations so `ViewModel`s may opt-in to only interactions they care about.
