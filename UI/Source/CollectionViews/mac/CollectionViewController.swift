@@ -216,18 +216,6 @@ open class CollectionViewController: NSViewController, CollectionViewDelegate {
         lastBounds = bounds
     }
 
-    @objc
-    private func copy(_ sender: Any) {
-        selectedViewModel()?.handleUserEvent(.copy)
-    }
-
-    open override func validateMenuItem(_ menuItem: NSMenuItem) -> Bool {
-        if menuItem.action == #selector(copy(_:)) {
-            return selectedViewModel()?.canHandleUserEvent(.copy) == true
-        }
-        return false
-    }
-
     // MARK: CollectionViewDelegate
 
     open func collectionViewDidReceiveKeyEvent(
@@ -290,6 +278,15 @@ open class CollectionViewController: NSViewController, CollectionViewDelegate {
         if vm.canHandleUserEvent(.select) {
             vm.handleUserEvent(.select)
         }
+    }
+
+    // MARK: NSObject
+
+    open override func validateMenuItem(_ menuItem: NSMenuItem) -> Bool {
+        if menuItem.action == #selector(copy(_:)) {
+            return selectedViewModel()?.canHandleUserEvent(.copy) == true
+        }
+        return false
     }
 
     // MARK: Private
@@ -401,6 +398,11 @@ open class CollectionViewController: NSViewController, CollectionViewDelegate {
         guard let indexPath = collectionView.selectionIndexPaths.first else { return nil }
         guard let vm = viewModelAtIndexPath(indexPath) else { return nil }
         return vm
+    }
+
+    @objc
+    private func copy(_ sender: Any) {
+        selectedViewModel()?.handleUserEvent(.copy)
     }
 
     // MARK: Observing model state changes.
