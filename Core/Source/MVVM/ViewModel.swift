@@ -65,12 +65,28 @@ public struct SecondaryActionInfo {
     public let imageName: String?
 }
 
+/// Describes a group of nested SecondaryActions.
+public struct NestedActionsInfo {
+
+    public init(title: String, enabled: Bool = true, imageName: String? = nil, actions: [SecondaryAction]) {
+        self.title = title
+        self.enabled = enabled
+        self.imageName = imageName
+        self.actions = actions
+    }
+
+    public let title: String
+    public let enabled: Bool
+    public let imageName: String?
+    public let actions: [SecondaryAction]
+}
+
 /// Represents a secondary action to be displayed in a list to the user (typically from right-click or long-press).
 public enum SecondaryAction {
     case action(SecondaryActionInfo)
     case info(String)
     case separator
-    case subactions(title: String, [SecondaryAction])
+    case nested(NestedActionsInfo)
 }
 
 /// Default implementations so `ViewModel`s may opt-in to only interactions they care about.
