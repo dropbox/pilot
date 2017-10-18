@@ -19,6 +19,9 @@ public enum ViewModelUserEvent {
 
     /// On touch platforms, represents the target receiving a single tap.
     case tap
+
+    /// Represents the user attempting to copy the view model to the pasteboard.
+    case copy
 }
 
 /// Simple wrapper around NSEvent.ModifierFlags to avoid importing AppKit.
@@ -63,17 +66,19 @@ extension ViewModelUserEvent: Hashable {
             return 1<<3
         case .tap:
             return 1<<4
+        case .copy:
+            return 1<<5
         }
     }
 
     public static func ==(lhs: ViewModelUserEvent, rhs: ViewModelUserEvent) -> Bool {
         switch (lhs, rhs) {
         case (.click, .click), (.longPress, .longPress), (.secondaryClick, .secondaryClick), (.select, .select),
-             (.tap, .tap):
+             (.tap, .tap), (.copy, .copy):
             return true
         case (.keyDown(let lKey, let lModifiers), .keyDown(let rKey, let rModifiers)):
             return lKey == rKey && lModifiers == rModifiers
-        case (.click, _), (.longPress, _), (.secondaryClick, _), (.select, _), (.tap, _), (.keyDown, _):
+        case (.click, _), (.longPress, _), (.secondaryClick, _), (.select, _), (.tap, _), (.keyDown, _), (.copy, _):
             return false
         }
     }
