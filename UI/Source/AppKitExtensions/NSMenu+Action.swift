@@ -39,14 +39,14 @@ extension NSMenu {
             case .separator:
                 menu.addItem(NSMenuItem.separator())
 
-            case .subactions(let rootInfo, let subactions):
-                let menuItem = NSMenuItem(title: rootInfo.title, action: nil, keyEquivalent: "")
-                menuItem.isEnabled = rootInfo.enabled
-                if let imageName =  rootInfo.imageName {
+            case .nested(let info):
+                let menuItem = NSMenuItem(title: info.title, action: nil, keyEquivalent: "")
+                menuItem.isEnabled = info.enabled
+                if let imageName =  info.imageName {
                     menuItem.image = NSImage(named: imageName)
                 }
                 menu.addItem(menuItem)
-                let submenu = NSMenu.fromSecondaryActions(subactions, action: action, target: target)
+                let submenu = NSMenu.fromSecondaryActions(info.actions, action: action, target: target)
                 menu.setSubmenu(submenu, for: menuItem)
             }
         }
