@@ -223,8 +223,7 @@ open class CollectionViewController: NSViewController, CollectionViewDelegate {
         key: EventKeyCode,
         modifiers: AppKitEventModifierFlags
     ) -> Bool {
-        guard let indexPath = collectionView.selectionIndexPaths.first else { return false }
-        guard let vm = viewModelAtIndexPath(indexPath) else { return false }
+        guard let vm = selectedViewModel() else { return false }
         let event = ViewModelUserEvent.keyDown(key, modifiers.eventKeyModifierFlags)
         if vm.canHandleUserEvent(event) {
             vm.handleUserEvent(event)
@@ -279,6 +278,15 @@ open class CollectionViewController: NSViewController, CollectionViewDelegate {
         if vm.canHandleUserEvent(.select) {
             vm.handleUserEvent(.select)
         }
+    }
+
+    // MARK: NSObject
+
+    open override func validateMenuItem(_ menuItem: NSMenuItem) -> Bool {
+        if menuItem.action == #selector(copy(_:)) {
+            return selectedViewModel()?.canHandleUserEvent(.copy) == true
+        }
+        return false
     }
 
     // MARK: Private
@@ -384,6 +392,16 @@ open class CollectionViewController: NSViewController, CollectionViewDelegate {
         guard let menuNotificationObserver = self.menuNotificationObserver else { return }
         NotificationCenter.default.removeObserver(menuNotificationObserver)
         self.menuNotificationObserver = nil
+    }
+
+    private func selectedViewModel() -> ViewModel? {
+        guard let indexPath = collectionView.selectionIndexPaths.first else { return nil }
+        return viewModelAtIndexPath(indexPath)
+    }
+
+    @objc
+    private func copy(_ sender: Any) {
+        selectedViewModel()?.handleUserEvent(.copy)
     }
 
     // MARK: Observing model state changes.

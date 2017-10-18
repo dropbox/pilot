@@ -94,12 +94,12 @@ public extension ViewModel {
 
     func handleUserEvent(_ event: ViewModelUserEvent) {}
 
-    /// By default returns true for all non-keyboard events.
+    /// By default returns true for all non-keyboard and pasteboard events.
     func canHandleUserEvent(_ event: ViewModelUserEvent) -> Bool {
-        if case .keyDown = event {
-            return false
+        switch event {
+        case .click, .longPress, .secondaryClick, .select, .tap: return true
+        case .keyDown, .copy: return false
         }
-        return true
     }
 
     func secondaryActions(for event: ViewModelUserEvent) -> [SecondaryAction] {
