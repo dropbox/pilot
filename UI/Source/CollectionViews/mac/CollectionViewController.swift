@@ -396,8 +396,7 @@ open class CollectionViewController: NSViewController, CollectionViewDelegate {
 
     private func selectedViewModel() -> ViewModel? {
         guard let indexPath = collectionView.selectionIndexPaths.first else { return nil }
-        guard let vm = viewModelAtIndexPath(indexPath) else { return nil }
-        return vm
+        return viewModelAtIndexPath(indexPath)
     }
 
     @objc
