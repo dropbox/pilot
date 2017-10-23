@@ -66,15 +66,6 @@ public func ==(lhs: ModelVersion, rhs: ModelVersion) -> Bool {
 /// Uses a non-cryptographic, but collision-resistant hash (with good mixing) to
 /// produce a unique ModelVersion given a set of values mixed in.
 public struct ModelVersionMixer {
-    // MARK: Static Functions
-
-    public static func version(_ value: Encodable) -> ModelVersion {
-        var mixer = ModelVersionMixer()
-        // Encoders in general can throw, but ModelVersionMixer never does.
-        try? value.encode(to: mixer)
-        return mixer.result()
-    }
-
     // MARK: Init
 
     public init() {
@@ -197,9 +188,18 @@ public struct ModelVersionMixer {
     private var hasher = Hasher()
 }
 
+#if swift(>=4)
 // MARK: ModelVersionMixer Encoder conformance
 
 extension ModelVersionMixer: Encoder {
+    /// Generate a version based on the serialization of an Encodable
+    public static func version(_ value: Encodable) -> ModelVersion {
+        var mixer = ModelVersionMixer()
+        // Encoders in general can throw, but ModelVersionMixer never does.
+        try? value.encode(to: mixer)
+        return mixer.result()
+    }
+
     public var codingPath: [CodingKey] { return [] }
     public var userInfo: [CodingUserInfoKey : Any] { return [:] }
 
@@ -499,3 +499,4 @@ fileprivate struct ModelVersionKeyedEncoder<K: CodingKey>: KeyedEncodingContaine
 
     private var encoder: ModelVersionEncoder
 }
+#endif
