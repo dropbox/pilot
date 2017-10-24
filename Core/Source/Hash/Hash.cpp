@@ -24,7 +24,19 @@ void Hasher_Mix_UInt16(Hasher* hasher, uint16_t value) {
     get(hasher)->Update(&value, sizeof(value));
 }
 
+void Hasher_Mix_UInt32(Hasher* hasher, uint32_t value) {
+    get(hasher)->Update(&value, sizeof(value));
+}
+
 void Hasher_Mix_UInt64(Hasher* hasher, uint64_t value) {
+    get(hasher)->Update(&value, sizeof(value));
+}
+
+void Hasher_Mix_Int8(Hasher* hasher, int8_t value) {
+    get(hasher)->Update(&value, sizeof(value));
+}
+
+void Hasher_Mix_Int16(Hasher* hasher, int16_t value) {
     get(hasher)->Update(&value, sizeof(value));
 }
 
