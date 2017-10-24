@@ -19,7 +19,7 @@ extension NSMenu {
         actions.forEach { secondaryAction in
             switch secondaryAction {
             case .action(let info):
-                let menuItem = NSMenuItem(title: info.title, action: action, keyEquivalent: "")
+                let menuItem = NSMenuItem(title: info.title, action: action, keyEquivalent: info.keyEquivalent)
                 menuItem.isEnabled = info.enabled
                 menuItem.state = info.state.toNSState()
                 menuItem.representedObject = MenuItemActionWrapper(info.action)

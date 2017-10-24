@@ -42,12 +42,20 @@ public protocol ViewModel {
 /// menus.
 public struct SecondaryActionInfo {
 
-    public init(action: Action, title: String, state: State = .off, enabled: Bool = true, imageName: String? = nil) {
+    public init(
+        action: Action,
+        title: String,
+        state: State = .off,
+        enabled: Bool = true,
+        imageName: String? = nil,
+        keyEquivalent: String = ""
+    ) {
         self.action = action
         self.title = title
         self.state = state
         self.enabled = enabled
         self.imageName = imageName
+        self.keyEquivalent = keyEquivalent
     }
 
     /// State of the secondary action. Note that this differs from enabled, but instead represents whether the action
@@ -63,6 +71,7 @@ public struct SecondaryActionInfo {
     public let state: State
     public let enabled: Bool
     public let imageName: String?
+    public let keyEquivalent: String
 }
 
 /// Describes a group of nested SecondaryActions.
