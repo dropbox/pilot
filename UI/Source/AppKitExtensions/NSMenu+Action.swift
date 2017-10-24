@@ -10,7 +10,7 @@ extension NSMenu {
         _ actions: [SecondaryAction],
         action: Selector,
         target: AnyObject? = nil
-        ) -> NSMenu {
+    ) -> NSMenu {
         let menu = NSMenu()
 
         // Enabling is set explicitly per-item below.
