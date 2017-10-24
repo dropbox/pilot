@@ -64,7 +64,7 @@ public struct SecondaryActionInfo {
         enabled: Bool = true,
         imageName: String? = nil,
         keyEquivalent: String = ""
-        ) {
+    ) {
         self.action = action
         self.metadata = Metadata(
             title: title,
