@@ -10,7 +10,7 @@ extension NSMenu {
         _ actions: [SecondaryAction],
         action: Selector,
         target: AnyObject? = nil
-    ) -> NSMenu {
+        ) -> NSMenu {
         let menu = NSMenu()
 
         // Enabling is set explicitly per-item below.
@@ -19,11 +19,11 @@ extension NSMenu {
         actions.forEach { secondaryAction in
             switch secondaryAction {
             case .action(let info):
-                let menuItem = NSMenuItem(title: info.title, action: action, keyEquivalent: "")
-                menuItem.isEnabled = info.enabled
-                menuItem.state = info.state.toNSState()
+                let menuItem = NSMenuItem(title: info.metadata.title, action: action, keyEquivalent: "")
+                menuItem.isEnabled = info.metadata.enabled
+                menuItem.state = info.metadata.state.toNSState()
                 menuItem.representedObject = MenuItemActionWrapper(info.action)
-                if let imageName =  info.imageName {
+                if let imageName =  info.metadata.imageName {
                     menuItem.image = NSImage(named: imageName)
                 }
                 menuItem.target = target
@@ -40,9 +40,9 @@ extension NSMenu {
                 menu.addItem(NSMenuItem.separator())
 
             case .nested(let info):
-                let menuItem = NSMenuItem(title: info.title, action: nil, keyEquivalent: "")
-                menuItem.isEnabled = info.enabled
-                if let imageName =  info.imageName {
+                let menuItem = NSMenuItem(title: info.metadata.title, action: nil, keyEquivalent: "")
+                menuItem.isEnabled = info.metadata.enabled
+                if let imageName =  info.metadata.imageName {
                     menuItem.image = NSImage(named: imageName)
                 }
                 menu.addItem(menuItem)
@@ -66,7 +66,7 @@ extension NSMenuItem {
     }
 }
 
-extension SecondaryActionInfo.State {
+extension SecondaryActionInfo.Metadata.State {
     fileprivate func toNSState() -> Int {
         switch self {
         case .on:

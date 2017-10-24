@@ -41,44 +41,58 @@ public protocol ViewModel {
 /// Wraps an `Action` with additional data to be rendered in a "secondary" context like context menus or long-press
 /// menus.
 public struct SecondaryActionInfo {
+    public struct Metadata {
+        public let title: String
+        public let state: State
+        public let enabled: Bool
+        public let imageName: String?
+        public let keyEquivalent: String
 
-    public init(action: Action, title: String, state: State = .off, enabled: Bool = true, imageName: String? = nil) {
-        self.action = action
-        self.title = title
-        self.state = state
-        self.enabled = enabled
-        self.imageName = imageName
+        /// State of the secondary action. Note that this differs from enabled, but instead represents whether the
+        /// action is "checked" in a list.
+        public enum State {
+            case on
+            case off
+            case mixed
+        }
     }
 
-    /// State of the secondary action. Note that this differs from enabled, but instead represents whether the action
-    /// is "checked" in a list.
-    public enum State {
-        case on
-        case off
-        case mixed
+    public init(
+        action: Action,
+        title: String,
+        state: Metadata.State = .off,
+        enabled: Bool = true,
+        imageName: String? = nil,
+        keyEquivalent: String = ""
+        ) {
+        self.action = action
+        self.metadata = Metadata(
+            title: title,
+            state: state,
+            enabled: enabled,
+            imageName: imageName,
+            keyEquivalent: keyEquivalent)
     }
 
     public let action: Action
-    public let title: String
-    public let state: State
-    public let enabled: Bool
-    public let imageName: String?
+    public let metadata: Metadata
 }
 
 /// Describes a group of nested SecondaryActions.
 public struct NestedActionsInfo {
 
     public init(title: String, enabled: Bool = true, imageName: String? = nil, actions: [SecondaryAction]) {
-        self.title = title
-        self.enabled = enabled
-        self.imageName = imageName
+        self.metadata = SecondaryActionInfo.Metadata(
+            title: title,
+            state: .off,
+            enabled: enabled,
+            imageName: imageName,
+            keyEquivalent: "")
         self.actions = actions
     }
 
-    public let title: String
-    public let enabled: Bool
-    public let imageName: String?
     public let actions: [SecondaryAction]
+    public let metadata: SecondaryActionInfo.Metadata
 }
 
 /// Represents a secondary action to be displayed in a list to the user (typically from right-click or long-press).
