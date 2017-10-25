@@ -54,6 +54,14 @@ public struct SecondaryActionInfo {
             case on
             case off
             case mixed
+
+            public init(bool: Bool) {
+                if bool {
+                    self = .on
+                } else {
+                    self = .off
+                }
+            }
         }
 
         // Always provide a default value, so that it is easy to create partial Metadata to overlay on top on an
