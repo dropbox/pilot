@@ -55,44 +55,49 @@ public struct SecondaryActionInfo {
             case off
             case mixed
         }
+
+        public init(
+            title: String,
+            state: Metadata.State = .off,
+            enabled: Bool = true,
+            imageName: String? = nil,
+            keyEquivalent: String = ""
+        ) {
+            self.title = title
+            self.state = state
+            self.enabled = enabled
+            self.imageName = imageName
+            self.keyEquivalent = keyEquivalent
+        }
+
+        // Enforce some common conventions (for example, state is off, no keyEquivalent).
+        public static func forNestedAction(
+            title: String,
+            enabled: Bool = true,
+            imageName: String? = nil
+        ) -> Metadata {
+            return Metadata(title: title, state: .off, enabled: enabled, imageName: imageName)
+        }
     }
 
-    public init(
-        action: Action,
-        title: String,
-        state: Metadata.State = .off,
-        enabled: Bool = true,
-        imageName: String? = nil,
-        keyEquivalent: String = ""
-    ) {
+    public init(metadata: Metadata, action: Action) {
+        self.metadata = metadata
         self.action = action
-        self.metadata = Metadata(
-            title: title,
-            state: state,
-            enabled: enabled,
-            imageName: imageName,
-            keyEquivalent: keyEquivalent)
     }
 
-    public let action: Action
     public let metadata: Metadata
+    public let action: Action
 }
 
 /// Describes a group of nested SecondaryActions.
 public struct NestedActionsInfo {
-
-    public init(title: String, enabled: Bool = true, imageName: String? = nil, actions: [SecondaryAction]) {
-        self.metadata = SecondaryActionInfo.Metadata(
-            title: title,
-            state: .off,
-            enabled: enabled,
-            imageName: imageName,
-            keyEquivalent: "")
+    public init(metadata: SecondaryActionInfo.Metadata, actions: [SecondaryAction]) {
+        self.metadata = metadata
         self.actions = actions
     }
 
-    public let actions: [SecondaryAction]
     public let metadata: SecondaryActionInfo.Metadata
+    public let actions: [SecondaryAction]
 }
 
 /// Represents a secondary action to be displayed in a list to the user (typically from right-click or long-press).
