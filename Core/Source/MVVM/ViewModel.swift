@@ -41,43 +41,62 @@ public protocol ViewModel {
 /// Wraps an `Action` with additional data to be rendered in a "secondary" context like context menus or long-press
 /// menus.
 public struct SecondaryActionInfo {
+    public struct Metadata {
+        public let title: String
+        public let state: State
+        public let enabled: Bool
+        public let imageName: String?
+        public let keyEquivalent: String
 
-    public init(action: Action, title: String, state: State = .off, enabled: Bool = true, imageName: String? = nil) {
+        /// State of the secondary action. Note that this differs from enabled, but instead represents whether the
+        /// action is "checked" in a list.
+        public enum State {
+            case on
+            case off
+            case mixed
+        }
+
+        public init(
+            title: String,
+            state: Metadata.State = .off,
+            enabled: Bool = true,
+            imageName: String? = nil,
+            keyEquivalent: String = ""
+        ) {
+            self.title = title
+            self.state = state
+            self.enabled = enabled
+            self.imageName = imageName
+            self.keyEquivalent = keyEquivalent
+        }
+
+        // Enforce some common conventions (for example, state is off, no keyEquivalent).
+        public static func forNestedAction(
+            title: String,
+            enabled: Bool = true,
+            imageName: String? = nil
+        ) -> Metadata {
+            return Metadata(title: title, state: .off, enabled: enabled, imageName: imageName)
+        }
+    }
+
+    public init(metadata: Metadata, action: Action) {
+        self.metadata = metadata
         self.action = action
-        self.title = title
-        self.state = state
-        self.enabled = enabled
-        self.imageName = imageName
     }
 
-    /// State of the secondary action. Note that this differs from enabled, but instead represents whether the action
-    /// is "checked" in a list.
-    public enum State {
-        case on
-        case off
-        case mixed
-    }
-
+    public let metadata: Metadata
     public let action: Action
-    public let title: String
-    public let state: State
-    public let enabled: Bool
-    public let imageName: String?
 }
 
 /// Describes a group of nested SecondaryActions.
 public struct NestedActionsInfo {
-
-    public init(title: String, enabled: Bool = true, imageName: String? = nil, actions: [SecondaryAction]) {
-        self.title = title
-        self.enabled = enabled
-        self.imageName = imageName
+    public init(metadata: SecondaryActionInfo.Metadata, actions: [SecondaryAction]) {
+        self.metadata = metadata
         self.actions = actions
     }
 
-    public let title: String
-    public let enabled: Bool
-    public let imageName: String?
+    public let metadata: SecondaryActionInfo.Metadata
     public let actions: [SecondaryAction]
 }
 
