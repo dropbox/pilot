@@ -24,7 +24,7 @@ public struct PodcastViewModel: ViewModel {
 
     public let context: Context
 
-    public func handleUserEvent(_ event: ViewModelUserEvent) -> Action? {
+    public func actionForUserEvent(_ event: ViewModelUserEvent) -> Action? {
         if case .select = event {
             return ViewURLAction(url: podcast.collectionView)
         }

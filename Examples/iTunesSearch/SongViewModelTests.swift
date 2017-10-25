@@ -37,7 +37,7 @@ class SongViewModelTests: XCTestCase {
         let song = stubSong
         let context = Context()
         let subject = SongViewModel(model: song, context: context)
-        let result = subject.action(.select)
+        let result = subject.actionForUserEvent(.select)
         if let result = result as? ViewMediaAction {
             XCTAssertEqual(result.url, song.preview)
         } else {

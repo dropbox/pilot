@@ -113,6 +113,10 @@
 		8E0E6F261EE8951500D1CB86 /* SortedModelCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E0E6F241EE894FD00D1CB86 /* SortedModelCollection.swift */; };
 		8E0E6F281EE89A3D00D1CB86 /* SortedModelCollectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E0E6F271EE89A3D00D1CB86 /* SortedModelCollectionTests.swift */; };
 		8E0E6F291EE89A3D00D1CB86 /* SortedModelCollectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E0E6F271EE89A3D00D1CB86 /* SortedModelCollectionTests.swift */; };
+		A428996E1FA137F300EA4422 /* SecondaryActionInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = A428996D1FA137F300EA4422 /* SecondaryActionInfo.swift */; };
+		A428996F1FA137F300EA4422 /* SecondaryActionInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = A428996D1FA137F300EA4422 /* SecondaryActionInfo.swift */; };
+		A42899711FA1393500EA4422 /* ViewModelBinding.swift in Sources */ = {isa = PBXBuildFile; fileRef = A42899701FA1393500EA4422 /* ViewModelBinding.swift */; };
+		A42899721FA1393500EA4422 /* ViewModelBinding.swift in Sources */ = {isa = PBXBuildFile; fileRef = A42899701FA1393500EA4422 /* ViewModelBinding.swift */; };
 		A437EDA81E56507600F67B37 /* SimpleModelCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = A437EDA71E56507600F67B37 /* SimpleModelCollection.swift */; };
 		A437EDA91E56507600F67B37 /* SimpleModelCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = A437EDA71E56507600F67B37 /* SimpleModelCollection.swift */; };
 		A437EDAB1E5655AD00F67B37 /* SimpleModelCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = A437EDAA1E5655AD00F67B37 /* SimpleModelCollection.swift */; };
@@ -271,6 +275,8 @@
 		69FADC931D30BDC2001F2E11 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk/System/Library/Frameworks/AppKit.framework; sourceTree = DEVELOPER_DIR; };
 		8E0E6F241EE894FD00D1CB86 /* SortedModelCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SortedModelCollection.swift; path = Core/Source/MVVM/SortedModelCollection.swift; sourceTree = "<group>"; };
 		8E0E6F271EE89A3D00D1CB86 /* SortedModelCollectionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SortedModelCollectionTests.swift; path = Core/Tests/MVVM/SortedModelCollectionTests.swift; sourceTree = "<group>"; };
+		A428996D1FA137F300EA4422 /* SecondaryActionInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SecondaryActionInfo.swift; path = Core/Source/MVVM/SecondaryActionInfo.swift; sourceTree = "<group>"; };
+		A42899701FA1393500EA4422 /* ViewModelBinding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ViewModelBinding.swift; path = Core/Source/MVVM/ViewModelBinding.swift; sourceTree = "<group>"; };
 		A437EDA71E56507600F67B37 /* SimpleModelCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SimpleModelCollection.swift; path = Core/Tests/MVVM/SimpleModelCollection.swift; sourceTree = "<group>"; };
 		A437EDAA1E5655AD00F67B37 /* SimpleModelCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SimpleModelCollection.swift; path = Core/Source/MVVM/SimpleModelCollection.swift; sourceTree = "<group>"; };
 		A437EDAD1E5660CE00F67B37 /* AsyncModelCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AsyncModelCollection.swift; path = Core/Source/MVVM/AsyncModelCollection.swift; sourceTree = "<group>"; };
@@ -577,6 +583,7 @@
 				69F89E741C52F06200F08E28 /* ModelCollection.swift */,
 				D5DF48131CAAC2F200F611E6 /* MultiplexModelCollection.swift */,
 				022120341DFB807C007C4039 /* ScoredModelCollection.swift */,
+				A428996D1FA137F300EA4422 /* SecondaryActionInfo.swift */,
 				A437EDAA1E5655AD00F67B37 /* SimpleModelCollection.swift */,
 				8E0E6F241EE894FD00D1CB86 /* SortedModelCollection.swift */,
 				698F3F7E1CE543DB00076B8C /* StaticModel.swift */,
@@ -586,6 +593,7 @@
 				69F89E781C52F06200F08E28 /* View.swift */,
 				693A60C91CAC80F800E0D2A3 /* ViewLayout.swift */,
 				69F89E771C52F06200F08E28 /* ViewModel.swift */,
+				A42899701FA1393500EA4422 /* ViewModelBinding.swift */,
 				A4897B621F95582100727514 /* ViewModelUserEvents.swift */,
 			);
 			name = MVVM;
@@ -996,6 +1004,7 @@
 				69AECEF71CAB07FF00EEE780 /* FilteredModelCollection.swift in Sources */,
 				0263D8081D6CCE6C0042415E /* StaticModelCollection.swift in Sources */,
 				02AADF511D6E433E00587167 /* SwitchableModelCollection.swift in Sources */,
+				A428996F1FA137F300EA4422 /* SecondaryActionInfo.swift in Sources */,
 				A4AED3D61D402D73001F3524 /* MappedModelCollection.swift in Sources */,
 				6988476B1CE6459B0075D205 /* StaticViewBindingProvider.swift in Sources */,
 				8E0E6F261EE8951500D1CB86 /* SortedModelCollection.swift in Sources */,
@@ -1006,6 +1015,7 @@
 				A437EDB61E567AE900F67B37 /* Async.swift in Sources */,
 				A460CC841E56195F00F9AC6F /* Downcast.swift in Sources */,
 				A4897B641F95582100727514 /* ViewModelUserEvents.swift in Sources */,
+				A42899721FA1393500EA4422 /* ViewModelBinding.swift in Sources */,
 				698F3F7F1CE543DB00076B8C /* StaticModel.swift in Sources */,
 				69F89E791C52F06200F08E28 /* ModelCollection.swift in Sources */,
 				D560D4611D136E11000DA826 /* ConsoleLogger.swift in Sources */,
@@ -1107,6 +1117,7 @@
 				696534A21D1710D400DF97CB /* FilteredModelCollection.swift in Sources */,
 				6965349F1D1710CB00DF97CB /* Logger.swift in Sources */,
 				02AADF501D6E433E00587167 /* SwitchableModelCollection.swift in Sources */,
+				A428996E1FA137F300EA4422 /* SecondaryActionInfo.swift in Sources */,
 				696534A11D1710D400DF97CB /* EmptyModelCollection.swift in Sources */,
 				A4AED3D51D402D73001F3524 /* MappedModelCollection.swift in Sources */,
 				8E0E6F251EE894FD00D1CB86 /* SortedModelCollection.swift in Sources */,
@@ -1117,6 +1128,7 @@
 				A437EDB51E567AE800F67B37 /* Async.swift in Sources */,
 				696534AB1D1710D400DF97CB /* View.swift in Sources */,
 				A4897B631F95582100727514 /* ViewModelUserEvents.swift in Sources */,
+				A42899711FA1393500EA4422 /* ViewModelBinding.swift in Sources */,
 				022862581DB0070100FCD03F /* DiffEngine.swift in Sources */,
 				692936111E130468001303D2 /* Action.swift in Sources */,
 				696534A41D1710D400DF97CB /* Context.swift in Sources */,
