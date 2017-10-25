@@ -56,8 +56,11 @@ public struct SecondaryActionInfo {
             case mixed
         }
 
+        // Always provide a default value, so that it is easy to create partial Metadata to overlay on top on an
+        // existing item. For example, an AppActionResponder may want to pass up Metadata(state: .on) to add
+        // a checkmark to an item, without knowing the exact name of the action.
         public init(
-            title: String,
+            title: String = "",
             state: Metadata.State = .off,
             enabled: Bool = true,
             imageName: String? = nil,
