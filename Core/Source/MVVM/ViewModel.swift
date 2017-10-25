@@ -71,7 +71,7 @@ public struct SecondaryActionInfo {
         }
 
         // Enforce some common conventions (for example, state is off, no keyEquivalent).
-        public static func forNestedAction(
+        public static func forNestedActions(
             title: String,
             enabled: Bool = true,
             imageName: String? = nil

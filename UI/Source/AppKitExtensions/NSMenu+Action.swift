@@ -66,8 +66,8 @@ extension NSMenuItem {
     }
 }
 
-extension SecondaryActionInfo.Metadata.State {
-    fileprivate func toNSState() -> Int {
+public extension SecondaryActionInfo.Metadata.State {
+    func toNSState() -> Int {
         switch self {
         case .on:
             return NSOnState
