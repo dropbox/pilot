@@ -55,8 +55,8 @@ public struct SecondaryActionInfo {
             case off
             case mixed
 
-            public init(bool: Bool) {
-                if bool {
+            public init(isOn: Bool) {
+                if isOn {
                     self = .on
                 } else {
                     self = .off
