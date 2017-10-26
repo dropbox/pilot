@@ -50,13 +50,13 @@ public struct SecondaryActionInfo {
 
         /// State of the secondary action. Note that this differs from enabled, but instead represents whether the
         /// action is "checked" in a list.
-        public enum State {
+        public enum State: ExpressibleByBooleanLiteral {
             case on
             case off
             case mixed
 
-            public init(isOn: Bool) {
-                if isOn {
+            public init(booleanLiteral value: BooleanLiteralType) {
+                if value {
                     self = .on
                 } else {
                     self = .off
