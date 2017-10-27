@@ -45,7 +45,10 @@ extension NSMenuItem {
     ) -> NSMenuItem {
         switch secondaryAction {
         case .action(let info):
-            let menuItem = NSMenuItem(title: info.metadata.title, action: action, keyEquivalent: "")
+            let menuItem = NSMenuItem(
+                title: info.metadata.title,
+                action: action,
+                keyEquivalent: info.metadata.keyEquivalent)
             menuItem.isEnabled = info.metadata.enabled
             menuItem.state = info.metadata.state.toNSState()
             menuItem.representedObject = MenuItemActionWrapper(info.action)
@@ -66,7 +69,10 @@ extension NSMenuItem {
             return NSMenuItem.separator()
 
         case .nested(let info):
-            let menuItem = NSMenuItem(title: info.metadata.title, action: nil, keyEquivalent: "")
+            let menuItem = NSMenuItem(
+                title: info.metadata.title,
+                action: nil,
+                keyEquivalent: info.metadata.keyEquivalent)
             menuItem.isEnabled = info.metadata.enabled
             if let imageName =  info.metadata.imageName {
                 menuItem.image = NSImage(named: imageName)
