@@ -35,7 +35,7 @@ public struct SecondaryActionInfo {
             enabled: Bool = true,
             imageName: String? = nil,
             keyEquivalent: String = ""
-            ) {
+        ) {
             self.title = title
             self.state = state
             self.enabled = enabled
@@ -48,7 +48,7 @@ public struct SecondaryActionInfo {
             title: String,
             enabled: Bool = true,
             imageName: String? = nil
-            ) -> Metadata {
+        ) -> Metadata {
             return Metadata(title: title, state: .off, enabled: enabled, imageName: imageName)
         }
     }
