@@ -38,16 +38,21 @@ private struct DirectoryModelBinder: ViewModelBindingProvider {
 
     func selectionViewModel(for models: [Model], context: Context) -> SelectionViewModel? {
         let files: [FileViewModel] = models.flatMap({ ($0 as? File)?.viewModelWithContext(context) as? FileViewModel })
-        return FileSelectionViewModel(viewModels: files)
+        return FileSelectionViewModel(viewModels: files, context: context)
     }
 }
 
 private struct FileSelectionViewModel: SelectionViewModel {
-    init(viewModels: [ViewModel]) {
+    init(viewModels: [ViewModel], context: Context) {
         self.files = viewModels.map { $0.typedViewModel() }
+        self.context = context
     }
 
-    private var files: [FileViewModel]
+    var files: [FileViewModel]
+    var context: Context
+
+    // MARK: ViewModelType
+
     func canHandleUserEvent(_ event: ViewModelUserEvent) -> Bool {
         for file in files {
             if !file.canHandleUserEvent(event) {
@@ -65,9 +70,9 @@ private struct FileSelectionViewModel: SelectionViewModel {
 
     func secondaryActions(for event: ViewModelUserEvent) -> [SecondaryAction] {
         let names = files.map({ $0.filename }).joined(separator: ",")
-        let newFolder = SecondaryActionInfo(
-            action: OpenFilesAction(urls: files.map({ $0.url })),
-            title: files.count == 1 ? "Open" : "Open \(files.count) files")
-        return [.info("Selected: \(names)"), .action(newFolder)]
+        let action = OpenFilesAction(urls: files.map({ $0.url }))
+        let title = files.count == 1 ? "Open" : "Open \(files.count) files"
+        let open = SecondaryActionInfo(metadata: SecondaryActionInfo.Metadata.init(title: title), action: action)
+        return [.info("Selected: \(names)"), .action(open)]
     }
 }
