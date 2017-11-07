@@ -15,6 +15,15 @@ public struct FileViewModel: ViewModel {
         return file.url
     }
 
+    public func actionForUserEvent(_ event: ViewModelUserEvent) -> Action? {
+        if case .keyDown(_, let modifiers, let characters) = event {
+            if modifiers.contains(.command) && characters == "o" {
+                return OpenFilesAction(urls: [url])
+            }
+        }
+        return nil
+    }
+
     public func handleDoubleClick() {
         OpenFilesAction(urls: [url]).send(from: context)
     }
