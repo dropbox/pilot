@@ -222,9 +222,10 @@ open class CollectionViewController: NSViewController, CollectionViewDelegate {
     open func collectionViewDidReceiveKeyEvent(
         _ collectionView: NSCollectionView,
         key: EventKeyCode,
-        modifiers: AppKitEventModifierFlags
+        modifiers: AppKitEventModifierFlags,
+        characters: String?
     ) -> Bool {
-        let event = ViewModelUserEvent.keyDown(key, modifiers.eventKeyModifierFlags)
+        let event = ViewModelUserEvent.keyDown(key, modifiers.eventKeyModifierFlags, characters)
         return handleUserEvent(event)
     }
 
