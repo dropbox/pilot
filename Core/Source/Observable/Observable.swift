@@ -24,6 +24,7 @@ public protocol Observable: class {
 /// this might look like.
 /// NOTE: does not expose the notifyObserversOfEvent method because this is read-only.
 open class GenericObservable<Event>: Observable {
+    public init() {}
     open func addObserver(_ observer: @escaping (Event) -> Void) -> ObserverToken {
         Log.fatal(message: "addObserver must be overridden")
     }
