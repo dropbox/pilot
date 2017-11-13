@@ -114,7 +114,7 @@
 		8E0E6F281EE89A3D00D1CB86 /* SortedModelCollectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E0E6F271EE89A3D00D1CB86 /* SortedModelCollectionTests.swift */; };
 		8E0E6F291EE89A3D00D1CB86 /* SortedModelCollectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E0E6F271EE89A3D00D1CB86 /* SortedModelCollectionTests.swift */; };
 		9CA5FC4E1FB9A65300F85B98 /* CollectionViewHostReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CA5FC4D1FB9A65300F85B98 /* CollectionViewHostReusableView.swift */; };
-		9CA5FC521FB9A81A00F85B98 /* CollectionView+SupplementaryViewTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CA5FC511FB9A81A00F85B98 /* CollectionView+SupplementaryViewTest.swift */; };
+		9CA5FC521FB9A81A00F85B98 /* CollectionViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CA5FC511FB9A81A00F85B98 /* CollectionViewTests.swift */; };
 		A428996E1FA137F300EA4422 /* SecondaryActionInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = A428996D1FA137F300EA4422 /* SecondaryActionInfo.swift */; };
 		A428996F1FA137F300EA4422 /* SecondaryActionInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = A428996D1FA137F300EA4422 /* SecondaryActionInfo.swift */; };
 		A42899711FA1393500EA4422 /* ViewModelBinding.swift in Sources */ = {isa = PBXBuildFile; fileRef = A42899701FA1393500EA4422 /* ViewModelBinding.swift */; };
@@ -278,7 +278,7 @@
 		8E0E6F241EE894FD00D1CB86 /* SortedModelCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SortedModelCollection.swift; path = Core/Source/MVVM/SortedModelCollection.swift; sourceTree = "<group>"; };
 		8E0E6F271EE89A3D00D1CB86 /* SortedModelCollectionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SortedModelCollectionTests.swift; path = Core/Tests/MVVM/SortedModelCollectionTests.swift; sourceTree = "<group>"; };
 		9CA5FC4D1FB9A65300F85B98 /* CollectionViewHostReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CollectionViewHostReusableView.swift; path = UI/Source/CollectionViews/mac/CollectionViewHostReusableView.swift; sourceTree = "<group>"; };
-		9CA5FC511FB9A81A00F85B98 /* CollectionView+SupplementaryViewTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CollectionView+SupplementaryViewTest.swift"; sourceTree = "<group>"; };
+		9CA5FC511FB9A81A00F85B98 /* CollectionViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewTests.swift; sourceTree = "<group>"; };
 		A428996D1FA137F300EA4422 /* SecondaryActionInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SecondaryActionInfo.swift; path = Core/Source/MVVM/SecondaryActionInfo.swift; sourceTree = "<group>"; };
 		A42899701FA1393500EA4422 /* ViewModelBinding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ViewModelBinding.swift; path = Core/Source/MVVM/ViewModelBinding.swift; sourceTree = "<group>"; };
 		A437EDA71E56507600F67B37 /* SimpleModelCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SimpleModelCollection.swift; path = Core/Tests/MVVM/SimpleModelCollection.swift; sourceTree = "<group>"; };
@@ -645,7 +645,7 @@
 		9CA5FC501FB9A7F900F85B98 /* mac */ = {
 			isa = PBXGroup;
 			children = (
-				9CA5FC511FB9A81A00F85B98 /* CollectionView+SupplementaryViewTest.swift */,
+				9CA5FC511FB9A81A00F85B98 /* CollectionViewTests.swift */,
 			);
 			name = mac;
 			path = UI/Tests/CollectionView/mac;
@@ -1192,7 +1192,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A455A7E71E5F6C3900F63A37 /* PilotUI.swift in Sources */,
-				9CA5FC521FB9A81A00F85B98 /* CollectionView+SupplementaryViewTest.swift in Sources */,
+				9CA5FC521FB9A81A00F85B98 /* CollectionViewTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -2,11 +2,9 @@ import XCTest
 import Pilot
 @testable import PilotUI
 
-class CollectionViewSupplementaryViewTest: XCTestCase {
-    override func setUp() {
+class CollectionViewTests: XCTestCase {
 
-    }
-
+    /// Assert that the CollectionViewController renders a View with appropriate ViewModel and Model.
     func testBasicCollectionViewBinding() {
         let cvc = makeCollectionViewController()
 
@@ -23,6 +21,7 @@ class CollectionViewSupplementaryViewTest: XCTestCase {
         XCTAssert(viewModel.model.modelId == "MODEL_1")
     }
 
+    /// Assert that the CollectionViewController renders a supplementary View with appropriate ViewModel and Model.
     func testSupplementaryCollectionViewBinding() {
         let kind = TestSupplementaryLayout.SupplementaryLayoutKind
         let path = IndexPath(item: 0, section: 0)
@@ -44,6 +43,8 @@ class CollectionViewSupplementaryViewTest: XCTestCase {
         XCTAssert(viewModel.model.modelId == "SUPPLEMENTARY_MODEL_1")
     }
 
+    /// Assert that the CollectionViewController renders a supplementary View with appropriate ViewModel and Model
+    /// and that the view can be rebound even if the underlying View type changes.
     func testSupplementaryCollectionViewBindingReload() {
         let kind = TestSupplementaryLayout.SupplementaryLayoutKind
         let path = IndexPath(item: 0, section: 0)
@@ -98,9 +99,7 @@ class CollectionViewSupplementaryViewTest: XCTestCase {
         return hostedView
     }
 
-    func makeCollectionViewController(
-        layout: NSCollectionViewLayout = CollectionViewSupplementaryViewTest.makeDefaultLayout()
-    ) -> CollectionViewController {
+    func makeCollectionViewController(layout: NSCollectionViewLayout = makeDefaultLayout()) -> CollectionViewController {
         let context = Context()
         let collection = StaticModelCollection([[StaticModel(modelId: "MODEL_1", data: "First")]])
 
@@ -132,12 +131,12 @@ class CollectionViewSupplementaryViewTest: XCTestCase {
             forSupplementaryElementOfKind: kind)
         cvc.collectionView.layout()
     }
+}
 
-    static func makeDefaultLayout() -> NSCollectionViewLayout {
-        let layout = NSCollectionViewFlowLayout()
-        layout.itemSize = NSSize(width: 20, height: 20)
-        return layout
-    }
+fileprivate func makeDefaultLayout() -> NSCollectionViewLayout {
+    let layout = NSCollectionViewFlowLayout()
+    layout.itemSize = NSSize(width: 20, height: 20)
+    return layout
 }
 
 fileprivate struct TestViewModel: ViewModel {
@@ -174,13 +173,10 @@ fileprivate final class AltTestView: NSView, View {
     }
 }
 
-final class TestSupplementaryLayout: NSCollectionViewLayout {
-    static let SupplementaryLayoutKind = "TestSupplementaryViewKind"
+fileprivate final class TestSupplementaryLayout: NSCollectionViewLayout {
+    fileprivate static let SupplementaryLayoutKind = "TestSupplementaryViewKind"
 
-    override func prepare() {
-        return super.prepare()
-    }
-    override open func layoutAttributesForElements(in rect: NSRect) -> [NSCollectionViewLayoutAttributes] {
+    fileprivate override func layoutAttributesForElements(in rect: NSRect) -> [NSCollectionViewLayoutAttributes] {
         var layoutAttrs = [NSCollectionViewLayoutAttributes]()
 
         if let attrs = layoutAttributesForItem(at: IndexPath(item: 0, section: 0)) {
@@ -194,30 +190,18 @@ final class TestSupplementaryLayout: NSCollectionViewLayout {
         return layoutAttrs
     }
 
-    override func layoutAttributesForItem(at indexPath: IndexPath) -> NSCollectionViewLayoutAttributes? {
+    fileprivate override func layoutAttributesForItem(at indexPath: IndexPath) -> NSCollectionViewLayoutAttributes? {
         let attrs = NSCollectionViewLayoutAttributes(forItemWith: indexPath)
         attrs.frame = NSRect(x: 0, y: 0, width: 20, height: 20)
         return attrs
     }
 
-    override func layoutAttributesForSupplementaryView(
+    fileprivate override func layoutAttributesForSupplementaryView(
         ofKind elementKind: String,
         at indexPath: IndexPath
     ) -> NSCollectionViewLayoutAttributes? {
         let attrs = NSCollectionViewLayoutAttributes(forSupplementaryViewOfKind: elementKind, with: indexPath)
         attrs.frame = NSRect(x: 0, y: 0, width: 20, height: 20)
         return attrs
-    }
-
-    override func layoutAttributesForDecorationView(ofKind elementKind: String, at indexPath: IndexPath) -> NSCollectionViewLayoutAttributes? {
-        return nil
-    }
-
-    override open var collectionViewContentSize: NSSize {
-        return NSSize(width: 200, height: 200)
-    }
-
-    override func shouldInvalidateLayout(forBoundsChange newBounds: NSRect) -> Bool {
-        return true
     }
 }
