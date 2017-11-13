@@ -31,7 +31,7 @@ class CollectionViewSupplementaryViewTest: XCTestCase {
         let cvc = makeCollectionViewController(layout: layout)
         applySupplementaryViewBindings(to: cvc)
 
-        guard let view = cvc.collectionView.supplementaryView(forElementKind: kind, at: path) as? TestView else {
+        guard let view: TestView = supplementaryView(from: cvc, forKind: kind, at: path) else {
             XCTFail("CollectionViewController has no supplementary view of type TestView")
             return
         }
@@ -63,7 +63,7 @@ class CollectionViewSupplementaryViewTest: XCTestCase {
 
         cvc.dataSource.reloadSupplementaryElementAtIndexPath(indexPath: path, kind: kind)
 
-        guard let view = cvc.collectionView.supplementaryView(forElementKind: kind, at: path) as? AltTestView else {
+        guard let view: AltTestView = supplementaryView(from: cvc, forKind: kind, at: path) else {
             XCTFail("CollectionViewController has no supplementary view of type AltTestView")
             return
         }
@@ -81,6 +81,18 @@ class CollectionViewSupplementaryViewTest: XCTestCase {
     func view<V: View>(from cvc: CollectionViewController, at indexPath: IndexPath) -> V? {
         let item = cvc.collectionView.item(at: indexPath)
         guard let hostedView = (item as? CollectionViewHostItem)?.hostedView as? V else {
+            return nil
+        }
+        return hostedView
+    }
+
+    func supplementaryView<V: View>(
+        from cvc: CollectionViewController,
+        forKind kind: String,
+        at indexPath: IndexPath
+    ) -> V? {
+        let item = cvc.collectionView.supplementaryView(forElementKind: kind, at: indexPath)
+        guard let hostedView = (item as? CollectionViewHostReusableView)?.hostedView as? V else {
             return nil
         }
         return hostedView

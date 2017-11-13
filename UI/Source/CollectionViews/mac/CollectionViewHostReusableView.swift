@@ -3,7 +3,7 @@ import Pilot
 
 /// `NSCollectionViewItem` subclass which provies hosting for a given `View`.
 /// - Note: Because items are `NSView`s, the `View` must also be a `NSView` for hosting to be supported.
-public final class CollectionViewHostView: NSView {
+public final class CollectionViewHostReusableView: NSView {
 
     // MARK: Public
 
