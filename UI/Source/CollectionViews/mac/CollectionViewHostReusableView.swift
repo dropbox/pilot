@@ -5,6 +5,17 @@ import Pilot
 /// - Note: Because items are `NSView`s, the `View` must also be a `NSView` for hosting to be supported.
 public final class CollectionViewHostReusableView: NSView {
 
+    // MARK: NSView
+
+    public override func hitTest(_ point: NSPoint) -> NSView? {
+        // As this is a wrapper view we don't want it to interfere with mouse events so
+        // delegate to the hostedView for hit testing.
+        if let hostedView = hostedView as? NSView {
+            return hostedView.hitTest(convert(point, from: superview))
+        }
+        return nil
+    }
+
     // MARK: Public
 
     // The hosted `View` instance.
@@ -25,6 +36,7 @@ public final class CollectionViewHostReusableView: NSView {
                 addSubview(theView)
                 theView.translatesAutoresizingMaskIntoConstraints = false
                 theView.constrain(edgesEqualToView: self)
+                needsDisplay = true
             }
         }
     }
