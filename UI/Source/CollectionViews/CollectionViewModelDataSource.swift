@@ -229,7 +229,7 @@ public class CollectionViewModelDataSource: NSObject, ProxyingObservable {
     open func reloadSupplementaryElementAtIndexPath(_ indexPath: IndexPath, kind: String) {
         guard let cv = collectionView else { return }
         let supplementaryView = cv.supplementaryView(forElementKind: kind, at: indexPath)
-        guard let hostView = supplementaryView as? CollectionViewHostResuableView else { return }
+        guard let hostView = supplementaryView as? CollectionViewHostReusableView else { return }
         guard let hostedView = hostView.hostedView else { return }
         let viewModel = viewModelForSupplementaryElementAtIndexPath(kind, indexPath: indexPath)
         hostedView.bindToViewModel(viewModel)
@@ -242,17 +242,16 @@ public class CollectionViewModelDataSource: NSObject, ProxyingObservable {
     public func reloadSupplementaryElementAtIndexPath(indexPath: IndexPath, kind: String) {
         guard let cv = collectionView else { return }
         guard let supplementaryViewBinder = supplementaryViewBinderMap[kind] else { return }
-        guard let supplementaryView =
-            cv.supplementaryView(forElementKind: kind, at: indexPath as IndexPath) else { return }
+
+        let supplementaryView = cv.supplementaryView(forElementKind: kind, at: indexPath)
+        guard let hostView = supplementaryView as? CollectionViewHostReusableView else { return }
+        guard var hostedView = hostView.hostedView else { return }
 
         let viewModel = viewModelForSupplementaryElementAtIndexPath(kind, indexPath: indexPath)
-        let desiredView = supplementaryViewBinder.viewTypeForViewModel(viewModel, context: context)
+        hostedView = supplementaryViewBinder.view(for: viewModel, context: context, reusing: hostedView, layout: nil)
 
-        guard let view = supplementaryView as? View , type(of: view) == desiredView else {
-            assertWithLog(false, message: "reloadSupplementaryElementAtIndexPath doesn't support changing view types")
-            return
-        }
-        view.bindToViewModel(viewModel)
+        hostView.hostedView = hostedView
+        hostedView.bindToViewModel(viewModel)
     }
 #endif
 
@@ -773,7 +772,7 @@ extension CollectionViewModelDataSource: UICollectionViewDataSource {
         let reuseId = reuseIdProvider.reuseIdForViewModel(viewModel, viewType: viewType)
 
         collectionView.register(
-            CollectionViewHostResuableView.self,
+            CollectionViewHostReusableView.self,
             forSupplementaryViewOfKind: kind,
             withReuseIdentifier: reuseId)
 
@@ -782,7 +781,7 @@ extension CollectionViewModelDataSource: UICollectionViewDataSource {
             withReuseIdentifier: reuseId,
             for: indexPath)
 
-        if let supplementaryView = supplementaryView as? CollectionViewHostResuableView {
+        if let supplementaryView = supplementaryView as? CollectionViewHostReusableView {
             var reuseView: View?
             if let hostUIView = supplementaryView.hostedView as? UIView , type(of: hostUIView) == viewType {
                 reuseView = supplementaryView.hostedView
@@ -1175,10 +1174,10 @@ extension CollectionViewModelDataSource: NSCollectionViewDataSource {
 
         let viewModel = viewModelForSupplementaryElementAtIndexPath(kind, indexPath: indexPath)
         let viewType = supplementaryViewBinder.viewTypeForViewModel(viewModel, context: context)
-        let reuseId = "\(NSStringFromClass(viewType))-\(type(of: viewModel))"
+        let reuseId = reuseIdProvider.reuseIdForViewModel(viewModel, viewType: viewType)
 
         collectionView.register(
-            viewType,
+            CollectionViewHostReusableView.self,
             forSupplementaryViewOfKind: kind,
             withIdentifier: reuseId)
 
@@ -1187,8 +1186,17 @@ extension CollectionViewModelDataSource: NSCollectionViewDataSource {
             withIdentifier: reuseId,
             for: indexPath as IndexPath)
 
-        if let supplementaryView = supplementaryView as? View {
-            supplementaryView.bindToViewModel(viewModel)
+        if let supplementaryView = supplementaryView as? CollectionViewHostReusableView {
+            var reuseView: View?
+            if let hostView = supplementaryView.hostedView as? NSView , type(of: hostView) == viewType {
+                reuseView = supplementaryView.hostedView
+            }
+            let view = supplementaryViewBinder.view(
+                for: viewModel,
+                context: context,
+                reusing: reuseView,
+                layout: nil)
+            supplementaryView.hostedView = view
         }
 
         return supplementaryView
@@ -1215,7 +1223,7 @@ extension CollectionViewModelDataSource: NSCollectionViewDataSource {
         let viewType = viewBinder.viewTypeForViewModel(viewModel, context: context)
 
         // Register the view/model pair to optimize reuse.
-        let reuseId = "\(NSStringFromClass(viewType))-\(type(of: viewModel))"
+        let reuseId = reuseIdProvider.reuseIdForViewModel(viewModel, viewType: viewType)
         collectionView.register(CollectionViewHostItem.self, forItemWithIdentifier: reuseId)
 
         let item = collectionView.makeItem(withIdentifier: reuseId, for: indexPath)

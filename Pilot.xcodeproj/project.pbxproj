@@ -113,6 +113,8 @@
 		8E0E6F261EE8951500D1CB86 /* SortedModelCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E0E6F241EE894FD00D1CB86 /* SortedModelCollection.swift */; };
 		8E0E6F281EE89A3D00D1CB86 /* SortedModelCollectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E0E6F271EE89A3D00D1CB86 /* SortedModelCollectionTests.swift */; };
 		8E0E6F291EE89A3D00D1CB86 /* SortedModelCollectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E0E6F271EE89A3D00D1CB86 /* SortedModelCollectionTests.swift */; };
+		9CA5FC4E1FB9A65300F85B98 /* CollectionViewHostReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CA5FC4D1FB9A65300F85B98 /* CollectionViewHostReusableView.swift */; };
+		9CA5FC521FB9A81A00F85B98 /* CollectionViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CA5FC511FB9A81A00F85B98 /* CollectionViewTests.swift */; };
 		A428996E1FA137F300EA4422 /* SecondaryActionInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = A428996D1FA137F300EA4422 /* SecondaryActionInfo.swift */; };
 		A428996F1FA137F300EA4422 /* SecondaryActionInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = A428996D1FA137F300EA4422 /* SecondaryActionInfo.swift */; };
 		A42899711FA1393500EA4422 /* ViewModelBinding.swift in Sources */ = {isa = PBXBuildFile; fileRef = A42899701FA1393500EA4422 /* ViewModelBinding.swift */; };
@@ -275,6 +277,8 @@
 		69FADC931D30BDC2001F2E11 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk/System/Library/Frameworks/AppKit.framework; sourceTree = DEVELOPER_DIR; };
 		8E0E6F241EE894FD00D1CB86 /* SortedModelCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SortedModelCollection.swift; path = Core/Source/MVVM/SortedModelCollection.swift; sourceTree = "<group>"; };
 		8E0E6F271EE89A3D00D1CB86 /* SortedModelCollectionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SortedModelCollectionTests.swift; path = Core/Tests/MVVM/SortedModelCollectionTests.swift; sourceTree = "<group>"; };
+		9CA5FC4D1FB9A65300F85B98 /* CollectionViewHostReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CollectionViewHostReusableView.swift; path = UI/Source/CollectionViews/mac/CollectionViewHostReusableView.swift; sourceTree = "<group>"; };
+		9CA5FC511FB9A81A00F85B98 /* CollectionViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewTests.swift; sourceTree = "<group>"; };
 		A428996D1FA137F300EA4422 /* SecondaryActionInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SecondaryActionInfo.swift; path = Core/Source/MVVM/SecondaryActionInfo.swift; sourceTree = "<group>"; };
 		A42899701FA1393500EA4422 /* ViewModelBinding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ViewModelBinding.swift; path = Core/Source/MVVM/ViewModelBinding.swift; sourceTree = "<group>"; };
 		A437EDA71E56507600F67B37 /* SimpleModelCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SimpleModelCollection.swift; path = Core/Tests/MVVM/SimpleModelCollection.swift; sourceTree = "<group>"; };
@@ -510,6 +514,7 @@
 		69048A4E1C47048D000CE840 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				9CA5FC4F1FB9A6E100F85B98 /* CollectionViews */,
 				69FADB5A1D30544C001F2E11 /* Info-iOS.plist */,
 				69FADB5B1D30544C001F2E11 /* Info-macOS.plist */,
 				A455A7E51E5F6C3900F63A37 /* PilotUI.swift */,
@@ -613,6 +618,7 @@
 				69519AD91D34C669000426A9 /* CollectionView.swift */,
 				69FADC581D306AF4001F2E11 /* CollectionViewController.swift */,
 				69FADC841D3076E2001F2E11 /* CollectionViewHostItem.swift */,
+				9CA5FC4D1FB9A65300F85B98 /* CollectionViewHostReusableView.swift */,
 			);
 			name = mac;
 			sourceTree = "<group>";
@@ -626,6 +632,23 @@
 				69FADC331D3068A1001F2E11 /* CollectionViewHostReusableView.swift */,
 			);
 			name = ios;
+			sourceTree = "<group>";
+		};
+		9CA5FC4F1FB9A6E100F85B98 /* CollectionViews */ = {
+			isa = PBXGroup;
+			children = (
+				9CA5FC501FB9A7F900F85B98 /* mac */,
+			);
+			name = CollectionViews;
+			sourceTree = "<group>";
+		};
+		9CA5FC501FB9A7F900F85B98 /* mac */ = {
+			isa = PBXGroup;
+			children = (
+				9CA5FC511FB9A81A00F85B98 /* CollectionViewTests.swift */,
+			);
+			name = mac;
+			path = UI/Tests/CollectionView/mac;
 			sourceTree = "<group>";
 		};
 		A478F9301D3850BA000B2ADB /* Nested */ = {
@@ -1148,6 +1171,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A4CACF5C1D6FCC89003D572D /* LayoutConstraints.swift in Sources */,
+				9CA5FC4E1FB9A65300F85B98 /* CollectionViewHostReusableView.swift in Sources */,
 				697D13351D4056CC00310F81 /* PlatformAliases.swift in Sources */,
 				69BACAE61DA8D5D500EF6E70 /* NSCollectionView+Selection.swift in Sources */,
 				697D10771D3D8FD300310F81 /* CollectionViewModelDataSource.swift in Sources */,
@@ -1168,6 +1192,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A455A7E71E5F6C3900F63A37 /* PilotUI.swift in Sources */,
+				9CA5FC521FB9A81A00F85B98 /* CollectionViewTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
