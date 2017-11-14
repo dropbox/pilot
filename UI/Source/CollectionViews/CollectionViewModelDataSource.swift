@@ -1174,7 +1174,7 @@ extension CollectionViewModelDataSource: NSCollectionViewDataSource {
 
         let viewModel = viewModelForSupplementaryElementAtIndexPath(kind, indexPath: indexPath)
         let viewType = supplementaryViewBinder.viewTypeForViewModel(viewModel, context: context)
-        let reuseId = "\(NSStringFromClass(viewType))-\(type(of: viewModel))"
+        let reuseId = reuseIdProvider.reuseIdForViewModel(viewModel, viewType: viewType)
 
         collectionView.register(
             CollectionViewHostReusableView.self,
@@ -1223,7 +1223,7 @@ extension CollectionViewModelDataSource: NSCollectionViewDataSource {
         let viewType = viewBinder.viewTypeForViewModel(viewModel, context: context)
 
         // Register the view/model pair to optimize reuse.
-        let reuseId = "\(NSStringFromClass(viewType))-\(type(of: viewModel))"
+        let reuseId = reuseIdProvider.reuseIdForViewModel(viewModel, viewType: viewType)
         collectionView.register(CollectionViewHostItem.self, forItemWithIdentifier: reuseId)
 
         let item = collectionView.makeItem(withIdentifier: reuseId, for: indexPath)
