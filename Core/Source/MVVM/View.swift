@@ -140,7 +140,7 @@ public extension ViewBindingProvider {
     }
 }
 
-/// A `ViewModelBindingProvider` that delegates to a closure to provide the appropriate `View` for the
+/// A `ViewBindingProvider` that delegates to a closure to provide the appropriate `View` for the
 /// supplied `ViewModel` and `Context`.
 public struct BlockViewBindingProvider: ViewBindingProvider {
     public init(binder: @escaping (ViewModel, Context) -> ViewBinding) {
