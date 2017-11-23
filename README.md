@@ -37,6 +37,15 @@ Otherwise, please see type documentation and let us know if anything is unclear.
 - Go to `Project > Targets > General > Embed Frameworks`, click `+`, and select `Pilot [Platform]` and `PilotUI [platform]` targets.
 - In `Project > Targets > Build Phases > Target Dependencies`, ensure `Pilot [Platform]` and ``PilotUI [Platform]` are there.
 
+### GYP
+
+The GYP config is an alternative way of using Pilot, it's ONLY for using it in other GYP projects.
+If you don't know what GYP is, you can safely ignore this section here.
+
+- Generate iOS Xcode project via `gyp Pilot.gyp --depth=. --suffix=.ios.dxbuild -DOS=ios`
+- Generate MacOS Xcode project via `gyp Pilot.gyp --depth=. --suffix=.osx.dxbuild -DOS=mac`
+- Use generated `Pilot.ios.dxbuild.xcodeproj` to build Pilot for iOS, or `Pilot.ios.dxbuild.xcodeproj` for macOS.
+
 ## License
 
 [Apache 2.0](LICENSE)
