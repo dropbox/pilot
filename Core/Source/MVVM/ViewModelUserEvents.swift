@@ -6,7 +6,11 @@ public enum ViewModelUserEvent {
     case click
 
     /// Represents the user typing a key with modifier flags.
-    case keyDown(EventKeyCode, EventKeyModifierFlags)
+    ///
+    /// Note: first associated value represents the device and layout independent keycode (see NSEvent.keyCode) whereas
+    /// the third optional String uses the NSEvent.characters event to return the correct value respecting keyboard
+    /// layout.
+    case keyDown(EventKeyCode, EventKeyModifierFlags, String?)
 
     /// Reprsents the user performing a long-press on the target view model.
     case longPress
@@ -56,8 +60,9 @@ extension ViewModelUserEvent: Hashable {
         switch self {
         case .click:
             return 1<<0
-        case .keyDown(let key, let flags):
-            return "keyDown-\(key)-\(flags)".hashValue
+        case .keyDown(let key, let flags, let characters):
+            let charValue = characters ?? "nil"
+            return "keyDown-\(key)-\(flags)-\(charValue)".hashValue
         case .longPress:
             return 1<<1
         case .secondaryClick:
@@ -76,15 +81,15 @@ extension ViewModelUserEvent: Hashable {
         case (.click, .click), (.longPress, .longPress), (.secondaryClick, .secondaryClick), (.select, .select),
              (.tap, .tap), (.copy, .copy):
             return true
-        case (.keyDown(let lKey, let lModifiers), .keyDown(let rKey, let rModifiers)):
-            return lKey == rKey && lModifiers == rModifiers
+        case (.keyDown(let lKey, let lModifiers, let lCharacters), .keyDown(let rKey, let rModifiers, let rCharacters)):
+            return lKey == rKey && lModifiers == rModifiers && lCharacters == rCharacters
         case (.click, _), (.longPress, _), (.secondaryClick, _), (.select, _), (.tap, _), (.keyDown, _), (.copy, _):
             return false
         }
     }
 
-    public static var spaceKey = ViewModelUserEvent.keyDown(.space, [])
-    public static var enterKey = ViewModelUserEvent.keyDown(.enter, [])
+    public static var spaceKey = ViewModelUserEvent.keyDown(.space, [], " ")
+    public static var enterKey = ViewModelUserEvent.keyDown(EventKeyCode.return, [], "\r")
 }
 
 // swiftlint:disable type_name

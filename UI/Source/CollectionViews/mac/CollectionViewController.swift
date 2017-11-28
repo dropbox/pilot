@@ -63,6 +63,7 @@ open class CollectionViewController: NSViewController, CollectionViewDelegate {
             viewBinder: viewBinder,
             context: context.newScope(),
             reuseIdProvider: reuseIdProvider)
+        self.modelBinder = modelBinder
 
         // loadView will never fail
         super.init(nibName: nil, bundle: nil)!
@@ -221,39 +222,43 @@ open class CollectionViewController: NSViewController, CollectionViewDelegate {
     open func collectionViewDidReceiveKeyEvent(
         _ collectionView: NSCollectionView,
         key: EventKeyCode,
-        modifiers: AppKitEventModifierFlags
+        modifiers: AppKitEventModifierFlags,
+        characters: String?
     ) -> Bool {
-        guard let vm = selectedViewModel() else { return false }
-        let event = ViewModelUserEvent.keyDown(key, modifiers.eventKeyModifierFlags)
-        if vm.canHandleUserEvent(event) {
-            vm.handleUserEvent(event)
-            return true
-        }
-        return false
+        let event = ViewModelUserEvent.keyDown(key, modifiers.eventKeyModifierFlags, characters)
+        return handleUserEvent(event)
     }
 
     open func collectionView(_ collectionView: NSCollectionView, didClickIndexPath indexPath: IndexPath) {
         guard let vm = viewModelAtIndexPath(indexPath) else { return }
+
         if vm.canHandleUserEvent(.click) {
             vm.handleUserEvent(.click)
         }
     }
 
     open func collectionView(_ collectionView: NSCollectionView, menuForIndexPath indexPath: IndexPath) -> NSMenu? {
-        guard let vm = viewModelAtIndexPath(indexPath) else { return nil }
+        let selectedIndexPaths = collectionView.selectionIndexPaths.union([indexPath])
+        let selectedModels = selectedIndexPaths.map { dataSource.currentCollection.sections[$0.section][$0.item] }
+        guard
+            let selection = modelBinder.selectionViewModel(for: selectedModels, context: context),
+            selection.canHandleUserEvent(.secondaryClick)
+        else {
+            return nil
+        }
 
-        if vm.canHandleUserEvent(.secondaryClick) {
-            vm.handleUserEvent(.secondaryClick)
+        selection.handleUserEvent(.secondaryClick)
+        let actions = selection.secondaryActions(for: .secondaryClick)
 
-            let actions = vm.secondaryActions(for: .secondaryClick)
-            if !actions.isEmpty {
-                let menu = NSMenu.fromSecondaryActions(actions, action: #selector(didSelectContextMenuItem(_:)))
+        if !actions.isEmpty {
+            let menu = NSMenu.fromSecondaryActions(actions, action: #selector(didSelectContextMenuItem(_:)))
+            for indexPath in selectedIndexPaths {
                 if let item = collectionView.item(at: indexPath) as? CollectionViewHostItem {
                     item.highlightStyle = .contextMenu
                     registerForMenuTrackingEnd(menu, item: item)
                 }
-                return menu
             }
+            return menu
         }
         return nil
     }
@@ -293,10 +298,27 @@ open class CollectionViewController: NSViewController, CollectionViewDelegate {
 
     private var lastBounds = CGRect.zero
     private let internalScrollView = FullWidthScrollView()
+    private var modelBinder: ViewModelBindingProvider
 
     private func viewModelAtIndexPath(_ indexPath: IndexPath) -> ViewModel? {
         guard let item = collectionView.item(at: indexPath as IndexPath) as? CollectionViewHostItem else { return nil}
         return item.hostedView?.viewModel
+    }
+
+    private func handleUserEvent(_ event: ViewModelUserEvent) -> Bool {
+        guard let selectionViewModel = selectionViewModel() else { return false }
+        if selectionViewModel.canHandleUserEvent(event) {
+            selectionViewModel.handleUserEvent(event)
+            return true
+        }
+        return false
+    }
+
+    private func selectionViewModel() -> SelectionViewModel? {
+        guard !collectionView.selectionIndexPaths.isEmpty else { return nil }
+        let selectedModels = collectionView.selectionIndexPaths
+            .map { dataSource.currentCollection.sections[$0.section][$0.item] }
+        return modelBinder.selectionViewModel(for: selectedModels, context: context)
     }
 
     /// View to show when in the `loading` state - dictated by `loadingDisplay`.
