@@ -35,7 +35,7 @@ Otherwise, please see type documentation and let us know if anything is unclear.
 
 - Drag `Pilot.xcodeproj` into Project Navigator
 - Go to `Project > Targets > General > Embed Frameworks`, click `+`, and select `Pilot [Platform]` and `PilotUI [platform]` targets.
-- In `Project > Targets > Build Phases > Target Dependencies`, ensure `Pilot [Platform]` and ``PilotUI [Platform]` are there.
+- In `Project > Targets > Build Phases > Target Dependencies`, ensure `Pilot [Platform]` and `PilotUI [Platform]` are there.
 
 ### GYP
 

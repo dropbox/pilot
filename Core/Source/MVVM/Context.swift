@@ -29,7 +29,7 @@ import Foundation
 /// `Context` to keep exhaustively looking for receivers to handle the action.
 ///
 /// ## Sending Actions
-/// 
+///
 /// The `Context` object implements `ActionSender` and is typically used for sending all application actions.
 ///
 /// ```
@@ -50,7 +50,7 @@ import Foundation
 /// navigating. This is where scopes come into play. When creating and displaying the "User Picker" control, the
 /// application would give it a new scope (via `context.newScope()`) so that actions in the scope of the user picker
 /// control may be interpreted and handled differently.
-/// 
+///
 /// ## Action Ordering
 ///
 /// There is a deterministic ordering for evaluating which receiver handles an action sent on a context:
@@ -140,17 +140,15 @@ open class Context: ActionSender {
     /// be removed when no longer needed via `removeReceiver`. It is recommended to instead use `receive` to avoid
     /// bookkeeping of the returned `Token`.
     public func addReceiver(file: String = #file, line: Int = #line, _ receiver: @escaping ActionReceiver) -> Token {
-        precondition(Thread.isMainThread, "`Context.addReceiver` must run on main thread")
         let description = "\(file):\(line)"
         let pair: Receiver = (Token.makeUnique(), receiver, description: description)
-        receiverStack.append(pair)
+        locked { receiverStack.append(pair) }
         return pair.0
     }
 
     /// Removes a previously-registered `ActionReceiver`.
     public func removeReceiver(with token: Token) {
-        precondition(Thread.isMainThread, "`Context.removeReceiver` must run on main thread")
-        receiverStack = receiverStack.filter { $0.0 != token }
+        locked { receiverStack = receiverStack.filter { $0.0 != token } }
     }
 
     // MARK: ActionSender
@@ -169,6 +167,7 @@ open class Context: ActionSender {
             return result
         }
 
+        let reversedReceivers = locked { receiverStack.reversed() }
         for receiverPair in receiverStack.reversed() {
             let receiver = receiverPair.1
             if .handled == receiver(action) {
@@ -189,4 +188,11 @@ open class Context: ActionSender {
 
     private typealias Receiver = (Token, ActionReceiver, description: String)
     private var receiverStack: [Receiver] = []
+    private var lock = pthread_mutex_t()
+
+    @inline(__always)
+    private func locked<R>(_ execute: () -> R) -> R {
+        pthread_mutex_lock(&lock); defer { pthread_mutex_unlock(&lock) }
+        return execute()
+    }
 }
