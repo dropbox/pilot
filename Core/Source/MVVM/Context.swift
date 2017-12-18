@@ -168,7 +168,7 @@ open class Context: ActionSender {
         }
 
         let reversedReceivers = locked { receiverStack.reversed() }
-        for receiverPair in receiverStack.reversed() {
+        for receiverPair in reversedReceivers {
             let receiver = receiverPair.1
             if .handled == receiver(action) {
                 let caller = receiverPair.description
