@@ -33,6 +33,8 @@
 		02AB7E5E1DCA7EF1003F11FE /* TestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02AB7E5C1DCA7EF1003F11FE /* TestModel.swift */; };
 		3C6C9E231F31257F00D13B52 /* AlertAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C6C9E221F31257F00D13B52 /* AlertAction.swift */; };
 		3C6C9E261F32982C00D13B52 /* UIAlertController+AlertAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C6C9E251F32982C00D13B52 /* UIAlertController+AlertAction.swift */; };
+		620B50521FE8AFFF00D1A8ED /* Mutex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 620B50511FE8AFFF00D1A8ED /* Mutex.swift */; };
+		620B50531FE8AFFF00D1A8ED /* Mutex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 620B50511FE8AFFF00D1A8ED /* Mutex.swift */; };
 		65032E301E5BDE1B008020BF /* ScoredModelCollectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65107D9E1E5B4373002FF5F0 /* ScoredModelCollectionTests.swift */; };
 		65032E311E5BE01E008020BF /* ScoredModelCollectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65107D9E1E5B4373002FF5F0 /* ScoredModelCollectionTests.swift */; };
 		65032E331E5BE079008020BF /* MultiplexModelCollectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65032E321E5BE079008020BF /* MultiplexModelCollectionTests.swift */; };
@@ -217,6 +219,7 @@
 		02BB0CAA1D551C31001145D2 /* NSCollectionView+Selection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NSCollectionView+Selection.swift"; path = "UI/Source/AppKitExtensions/NSCollectionView+Selection.swift"; sourceTree = "<group>"; };
 		3C6C9E221F31257F00D13B52 /* AlertAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AlertAction.swift; path = UI/Source/Alerts/AlertAction.swift; sourceTree = "<group>"; };
 		3C6C9E251F32982C00D13B52 /* UIAlertController+AlertAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIAlertController+AlertAction.swift"; path = "UI/Source/Alerts/UIAlertController+AlertAction.swift"; sourceTree = "<group>"; };
+		620B50511FE8AFFF00D1A8ED /* Mutex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mutex.swift; sourceTree = "<group>"; };
 		65032E321E5BE079008020BF /* MultiplexModelCollectionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MultiplexModelCollectionTests.swift; path = Core/Tests/MVVM/MultiplexModelCollectionTests.swift; sourceTree = "<group>"; };
 		65107D9E1E5B4373002FF5F0 /* ScoredModelCollectionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ScoredModelCollectionTests.swift; path = Core/Tests/MVVM/ScoredModelCollectionTests.swift; sourceTree = "<group>"; };
 		65107DA11E5B44BB002FF5F0 /* ModelCollectionHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ModelCollectionHelpers.swift; path = Core/Tests/MVVM/ModelCollectionHelpers.swift; sourceTree = "<group>"; };
@@ -459,6 +462,7 @@
 				69EAC5B91D04C82C00584C7E /* Observable */,
 				69048A071C46FF23000CE840 /* Pilot.h */,
 				690E1AA81E54CDB600B257CA /* Token.swift */,
+				620B50511FE8AFFF00D1A8ED /* Mutex.swift */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -1041,6 +1045,7 @@
 				A42899721FA1393500EA4422 /* ViewModelBinding.swift in Sources */,
 				698F3F7F1CE543DB00076B8C /* StaticModel.swift in Sources */,
 				69F89E791C52F06200F08E28 /* ModelCollection.swift in Sources */,
+				620B50531FE8AFFF00D1A8ED /* Mutex.swift in Sources */,
 				D560D4611D136E11000DA826 /* ConsoleLogger.swift in Sources */,
 				022862591DB0070500FCD03F /* DiffEngine.swift in Sources */,
 				D5DF48141CAAC2F200F611E6 /* MultiplexModelCollection.swift in Sources */,
@@ -1154,6 +1159,7 @@
 				A42899711FA1393500EA4422 /* ViewModelBinding.swift in Sources */,
 				022862581DB0070100FCD03F /* DiffEngine.swift in Sources */,
 				692936111E130468001303D2 /* Action.swift in Sources */,
+				620B50521FE8AFFF00D1A8ED /* Mutex.swift in Sources */,
 				696534A41D1710D400DF97CB /* Context.swift in Sources */,
 				6965349D1D1710C600DF97CB /* ConsoleLogger.swift in Sources */,
 				696534A31D1710D400DF97CB /* ModelCollection.swift in Sources */,
