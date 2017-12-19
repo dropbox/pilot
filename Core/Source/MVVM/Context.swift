@@ -188,5 +188,5 @@ open class Context: ActionSender {
 
     private typealias Receiver = (Token, ActionReceiver, description: String)
     private var receiverStack: [Receiver] = []
-    private let lock = Mutex()
+    internal let lock = Mutex()
 }

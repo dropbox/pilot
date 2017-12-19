@@ -87,7 +87,7 @@ public final class ObserverList<Event>: GenericObservable<Event> {
     }
 
     private var observers: [ObserverToken: (Event) -> Void]
-    private let lock = Mutex()
+    internal let lock = Mutex()
 }
 
 /// The Observer class represents the binding of an observable to a function.  While
