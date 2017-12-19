@@ -69,31 +69,25 @@ public final class ObserverList<Event>: GenericObservable<Event> {
 
     public override func addObserver(_ observer: @escaping (Event) -> Void) -> ObserverToken {
         let token = Token.makeUnique()
-        locked { self.observers[token] = observer }
+        lock.locked { self.observers[token] = observer }
         return token
     }
 
     public override func removeObserver(with token: ObserverToken) {
-        locked { self.observers[token] = nil }
+        lock.locked { self.observers[token] = nil }
     }
 
     public func notify(_ event: Event) {
         precondition(Thread.isMainThread, "notify must run on main thread")
         /// Create a local array in case notification causes an observer to be removed.
-        let observerValues = locked { self.observers.values }
+        let observerValues = lock.locked { self.observers.values }
         for observer in observerValues {
             observer(event)
         }
     }
 
     private var observers: [ObserverToken: (Event) -> Void]
-    private var lock = pthread_mutex_t()
-
-    @inline(__always)
-    private func locked<R>(_ execute: () -> R) -> R {
-        pthread_mutex_lock(&lock); defer { pthread_mutex_unlock(&lock) }
-        return execute()
-    }
+    private let lock = Mutex()
 }
 
 /// The Observer class represents the binding of an observable to a function.  While

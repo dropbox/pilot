@@ -142,13 +142,13 @@ open class Context: ActionSender {
     public func addReceiver(file: String = #file, line: Int = #line, _ receiver: @escaping ActionReceiver) -> Token {
         let description = "\(file):\(line)"
         let pair: Receiver = (Token.makeUnique(), receiver, description: description)
-        locked { receiverStack.append(pair) }
+        lock.locked { receiverStack.append(pair) }
         return pair.0
     }
 
     /// Removes a previously-registered `ActionReceiver`.
     public func removeReceiver(with token: Token) {
-        locked { receiverStack = receiverStack.filter { $0.0 != token } }
+        lock.locked { receiverStack = receiverStack.filter { $0.0 != token } }
     }
 
     // MARK: ActionSender
@@ -167,7 +167,7 @@ open class Context: ActionSender {
             return result
         }
 
-        let reversedReceivers = locked { receiverStack.reversed() }
+        let reversedReceivers = lock.locked { receiverStack.reversed() }
         for receiverPair in reversedReceivers {
             let receiver = receiverPair.1
             if .handled == receiver(action) {
@@ -188,11 +188,5 @@ open class Context: ActionSender {
 
     private typealias Receiver = (Token, ActionReceiver, description: String)
     private var receiverStack: [Receiver] = []
-    private var lock = pthread_mutex_t()
-
-    @inline(__always)
-    private func locked<R>(_ execute: () -> R) -> R {
-        pthread_mutex_lock(&lock); defer { pthread_mutex_unlock(&lock) }
-        return execute()
-    }
+    private let lock = Mutex()
 }
