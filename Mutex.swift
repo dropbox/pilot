@@ -16,5 +16,5 @@ internal class Mutex {
         return execute()
     }
 
-    private var mutex = pthread_mutex_t()
+    internal var mutex = pthread_mutex_t()
 }
