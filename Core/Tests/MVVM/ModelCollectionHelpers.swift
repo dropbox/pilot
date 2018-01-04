@@ -30,7 +30,7 @@ internal func assertModelCollectionState(
                 }
             }
         } else {
-            XCTFail("Expected .loading(\(String(describing: expectedSections)))\ngot: \(actual)", file: file, line: line)
+            XCTFail("Expected .loading(\(String(describing: expectedSections))). Actual: \(actual)", file: file, line: line)
         }
     case .loaded(let expectedSections):
         if case .loaded(let actualSections) = actual {
@@ -42,7 +42,7 @@ internal func assertModelCollectionState(
                 XCTAssertEqual(e.map({ $0.modelId }), a.map({ $0.modelId }))
             }
         } else {
-            XCTFail("Expected .loaded with \(expectedSections))\ngot: \(actual)", file: file, line: line)
+            XCTFail("Expected .loaded with \(expectedSections)). Actual: \(actual)", file: file, line: line)
         }
     }
 }
