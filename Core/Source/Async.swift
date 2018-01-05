@@ -141,26 +141,33 @@ public struct Async {
 
     // MARK: Private
 
-    private let workItem: DispatchWorkItem
+    private let group: DispatchGroup
 
-    private init(_ block: @escaping ()->()) {
-        self.workItem = DispatchWorkItem(block: block)
-    }
-
-    private init(_ workItem: DispatchWorkItem) {
-        self.workItem = workItem
+    private init(_ group: DispatchGroup) {
+        self.group = group
+        group.notify(queue: .global(qos: .utility)) {
+            _ = group
+        }
     }
 
     private static func dispatch(_ dispatchQueue: DispatchQueue, _ block: @escaping ()->()) -> Async {
-        let item = DispatchWorkItem(qos: .default, flags: .inheritQoS, block: block)
-        dispatchQueue.async(execute: item)
-        return Async(item)
+        let group = DispatchGroup()
+        group.enter()
+        dispatchQueue.async {
+            block()
+            group.leave()
+        }
+        return Async(group)
     }
 
     private func dispatchDependentBlock(_ dispatchQueue: DispatchQueue, _ dependentBlock: @escaping ()->()) -> Async {
-        let notifyItem = DispatchWorkItem(qos: .default, flags: .inheritQoS, block: dependentBlock)
-        workItem.notify(queue: dispatchQueue, execute: notifyItem)
-        return Async(notifyItem)
+        let dependentGroup = DispatchGroup()
+        dependentGroup.enter()
+        group.notify(queue: dispatchQueue) {
+            dependentBlock()
+            dependentGroup.leave()
+        }
+        return Async(dependentGroup)
     }
 
     private static func dispatchWaitingFor(
@@ -168,9 +175,13 @@ public struct Async {
         dispatchQueue: DispatchQueue,
         _ dependentBlock: @escaping ()->()
     ) -> Async {
-        let notifyItem = DispatchWorkItem(qos: .default, flags: .inheritQoS, block: dependentBlock)
-        dispatchGroup.notify(queue: dispatchQueue, work: notifyItem)
-        return Async(notifyItem)
+        let wrapperGroup = DispatchGroup()
+        wrapperGroup.enter()
+        dispatchGroup.notify(queue: dispatchQueue) {
+            dependentBlock()
+            wrapperGroup.leave()
+        }
+        return Async(wrapperGroup)
     }
 }
 
