@@ -13,8 +13,8 @@
 		A4143CBD1F7AD46D00E91697 /* DirectoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4143CBC1F7AD46D00E91697 /* DirectoryViewController.swift */; };
 		A43FA82E1F7ADAEE00C3C650 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = A43FA82D1F7ADAEE00C3C650 /* File.swift */; };
 		A43FA8BF1F7AFA5900C3C650 /* FileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A43FA8BE1F7AFA5900C3C650 /* FileViewModel.swift */; };
-		A4AC3BDB2006CF240098735D /* PilotUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A4143CAA1F7AD3CA00E91697 /* PilotUI.framework */; };
-		A4AC3BDC2006CF340098735D /* Pilot.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A4143C9E1F7AD3CA00E91697 /* Pilot.framework */; };
+		A4AC3BEE2006D8D20098735D /* Pilot.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A4143C9E1F7AD3CA00E91697 /* Pilot.framework */; };
+		A4AC3BEF2006D8D20098735D /* PilotUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A4143CAA1F7AD3CA00E91697 /* PilotUI.framework */; };
 		A4B1D4A41F7AFC1200760F7F /* DirectoryModelCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4B1D4A31F7AFC1200760F7F /* DirectoryModelCollection.swift */; };
 		A4B1D4AC1F7AFD7900760F7F /* FileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4B1D4AB1F7AFD7900760F7F /* FileView.swift */; };
 		A4C2DAEC1F9F7AAE005C0554 /* FileActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4C2DAEB1F9F7AAE005C0554 /* FileActions.swift */; };
@@ -114,8 +114,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A4AC3BDC2006CF340098735D /* Pilot.framework in Frameworks */,
-				A4AC3BDB2006CF240098735D /* PilotUI.framework in Frameworks */,
+				A4AC3BEE2006D8D20098735D /* Pilot.framework in Frameworks */,
+				A4AC3BEF2006D8D20098735D /* PilotUI.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
