@@ -7,16 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		A4050D2A1FA2A5B000FC0EEE /* Pilot.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = A4143C9E1F7AD3CA00E91697 /* Pilot.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		A4050D2B1FA2A5B000FC0EEE /* PilotUI.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = A4143CAA1F7AD3CA00E91697 /* PilotUI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A4143C851F7AD3A000E91697 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4143C841F7AD3A000E91697 /* AppDelegate.swift */; };
 		A4143C871F7AD3A000E91697 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A4143C861F7AD3A000E91697 /* Assets.xcassets */; };
 		A4143C8A1F7AD3A000E91697 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = A4143C881F7AD3A000E91697 /* MainMenu.xib */; };
-		A4143CBA1F7AD3F500E91697 /* Pilot.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A4143C9E1F7AD3CA00E91697 /* Pilot.framework */; };
-		A4143CBB1F7AD3F500E91697 /* PilotUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A4143CAA1F7AD3CA00E91697 /* PilotUI.framework */; };
 		A4143CBD1F7AD46D00E91697 /* DirectoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4143CBC1F7AD46D00E91697 /* DirectoryViewController.swift */; };
 		A43FA82E1F7ADAEE00C3C650 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = A43FA82D1F7ADAEE00C3C650 /* File.swift */; };
 		A43FA8BF1F7AFA5900C3C650 /* FileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A43FA8BE1F7AFA5900C3C650 /* FileViewModel.swift */; };
+		A4AC3BDB2006CF240098735D /* PilotUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A4143CAA1F7AD3CA00E91697 /* PilotUI.framework */; };
+		A4AC3BDC2006CF340098735D /* Pilot.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A4143C9E1F7AD3CA00E91697 /* Pilot.framework */; };
+		A4AC3BDD2006CF3E0098735D /* Pilot.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = A4143C9E1F7AD3CA00E91697 /* Pilot.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A4AC3BDE2006CF3E0098735D /* PilotUI.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = A4143CAA1F7AD3CA00E91697 /* PilotUI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A4B1D4A41F7AFC1200760F7F /* DirectoryModelCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4B1D4A31F7AFC1200760F7F /* DirectoryModelCollection.swift */; };
 		A4B1D4AC1F7AFD7900760F7F /* FileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4B1D4AB1F7AFD7900760F7F /* FileView.swift */; };
 		A4C2DAEC1F9F7AAE005C0554 /* FileActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4C2DAEB1F9F7AAE005C0554 /* FileActions.swift */; };
@@ -79,14 +79,14 @@
 			remoteGlobalIDString = 69FADB481D30518C001F2E11;
 			remoteInfo = "PilotUITests macOS";
 		};
-		A4143CAE1F7AD3EC00E91697 /* PBXContainerItemProxy */ = {
+		A4AC3BD52006CF130098735D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A4143C921F7AD3CA00E91697 /* Pilot.xcodeproj */;
 			proxyType = 1;
 			remoteGlobalIDString = 696534861D17100900DF97CB;
 			remoteInfo = "Pilot macOS";
 		};
-		A4143CB01F7AD3EC00E91697 /* PBXContainerItemProxy */ = {
+		A4AC3BD92006CF200098735D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A4143C921F7AD3CA00E91697 /* Pilot.xcodeproj */;
 			proxyType = 1;
@@ -102,8 +102,8 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				A4050D2A1FA2A5B000FC0EEE /* Pilot.framework in CopyFiles */,
-				A4050D2B1FA2A5B000FC0EEE /* PilotUI.framework in CopyFiles */,
+				A4AC3BDD2006CF3E0098735D /* Pilot.framework in CopyFiles */,
+				A4AC3BDE2006CF3E0098735D /* PilotUI.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -130,8 +130,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A4143CBA1F7AD3F500E91697 /* Pilot.framework in Frameworks */,
-				A4143CBB1F7AD3F500E91697 /* PilotUI.framework in Frameworks */,
+				A4AC3BDC2006CF340098735D /* Pilot.framework in Frameworks */,
+				A4AC3BDB2006CF240098735D /* PilotUI.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -144,6 +144,7 @@
 				A4143C921F7AD3CA00E91697 /* Pilot.xcodeproj */,
 				A4143C831F7AD3A000E91697 /* DirectoryViewer */,
 				A4143C821F7AD3A000E91697 /* Products */,
+				A4AC3BD72006CF1B0098735D /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -188,6 +189,13 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		A4AC3BD72006CF1B0098735D /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -203,8 +211,8 @@
 			buildRules = (
 			);
 			dependencies = (
-				A4143CAF1F7AD3EC00E91697 /* PBXTargetDependency */,
-				A4143CB11F7AD3EC00E91697 /* PBXTargetDependency */,
+				A4AC3BDA2006CF200098735D /* PBXTargetDependency */,
+				A4AC3BD62006CF130098735D /* PBXTargetDependency */,
 			);
 			name = DirectoryViewer;
 			productName = DirectoryViewer;
@@ -344,15 +352,15 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		A4143CAF1F7AD3EC00E91697 /* PBXTargetDependency */ = {
+		A4AC3BD62006CF130098735D /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "Pilot macOS";
-			targetProxy = A4143CAE1F7AD3EC00E91697 /* PBXContainerItemProxy */;
+			targetProxy = A4AC3BD52006CF130098735D /* PBXContainerItemProxy */;
 		};
-		A4143CB11F7AD3EC00E91697 /* PBXTargetDependency */ = {
+		A4AC3BDA2006CF200098735D /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "PilotUI macOS";
-			targetProxy = A4143CB01F7AD3EC00E91697 /* PBXContainerItemProxy */;
+			targetProxy = A4AC3BD92006CF200098735D /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
