@@ -15,8 +15,6 @@
 		A43FA8BF1F7AFA5900C3C650 /* FileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A43FA8BE1F7AFA5900C3C650 /* FileViewModel.swift */; };
 		A4AC3BDB2006CF240098735D /* PilotUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A4143CAA1F7AD3CA00E91697 /* PilotUI.framework */; };
 		A4AC3BDC2006CF340098735D /* Pilot.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A4143C9E1F7AD3CA00E91697 /* Pilot.framework */; };
-		A4AC3BDD2006CF3E0098735D /* Pilot.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = A4143C9E1F7AD3CA00E91697 /* Pilot.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		A4AC3BDE2006CF3E0098735D /* PilotUI.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = A4143CAA1F7AD3CA00E91697 /* PilotUI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A4B1D4A41F7AFC1200760F7F /* DirectoryModelCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4B1D4A31F7AFC1200760F7F /* DirectoryModelCollection.swift */; };
 		A4B1D4AC1F7AFD7900760F7F /* FileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4B1D4AB1F7AFD7900760F7F /* FileView.swift */; };
 		A4C2DAEC1F9F7AAE005C0554 /* FileActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4C2DAEB1F9F7AAE005C0554 /* FileActions.swift */; };
@@ -94,20 +92,6 @@
 			remoteInfo = "PilotUI macOS";
 		};
 /* End PBXContainerItemProxy section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		A4050D231FA2A59F00FC0EEE /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				A4AC3BDD2006CF3E0098735D /* Pilot.framework in CopyFiles */,
-				A4AC3BDE2006CF3E0098735D /* PilotUI.framework in CopyFiles */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		A4143C811F7AD3A000E91697 /* DirectoryViewer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DirectoryViewer.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -206,7 +190,6 @@
 				A4143C7D1F7AD3A000E91697 /* Sources */,
 				A4143C7E1F7AD3A000E91697 /* Frameworks */,
 				A4143C7F1F7AD3A000E91697 /* Resources */,
-				A4050D231FA2A59F00FC0EEE /* CopyFiles */,
 			);
 			buildRules = (
 			);
