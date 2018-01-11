@@ -1,4 +1,4 @@
-osx_image: xcode8.2
+osx_image: xcode9
 language: objective-c
 branches:
   only:
@@ -12,8 +12,8 @@ script:
   - xcodebuild -list
   - xcrun simctl list
   - xcodebuild test -project Pilot.xcodeproj -scheme "Pilot iOS" -sdk "iphonesimulator" -destination "platform=iOS Simulator,OS=10.1,name=iPhone 7"
-  - xcodebuild test -project Pilot.xcodeproj -scheme "Pilot macOS" -sdk "macosx10.12" -destination "arch=x86_64"
+  - xcodebuild test -project Pilot.xcodeproj -scheme "Pilot macOS" -sdk "macosx10.13" -destination "arch=x86_64"
   - xcodebuild test -project Pilot.xcodeproj -scheme "PilotUI iOS" -sdk "iphonesimulator" -destination "platform=iOS Simulator,OS=10.1,name=iPhone 7"
-  - xcodebuild test -project Pilot.xcodeproj -scheme "PilotUI macOS" -sdk "macosx10.12" -destination "arch=x86_64"
-  - xcodebuild clean build -project Examples/iTunesSearch/iTunesSearch.xcodeproj -target macOS -sdk "macosx10.12" -destination "arch=x86_64"
+  - xcodebuild test -project Pilot.xcodeproj -scheme "PilotUI macOS" -sdk "macosx10.13" -destination "arch=x86_64"
+  - xcodebuild clean build -project Examples/iTunesSearch/iTunesSearch.xcodeproj -target macOS -sdk "macosx10.13" -destination "arch=x86_64"
   - xcodebuild clean build -project Examples/iTunesSearch/iTunesSearch.xcodeproj -target iOS -sdk "iphonesimulator" -destination "platform=iOS Simulator,OS=10.1,name=iPhone 7"
