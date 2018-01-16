@@ -223,6 +223,7 @@ open class CollectionViewController: NSViewController, CollectionViewDelegate {
         _ collectionView: NSCollectionView,
         key: EventKeyCode,
         modifiers: AppKitEventModifierFlags,
+        timestamp: TimeInterval,
         characters: String?
     ) -> Bool {
         let event = ViewModelUserEvent.keyDown(key, modifiers.eventKeyModifierFlags, characters)
