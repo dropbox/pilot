@@ -11,6 +11,7 @@ public protocol CollectionViewDelegate: NSCollectionViewDelegate {
         _ collectionView: NSCollectionView,
         key: EventKeyCode,
         modifiers: AppKitEventModifierFlags,
+        timestamp: TimeInterval,
         characters: String?
     ) -> Bool
 
@@ -54,6 +55,7 @@ public final class CollectionView: NSCollectionView {
             self,
             key: event.eventKeyCode,
             modifiers: event.eventKeyModifierFlags.modifierFlags,
+            timestamp: event.timestamp,
             characters: event.characters)
         guard handled != true else { return }
         switch event.eventKeyCode {
