@@ -53,7 +53,7 @@ extension NSMenuItem {
             menuItem.state = info.metadata.state.toNSState()
             menuItem.representedObject = MenuItemActionWrapper(info.action)
             if let imageName =  info.metadata.imageName {
-                menuItem.image = NSImage(named: imageName)
+                menuItem.image = NSImage(named: NSImage.Name(rawValue: imageName))
             }
             menuItem.target = target
             return menuItem
@@ -61,7 +61,7 @@ extension NSMenuItem {
         case .info(let string):
             let menuItem = NSMenuItem(title: string, action: action, keyEquivalent: "")
             menuItem.isEnabled = false
-            menuItem.state = NSOffState
+            menuItem.state = NSControl.StateValue.off
             menuItem.target = target
             return menuItem
 
@@ -75,7 +75,7 @@ extension NSMenuItem {
                 keyEquivalent: info.metadata.keyEquivalent)
             menuItem.isEnabled = info.metadata.enabled
             if let imageName =  info.metadata.imageName {
-                menuItem.image = NSImage(named: imageName)
+                menuItem.image = NSImage(named: NSImage.Name(rawValue: imageName))
             }
             menuItem.target = target    // There is no action, but target can be used for validation.
             menuItem.submenu = NSMenu.fromSecondaryActions(info.actions, action: action, target: target)
@@ -85,14 +85,14 @@ extension NSMenuItem {
 }
 
 public extension SecondaryActionInfo.Metadata.State {
-    func toNSState() -> Int {
+    func toNSState() -> NSControl.StateValue {
         switch self {
         case .on:
-            return NSOnState
+            return NSControl.StateValue.on
         case .mixed:
-            return NSMixedState
+            return NSControl.StateValue.mixed
         case .off:
-            return NSOffState
+            return NSControl.StateValue.off
         }
     }
 }

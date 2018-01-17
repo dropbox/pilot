@@ -47,7 +47,7 @@ public final class CollectionViewHostItem: NSCollectionViewItem {
 
     public override func loadView() {
         view = NSView()
-        view.autoresizingMask = [.viewWidthSizable, .viewHeightSizable]
+        view.autoresizingMask = [NSView.AutoresizingMask.width, NSView.AutoresizingMask.height]
     }
 
     // MARK: NSCollectionViewElement
@@ -79,7 +79,7 @@ public final class CollectionViewHostItem: NSCollectionViewItem {
         }
     }
 
-    public override var highlightState: NSCollectionViewItemHighlightState {
+    public override var highlightState: NSCollectionViewItem.HighlightState {
         didSet {
             hostedView?.highlightStyle = highlightState.style
         }
@@ -94,7 +94,7 @@ public final class CollectionViewHostItem: NSCollectionViewItem {
     fileprivate var cachedLayoutAttributes: NSCollectionViewLayoutAttributes?
 }
 
-extension NSCollectionViewItemHighlightState {
+extension NSCollectionViewItem.HighlightState {
     fileprivate var style: ViewHighlightStyle {
         switch self {
         case .none:
