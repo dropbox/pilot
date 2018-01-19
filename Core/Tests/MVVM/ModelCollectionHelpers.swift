@@ -16,8 +16,10 @@ internal func assertModelCollectionState(
     }
 }
 
-/// Gives debugging description of why an actual model collection state is different from an expected state.
-/// Returns nil if the states are the same, only checks model IDs are consistent doesn't check individual models.
+/// Gives debugging description of why an actual model collection state is different from an expected state. Returns nil
+/// if the states are the same.
+///
+/// Note: Only checks model IDs are consistent doesn't check individual models.
 internal func describeModelCollectionStateDiscrepancy(
     expected: ModelCollectionState,
     actual: ModelCollectionState
@@ -63,8 +65,7 @@ internal func describeModelCollectionStateDiscrepancy(
     return nil
 }
 
-/// Gives debugging description of why an actual model collection state is different from an expected state.
-
+/// Returns true if `actual` ModelCollectionState matches `expected`.
 internal func validateModelCollectionState(
     expected: ModelCollectionState,
     actual: ModelCollectionState
