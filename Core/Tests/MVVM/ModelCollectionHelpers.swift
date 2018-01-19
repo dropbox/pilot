@@ -11,38 +11,64 @@ internal func assertModelCollectionState(
     file: StaticString = #file,
     line: UInt = #line
 ) {
+    if let error = describeModelCollectionStateDiscrepancy(expected: expected, actual: actual) {
+        XCTFail(error, file: file, line: line)
+    }
+}
+
+/// Gives debugging description of why an actual model collection state is different from an expected state. Returns nil
+/// if the states are the same.
+///
+/// Note: Only checks model IDs are consistent doesn't check individual models.
+internal func describeModelCollectionStateDiscrepancy(
+    expected: ModelCollectionState,
+    actual: ModelCollectionState
+) -> String? {
     switch expected {
     case .notLoaded:
-        if case .notLoaded = actual { return }
-        XCTFail("Expected .notLoaded state, got \(actual)", file: file, line: line)
+        if case .notLoaded = actual { return nil }
+        return "Expected .notLoaded state, got \(actual)"
     case .error:
-        if case .error = actual { return }
-        XCTFail("Expected .error state, got \(actual)", file: file, line: line)
+        if case .error = actual { return nil }
+        return "Expected .error state, got \(actual)"
     case .loading(let expectedSections):
         if case .loading(let actualSections) = actual {
-            XCTAssertEqual(
-                expectedSections?.count,
-                actualSections?.count,
-                "Expected .loading with \(expectedSections?.count ?? 0) sections, got \(actualSections?.count ?? 0)")
+            if expectedSections?.count != actualSections?.count {
+                let e = String(describing: expectedSections?.count)
+                let a = String(describing: actualSections?.count)
+                return "Expected .loading with \(e) sections got \(a)"
+            }
             if let expectedSections = expectedSections, let actualSections = actualSections {
                 for (e, a) in zip(expectedSections, actualSections) {
-                    XCTAssertEqual(e.map({ $0.modelId }), a.map({ $0.modelId }))
+                    if (e.map({ $0.modelId }) != a.map({ $0.modelId })) {
+                        return "\(e) != \(a)"
+                    }
                 }
             }
         } else {
-            XCTFail("Expected .loading(\(String(describing: expectedSections))). Actual: \(actual)", file: file, line: line)
+            return "Expected .loading(\(String(describing: expectedSections))). Actual: \(actual)"
         }
     case .loaded(let expectedSections):
         if case .loaded(let actualSections) = actual {
-            XCTAssertEqual(
-                expectedSections.count,
-                actualSections.count,
-                "Expected .loaded with \(expectedSections.count) sections got \(actualSections.count)")
+            if expectedSections.count != actualSections.count {
+                return "Expected .loaded with \(expectedSections.count) sections got \(actualSections.count)"
+            }
             for (e, a) in zip(expectedSections, actualSections) {
-                XCTAssertEqual(e.map({ $0.modelId }), a.map({ $0.modelId }))
+                if (e.map({ $0.modelId }) != a.map({ $0.modelId })) {
+                    return "\(e) != \(a)"
+                }
             }
         } else {
-            XCTFail("Expected .loaded with \(expectedSections)). Actual: \(actual)", file: file, line: line)
+            return "Expected .loaded with \(expectedSections)). Actual: \(actual)"
         }
     }
+    return nil
+}
+
+/// Returns true if `actual` ModelCollectionState matches `expected`.
+internal func validateModelCollectionState(
+    expected: ModelCollectionState,
+    actual: ModelCollectionState
+) -> Bool {
+    return describeModelCollectionStateDiscrepancy(expected: expected, actual: actual) == nil
 }
