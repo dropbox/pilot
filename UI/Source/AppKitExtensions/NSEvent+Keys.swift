@@ -1,11 +1,7 @@
 import Foundation
 import Pilot
 
-#if swift(>=4)
 public typealias AppKitEventModifierFlags = NSEvent.ModifierFlags
-#else
-public typealias AppKitEventModifierFlags = NSEventModifierFlags
-#endif
 
 public extension NSEvent {
 
