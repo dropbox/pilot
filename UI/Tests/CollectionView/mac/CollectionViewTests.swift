@@ -54,15 +54,15 @@ class CollectionViewTests: XCTestCase {
         applySupplementaryViewBindings(to: cvc)
 
         // We should be able to reload a supplementary view with same View type.
-        cvc.dataSource.reloadSupplementaryElementAtIndexPath(indexPath: path, kind: kind)
+        cvc.dataSource.reloadSupplementaryElementAtIndexPath(indexPath: path, kind: kind.rawValue)
 
         // Switch out the View type to a different one.
-        cvc.dataSource.clearViewBinderForSupplementaryElementOfKind(kind)
+        cvc.dataSource.clearViewBinderForSupplementaryElementOfKind(kind.rawValue)
         cvc.dataSource.setViewBinder(
             BlockViewBindingProvider { _, _ in ViewBinding(AltTestView.self) },
-            forSupplementaryElementOfKind: kind)
+            forSupplementaryElementOfKind: kind.rawValue)
 
-        cvc.dataSource.reloadSupplementaryElementAtIndexPath(indexPath: path, kind: kind)
+        cvc.dataSource.reloadSupplementaryElementAtIndexPath(indexPath: path, kind: kind.rawValue)
 
         guard let view: AltTestView = supplementaryView(from: cvc, forKind: kind, at: path) else {
             XCTFail("CollectionViewController has no supplementary view of type AltTestView")
@@ -89,7 +89,7 @@ class CollectionViewTests: XCTestCase {
 
     func supplementaryView<V: View>(
         from cvc: CollectionViewController,
-        forKind kind: String,
+        forKind kind: NSCollectionView.SupplementaryElementKind,
         at indexPath: IndexPath
     ) -> V? {
         let item = cvc.collectionView.supplementaryView(forElementKind: kind, at: indexPath)
@@ -122,13 +122,13 @@ class CollectionViewTests: XCTestCase {
         let kind = TestSupplementaryLayout.SupplementaryLayoutKind
         cvc.dataSource.setModelProvider(
             provider: BlockModelProvider { _, _ in StaticModel(modelId: "SUPPLEMENTARY_MODEL_1", data: Void()) },
-            forSupplementaryElementOfKind: kind)
+            forSupplementaryElementOfKind: kind.rawValue)
         cvc.dataSource.setViewModelBinder(
             BlockViewModelBindingProvider { TestViewModel(model: $0, context: $1) },
-            forSupplementaryElementOfKind: kind)
+            forSupplementaryElementOfKind: kind.rawValue)
         cvc.dataSource.setViewBinder(
             BlockViewBindingProvider { _, _ in ViewBinding(TestView.self) },
-            forSupplementaryElementOfKind: kind)
+            forSupplementaryElementOfKind: kind.rawValue)
         cvc.collectionView.layout()
     }
 }
@@ -174,7 +174,7 @@ fileprivate final class AltTestView: NSView, View {
 }
 
 fileprivate final class TestSupplementaryLayout: NSCollectionViewLayout {
-    fileprivate static let SupplementaryLayoutKind = "TestSupplementaryViewKind"
+    fileprivate static let SupplementaryLayoutKind = NSCollectionView.SupplementaryElementKind.sectionHeader
 
     fileprivate override func layoutAttributesForElements(in rect: NSRect) -> [NSCollectionViewLayoutAttributes] {
         var layoutAttrs = [NSCollectionViewLayoutAttributes]()
@@ -183,7 +183,7 @@ fileprivate final class TestSupplementaryLayout: NSCollectionViewLayout {
             layoutAttrs.append(attrs)
         }
 
-        if let attrs = layoutAttributesForSupplementaryView(ofKind: "TestSupplementaryViewKind", at: IndexPath(item: 0, section: 0)) {
+        if let attrs = layoutAttributesForSupplementaryView(ofKind: TestSupplementaryLayout.SupplementaryLayoutKind, at: IndexPath(item: 0, section: 0)) {
             layoutAttrs.append(attrs)
         }
 
@@ -197,7 +197,7 @@ fileprivate final class TestSupplementaryLayout: NSCollectionViewLayout {
     }
 
     fileprivate override func layoutAttributesForSupplementaryView(
-        ofKind elementKind: String,
+        ofKind elementKind: NSCollectionView.SupplementaryElementKind,
         at indexPath: IndexPath
     ) -> NSCollectionViewLayoutAttributes? {
         let attrs = NSCollectionViewLayoutAttributes(forSupplementaryViewOfKind: elementKind, with: indexPath)
