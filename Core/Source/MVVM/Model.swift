@@ -188,7 +188,6 @@ public struct ModelVersionMixer {
     private var hasher = Hasher()
 }
 
-#if swift(>=4)
 // MARK: ModelVersionMixer Encoder conformance
 
 extension ModelVersionMixer: Encoder {
@@ -499,4 +498,3 @@ fileprivate struct ModelVersionKeyedEncoder<K: CodingKey>: KeyedEncodingContaine
 
     private var encoder: ModelVersionEncoder
 }
-#endif

@@ -83,7 +83,7 @@ public final class CollectionView: NSCollectionView {
     }
 
     public override func mouseDown(with event: NSEvent) {
-        guard !event.modifierFlags.contains(.control) else {
+        guard !event.modifierFlags.contains(NSEvent.ModifierFlags.control) else {
             return self.rightMouseDown(with: event)
         }
 

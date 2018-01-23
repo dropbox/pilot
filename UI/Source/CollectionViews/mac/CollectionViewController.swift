@@ -65,8 +65,7 @@ open class CollectionViewController: NSViewController, CollectionViewDelegate {
             reuseIdProvider: reuseIdProvider)
         self.modelBinder = modelBinder
 
-        // loadView will never fail
-        super.init(nibName: nil, bundle: nil)!
+        super.init(nibName: nil, bundle: nil)
     }
 
     @available(*, unavailable,
@@ -161,11 +160,11 @@ open class CollectionViewController: NSViewController, CollectionViewDelegate {
 
     public final override func loadView() {
         view = makeRootView()
-        view.autoresizingMask = [.viewWidthSizable, .viewHeightSizable]
+        view.autoresizingMask = [.width, .height]
 
         view.addSubview(scrollView)
         scrollView.frame = view.bounds
-        scrollView.autoresizingMask = [.viewWidthSizable, .viewHeightSizable]
+        scrollView.autoresizingMask = [.width, .height]
 
         scrollView.wantsLayer = true
         scrollView.layerContentsRedrawPolicy = .onSetNeedsDisplay
@@ -184,7 +183,7 @@ open class CollectionViewController: NSViewController, CollectionViewDelegate {
         collectionView.backgroundColors = [backgroundColor]
         collectionView.itemPrototype = nil
         collectionView.isSelectable = true
-        collectionView.autoresizingMask = [.viewWidthSizable, .viewHeightSizable]
+        collectionView.autoresizingMask = [.width, .height]
     }
 
     open override func viewDidLoad() {
@@ -355,7 +354,7 @@ open class CollectionViewController: NSViewController, CollectionViewDelegate {
             fallthrough
         case .systemSpinner:
             let spinner = NSProgressIndicator()
-            spinner.style = .spinningStyle
+            spinner.style = .spinning
             spinner.controlSize = .small
             spinner.startAnimation(self)
             return spinner
@@ -401,7 +400,7 @@ open class CollectionViewController: NSViewController, CollectionViewDelegate {
         let cookie = item.menuTrackingCookie
 
         NotificationCenter.default.addObserver(
-            forName: NSNotification.Name.NSMenuDidEndTracking,
+            forName: NSMenu.didEndTrackingNotification,
             object: menu,
             queue: OperationQueue.main) { [weak item] _ in
                 guard let item = item , item.menuTrackingCookie == cookie else { return }
@@ -563,11 +562,11 @@ private final class FullWidthScroller: NSScroller {
 
     // MARK: NSScroller
 
-    override class func isCompatibleWithOverlayScrollers() -> Bool {
+    override class var isCompatibleWithOverlayScrollers: Bool {
         return true
     }
 
-    override class func preferredScrollerStyle() -> NSScrollerStyle {
+    override class var preferredScrollerStyle: NSScroller.Style {
         return .overlay
     }
 
@@ -576,8 +575,8 @@ private final class FullWidthScroller: NSScroller {
     }
 
     override class func scrollerWidth(
-        for controlSize: NSControlSize,
-        scrollerStyle: NSScrollerStyle
+        for controlSize: NSControl.ControlSize,
+        scrollerStyle: NSScroller.Style
     ) -> CGFloat {
         if FullWidthScroller.widthOverride {
             return 0.0

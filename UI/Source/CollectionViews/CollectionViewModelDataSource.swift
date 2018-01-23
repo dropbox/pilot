@@ -243,7 +243,7 @@ public class CollectionViewModelDataSource: NSObject, ProxyingObservable {
         guard let cv = collectionView else { return }
         guard let supplementaryViewBinder = supplementaryViewBinderMap[kind] else { return }
 
-        let supplementaryView = cv.supplementaryView(forElementKind: kind, at: indexPath)
+        let supplementaryView = cv.supplementaryView(forElementKind: NSCollectionView.SupplementaryElementKind(rawValue: kind), at: indexPath)
         guard let hostView = supplementaryView as? CollectionViewHostReusableView else { return }
         guard var hostedView = hostView.hostedView else { return }
 
@@ -809,7 +809,7 @@ private struct OSInfo {
 
 private class EmptyCollectionViewItem: NSCollectionViewItem {
     public init() {
-        super.init(nibName: nil, bundle: nil)!
+        super.init(nibName: nil, bundle: nil)
     }
 
     required init(coder: NSCoder) {
@@ -894,11 +894,11 @@ extension CollectionViewModelDataSource: NSCollectionViewDataSource {
             // This is easy to repro by removing the completion handler and increasing the animation duration.
             let retainedDelegate = collectionView.delegate
             NSAnimationContext.beginGrouping()
-            NSAnimationContext.current().completionHandler =  { [collectionView, retainedDelegate] in
+            NSAnimationContext.current.completionHandler =  { [collectionView, retainedDelegate] in
                 _ = collectionView
                 _ = retainedDelegate
             }
-            NSAnimationContext.current().duration = 0.2
+            NSAnimationContext.current.duration = 0.2
         }
 
         // `performBatchUpdates` doesn't animate away deletes, so as a workaround the deleted items are set to
@@ -1165,25 +1165,25 @@ extension CollectionViewModelDataSource: NSCollectionViewDataSource {
 
     public func collectionView(
         _ collectionView: NSCollectionView,
-        viewForSupplementaryElementOfKind kind: String,
+        viewForSupplementaryElementOfKind kind: NSCollectionView.SupplementaryElementKind,
         at indexPath: IndexPath
     ) -> NSView {
-        guard let supplementaryViewBinder = supplementaryViewBinderMap[kind] else {
-            Log.fatal(message: "Request for supplementary kind (\(kind)) that has no registered view binder.")
+        guard let supplementaryViewBinder = supplementaryViewBinderMap[kind.rawValue] else {
+            Log.fatal(message: "Request for supplementary kind (\(kind.rawValue)) that has no registered view binder.")
         }
 
-        let viewModel = viewModelForSupplementaryElementAtIndexPath(kind, indexPath: indexPath)
+        let viewModel = viewModelForSupplementaryElementAtIndexPath(kind.rawValue, indexPath: indexPath)
         let viewType = supplementaryViewBinder.viewTypeForViewModel(viewModel, context: context)
         let reuseId = reuseIdProvider.reuseIdForViewModel(viewModel, viewType: viewType)
 
         collectionView.register(
             CollectionViewHostReusableView.self,
             forSupplementaryViewOfKind: kind,
-            withIdentifier: reuseId)
+            withIdentifier: NSUserInterfaceItemIdentifier(rawValue: reuseId))
 
         let supplementaryView = collectionView.makeSupplementaryView(
             ofKind: kind,
-            withIdentifier: reuseId,
+            withIdentifier: NSUserInterfaceItemIdentifier(rawValue: reuseId),
             for: indexPath as IndexPath)
 
         if let supplementaryView = supplementaryView as? CollectionViewHostReusableView {
@@ -1224,9 +1224,9 @@ extension CollectionViewModelDataSource: NSCollectionViewDataSource {
 
         // Register the view/model pair to optimize reuse.
         let reuseId = reuseIdProvider.reuseIdForViewModel(viewModel, viewType: viewType)
-        collectionView.register(CollectionViewHostItem.self, forItemWithIdentifier: reuseId)
+        collectionView.register(CollectionViewHostItem.self, forItemWithIdentifier: NSUserInterfaceItemIdentifier(rawValue: reuseId))
 
-        let item = collectionView.makeItem(withIdentifier: reuseId, for: indexPath)
+        let item = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: reuseId), for: indexPath)
 
         if let hostItem = item as? CollectionViewHostItem {
             var reuseView: View?

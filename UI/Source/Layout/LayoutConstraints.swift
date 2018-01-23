@@ -56,7 +56,11 @@ extension NSLayoutConstraint {
 
     @discardableResult
     internal func with(priority p: PlatformLayoutPriority) -> NSLayoutConstraint {
+        #if os(OSX)
+        priority = NSLayoutConstraint.Priority(p)
+        #else
         priority = p
+        #endif
         return self
     }
 }
