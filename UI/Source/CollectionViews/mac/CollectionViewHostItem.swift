@@ -11,8 +11,8 @@ public final class CollectionViewHostItem: NSCollectionViewItem {
     public var hostedView: View? {
         willSet {
             if let view = hostedView as? NSView {
-                if let newValue = newValue as? NSView , newValue.classForCoder == view.classForCoder {
-                    // NOOP: The view classes are the same, so no need to remove.
+                if let newValue = newValue as? NSView, newValue == view {
+                    // NOOP: The view is the same, so no need to remove.
                 } else {
                     // TODO:(wkiefer) This also needs to unbind here (see TODO in the data source)
                     view.removeFromSuperview()
@@ -21,7 +21,9 @@ public final class CollectionViewHostItem: NSCollectionViewItem {
         }
         didSet {
             // Only add the view if it isn't already added (i.e. hit the noop case in `willSet`.)
-            if let theView = hostedView as? NSView , theView.superview != view {
+            if let view = hostedView as? NSView, newValue == view {
+                // NOOP: The view is the same, so no need to add.
+            } else {
                 view.addSubview(theView)
                 theView.translatesAutoresizingMaskIntoConstraints = false
                 theView.constrain(edgesEqualToView: view)
