@@ -66,7 +66,6 @@ public func ==(lhs: ModelVersion, rhs: ModelVersion) -> Bool {
 /// Uses a non-cryptographic, but collision-resistant hash (with good mixing) to
 /// produce a unique ModelVersion given a set of values mixed in.
 public struct ModelVersionMixer {
-
     // MARK: Init
 
     public init() {
@@ -85,6 +84,26 @@ public struct ModelVersionMixer {
         Hasher_Mix_UInt64(&hasher, value)
     }
 
+    public mutating func mix(_ value: UInt32) {
+        Hasher_Mix_UInt32(&hasher, value)
+    }
+
+    public mutating func mix(_ value: UInt16) {
+        Hasher_Mix_UInt16(&hasher, value)
+    }
+
+    public mutating func mix(_ value: UInt8) {
+        Hasher_Mix_UInt8(&hasher, value)
+    }
+
+    public mutating func mix(_ value: UInt) {
+        if MemoryLayout<UInt>.size == MemoryLayout<UInt32>.size {
+            mix(UInt32(value))
+        } else {
+            mix(UInt64(value))
+        }
+    }
+
     public mutating func mix(_ value: Int64) {
         Hasher_Mix_Int64(&hasher, value)
     }
@@ -93,12 +112,24 @@ public struct ModelVersionMixer {
         Hasher_Mix_Int32(&hasher, value)
     }
 
+    public mutating func mix(_ value: Int16) {
+        Hasher_Mix_Int16(&hasher, value)
+    }
+
+    public mutating func mix(_ value: Int8) {
+        Hasher_Mix_Int8(&hasher, value)
+    }
+
     public mutating func mix(_ value: Int) {
-        if MemoryLayout<Int>.size == 4 {
+        if MemoryLayout<Int>.size == MemoryLayout<Int32>.size {
             mix(Int32(value))
         } else {
             mix(Int64(value))
         }
+    }
+
+    public mutating func mix(_ value: Float) {
+        mix(value.bitPattern)
     }
 
     public mutating func mix(_ value: Double) {
@@ -155,4 +186,315 @@ public struct ModelVersionMixer {
     }
 
     private var hasher = Hasher()
+}
+
+// MARK: ModelVersionMixer Encoder conformance
+
+extension ModelVersionMixer: Encoder {
+    /// Generate a version based on the serialization of an Encodable
+    public static func version(_ value: Encodable) -> ModelVersion {
+        var mixer = ModelVersionMixer()
+        // Encoders in general can throw, but ModelVersionMixer never does.
+        try? value.encode(to: mixer)
+        return mixer.result()
+    }
+
+    public var codingPath: [CodingKey] { return [] }
+    public var userInfo: [CodingUserInfoKey : Any] { return [:] }
+
+    public func container<Key>(keyedBy type: Key.Type) -> KeyedEncodingContainer<Key> where Key : CodingKey {
+
+        return KeyedEncodingContainer(ModelVersionKeyedEncoder(ModelVersionEncoder(mixer: self)))
+    }
+
+    public func unkeyedContainer() -> UnkeyedEncodingContainer {
+        return ModelVersionEncoder(mixer: self)
+    }
+
+    public func singleValueContainer() -> SingleValueEncodingContainer {
+        return ModelVersionEncoder(mixer: self)
+    }
+}
+
+fileprivate class ModelVersionEncoder {
+    public enum Marker: UInt8 {
+        case None
+
+        case Nil
+        case Bool
+        case Int
+        case Int8
+        case Int16
+        case Int32
+        case Int64
+        case UInt
+        case UInt8
+        case UInt16
+        case UInt32
+        case UInt64
+        case Float
+        case Double
+        case String
+
+        case KeyedContainerBegin
+        case KeyedContainerEnd
+        case UnkeyedContainerBegin
+        case UnkeyedContainerEnd
+        case SingleValueContainerBegin
+        case SingleValueContainerEnd
+    }
+
+    public init(mixer: ModelVersionMixer) {
+        self.mixer = mixer
+    }
+
+    fileprivate func mix(marker: Marker) {
+        if closeContainerMarker != .None {
+            mix(marker: closeContainerMarker)
+            closeContainerMarker = .None
+        }
+        mixer.mix(marker.rawValue)
+    }
+
+    fileprivate var mixer: ModelVersionMixer
+    fileprivate var closeContainerMarker: Marker = .None
+}
+
+extension ModelVersionEncoder: Encoder {
+    public var codingPath: [CodingKey] { return [] }
+    public var userInfo: [CodingUserInfoKey : Any] { return [:] }
+
+    private var newEncoder: ModelVersionEncoder {
+        return ModelVersionEncoder(mixer: mixer)
+    }
+
+    public func container<Key>(keyedBy type: Key.Type) -> KeyedEncodingContainer<Key> where Key : CodingKey {
+        mix(marker: .KeyedContainerBegin)
+        closeContainerMarker = .KeyedContainerEnd
+        return KeyedEncodingContainer(ModelVersionKeyedEncoder<Key>(newEncoder))
+    }
+
+    public func unkeyedContainer() -> UnkeyedEncodingContainer {
+        mix(marker: .UnkeyedContainerBegin)
+        closeContainerMarker = .UnkeyedContainerEnd
+        return newEncoder
+    }
+
+    public func singleValueContainer() -> SingleValueEncodingContainer {
+        mix(marker: .SingleValueContainerBegin)
+        closeContainerMarker = .SingleValueContainerEnd
+        return newEncoder
+    }
+}
+
+extension ModelVersionEncoder: SingleValueEncodingContainer {
+    public func encodeNil() throws {
+        mix(marker: .Nil)
+    }
+
+    public func encode(_ value: Bool) throws {
+        mix(marker: .Bool)
+        mixer.mix(value)
+    }
+
+    public func encode(_ value: Int) throws {
+        mix(marker: .Int)
+        mixer.mix(value)
+    }
+
+    public func encode(_ value: Int8) throws {
+        mix(marker: .Int8)
+        mixer.mix(value)
+    }
+
+    public func encode(_ value: Int16) throws {
+        mix(marker: .Int16)
+        mixer.mix(value)
+    }
+
+    public func encode(_ value: Int32) throws {
+        mix(marker: .Int32)
+        mixer.mix(value)
+    }
+
+    public func encode(_ value: Int64) throws {
+        mix(marker: .Int64)
+        mixer.mix(value)
+    }
+
+    public func encode(_ value: UInt) throws {
+        mix(marker: .UInt)
+        mixer.mix(value)
+    }
+
+    public func encode(_ value: UInt8) throws {
+        mix(marker: .UInt8)
+        mixer.mix(value)
+    }
+
+    public func encode(_ value: UInt16) throws {
+        mix(marker: .UInt16)
+        mixer.mix(value)
+    }
+
+    public func encode(_ value: UInt32) throws {
+        mix(marker: .UInt32)
+        mixer.mix(value)
+    }
+
+    public func encode(_ value: UInt64) throws {
+        mix(marker: .UInt64)
+        mixer.mix(value)
+    }
+
+    public func encode(_ value: Float) throws {
+        mix(marker: .Float)
+        mixer.mix(value)
+    }
+
+    public func encode(_ value: Double) throws {
+        mix(marker: .Double)
+        mixer.mix(value)
+    }
+
+    public func encode(_ value: String) throws {
+        mix(marker: .String)
+        mixer.mix(value.count)
+        mixer.mix(value)
+    }
+
+    public func encode<T>(_ value: T) throws where T : Encodable {
+        try value.encode(to: self)
+    }
+}
+
+extension ModelVersionEncoder: UnkeyedEncodingContainer {
+    public var count: Int { return 0 }
+
+    public func nestedContainer<NestedKey>(keyedBy keyType: NestedKey.Type) -> KeyedEncodingContainer<NestedKey> where NestedKey : CodingKey {
+
+        return container(keyedBy: NestedKey.self)
+    }
+
+    public func nestedUnkeyedContainer() -> UnkeyedEncodingContainer {
+        return unkeyedContainer()
+    }
+
+    public func superEncoder() -> Encoder {
+        return self
+    }
+}
+
+fileprivate struct ModelVersionKeyedEncoder<K: CodingKey>: KeyedEncodingContainerProtocol {
+    public typealias Key = K
+
+    public init(_ encoder: ModelVersionEncoder) {
+        self.encoder = encoder
+    }
+
+    public var codingPath: [CodingKey] {
+        return []
+    }
+
+    public func encodeNil(forKey key: K) throws {
+        try encoder.encode(key.stringValue)
+        try encoder.encodeNil()
+    }
+
+    public func encode(_ value: Bool, forKey key: K) throws {
+        try encoder.encode(key.stringValue)
+        try encoder.encode(value)
+    }
+
+    public func encode(_ value: Int, forKey key: K) throws {
+        try encoder.encode(key.stringValue)
+        try encoder.encode(value)
+    }
+
+    public func encode(_ value: Int8, forKey key: K) throws {
+        try encoder.encode(key.stringValue)
+        try encoder.encode(value)
+    }
+
+    public func encode(_ value: Int16, forKey key: K) throws {
+        try encoder.encode(key.stringValue)
+        try encoder.encode(value)
+    }
+
+    public func encode(_ value: Int32, forKey key: K) throws {
+        try encoder.encode(key.stringValue)
+        try encoder.encode(value)
+    }
+
+    public func encode(_ value: Int64, forKey key: K) throws {
+        try encoder.encode(key.stringValue)
+        try encoder.encode(value)
+    }
+
+    public func encode(_ value: UInt, forKey key: K) throws {
+        try encoder.encode(key.stringValue)
+        try encoder.encode(value)
+    }
+
+    public func encode(_ value: UInt8, forKey key: K) throws {
+        try encoder.encode(key.stringValue)
+        try encoder.encode(value)
+    }
+
+    public func encode(_ value: UInt16, forKey key: K) throws {
+        try encoder.encode(key.stringValue)
+        try encoder.encode(value)
+    }
+
+    public func encode(_ value: UInt32, forKey key: K) throws {
+        try encoder.encode(key.stringValue)
+        try encoder.encode(value)
+    }
+
+    public func encode(_ value: UInt64, forKey key: K) throws {
+        try encoder.encode(key.stringValue)
+        try encoder.encode(value)
+    }
+
+    public func encode(_ value: Float, forKey key: K) throws {
+        try encoder.encode(key.stringValue)
+        try encoder.encode(value)
+    }
+
+    public func encode(_ value: Double, forKey key: K) throws {
+        try encoder.encode(key.stringValue)
+        try encoder.encode(value)
+    }
+
+    public func encode(_ value: String, forKey key: K) throws {
+        try encoder.encode(key.stringValue)
+        try encoder.encode(value)
+    }
+
+    public func encode<T>(_ value: T, forKey key: K) throws where T : Encodable {
+        try encoder.encode(key.stringValue)
+        try encoder.encode(value)
+    }
+
+    public func nestedContainer<NestedKey>(keyedBy keyType: NestedKey.Type, forKey key: K) -> KeyedEncodingContainer<NestedKey> where NestedKey : CodingKey {
+
+        try? encoder.encode(key.stringValue)
+        return encoder.container(keyedBy: NestedKey.self)
+    }
+
+    public func nestedUnkeyedContainer(forKey key: K) -> UnkeyedEncodingContainer {
+        try? encoder.encode(key.stringValue)
+        return encoder.unkeyedContainer()
+    }
+
+    public func superEncoder() -> Encoder {
+        return encoder
+    }
+
+    public func superEncoder(forKey key: K) -> Encoder {
+        try? encoder.encode(key.stringValue)
+        return encoder
+    }
+
+    private var encoder: ModelVersionEncoder
 }

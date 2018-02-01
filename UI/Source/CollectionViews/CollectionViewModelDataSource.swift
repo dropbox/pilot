@@ -211,7 +211,7 @@ public class CollectionViewModelDataSource: NSObject, ProxyingObservable {
         availableSize: AvailableSize
     ) -> PreferredLayout {
         guard let supplementaryViewBinder = supplementaryViewBinderMap[kind] else {
-            fatalError("Request for supplementary kind (\(kind)) that has no registered view binder.")
+            Log.fatal(message: "Request for supplementary kind (\(kind)) that has no registered view binder.")
         }
         let viewModel = viewModelForSupplementaryElementAtIndexPath(kind, indexPath: indexPath)
 
@@ -229,7 +229,7 @@ public class CollectionViewModelDataSource: NSObject, ProxyingObservable {
     open func reloadSupplementaryElementAtIndexPath(_ indexPath: IndexPath, kind: String) {
         guard let cv = collectionView else { return }
         let supplementaryView = cv.supplementaryView(forElementKind: kind, at: indexPath)
-        guard let hostView = supplementaryView as? CollectionViewHostResuableView else { return }
+        guard let hostView = supplementaryView as? CollectionViewHostReusableView else { return }
         guard let hostedView = hostView.hostedView else { return }
         let viewModel = viewModelForSupplementaryElementAtIndexPath(kind, indexPath: indexPath)
         hostedView.bindToViewModel(viewModel)
@@ -242,17 +242,16 @@ public class CollectionViewModelDataSource: NSObject, ProxyingObservable {
     public func reloadSupplementaryElementAtIndexPath(indexPath: IndexPath, kind: String) {
         guard let cv = collectionView else { return }
         guard let supplementaryViewBinder = supplementaryViewBinderMap[kind] else { return }
-        guard let supplementaryView =
-            cv.supplementaryView(forElementKind: kind, at: indexPath as IndexPath) else { return }
+
+        let supplementaryView = cv.supplementaryView(forElementKind: NSCollectionView.SupplementaryElementKind(rawValue: kind), at: indexPath)
+        guard let hostView = supplementaryView as? CollectionViewHostReusableView else { return }
+        guard var hostedView = hostView.hostedView else { return }
 
         let viewModel = viewModelForSupplementaryElementAtIndexPath(kind, indexPath: indexPath)
-        let desiredView = supplementaryViewBinder.viewTypeForViewModel(viewModel, context: context)
+        hostedView = supplementaryViewBinder.view(for: viewModel, context: context, reusing: hostedView, layout: nil)
 
-        guard let view = supplementaryView as? View , type(of: view) == desiredView else {
-            assertWithLog(false, message: "reloadSupplementaryElementAtIndexPath doesn't support changing view types")
-            return
-        }
-        view.bindToViewModel(viewModel)
+        hostView.hostedView = hostedView
+        hostedView.bindToViewModel(viewModel)
     }
 #endif
 
@@ -409,6 +408,14 @@ public class CollectionViewModelDataSource: NSObject, ProxyingObservable {
     fileprivate func viewModelForSupplementaryElementAtIndexPath(_ kind: String, indexPath: IndexPath) -> ViewModel {
         let model = modelForSupplementaryIndexPath(indexPath, ofKind: kind)
         if let bindingProvider = supplementaryViewModelBinderMap[kind] {
+            // Supplementary items don't necessarily have an item associated with them (think section headers for empty
+            // sections) - so handle the "zero" case here.
+            if let zeroModel = model as? CollectionZeroItemModel {
+                return CachedViewModel(
+                    viewModel: CollectionZeroItemViewModel(indexPath: zeroModel.indexPath),
+                    preferredLayout: .none).viewModel
+            }
+
             return bindingProvider.viewModel(for: model, context: context)
         } else {
             return cachedViewModel(for: model).viewModel
@@ -459,22 +466,69 @@ public class CollectionViewModelDataSource: NSObject, ProxyingObservable {
 
         let (updates, commitCollectionChanges) = currentCollection.beginUpdate(underlyingCollection)
         guard updates.hasUpdates else {
-            // still synced
-            // no need to update lastKnownCollectionViewContents
+            // Still synced - no need to fire a collection view update pass.
+            // However, if there are no updates, the underlying case may still change (e.g. .loading(_) -> .error(_)),
+            // so a commit is still needed.
+            if underlyingCollection.state.isDifferentCase(than: currentCollection.state) {
+                commitCollectionChanges()
+            }
             return
         }
 
         observers.notify(.willUpdateItems(updates))
         commitCollectionChanges()
 
-        for invalidatedModelId in updates.removedModelIds {
-            viewModelCache[invalidatedModelId] = nil
-        }
         handleUpdateItems(updates) { [weak self] in
             self?.observers.notify(.didUpdateItems(updates))
         }
     }
-    
+
+
+    fileprivate var collectionViewSectionCount: Int {
+        return collectionView?.numberOfSections ?? 0
+    }
+
+    /// Clears any applicable cached view models (in `viewModelCache`) based on a set of `CollectionEventUpdates`.
+    /// This method should only be called once the `CollectionEventUpdates` have been committed to `currentCollection`,
+    /// typically in `handleUpdateItems(...)` as it assumes the updates are already reflected in the current collection.
+    /// Returns the invalidated view models.
+    fileprivate func invalidateViewModelCache(for updates: CollectionEventUpdates) -> [ModelId: CachedViewModel] {
+        // Removals.
+        for invalidatedModelId in updates.removedModelIds {
+            viewModelCache[invalidatedModelId] = nil
+        }
+
+        var invalidatedViewModelCache: [ModelId: CachedViewModel] = [:]
+
+        // At this point, `currentCollection` has been updated, and update/move.to index paths are based on post-removal
+        // indices. So can clear based on state of current collection.
+        for updatedPath in updates.updatedModelPaths {
+            if let model: Model = currentCollection.atModelPath(updatedPath) {
+                if let invalidViewModel = viewModelCache.removeValue(forKey: model.modelId) {
+                    invalidatedViewModelCache[model.modelId] = invalidViewModel
+                }
+            }
+        }
+
+        for move in updates.movedModelPaths {
+            if let model: Model = currentCollection.atModelPath(move.to) {
+                if let invalidViewModel = viewModelCache.removeValue(forKey: model.modelId) {
+                    invalidatedViewModelCache[model.modelId] = invalidViewModel
+                }
+            }
+        }
+        return invalidatedViewModelCache
+    }
+}
+
+#if os(iOS)
+
+// MARK: - iOS Data and Batch Updates
+
+extension CollectionViewModelDataSource: UICollectionViewDataSource {
+
+    // MARK: Private
+
     fileprivate func updatesShouldFallbackOnFullReload(_ updates: CollectionEventUpdates) -> Bool {
         // If `NoneReloadOnly` is specified, always reload.
         if case .noneReloadOnly = updateAnimationStyle {
@@ -487,52 +541,22 @@ public class CollectionViewModelDataSource: NSObject, ProxyingObservable {
         return updates.containsFirstAddInSection || updates.containsLastRemoveInSection
     }
 
-    fileprivate var collectionViewSectionCount: Int {
-        return collectionView?.numberOfSections ?? 0
-    }
-}
-
-#if os(iOS)
-
-// MARK: - iOS Data and Batch Updates
-
-extension CollectionViewModelDataSource: UICollectionViewDataSource {
-
-    // MARK: Private
-
     public func handleUpdateItems(_ updates: CollectionEventUpdates, completion: @escaping () -> Void) {
         // preconditions
         precondition(collectionViewState == .synced) // but not for long!
         precondition(updates.hasUpdates)
         guard let collectionView = collectionView else {
-            fatalError("handleUpdateItems should never be called without a collectionView")
+            Log.fatal(message: "handleUpdateItems should never be called without a collectionView")
         }
 
-        // If the collection view is not part of the window hierarchy or the application is in the background,
-        // then just do a basic reload. This avoids potential exceptions inside `UICollectionView` when a batch
-        // update spans the view being added to the hierarchy and avoids core animation queuing up animations
-        // of changes from when the app was in the background.
-        if collectionView.window == nil || inBackground {
-            viewModelCache.removeAll()
+        let invalidatedViewModelCache = invalidateViewModelCache(for: updates)
 
-            // Disable animations during background/offscreen reload.
-            CATransaction.begin()
-            CATransaction.setDisableActions(true)
 
-            // CollectionView.reloadData does not synchronously fetch new information from the data source, so
-            // don't call performBatchUpdates until it does.
-            // NOTE: this path does not fire any observable events
-            collectionViewState = .loading
-            collectionView.reloadData()
-
-            CATransaction.commit()
-
-            completion()
-            return
-        }
-
-        // Workaround classic collection view bug where some updates require using a full reload.
-        let fullReloadFallback = updatesShouldFallbackOnFullReload(updates)
+        // Workaround classic collection view bugs where some updates require using a full reload. This includes
+        // reloading when the collection view is not part of the window hierarchy or the application is in the
+        // background.
+        let fullReloadFallback =
+            updatesShouldFallbackOnFullReload(updates) || collectionView.window == nil || inBackground
 
         // Determine if this should be animated.
         let shouldAnimate = shouldAnimateUpdates(updates) && !fullReloadFallback
@@ -552,14 +576,14 @@ extension CollectionViewModelDataSource: UICollectionViewDataSource {
             if let strongSelf = self {
                 switch strongSelf.collectionViewState {
                 case .loading:
-                    fatalError("Precondition failure - state cannot transition from animating to loading")
+                    Log.fatal(message: "Precondition failure - state cannot transition from animating to loading")
                 case .animating:
                     strongSelf.collectionViewState = .synced
                 case .animatingWithPendingChanges:
                     strongSelf.collectionViewState = .synced // applyCurrentDataToCollectionView will update
                     strongSelf.applyCurrentDataToCollectionView()
                 case .synced:
-                    fatalError("Precondition failure - state cannot transition from animating to synced")
+                    Log.fatal(message: "Precondition failure - state cannot transition from animating to synced")
                 }
             }
 
@@ -571,8 +595,6 @@ extension CollectionViewModelDataSource: UICollectionViewDataSource {
             // On iOS `reloadData` doesn't always dequeue new cells, so remove and add all sections here.
             let oldSectionCount = collectionViewSectionCount
             let newSectionCount = currentCollection.sections.count
-
-            viewModelCache.removeAll()
 
             collectionViewState = .animating
             collectionView.performBatchUpdates({
@@ -622,13 +644,10 @@ extension CollectionViewModelDataSource: UICollectionViewDataSource {
                 var oldCachedViewModel: CachedViewModel?
                 var newCachedViewModel: CachedViewModel?
 
-                // Clear cache for updated items.
-                if let item: Model = currentCollection.atModelPath(indexPath) {
-                    oldCachedViewModel = viewModelCache.removeValue(forKey: item.modelId)
-                }
-
                 // Create new view models from the updated models.
                 if let model: Model = currentCollection.atModelPath(indexPath) {
+                    oldCachedViewModel = invalidatedViewModelCache[model.modelId]
+
                     _ = cachedViewModel(for: model)
 
                     // Update the size.
@@ -641,8 +660,12 @@ extension CollectionViewModelDataSource: UICollectionViewDataSource {
                 }
 
                 // If the size hasn't changed, simply rebind the view rather than perform a full cell reload.
-                if let old = oldCachedViewModel,
-                    let new = newCachedViewModel , old.preferredLayout == new.preferredLayout {
+                if
+                    let old = oldCachedViewModel,
+                    let new = newCachedViewModel,
+                    type(of: old.viewModel) == type(of: new.viewModel) &&
+                    old.preferredLayout == new.preferredLayout
+                {
                     rebindViewAtIndexPath(indexPath.indexPath, toViewModel: new.viewModel)
                 } else {
                     indexPathsToReload.append(indexPath.indexPath)
@@ -741,7 +764,7 @@ extension CollectionViewModelDataSource: UICollectionViewDataSource {
         at indexPath: IndexPath
     ) -> UICollectionReusableView {
         guard let supplementaryViewBinder = supplementaryViewBinderMap[kind] else {
-            fatalError("Request for supplementary kind (\(kind)) that has no registered view binder.")
+            Log.fatal(message: "Request for supplementary kind (\(kind)) that has no registered view binder.")
         }
 
         let viewModel = viewModelForSupplementaryElementAtIndexPath(kind, indexPath: indexPath)
@@ -749,7 +772,7 @@ extension CollectionViewModelDataSource: UICollectionViewDataSource {
         let reuseId = reuseIdProvider.reuseIdForViewModel(viewModel, viewType: viewType)
 
         collectionView.register(
-            CollectionViewHostResuableView.self,
+            CollectionViewHostReusableView.self,
             forSupplementaryViewOfKind: kind,
             withReuseIdentifier: reuseId)
 
@@ -758,7 +781,7 @@ extension CollectionViewModelDataSource: UICollectionViewDataSource {
             withReuseIdentifier: reuseId,
             for: indexPath)
 
-        if let supplementaryView = supplementaryView as? CollectionViewHostResuableView {
+        if let supplementaryView = supplementaryView as? CollectionViewHostReusableView {
             var reuseView: View?
             if let hostUIView = supplementaryView.hostedView as? UIView , type(of: hostUIView) == viewType {
                 reuseView = supplementaryView.hostedView
@@ -786,11 +809,11 @@ private struct OSInfo {
 
 private class EmptyCollectionViewItem: NSCollectionViewItem {
     public init() {
-        super.init(nibName: nil, bundle: nil)!
+        super.init(nibName: nil, bundle: nil)
     }
 
     required init(coder: NSCoder) {
-        fatalError("Unsupported initializer")
+        Log.fatal(message: "Unsupported initializer")
     }
 
     override func loadView() {
@@ -807,12 +830,12 @@ extension CollectionViewModelDataSource: NSCollectionViewDataSource {
         precondition(collectionViewState == .synced) // but not for long!
         precondition(updates.hasUpdates)
         guard let collectionView = collectionView else {
-            fatalError("handleUpdateItems should never run without a collectionView")
+            Log.fatal(message: "handleUpdateItems should never run without a collectionView")
         }
         // The standard collection view hierarchy is `NSScrollView`->`NSClipView`->`NSCollectionView`, so finding
         // the scroll view via super view chaining is expected.
         guard let scrollView = collectionView.superview?.superview as? NSScrollView else {
-            fatalError("CollectionViewModelDataSource requires an outer scrollview.")
+            Log.fatal(message: "CollectionViewModelDataSource requires an outer scrollview.")
         }
 
         log(event: "HandleUpdateItems", updates: updates)
@@ -822,9 +845,9 @@ extension CollectionViewModelDataSource: NSCollectionViewDataSource {
             completion()
         }
 
-        if shouldPerformFullReload(withCollectionView: collectionView, scrollView: scrollView, updates: updates) {
-            viewModelCache.removeAll()
+        let invalidatedViewModelCache = invalidateViewModelCache(for: updates)
 
+        if shouldPerformFullReload(withCollectionView: collectionView, scrollView: scrollView, updates: updates) {
             guard !OSInfo.isAtLeastSierra else {
                 let oldSectionCount = collectionView.numberOfSections
                 let newSectionCount = numberOfSections(in: collectionView)
@@ -865,8 +888,17 @@ extension CollectionViewModelDataSource: NSCollectionViewDataSource {
         let shouldAnimate = shouldAnimateUpdates(updates)
 
         if shouldAnimate {
+            // BUGFIX: If the collection view is deallocated during the timespan of the animation, NSCollectionView
+            // internals will end up calling the non-zeroing weak delegate back and crashing. So retain both the
+            // delegate and the collection view until the animation completes.
+            // This is easy to repro by removing the completion handler and increasing the animation duration.
+            let retainedDelegate = collectionView.delegate
             NSAnimationContext.beginGrouping()
-            NSAnimationContext.current().duration = 0.2
+            NSAnimationContext.current.completionHandler =  { [collectionView, retainedDelegate] in
+                _ = collectionView
+                _ = retainedDelegate
+            }
+            NSAnimationContext.current.duration = 0.2
         }
 
         // `performBatchUpdates` doesn't animate away deletes, so as a workaround the deleted items are set to
@@ -914,11 +946,6 @@ extension CollectionViewModelDataSource: NSCollectionViewDataSource {
             if !movedModels.isEmpty {
                 let usingFakeMoves = shouldFakeMoves(updates: updates)
                 for move in movedModels {
-                    // Clear cache for moved items.
-                    // NOTE: currentCollection has been updated to the latest data at this point.
-                    if let item: Model = currentCollection.atModelPath(move.to) {
-                        viewModelCache[item.modelId] = nil
-                    }
                     if usingFakeMoves {
                         collectionView.deleteItems(at: [move.from.indexPath])
                         collectionView.insertItems(at: [move.to.indexPath])
@@ -948,13 +975,10 @@ extension CollectionViewModelDataSource: NSCollectionViewDataSource {
                 var oldCachedViewModel: CachedViewModel?
                 var newCachedViewModel: CachedViewModel?
 
-                // Clear cache for updated items.
-                if let item: Model = currentCollection.atModelPath(indexPath) {
-                    oldCachedViewModel = viewModelCache.removeValue(forKey: item.modelId)
-                }
-
                 // Create new view models from the updated models.
                 if let model: Model = currentCollection.atModelPath(indexPath) {
+                    oldCachedViewModel = invalidatedViewModelCache[model.modelId]
+
                     _ = cachedViewModel(for: model)
 
                     // Update the size.
@@ -967,8 +991,12 @@ extension CollectionViewModelDataSource: NSCollectionViewDataSource {
                 }
 
                 // If the size hasn't changed, simply rebind the view rather than perform a full cell reload.
-                if let old = oldCachedViewModel,
-                    let new = newCachedViewModel , old.preferredLayout == new.preferredLayout {
+                if
+                    let old = oldCachedViewModel,
+                    let new = newCachedViewModel,
+                    type(of: old.viewModel) == type(of: new.viewModel) &&
+                    old.preferredLayout == new.preferredLayout
+                {
                     rebindViewAtIndexPath(indexPath.indexPath, toViewModel: new.viewModel)
                 } else {
                     reloadSet.insert(indexPath.indexPath)
@@ -1030,21 +1058,21 @@ extension CollectionViewModelDataSource: NSCollectionViewDataSource {
     private func advanceCollectionViewStateAfterPerformUpdates() {
         switch collectionViewState {
         case .loading:
-            fatalError("Precondition failure - state cannot transition from animating to loading")
+            Log.fatal(message: "Precondition failure - state cannot transition from animating to loading")
         case .animating:
             collectionViewState = .synced
         case .animatingWithPendingChanges:
             collectionViewState = .synced // applyCurrentDataToCollectionView will update
             applyCurrentDataToCollectionView()
         case .synced:
-            fatalError("Precondition failure - state cannot transition from animating to synced")
+            Log.fatal(message: "Precondition failure - state cannot transition from animating to synced")
         }
 
     }
 
     private func rebindViewAtIndexPath(_ indexPath: IndexPath, toViewModel viewModel: ViewModel) {
         guard let collectionView = collectionView else { return }
-        guard let item = collectionView.item(at: indexPath as IndexPath) as? CollectionViewHostItem else { return }
+        guard let item = collectionView.item(at: indexPath) as? CollectionViewHostItem else { return }
 
         willRebindViewModel(viewModel)
         item.hostedView?.bindToViewModel(viewModel)
@@ -1137,29 +1165,38 @@ extension CollectionViewModelDataSource: NSCollectionViewDataSource {
 
     public func collectionView(
         _ collectionView: NSCollectionView,
-        viewForSupplementaryElementOfKind kind: String,
+        viewForSupplementaryElementOfKind kind: NSCollectionView.SupplementaryElementKind,
         at indexPath: IndexPath
     ) -> NSView {
-        guard let supplementaryViewBinder = supplementaryViewBinderMap[kind] else {
-            fatalError("Request for supplementary kind (\(kind)) that has no registered view binder.")
+        guard let supplementaryViewBinder = supplementaryViewBinderMap[kind.rawValue] else {
+            Log.fatal(message: "Request for supplementary kind (\(kind.rawValue)) that has no registered view binder.")
         }
 
-        let viewModel = viewModelForSupplementaryElementAtIndexPath(kind, indexPath: indexPath)
+        let viewModel = viewModelForSupplementaryElementAtIndexPath(kind.rawValue, indexPath: indexPath)
         let viewType = supplementaryViewBinder.viewTypeForViewModel(viewModel, context: context)
-        let reuseId = "\(NSStringFromClass(viewType))-\(type(of: viewModel))"
+        let reuseId = reuseIdProvider.reuseIdForViewModel(viewModel, viewType: viewType)
 
         collectionView.register(
-            viewType,
+            CollectionViewHostReusableView.self,
             forSupplementaryViewOfKind: kind,
-            withIdentifier: reuseId)
+            withIdentifier: NSUserInterfaceItemIdentifier(rawValue: reuseId))
 
         let supplementaryView = collectionView.makeSupplementaryView(
             ofKind: kind,
-            withIdentifier: reuseId,
+            withIdentifier: NSUserInterfaceItemIdentifier(rawValue: reuseId),
             for: indexPath as IndexPath)
 
-        if let supplementaryView = supplementaryView as? View {
-            supplementaryView.bindToViewModel(viewModel)
+        if let supplementaryView = supplementaryView as? CollectionViewHostReusableView {
+            var reuseView: View?
+            if let hostView = supplementaryView.hostedView as? NSView , type(of: hostView) == viewType {
+                reuseView = supplementaryView.hostedView
+            }
+            let view = supplementaryViewBinder.view(
+                for: viewModel,
+                context: context,
+                reusing: reuseView,
+                layout: nil)
+            supplementaryView.hostedView = view
         }
 
         return supplementaryView
@@ -1186,10 +1223,10 @@ extension CollectionViewModelDataSource: NSCollectionViewDataSource {
         let viewType = viewBinder.viewTypeForViewModel(viewModel, context: context)
 
         // Register the view/model pair to optimize reuse.
-        let reuseId = "\(NSStringFromClass(viewType))-\(type(of: viewModel))"
-        collectionView.register(CollectionViewHostItem.self, forItemWithIdentifier: reuseId)
+        let reuseId = reuseIdProvider.reuseIdForViewModel(viewModel, viewType: viewType)
+        collectionView.register(CollectionViewHostItem.self, forItemWithIdentifier: NSUserInterfaceItemIdentifier(rawValue: reuseId))
 
-        let item = collectionView.makeItem(withIdentifier: reuseId, for: indexPath)
+        let item = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: reuseId), for: indexPath)
 
         if let hostItem = item as? CollectionViewHostItem {
             var reuseView: View?

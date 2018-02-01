@@ -63,15 +63,15 @@ open class CollectionViewController: NSViewController, CollectionViewDelegate {
             viewBinder: viewBinder,
             context: context.newScope(),
             reuseIdProvider: reuseIdProvider)
+        self.modelBinder = modelBinder
 
-        // loadView will never fail
-        super.init(nibName: nil, bundle: nil)!
+        super.init(nibName: nil, bundle: nil)
     }
 
     @available(*, unavailable,
         message: "Use `init(model:modelBinder:viewBinder:layout:context:)`")
     public required init?(coder: NSCoder) {
-        fatalError("Use `init(model:modelBinder:viewBinder:layout:context:)` instead")
+        Log.fatal(message: "Use `init(model:modelBinder:viewBinder:layout:context:)` instead")
     }
 
     deinit {
@@ -160,11 +160,11 @@ open class CollectionViewController: NSViewController, CollectionViewDelegate {
 
     public final override func loadView() {
         view = makeRootView()
-        view.autoresizingMask = [.viewWidthSizable, .viewHeightSizable]
+        view.autoresizingMask = [.width, .height]
 
         view.addSubview(scrollView)
         scrollView.frame = view.bounds
-        scrollView.autoresizingMask = [.viewWidthSizable, .viewHeightSizable]
+        scrollView.autoresizingMask = [.width, .height]
 
         scrollView.wantsLayer = true
         scrollView.layerContentsRedrawPolicy = .onSetNeedsDisplay
@@ -183,7 +183,7 @@ open class CollectionViewController: NSViewController, CollectionViewDelegate {
         collectionView.backgroundColors = [backgroundColor]
         collectionView.itemPrototype = nil
         collectionView.isSelectable = true
-        collectionView.autoresizingMask = [.viewWidthSizable, .viewHeightSizable]
+        collectionView.autoresizingMask = [.width, .height]
     }
 
     open override func viewDidLoad() {
@@ -218,50 +218,47 @@ open class CollectionViewController: NSViewController, CollectionViewDelegate {
 
     // MARK: CollectionViewDelegate
 
-    open func collectionViewDidReceiveReturnKey(_ collectionView: NSCollectionView) -> Bool {
-        // Right now, only a single selected item is supported for the return/enter keys.
-        guard let indexPath = collectionView.selectionIndexPaths.first else { return false }
-        guard let vm = viewModelAtIndexPath(indexPath) else { return false }
-        if vm.canHandleUserEvent(.enterKey) {
-            vm.handleUserEvent(.enterKey)
-            return true
-        }
-        return false
-    }
-
-    open func collectionViewDidReceiveSpaceKey(_ collectionView: NSCollectionView) -> Bool {
-        // Right now, only a single selected item is supported for the space keys.
-        guard let indexPath = collectionView.selectionIndexPaths.first else { return false }
-        guard let vm = viewModelAtIndexPath(indexPath) else { return false }
-        if vm.canHandleUserEvent(.spaceKey) {
-            vm.handleUserEvent(.spaceKey)
-            return true
-        }
-        return false
+    open func collectionViewDidReceiveKeyEvent(
+        _ collectionView: NSCollectionView,
+        key: EventKeyCode,
+        modifiers: AppKitEventModifierFlags,
+        timestamp: TimeInterval,
+        characters: String?
+    ) -> Bool {
+        let event = ViewModelUserEvent.keyDown(key, modifiers.eventKeyModifierFlags, characters)
+        return handleUserEvent(event)
     }
 
     open func collectionView(_ collectionView: NSCollectionView, didClickIndexPath indexPath: IndexPath) {
         guard let vm = viewModelAtIndexPath(indexPath) else { return }
+
         if vm.canHandleUserEvent(.click) {
             vm.handleUserEvent(.click)
         }
     }
 
     open func collectionView(_ collectionView: NSCollectionView, menuForIndexPath indexPath: IndexPath) -> NSMenu? {
-        guard let vm = viewModelAtIndexPath(indexPath) else { return nil }
+        let selectedIndexPaths = collectionView.selectionIndexPaths.union([indexPath])
+        let selectedModels = selectedIndexPaths.map { dataSource.currentCollection.sections[$0.section][$0.item] }
+        guard
+            let selection = modelBinder.selectionViewModel(for: selectedModels, context: context),
+            selection.canHandleUserEvent(.secondaryClick)
+        else {
+            return nil
+        }
 
-        if vm.canHandleUserEvent(.secondaryClick) {
-            vm.handleUserEvent(.secondaryClick)
+        selection.handleUserEvent(.secondaryClick)
+        let actions = selection.secondaryActions(for: .secondaryClick)
 
-            let actions = vm.secondaryActions(for: .secondaryClick)
-            if !actions.isEmpty {
-                let menu = NSMenu.fromSecondaryActions(actions, action: #selector(didSelectContextMenuItem(_:)))
+        if !actions.isEmpty {
+            let menu = NSMenu.fromSecondaryActions(actions, action: #selector(didSelectContextMenuItem(_:)))
+            for indexPath in selectedIndexPaths {
                 if let item = collectionView.item(at: indexPath) as? CollectionViewHostItem {
                     item.highlightStyle = .contextMenu
                     registerForMenuTrackingEnd(menu, item: item)
                 }
-                return menu
             }
+            return menu
         }
         return nil
     }
@@ -288,14 +285,40 @@ open class CollectionViewController: NSViewController, CollectionViewDelegate {
         }
     }
 
+    // MARK: NSObject
+
+    open override func validateMenuItem(_ menuItem: NSMenuItem) -> Bool {
+        if menuItem.action == #selector(copy(_:)) {
+            return selectedViewModel()?.canHandleUserEvent(.copy) == true
+        }
+        return false
+    }
+
     // MARK: Private
 
     private var lastBounds = CGRect.zero
     private let internalScrollView = FullWidthScrollView()
+    private var modelBinder: ViewModelBindingProvider
 
     private func viewModelAtIndexPath(_ indexPath: IndexPath) -> ViewModel? {
         guard let item = collectionView.item(at: indexPath as IndexPath) as? CollectionViewHostItem else { return nil}
         return item.hostedView?.viewModel
+    }
+
+    private func handleUserEvent(_ event: ViewModelUserEvent) -> Bool {
+        guard let selectionViewModel = selectionViewModel() else { return false }
+        if selectionViewModel.canHandleUserEvent(event) {
+            selectionViewModel.handleUserEvent(event)
+            return true
+        }
+        return false
+    }
+
+    private func selectionViewModel() -> SelectionViewModel? {
+        guard !collectionView.selectionIndexPaths.isEmpty else { return nil }
+        let selectedModels = collectionView.selectionIndexPaths
+            .map { dataSource.currentCollection.sections[$0.section][$0.item] }
+        return modelBinder.selectionViewModel(for: selectedModels, context: context)
     }
 
     /// View to show when in the `loading` state - dictated by `loadingDisplay`.
@@ -331,7 +354,7 @@ open class CollectionViewController: NSViewController, CollectionViewDelegate {
             fallthrough
         case .systemSpinner:
             let spinner = NSProgressIndicator()
-            spinner.style = .spinningStyle
+            spinner.style = .spinning
             spinner.controlSize = .small
             spinner.startAnimation(self)
             return spinner
@@ -377,7 +400,7 @@ open class CollectionViewController: NSViewController, CollectionViewDelegate {
         let cookie = item.menuTrackingCookie
 
         NotificationCenter.default.addObserver(
-            forName: NSNotification.Name.NSMenuDidEndTracking,
+            forName: NSMenu.didEndTrackingNotification,
             object: menu,
             queue: OperationQueue.main) { [weak item] _ in
                 guard let item = item , item.menuTrackingCookie == cookie else { return }
@@ -391,6 +414,16 @@ open class CollectionViewController: NSViewController, CollectionViewDelegate {
         guard let menuNotificationObserver = self.menuNotificationObserver else { return }
         NotificationCenter.default.removeObserver(menuNotificationObserver)
         self.menuNotificationObserver = nil
+    }
+
+    private func selectedViewModel() -> ViewModel? {
+        guard let indexPath = collectionView.selectionIndexPaths.first else { return nil }
+        return viewModelAtIndexPath(indexPath)
+    }
+
+    @objc
+    private func copy(_ sender: Any) {
+        selectedViewModel()?.handleUserEvent(.copy)
     }
 
     // MARK: Observing model state changes.
@@ -485,9 +518,13 @@ open class CollectionViewController: NSViewController, CollectionViewDelegate {
             return nil
         case .text(let string, let font, let color):
             let label = NSTextField()
-            let attributes: [String: AnyObject] = [NSFontAttributeName: font, NSForegroundColorAttributeName: color]
-            let attributedString = NSAttributedString(string: string, attributes: attributes)
-            label.attributedStringValue = attributedString
+            label.isEditable = false
+            label.isBordered = false
+            label.backgroundColor = .clear
+            label.alignment = .center
+            label.font = font
+            label.textColor = color
+            label.stringValue = string
             return label
         case .viewWithCustomConstraints(let view, _):
             return view
@@ -499,12 +536,21 @@ open class CollectionViewController: NSViewController, CollectionViewDelegate {
     private func emptyContentViewConstraints(
         for display: EmptyCollectionDisplay
     ) -> (NSView, NSView) -> [NSLayoutConstraint] {
-        if case .viewWithCustomConstraints(_, let constraints) = display {
+        switch display {
+        case .viewWithCustomConstraints(_, let constraints):
             return constraints
-        }
-        return { parent, child in
-            return [child.centerXAnchor.constraint(equalTo: parent.centerXAnchor),
-                    child.centerYAnchor.constraint(equalTo: parent.centerYAnchor)]
+        case .text(_, _, _):
+            return { parent, child in
+                return [child.widthAnchor.constraint(equalTo: parent.widthAnchor),
+                        child.heightAnchor.constraint(lessThanOrEqualTo: parent.widthAnchor),
+                        child.centerXAnchor.constraint(equalTo: parent.centerXAnchor),
+                        child.centerYAnchor.constraint(equalTo: parent.centerYAnchor)]
+            }
+        default:
+            return { parent, child in
+                return [child.centerXAnchor.constraint(equalTo: parent.centerXAnchor),
+                        child.centerYAnchor.constraint(equalTo: parent.centerYAnchor)]
+            }
         }
     }
 }
@@ -516,13 +562,21 @@ private final class FullWidthScroller: NSScroller {
 
     // MARK: NSScroller
 
-    override class func isCompatibleWithOverlayScrollers() -> Bool {
+    override class var isCompatibleWithOverlayScrollers: Bool {
         return true
     }
 
+    override class var preferredScrollerStyle: NSScroller.Style {
+        return .overlay
+    }
+
+    override func drawKnobSlot(in slotRect: NSRect, highlight flag: Bool) {
+        // Nop
+    }
+
     override class func scrollerWidth(
-        for controlSize: NSControlSize,
-        scrollerStyle: NSScrollerStyle
+        for controlSize: NSControl.ControlSize,
+        scrollerStyle: NSScroller.Style
     ) -> CGFloat {
         if FullWidthScroller.widthOverride {
             return 0.0

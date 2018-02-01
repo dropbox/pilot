@@ -15,6 +15,7 @@ public enum ModelCollectionState {
     /// The model collection encountered an error loading data.
     case error(Error)
 
+    /// Unpacks and returns any associated model sections.
     public var sections: [[Model]] {
         switch self {
         case .notLoaded, .error:
@@ -23,6 +24,20 @@ public enum ModelCollectionState {
             return models ?? []
         case .loaded(let models):
             return models
+        }
+    }
+
+    /// Returns whether or not the underlying enum case is different than the target. Ignores associated model
+    /// objects.
+    public func isDifferentCase(than other: ModelCollectionState) -> Bool {
+        switch (self, other) {
+        case (.notLoaded, .notLoaded),
+             (.loading(_), .loading(_)),
+             (.loaded(_), .loaded(_)),
+             (.error(_), .error(_)):
+            return false
+        default:
+            return true
         }
     }
 }
@@ -141,6 +156,20 @@ public typealias ModelCollectionId = String
 public protocol IndexedModelProvider {
     /// Returns a `Model` for the given `IndexPath` and context.
     func model(for indexPath: IndexPath, context: Context) -> Model?
+}
+
+/// An `IndexedModelProvider` implementation that delegates to a closure to provide the
+/// appropriate model for the supplied `IndexPath` and `Context`.
+public struct BlockModelProvider: IndexedModelProvider {
+    public init(binder: @escaping (IndexPath, Context) -> Model?) {
+        self.binder = binder
+    }
+
+    public func model(for indexPath: IndexPath, context: Context) -> Model? {
+        return binder(indexPath, context)
+    }
+
+    private let binder: (IndexPath, Context) -> Model?
 }
 
 // MARK: ModelCollection

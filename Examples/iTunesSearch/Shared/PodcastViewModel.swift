@@ -24,10 +24,11 @@ public struct PodcastViewModel: ViewModel {
 
     public let context: Context
 
-    public func handleUserEvent(_ event: ViewModelUserEvent) {
+    public func actionForUserEvent(_ event: ViewModelUserEvent) -> Action? {
         if case .select = event {
-            ViewURLAction(url: podcast.collectionView).send(from: context)
+            return ViewURLAction(url: podcast.collectionView)
         }
+        return nil
     }
 
     // MARK: Private

@@ -42,12 +42,12 @@ open class CollectionViewController: UIViewController, UICollectionViewDelegate 
 
     @available(*, unavailable, message: "Use `init(model:modelBinder:viewBinder:layout:context:)`")
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-        fatalError("Use `init(model:modelBinder:viewBinder:layout:context:)`")
+        Log.fatal(message: "Use `init(model:modelBinder:viewBinder:layout:context:)`")
     }
 
     @available(*, unavailable, message: "Use `init(model:modelBinder:viewBinder:layout:context:)`")
     public required init?(coder aDecoder: NSCoder) {
-        fatalError("Use `init(model:modelBinder:viewBinder:layout:context:)`")
+        Log.fatal(message: "Use `init(model:modelBinder:viewBinder:layout:context:)`")
     }
 
     deinit {

@@ -36,19 +36,13 @@ class SongViewModelTests: XCTestCase {
     func testSelectionEmitsAViewMediaAction() {
         let song = stubSong
         let context = Context()
-        var contextReceivedAction = false
-        _ = context.addReceiver({ (action) -> ActionResult in
-            if let a = action as? ViewMediaAction {
-                XCTAssertEqual(a.url, song.preview)
-            } else {
-                XCTFail("Received unexpected action: \(action)")
-            }
-            contextReceivedAction = true
-            return .handled
-        })
         let subject = SongViewModel(model: song, context: context)
-        subject.handleUserEvent(.select)
-        XCTAssertTrue(contextReceivedAction, "Context should receive an action")
+        let result = subject.actionForUserEvent(.select)
+        if let result = result as? ViewMediaAction {
+            XCTAssertEqual(result.url, song.preview)
+        } else {
+            XCTFail("Expected a 'ViewMediaAction' for .select events. Got \(String(describing: result)).")
+        }
     }
 }
 

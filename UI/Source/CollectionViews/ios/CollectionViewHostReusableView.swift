@@ -4,7 +4,7 @@ import UIKit
 /// `UICollectionReusableView` subclass which provies hosting for a given `View`.
 /// - Note: Because cells are `UIView`s, the `View` must also be a `UIView` for hosting to be supported.
 /// TODO:(wkiefer) Combine overlapping logic with `CollectionViewHostCell`.
-internal final class CollectionViewHostResuableView: UICollectionReusableView {
+internal final class CollectionViewHostReusableView: UICollectionReusableView {
 
     /// The hosted `View` instance.
     internal var hostedView: View? {
@@ -37,16 +37,10 @@ internal final class CollectionViewHostResuableView: UICollectionReusableView {
 
     @available(*, unavailable, message: "Unsupported initializer.")
     required init?(coder aDecoder: NSCoder) {
-        fatalError("Unsupported initializer.")
+        Log.fatal(message: "Unsupported initializer.")
     }
 
     // MARK: UICollectionReusableView
-
-    internal override func prepareForReuse() {
-        super.prepareForReuse()
-
-        cachedLayoutAttributes = nil
-    }
 
     internal override func apply(_ layoutAttributes: UICollectionViewLayoutAttributes) {
         super.apply(layoutAttributes)

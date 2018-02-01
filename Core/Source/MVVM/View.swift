@@ -53,11 +53,18 @@ public protocol View: class {
     var highlightStyle: ViewHighlightStyle { get set }
 }
 
-/// Represents the binding from a ViewModel to a View.
+/// Represents the binding from a ViewModel to a View. By default will automatically create the View instance for you
+/// or alternativly a custom closure can be provided to intialize the view. This is useful if the view takes
+/// additional arguments on init.
 public struct ViewBinding {
     public init<T: View>(_ viewType: T.Type) {
         self.viewType = viewType
-        generate = { $0 as? T ?? viewType.init() }
+        self.generate = { $0 as? T ?? T() }
+    }
+
+    public init<T: View>(_ make: @escaping () -> T = { return T() }) {
+        self.viewType = T.self
+        self.generate = { $0 as? T ?? make() }
     }
 
     public let viewType: View.Type
@@ -131,6 +138,20 @@ public extension ViewBindingProvider {
         let viewType = viewTypeForViewModel(viewModel, context: context)
         return viewType.preferredLayout(fitting: availableSize, for: viewModel)
     }
+}
+
+/// A `ViewBindingProvider` that delegates to a closure to provide the appropriate `View` for the
+/// supplied `ViewModel` and `Context`.
+public struct BlockViewBindingProvider: ViewBindingProvider {
+    public init(binder: @escaping (ViewModel, Context) -> ViewBinding) {
+        self.binder = binder
+    }
+
+    public func viewBinding(for viewModel: ViewModel, context: Context) -> ViewBinding {
+        return binder(viewModel, context)
+    }
+
+    private let binder: (ViewModel, Context) -> ViewBinding
 }
 
 /// Enum which encompases an optional preferred size.

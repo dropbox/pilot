@@ -1,16 +1,19 @@
 import Foundation
+import Pilot
 
 /// Protocol extending `NSCollectionViewDelegate` with a few missing callbacks around item clicking and key events.
 @objc
 public protocol CollectionViewDelegate: NSCollectionViewDelegate {
 
-    /// Invoked when the return or enter key is invoked - clients may check the selection state to determine if an
-    /// action should be taken. If true is returned from this function event is consumed.
-    @objc optional func collectionViewDidReceiveReturnKey(_ collectionView: NSCollectionView) -> Bool
-
-    /// Invoked when the return or space key is invoked - clients may check the selection state to determine if an
-    /// action should be taken. If true is returned from this function event is consumed.
-    @objc optional func collectionViewDidReceiveSpaceKey(_ collectionView: NSCollectionView) -> Bool
+    /// Invoked when a keyboard key is pressed - clients may check the selection state to determine if an action should
+    /// be taken. If true is returned from this function event is consumed.
+    @objc optional func collectionViewDidReceiveKeyEvent(
+        _ collectionView: NSCollectionView,
+        key: EventKeyCode,
+        modifiers: AppKitEventModifierFlags,
+        timestamp: TimeInterval,
+        characters: String?
+    ) -> Bool
 
     /// Invoked when a specific index path is clicked upon - this allows the client to handle clicks without breaking
     /// the typical `NSCollectionView` selection state (otherwise, underlying item views do not get all mouse events).
@@ -18,6 +21,12 @@ public protocol CollectionViewDelegate: NSCollectionViewDelegate {
 
     /// Invoked when a specific index path is right-clicked upon.
     @objc optional func collectionView(_ collectionView: NSCollectionView, menuForIndexPath: IndexPath) -> NSMenu?
+
+    /// Invoked when NSDraggingSource method of parallel signature is called.
+    ///
+    /// This is provided since NSCV delegate method has a corresponding function for -begin and -end functions in
+    /// NSDraggingSource, but no equivelant for -movedTo.
+    @objc optional func collectionView(_ collectionView: NSCollectionView, session: NSDraggingSession, movedTo: NSPoint)
 
     /// Invoked when an arrow key goes off the end of a collection view. Delegate may respond by changing the responder
     /// focus.
@@ -42,13 +51,14 @@ public final class CollectionView: NSCollectionView {
     // MARK: NSResponder
 
     public override func keyDown(with event: NSEvent) {
+        let handled = internalDelegate?.collectionViewDidReceiveKeyEvent?(
+            self,
+            key: event.eventKeyCode,
+            modifiers: event.eventKeyModifierFlags.modifierFlags,
+            timestamp: event.timestamp,
+            characters: event.characters)
+        guard handled != true else { return }
         switch event.eventKeyCode {
-        case .return, .enter:
-            guard internalDelegate?.collectionViewDidReceiveReturnKey?(self) != true else { return }
-            super.keyDown(with: event)
-        case .space:
-            guard internalDelegate?.collectionViewDidReceiveSpaceKey?(self) != true else { return }
-            super.keyDown(with: event)
         case .upArrow, .downArrow:
             let oldSelectionIndexPaths = selectionIndexPaths
 
@@ -73,7 +83,7 @@ public final class CollectionView: NSCollectionView {
     }
 
     public override func mouseDown(with event: NSEvent) {
-        guard !event.modifierFlags.contains(.control) else {
+        guard !event.modifierFlags.contains(NSEvent.ModifierFlags.control) else {
             return self.rightMouseDown(with: event)
         }
 
@@ -117,6 +127,13 @@ public final class CollectionView: NSCollectionView {
         guard (indexPath as NSIndexPath).section < numberOfSections else { return false }
         guard (indexPath as NSIndexPath).item < numberOfItems(inSection: (indexPath as NSIndexPath).section) else { return false }
         return true
+    }
+
+    // MARK: NSDraggingSource
+
+    public override func draggingSession(_ session: NSDraggingSession, movedTo screenPoint: NSPoint) {
+        super.draggingSession(session, movedTo: screenPoint)
+        internalDelegate?.collectionView?(self, session: session, movedTo: screenPoint)
     }
 
     // MARK: Private

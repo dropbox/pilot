@@ -88,7 +88,7 @@ public extension NSCollectionView {
             let hostScrollView = hostScrollView,
             let layoutAttributes = layoutAttributesForItem(at: indexPath as IndexPath)
         else {
-            scrollToItems(at: Set([indexPath]) as Set<IndexPath>, scrollPosition: .centeredVertically)
+            scrollToItems(at: Set([indexPath]) as Set<IndexPath>, scrollPosition: NSCollectionView.ScrollPosition.centeredVertically)
             return
         }
         let currentY = hostScrollView.documentVisibleRect.origin.y
