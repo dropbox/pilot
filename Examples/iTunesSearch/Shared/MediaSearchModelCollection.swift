@@ -21,7 +21,7 @@ public final class MediaSearchModelCollection: SimpleModelCollection {
         previousQuery = query
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) { [weak self] in
             guard query == self?.previousQuery else { return }
-            self?.service.search(term: query, limit: 100, explicit: true) { [weak self] (media, error) in
+        self?.service.search(term: query, limit: 100) { [weak self] (media, error) in
                 DispatchQueue.main.async {
                     guard let strongSelf = self, strongSelf.previousQuery == query else { return }
                     if let media = media {

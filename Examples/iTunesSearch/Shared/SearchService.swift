@@ -12,7 +12,6 @@ public class SearchService {
     public func search(
         term: String,
         limit: Int,
-        explicit: Bool,
         completion: @escaping ([Media]?, ServiceError?) -> Void
     ) {
 

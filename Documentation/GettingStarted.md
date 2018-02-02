@@ -1,47 +1,38 @@
 # Getting Started
 
-TODO
+This guide will use Pilot to step through building a basic iTunes Store Search application for iOS and macOS. By the end, the reader should have a good understanding of:
 
-## Core Concepts
+- The core MVVM stack, how it may differ from other implementations of MVVM, and how it supports a unidirectional data flow.
+- How `ModelCollection` acts as the foundation for composable data collections and subsequent updates.
+- How all important logic can be unit tested at the `ViewModel` layer, without any dependency on a specific UI framework.
+- How user actions are handled and processed.
 
-Three interfaces make up conceptual core of the Pilot stack:
+## Building an iTunes Search app 
 
-- [**`Model`**](../Core/Source/MVVM/Model.swift): Value type which represents pure stateless data.
-	- Exposes an id for uniqueness and version for updates.
-- [**`ViewModel`**](../Core/Source/MVVM/ViewModel.swift): Value type bound to a specific `Model` type.
-	- Implements application business logic atop the `Model`.
-	- Handles user events by emitting actions.
-	- Independently unit testable with simple inputs (`Model` and events) and outputs (properties and emitted actions).
-- [**`View`**](../Core/Source/MVVM/View.swift): A reference type for direct presentation of a specific `ViewModel`. 
-	- Typically implemented in the UI layer (e.g. `NSView` or `UIView`) - but has no actual UI dependency so supports a wide range of presentations (e.g. console applications).
+Our app will be leverage a simple API that takes a search query and returns a JSON response of results from the iTunes store. The API takes the form: `https://itunes.apple.com/search?term=siracusa&limit=100`
 
-The stack enforces a unidirectional data flow and strict layering: `Model` -> `ViewModel` -> `View`. 
+Pilot does not dictate how your application fetches from the network or stores data locally (although making that easier is on the roadmap). For the purposes of this example, we'll use a very basic [SearchService](../Examples/iTunesSearch/Shared/SearchService.swift) class to take a query string, and item fetch limit to fetch our JSON from the above API.
 
-### Binding
+```swift
+class SearchService {
+	func search(
+		term: String,
+		limit: Int,
+		completion: @escaping ([Media]?, ServiceError?) -> Void
+	) {
+		// ...
+	}
+```
 
-The mapping from a specific `Model` to `ViewModel` or `ViewModel` to `View` (represented by the arrows above) is called **binding**. In Pilot, binding happens via the `ViewModelBindingProvider` and `ViewBindingProvider` interfaces. 
+Don't worry about why it's returning `[Media]` just yet, we'll cover how the JSON gets converted shortly. And yes, there are better signatures for that completion block, but we're keeping things simple.
 
-While simple applications may only need a single binding provider, the flexibility of using multiple binding providers allows for more complex applications to map the same data to different view models or view presentations in different parts of the app.
+Now that we have a basic search API, we want to start piping that data into Pilot. To do so, we start with our first core protocol, `Model`.
 
-### `ModelCollection`
+## `Model`
 
-The [`ModelCollection`](../Core/Source/MVVM/ModelCollection.swift) type represents a collection of `Model` objects and provides an observable stream of its state changes.
+In Pilot, a [`Model`](../Core/Source/MVVM/Model.swift) is a protocol that represents a **value type of pure stateless data**. For nearly all applications, this represents "one of the things in your scrolling list" — in this case, a result from an iTunes Search. In your application, it may be a message in a group chat, a post in a news feed, a comment in a thread, or a task in your todo app.
 
-While seemingly simple, `ModelCollection` instances work in tandem with the view controllers provided by `PilotUI.framework` to drive incremental updates, handle view setup and teardown, manage binding providers, display loading and error states, and more.
-
-Applications may implement custom `ModelCollection` types, however, Pilot provides a set of composable `ModelCollection` implementations which allow applications to easily map, filter, reduce, and multiplex collections, as well as handle asynchronous loads from the network or local storage.
-
-The end result is that by TODO
-
-### `Action` and `Context`
-
-
-
-## Building a sample app 
-
-### `Model`
-
-todo
+In our application, the JSON from iTunes returns a list of model objects. Here is a song:
 
 ```json
 {
@@ -61,37 +52,54 @@ todo
 }
 ```
 
-would map to
+Representing this data in Swift would look like this:
 
 ```swift
-public struct Song: Model {
-	public var artistId: Int
-	public var collectionId: Int
-	public var trackId: Int
-	public var artistName: String
-	public var collectionName: String
-	public var trackName: String
-	public var preview: URL
-	public var artwork: URL?
-	public var durationMilliseconds: Int
-	public var trackNumber: Int?
-	public var trackCount: Int?
+struct Song {
+	var artistId: Int
+	var collectionId: Int
+	var trackId: Int
+	var artistName: String
+	var collectionName: String
+	var trackName: String
+	var preview: URL
+	var artwork: URL?
+	var durationMilliseconds: Int
+	var trackNumber: Int?
+	var trackCount: Int?
 }
 ```
 
-conform to `Model`
+Your model object doesn't have to come from JSON, it could come from Core Data, SQLite, or any other source. 
+
+> How to serialize & deserialize from your data source into a model struct like the above example is beyond the scope of this document.
+
+> The example application happens to add an initializer to the `Song` struct to inflate from JSON, along with a protocol to make that common across the other model types returned from iTunes. If interested, you can see that [here](../Examples/iTunesSearch/Shared/ModelSerialization.swift).
+
+Conformance to `Model` is quite simple, as there are only two properties to implement:
+
+- `modelId` is a string that guarantees uniqueness for that model object across your application.
+- `modelVersion` is a hash that represents the version of that object and lets Pilot know if important model data has changed.
+
+These two properties are used to provide automated delta updates across any heterogeneous collection of model objects. We'll see more about that later one.
+
+For our `Song`, we can conform to `Model` with the following code:
 
 ```swift
 extension Song: Model {
-	public var modelId: ModelId { return String(trackId) }
-	public var modelVersion: ModelVersion { ... }
+	
+	var modelId: ModelId { return String(trackId) }
+	
+	var modelVersion: ModelVersion { ... }
+}
 ```
 
-then
+Implementing `modelId` was easy, as iTunes already has a unique track id for all song results — so we return that.
 
+However, iTunes does not have a concept of a version for a given song — the only way to know if any song metadata has changed is to look at the metadata itself. No problem! If your server or data source has no concept of version, Pilot has a handy `ModelVersionMixer` class that lets you combine important metadata into an efficient hashed value. For `Song`, we would want to mix in all the metadata to contribute to the hash. Then if any metadata changes, the version will change:
 
 ```swift	
-	public var modelVersion: ModelVersion {
+	var modelVersion: ModelVersion {
 		var mixer = ModelVersionMixer()
 		mixer.mix(artistId)
 		mixer.mix(collectionId)
@@ -115,26 +123,40 @@ then
 }
 ```
 
-you'd have inflate. example app has `init?(json: [String: Any])`
+And we're done defining our `Model` for Songs. The example app also adds `TelevisionEpisode` and `Podcast`, as iTunes returns results for those as well.
 
-### `ViewModel`
+## `ViewModel`
+
+Now that we have a model representing a Song, things can get more interesting.
+  
+In Pilot, a `ViewModel` is bound to a specific `Model` type and has the following responsibilities:
+
+- Implement any necessary application business logic for the bound `Model` object.
+- Expose properties for the view to display. If those properties change over time (e.g. a relative timestamp), those properties should be [observable](../Core/Source/Observable/ObservableData.swift).
+- Handle all user interactions by emitting `Action` types.
+
+Given these responsibilities, the `View` that displays data from a `ViewModel` should hopefully be completely underwhelming — it will simply connect `ViewModel` properties to whatever UI framework is being used.
+
+Let's dig a bit deeper on how to implement `ViewModel` before discussing some key benefits. Most of the methods on the `ViewModel` protocol have default implementations, so conformance is fairly trivial:
 
 ```swift
 public struct SongViewModel: ViewModel {	
+
+	// MARK: ViewModel
+  
 	public init(model: Model, context: Context) {
 		self.song = model.typedModel()
 		self.context = context
 	}
 	public let context: Context
+	
+	// MARK: Private
+	
 	private let song: Song
 }
 ```
 
-more
-
-
-
-ff
+- [ ] TODO for @wkiefer
 
 ```swift
 public struct SongViewModel: ViewModel {
@@ -151,7 +173,7 @@ public struct SongViewModel: ViewModel {
 	}
 ```
 
-foo
+- [ ] TODO for @wkiefer
 
 ```swift
 class SongViewModelTests: XCTestCase {
@@ -168,7 +190,7 @@ class SongViewModelTests: XCTestCase {
     func testDescriptionWithNoTrackCount() { ... }
 ```
 
-ff
+- [ ] TODO for @wkiefer
 
 ```swift
 
@@ -223,7 +245,13 @@ public struct SongViewModel: ViewModel {
 }
 ```
 
+- [ ] TODO for @wkiefer 
+
+Before we learn about handling user interaction, let's finish the end-to-end display.
+
 ### `View`
+
+- [ ] TODO for @wkiefer
 
 ```swift
 final class SongView: UIView, View {
@@ -251,7 +279,7 @@ final class SongView: UIView, View {
 }
 ```
 
-then
+- [ ] TODO for @wkiefer
 
 ```swift
 final class SongView: UIView, View {
@@ -266,7 +294,7 @@ final class SongView: UIView, View {
 	}
 ```
 
-optional layout info
+- [ ] TODO for @wkiefer
 
 ```swift
 	static func preferredLayout(
@@ -277,7 +305,9 @@ optional layout info
 	}
 ```
 
-### Binding
+## Binding
+
+- [ ] TODO for @wkiefer
 
 ```swift
 extension Song: ViewModelConvertible {
@@ -306,12 +336,36 @@ struct AppViewBindingProvider: ViewBindingProvider {
     }
 ```
 
-### `ModelCollection`
+## `ModelCollection`
 
-### PilotUI Bindings
+- [ ] TODO for @wkiefer
+	- composition, and types of MCs
+	- sections
 
-### `Action`
+## PilotUI Bindings
 
-### `Context`
+- [ ] TODO for @wkiefer
+	- collection view controller
+
+## User Interaction
+
+- [ ] TODO for @wkiefer
+
+## `Action`
+
+- [ ] TODO for @wkiefer
+	- think redux
+
+## `Context`
+
+- [ ] TODO for @wkiefer
+	- providing context and acting as a responder chain
+
+
+## Future Work
+
+- [ ] TODO for @wkiefer
+	- using a ViewModel as the core VC logic, making that easier
+	- formalizing the store
 
 
