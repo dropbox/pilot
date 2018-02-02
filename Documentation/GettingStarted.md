@@ -2,8 +2,8 @@
 
 This guide will use Pilot to step through building a basic iTunes Store Search application for iOS and macOS. By the end, the reader should have a good understanding of:
 
-- The core MVVM stack, how it may differ from other implementations of MVVM, and how it supports a unidirectional data flow.
-- How `ModelCollection` acts as the foundation for composable data collections and subsequent updates.
+- The core Model-View-ViewModel (MVVM) stack, how it may differ from other implementations of MVVM, and how it supports a unidirectional data flow.
+- How `ModelCollection` acts as the foundation for composable data collections and handles updates.
 - How all important logic can be unit tested at the `ViewModel` layer, without any dependency on a specific UI framework.
 - How user actions are handled and processed.
 
@@ -75,6 +75,8 @@ Your model object doesn't have to come from JSON, it could come from Core Data, 
 > How to serialize & deserialize from your data source into a model struct like the above example is beyond the scope of this document.
 
 > The example application happens to add an initializer to the `Song` struct to inflate from JSON, along with a protocol to make that common across the other model types returned from iTunes. If interested, you can see that [here](../Examples/iTunesSearch/Shared/ModelSerialization.swift).
+
+> - [ ] TODO for @wkiefer: Replace this with `Codable` in Swift 4.
 
 Conformance to `Model` is quite simple, as there are only two properties to implement:
 
