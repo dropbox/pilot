@@ -15,13 +15,13 @@ Pilot does not dictate how your application fetches from the network or stores d
 
 ```swift
 class SearchService {
-	func search(
-		term: String,
-		limit: Int,
-		completion: @escaping ([Media]?, ServiceError?) -> Void
-	) {
-		// ...
-	}
+  func search(
+    term: String,
+    limit: Int,
+    completion: @escaping ([Media]?, ServiceError?) -> Void
+  ) {
+    // ...
+  }
 ```
 
 Don't worry about why it's returning `[Media]` just yet, we'll cover how the JSON gets converted shortly. And yes, there are better signatures for that completion block, but we're keeping things simple.
@@ -36,19 +36,19 @@ In our application, the JSON from iTunes returns a list of model objects. Here i
 
 ```json
 {
-	"kind": "song",
-	"artistId": 5448756,
-	"collectionId": 719245563,
-	"trackId": 719245998,
-	"artistName": "The Long Winters",
-	"collectionName": "Ultimatum - EP",
-	"trackName": "The Commander Thinks Aloud",
-	"previewUrl": "http://audio.itunes.apple.com/apple-assets-us-std-000001/<snipped>/.m4a",
-	"artworkUrl100": "http://is2.mzstatic.com/image/thumb/<snipped>/100x100bb.jpg",
-	"trackTimeMillis": 326053,
-	"trackNumber": 1,
-	"trackCount": 6,
-	// ...
+  "kind": "song",
+  "artistId": 5448756,
+  "collectionId": 719245563,
+  "trackId": 719245998,
+  "artistName": "The Long Winters",
+  "collectionName": "Ultimatum - EP",
+  "trackName": "The Commander Thinks Aloud",
+  "previewUrl": "http://audio.itunes.apple.com/apple-assets-us-std-000001/<snipped>/.m4a",
+  "artworkUrl100": "http://is2.mzstatic.com/image/thumb/<snipped>/100x100bb.jpg",
+  "trackTimeMillis": 326053,
+  "trackNumber": 1,
+  "trackCount": 6,
+  // ...
 }
 ```
 
@@ -56,17 +56,17 @@ Representing this data in Swift would look like this:
 
 ```swift
 struct Song {
-	var artistId: Int
-	var collectionId: Int
-	var trackId: Int
-	var artistName: String
-	var collectionName: String
-	var trackName: String
-	var preview: URL
-	var artwork: URL?
-	var durationMilliseconds: Int
-	var trackNumber: Int?
-	var trackCount: Int?
+  var artistId: Int
+  var collectionId: Int
+  var trackId: Int
+  var artistName: String
+  var collectionName: String
+  var trackName: String
+  var preview: URL
+  var artwork: URL?
+  var durationMilliseconds: Int
+  var trackNumber: Int?
+  var trackCount: Int?
 }
 ```
 
@@ -89,10 +89,10 @@ For our `Song`, we can conform to `Model` with the following code:
 
 ```swift
 extension Song: Model {
-	
-	var modelId: ModelId { return String(trackId) }
-	
-	var modelVersion: ModelVersion { ... }
+    
+  var modelId: ModelId { return String(trackId) }
+    
+  var modelVersion: ModelVersion { ... }
 }
 ```
 
@@ -100,28 +100,28 @@ Implementing `modelId` was easy, as iTunes already has a unique track id for all
 
 However, iTunes does not have a concept of a version for a given song — the only way to know if any song metadata has changed is to look at the metadata itself. No problem! If your server or data source has no concept of version, Pilot has a handy `ModelVersionMixer` class that lets you combine important metadata into an efficient hashed value. For `Song`, we would want to mix in all the metadata to contribute to the hash. Then if any metadata changes, the version will change:
 
-```swift	
-	var modelVersion: ModelVersion {
-		var mixer = ModelVersionMixer()
-		mixer.mix(artistId)
-		mixer.mix(collectionId)
-		mixer.mix(trackId)
-		mixer.mix(artistName)
-		mixer.mix(collectionName)
-		mixer.mix(trackName)
-		mixer.mix(preview.absoluteString)
-		if let artwork = artwork {
-			mixer.mix(artwork.absoluteString)
-		}
-		mixer.mix(durationMilliseconds)
-		if let trackNumber = trackNumber {
-			mixer.mix(trackNumber)
-		}
-		if let trackCount = trackCount {
-			mixer.mix(trackCount)
-		}
-		return mixer.result()
-	}
+```swift    
+  var modelVersion: ModelVersion {
+    var mixer = ModelVersionMixer()
+    mixer.mix(artistId)
+    mixer.mix(collectionId)
+    mixer.mix(trackId)
+    mixer.mix(artistName)
+    mixer.mix(collectionName)
+    mixer.mix(trackName)
+    mixer.mix(preview.absoluteString)
+    if let artwork = artwork {
+      mixer.mix(artwork.absoluteString)
+    }
+    mixer.mix(durationMilliseconds)
+    if let trackNumber = trackNumber {
+      mixer.mix(trackNumber)
+    }
+    if let trackCount = trackCount {
+      mixer.mix(trackCount)
+    }
+    return mixer.result()
+  }
 }
 ```
 
@@ -142,19 +142,19 @@ Given these responsibilities, the `View` that displays data from a `ViewModel` s
 Let's dig a bit deeper on how to implement `ViewModel` before discussing some key benefits. Most of the methods on the `ViewModel` protocol have default implementations, so conformance is fairly trivial:
 
 ```swift
-public struct SongViewModel: ViewModel {	
+public struct SongViewModel: ViewModel {    
 
-	// MARK: ViewModel
+  // MARK: ViewModel
   
-	public init(model: Model, context: Context) {
-		self.song = model.typedModel()
-		self.context = context
-	}
-	public let context: Context
-	
-	// MARK: Private
-	
-	private let song: Song
+  public init(model: Model, context: Context) {
+    self.song = model.typedModel()
+    self.context = context
+  }
+  public let context: Context
+    
+  // MARK: Private
+    
+  private let song: Song
 }
 ```
 
@@ -162,31 +162,31 @@ public struct SongViewModel: ViewModel {
 
 ```swift
 public struct SongViewModel: ViewModel {
-	// ...
-		
-	public var description: String {
-		if let number = song.trackNumber {
-			if let count = song.trackCount {
-				return "Track \(number)/\(count) · \(collectionName)"
-			}
-			return "Track \(number) · \(collectionName)"
-		}
-		return collectionName
-	}
+  // ...
+        
+  public var description: String {
+    if let number = song.trackNumber {
+      if let count = song.trackCount {
+        return "Track \(number)/\(count) · \(collectionName)"
+      }
+      return "Track \(number) · \(collectionName)"
+    }
+    return collectionName
+  }
 ```
 
 - [ ] TODO for @wkiefer
 
 ```swift
 class SongViewModelTests: XCTestCase {
-    func testDescriptionWithTrackInfo() {
-        let collectionName = stubSong.collectionName
-        var song = stubSong
-        song.trackCount = 2
-        song.trackNumber = 1
-        let subject = SongViewModel(model: song, context: Context())
-        let expected = "Track 1/2 · " + collectionName
-        XCTAssertEqual(subject.description, expected, "Include track # and total if it exists")
+  func testDescriptionWithTrackInfo() {
+    let collectionName = stubSong.collectionName
+    var song = stubSong
+    song.trackCount = 2
+    song.trackNumber = 1
+    let subject = SongViewModel(model: song, context: Context())
+    let expected = "Track 1/2 · " + collectionName
+      XCTAssertEqual(subject.description, expected, "Include track # and total if it exists")
     }
     func testDescriptionWithNoTrackInfo() { ... }
     func testDescriptionWithNoTrackCount() { ... }
@@ -197,53 +197,53 @@ class SongViewModelTests: XCTestCase {
 ```swift
 
 public struct SongViewModel: ViewModel {
-	
-	// MARK: ViewModel
-	
-	public init(model: Model, context: Context) { ... }
-	public let context: Context
-	
-	// MARK: Public
+    
+  // MARK: ViewModel
+    
+  public init(model: Model, context: Context) { ... }
+  public let context: Context
+    
+  // MARK: Public
 
-	public var name: String {
-		return song.trackName
-	}
-	
-	public var description: String {
-		if let number = song.trackNumber {
-			if let count = song.trackCount {
-				return "Track \(number)/\(count) · \(collectionName)"
-			}
-			return "Track \(number) · \(collectionName)"
-		}
-		return collectionName
-	}
-	
-	public var collectionName: String {
-		return song.collectionName
-	}
-	
-	public var duration: String {
-	    let totalSeconds = song.durationMilliseconds / 1000
-	    let hours = totalSeconds / 3600
-	    let minutes = (totalSeconds % 3600) / 60
-	    let seconds = (totalSeconds % 60)
-	    if hours > 0 {
-	        return String(format: "%02d:%02d:%02d", hours, minutes, seconds)
-	    } else if minutes > 0 {
-	        return String(format: "%02d:%02d", minutes, seconds)
-	    } else {
-	        return String(format: "%02d", seconds)
-	    }
-	}
-	
-	public var artwork: URL? {
-	    return song.artwork
-	}
-	
-	// MARK: Private
-	
-	private let song: Song
+  public var name: String {
+    return song.trackName
+  }
+    
+  public var description: String {
+    if let number = song.trackNumber {
+      if let count = song.trackCount {
+        return "Track \(number)/\(count) · \(collectionName)"
+      }
+      return "Track \(number) · \(collectionName)"
+    }
+    return collectionName
+  }
+    
+  public var collectionName: String {
+    return song.collectionName
+  }
+    
+  public var duration: String {
+    let totalSeconds = song.durationMilliseconds / 1000
+    let hours = totalSeconds / 3600
+    let minutes = (totalSeconds % 3600) / 60
+    let seconds = (totalSeconds % 60)
+    if hours > 0 {
+      return String(format: "%02d:%02d:%02d", hours, minutes, seconds)
+    } else if minutes > 0 {
+      return String(format: "%02d:%02d", minutes, seconds)
+    } else {
+      return String(format: "%02d", seconds)
+    }
+  }
+    
+  public var artwork: URL? {
+    return song.artwork
+  }
+    
+  // MARK: Private
+    
+  private let song: Song
 }
 ```
 
@@ -258,26 +258,26 @@ Before we learn about handling user interaction, let's finish the end-to-end dis
 ```swift
 final class SongView: UIView, View {
 
-	public func bindToViewModel(_ viewModel: ViewModel) {
-		let song: SongViewModel = viewModel.typedViewModel()
-	
-		nameLabel.text = song.name
-		descriptionLabel.text = song.description
-		durationLabel.text = song.duration
-	
-		if let artwork = song.artwork {
-			// Rudimentary image fetch - your app would likely
-			// have something better.
-			URLSession.shared.imageTask(with: artwork, completionHandler: { [weak self] (image, error) in
-				if let image = image, artwork == self?.song?.artwork {
-				    self?.imageView.image = image
-				}
-			}).resume()
-		} else {
-			imageView.image = nil
-		}
-		self.song = song
-	}
+  public func bindToViewModel(_ viewModel: ViewModel) {
+    let song: SongViewModel = viewModel.typedViewModel()
+    
+    nameLabel.text = song.name
+    descriptionLabel.text = song.description
+    durationLabel.text = song.duration
+    
+    if let artwork = song.artwork {
+      // Rudimentary image fetch - your app would likely
+      // have something better.
+      URLSession.shared.imageTask(with: artwork, completionHandler: { [weak self] (image, error) in
+        if let image = image, artwork == self?.song?.artwork {
+          self?.imageView.image = image
+        }
+      }).resume()
+    } else {
+      imageView.image = nil
+    }
+    self.song = song
+  }
 }
 ```
 
@@ -285,26 +285,26 @@ final class SongView: UIView, View {
 
 ```swift
 final class SongView: UIView, View {
-	// ...
-	
-	public func unbindFromViewModel() {
-		nameLabel.text = nil
-		descriptionLabel.text = nil
-		durationLabel.text = nil
-		imageView.image = nil
-		song = nil
-	}
+  // ...
+    
+  public func unbindFromViewModel() {
+    nameLabel.text = nil
+    descriptionLabel.text = nil
+    durationLabel.text = nil
+    imageView.image = nil
+    song = nil
+  }
 ```
 
 - [ ] TODO for @wkiefer
 
 ```swift
-	static func preferredLayout(
-		fitting availableSize: AvailableSize,
-		for viewModel: ViewModel
-	) -> PreferredLayout {
-		return .Size(CGSize(width: availableSize.maxSize.width, height: 50))
-	}
+  static func preferredLayout(
+    fitting availableSize: AvailableSize,
+    for viewModel: ViewModel
+  ) -> PreferredLayout {
+    return .Size(CGSize(width: availableSize.maxSize.width, height: 50))
+  }
 ```
 
 ## Binding
@@ -313,41 +313,41 @@ final class SongView: UIView, View {
 
 ```swift
 extension Song: ViewModelConvertible {
-	public func viewModelWithContext(_ context: Context) -> ViewModel {
-		return SongViewModel(model: self, context: context)
-	}
+  public func viewModelWithContext(_ context: Context) -> ViewModel {
+    return SongViewModel(model: self, context: context)
+  }
 }
 ```
 
 ```swift
 struct AppViewBindingProvider: ViewBindingProvider {
 
-    // MARK: ViewBindingProvider
+  // MARK: ViewBindingProvider
 
-    func viewBinding(for viewModel: ViewModel, context: Context) -> ViewBinding {
-        switch viewModel {
-        case is PodcastViewModel:
-            return ViewBinding(PodcastView.self)
-        case is SongViewModel:
-            return ViewBinding(SongView.self)
-        case is TelevisionEpisodeViewModel:
-            return ViewBinding(TelevisionEpisodeView.self)
-        default:
-            fatalError("No supported view binding class available.")
-        }
+  func viewBinding(for viewModel: ViewModel, context: Context) -> ViewBinding {
+    switch viewModel {
+    case is PodcastViewModel:
+      return ViewBinding(PodcastView.self)
+    case is SongViewModel:
+      return ViewBinding(SongView.self)
+    case is TelevisionEpisodeViewModel:
+      return ViewBinding(TelevisionEpisodeView.self)
+    default:
+      fatalError("No supported view binding class available.")
     }
+  }
 ```
 
 ## `ModelCollection`
 
 - [ ] TODO for @wkiefer
-	- composition, and types of MCs
-	- sections
+    - composition, and types of MCs
+    - sections
 
 ## PilotUI Bindings
 
 - [ ] TODO for @wkiefer
-	- collection view controller
+    - collection view controller
 
 ## User Interaction
 
@@ -356,18 +356,18 @@ struct AppViewBindingProvider: ViewBindingProvider {
 ## `Action`
 
 - [ ] TODO for @wkiefer
-	- think redux
+    - think redux
 
 ## `Context`
 
 - [ ] TODO for @wkiefer
-	- providing context and acting as a responder chain
+    - providing context and acting as a responder chain
 
 
 ## Future Work
 
 - [ ] TODO for @wkiefer
-	- using a ViewModel as the core VC logic, making that easier
-	- formalizing the store
+    - using a ViewModel as the core VC logic, making that easier
+    - formalizing the store
 
 
