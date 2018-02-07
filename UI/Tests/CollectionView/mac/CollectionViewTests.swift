@@ -139,44 +139,44 @@ private func makeDefaultLayout() -> NSCollectionViewLayout {
     return layout
 }
 
-private struct TestViewModel: ViewModel {
-    private init(model: Model, context: Context) {
+fileprivate struct TestViewModel: ViewModel {
+    fileprivate init(model: Model, context: Context) {
         self.model = model
         self.context = context
     }
 
-    private let model: Model
-    private var context: Context
+    fileprivate let model: Model
+    fileprivate var context: Context
 }
 
-private final class TestView: NSView, View {
-    private var viewModel: ViewModel?
+fileprivate final class TestView: NSView, View {
+    fileprivate var viewModel: ViewModel?
 
-    private func bindToViewModel(_ viewModel: ViewModel) {
+    fileprivate func bindToViewModel(_ viewModel: ViewModel) {
         self.viewModel = viewModel
     }
 
-    private func unbindFromViewModel() {
+    fileprivate func unbindFromViewModel() {
         self.viewModel = nil
     }
 }
 
-private final class AltTestView: NSView, View {
-    private var viewModel: ViewModel?
+fileprivate final class AltTestView: NSView, View {
+    fileprivate var viewModel: ViewModel?
 
-    private func bindToViewModel(_ viewModel: ViewModel) {
+    fileprivate func bindToViewModel(_ viewModel: ViewModel) {
         self.viewModel = viewModel
     }
 
-    private func unbindFromViewModel() {
+    fileprivate func unbindFromViewModel() {
         self.viewModel = nil
     }
 }
 
-private final class TestSupplementaryLayout: NSCollectionViewLayout {
-    private static let SupplementaryLayoutKind = NSCollectionView.SupplementaryElementKind.sectionHeader
+fileprivate final class TestSupplementaryLayout: NSCollectionViewLayout {
+    fileprivate static let SupplementaryLayoutKind = NSCollectionView.SupplementaryElementKind.sectionHeader
 
-    private override func layoutAttributesForElements(in rect: NSRect) -> [NSCollectionViewLayoutAttributes] {
+    fileprivate override func layoutAttributesForElements(in rect: NSRect) -> [NSCollectionViewLayoutAttributes] {
         var layoutAttrs = [NSCollectionViewLayoutAttributes]()
 
         if let attrs = layoutAttributesForItem(at: IndexPath(item: 0, section: 0)) {
@@ -190,13 +190,13 @@ private final class TestSupplementaryLayout: NSCollectionViewLayout {
         return layoutAttrs
     }
 
-    private override func layoutAttributesForItem(at indexPath: IndexPath) -> NSCollectionViewLayoutAttributes? {
+    fileprivate override func layoutAttributesForItem(at indexPath: IndexPath) -> NSCollectionViewLayoutAttributes? {
         let attrs = NSCollectionViewLayoutAttributes(forItemWith: indexPath)
         attrs.frame = NSRect(x: 0, y: 0, width: 20, height: 20)
         return attrs
     }
 
-    private override func layoutAttributesForSupplementaryView(
+    fileprivate override func layoutAttributesForSupplementaryView(
         ofKind elementKind: NSCollectionView.SupplementaryElementKind,
         at indexPath: IndexPath
     ) -> NSCollectionViewLayoutAttributes? {
