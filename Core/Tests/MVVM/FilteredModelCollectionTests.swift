@@ -168,7 +168,7 @@ class FilteredModelCollectionTests: XCTestCase {
 
     // MARK: Test Helpers
 
-    fileprivate func createFilteredModelCollection(
+    private func createFilteredModelCollection(
         _ data: [[SModel]] = testData,
         kind: FilteredModelCollection.FilterKind = .sync,
         filter: ModelFilter? = nil
@@ -178,5 +178,5 @@ class FilteredModelCollectionTests: XCTestCase {
         return FilteredModelCollection(sourceCollection: source, kind: kind, filter: filter)
     }
 
-    fileprivate var filteredModelCollection: FilteredModelCollection!
+    private var filteredModelCollection: FilteredModelCollection!
 }

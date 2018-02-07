@@ -128,7 +128,7 @@ public struct Log {
 
     // MARK: Private
 
-    static fileprivate func log(_ severity: Severity, category: Category, message: String) {
+    static private func log(_ severity: Severity, category: Category, message: String) {
         Async.on(loggingQueue) {
             let date = Date()
             for (_, logger) in loggers {
@@ -137,13 +137,13 @@ public struct Log {
         }
     }
 
-    static fileprivate let loggingQueue: Queue = .custom(DispatchQueue(
+    static private let loggingQueue: Queue = .custom(DispatchQueue(
         label: "com.dropbox.pilot.log.loggingQ",
         attributes: []
     ))
 
-    static fileprivate var nextLoggerToken: Int = 0
-    static fileprivate var loggers: [LoggerToken: Logger] = [:]
+    static private var nextLoggerToken: Int = 0
+    static private var loggers: [LoggerToken: Logger] = [:]
 }
 
 public func < (lhs: Log.Severity, rhs: Log.Severity) -> Bool {
