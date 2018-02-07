@@ -64,7 +64,7 @@ public struct BlockViewModelBindingProvider: ViewModelBindingProvider {
 }
 
 /// Simple shim that forwards methods from `SelectionViewModel` to a single `ViewModel`.
-fileprivate struct ViewModelSelectionShim: SelectionViewModel {
+private struct ViewModelSelectionShim: SelectionViewModel {
     init(viewModels: [ViewModel], context: Context) {
         guard let vm = viewModels.first else { fatalError("Shim constructed with empty view model collection") }
         self.context = context

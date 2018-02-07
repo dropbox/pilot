@@ -590,7 +590,7 @@ private final class FullWidthScroller: NSScroller {
 }
 
 /// Private helper class to force the vertical scroller to always appear as a modern over-content scroller.
-fileprivate final class FullWidthScrollView: NSScrollView {
+private final class FullWidthScrollView: NSScrollView {
 
     fileprivate var scrollEnabled: Bool = true
 

@@ -98,7 +98,7 @@ public extension SecondaryActionInfo.Metadata.State {
 }
 
 /// Helper class to wrap value-type `Action`s.
-fileprivate final class MenuItemActionWrapper: NSObject {
+private final class MenuItemActionWrapper: NSObject {
 
     fileprivate convenience init(_ action: Action) {
         self.init()

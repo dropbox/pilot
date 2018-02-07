@@ -216,7 +216,7 @@ extension ModelVersionMixer: Encoder {
     }
 }
 
-fileprivate class ModelVersionEncoder {
+private class ModelVersionEncoder {
     public enum Marker: UInt8 {
         case None
 
@@ -248,7 +248,7 @@ fileprivate class ModelVersionEncoder {
         self.mixer = mixer
     }
 
-    fileprivate func mix(marker: Marker) {
+    private func mix(marker: Marker) {
         if closeContainerMarker != .None {
             mix(marker: closeContainerMarker)
             closeContainerMarker = .None
@@ -256,8 +256,8 @@ fileprivate class ModelVersionEncoder {
         mixer.mix(marker.rawValue)
     }
 
-    fileprivate var mixer: ModelVersionMixer
-    fileprivate var closeContainerMarker: Marker = .None
+    private var mixer: ModelVersionMixer
+    private var closeContainerMarker: Marker = .None
 }
 
 extension ModelVersionEncoder: Encoder {
@@ -385,7 +385,7 @@ extension ModelVersionEncoder: UnkeyedEncodingContainer {
     }
 }
 
-fileprivate struct ModelVersionKeyedEncoder<K: CodingKey>: KeyedEncodingContainerProtocol {
+private struct ModelVersionKeyedEncoder<K: CodingKey>: KeyedEncodingContainerProtocol {
     public typealias Key = K
 
     public init(_ encoder: ModelVersionEncoder) {

@@ -66,7 +66,7 @@ class MappedModelCollectionTests: XCTestCase {
 
     // MARK: Helpers
 
-    fileprivate func createFilteredModelCollection(_ data: [[Model]] = testData) -> MappedModelCollection {
+    private func createFilteredModelCollection(_ data: [[Model]] = testData) -> MappedModelCollection {
         let source = StaticModelCollection(collectionId: "source", initialData: data)
         let modelCollection = MappedModelCollection(sourceCollection: source)
         modelCollection.transform = { model in return model }
@@ -89,5 +89,5 @@ class MappedModelCollectionTests: XCTestCase {
         return modelCollection
     }
 
-    fileprivate var modelCollection: MappedModelCollection!
+    private var modelCollection: MappedModelCollection!
 }

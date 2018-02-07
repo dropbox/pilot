@@ -138,12 +138,12 @@ public final class CollectionView: NSCollectionView {
 
     // MARK: Private
 
-    fileprivate var internalDelegate: CollectionViewDelegate? {
+    private var internalDelegate: CollectionViewDelegate? {
         return delegate as? CollectionViewDelegate
     }
 
     @objc
-    fileprivate func autoSelectFirstItem() {
+    private func autoSelectFirstItem() {
         if autoSelectItemOnFocus && selectionIndexes.count == 0 {
             selectFirstItem()
         }

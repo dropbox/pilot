@@ -20,7 +20,7 @@ class LoggingTests: XCTestCase {
         super.tearDown()
     }
 
-    fileprivate var urlsToMoveToTrash: [URL] = []
+    private var urlsToMoveToTrash: [URL] = []
 
     func testLog() {
         let expectation = self.expectation(description: "logHub completion")
@@ -43,7 +43,7 @@ class LoggingTests: XCTestCase {
         Log.removeLogger(loggerToken)
     }
 
-    fileprivate func makeTestURLForFileLogger() throws -> URL {
+    private func makeTestURLForFileLogger() throws -> URL {
         let cachesDirectoryUrl = try FileManager.default.url(
             for: FileManager.SearchPathDirectory.cachesDirectory,
             in: FileManager.SearchPathDomainMask.userDomainMask,
@@ -65,5 +65,5 @@ struct TestLogger: Logger {
         XCTAssert(domain == "pilot.tests")
         expectation.fulfill()
     }
-    fileprivate let expectation: XCTestExpectation
+    private let expectation: XCTestExpectation
 }

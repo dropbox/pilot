@@ -133,50 +133,50 @@ class CollectionViewTests: XCTestCase {
     }
 }
 
-fileprivate func makeDefaultLayout() -> NSCollectionViewLayout {
+private func makeDefaultLayout() -> NSCollectionViewLayout {
     let layout = NSCollectionViewFlowLayout()
     layout.itemSize = NSSize(width: 20, height: 20)
     return layout
 }
 
-fileprivate struct TestViewModel: ViewModel {
-    fileprivate init(model: Model, context: Context) {
+private struct TestViewModel: ViewModel {
+    private init(model: Model, context: Context) {
         self.model = model
         self.context = context
     }
 
-    fileprivate let model: Model
-    fileprivate var context: Context
+    private let model: Model
+    private var context: Context
 }
 
-fileprivate final class TestView: NSView, View {
-    fileprivate var viewModel: ViewModel?
+private final class TestView: NSView, View {
+    private var viewModel: ViewModel?
 
-    fileprivate func bindToViewModel(_ viewModel: ViewModel) {
+    private func bindToViewModel(_ viewModel: ViewModel) {
         self.viewModel = viewModel
     }
 
-    fileprivate func unbindFromViewModel() {
+    private func unbindFromViewModel() {
         self.viewModel = nil
     }
 }
 
-fileprivate final class AltTestView: NSView, View {
-    fileprivate var viewModel: ViewModel?
+private final class AltTestView: NSView, View {
+    private var viewModel: ViewModel?
 
-    fileprivate func bindToViewModel(_ viewModel: ViewModel) {
+    private func bindToViewModel(_ viewModel: ViewModel) {
         self.viewModel = viewModel
     }
 
-    fileprivate func unbindFromViewModel() {
+    private func unbindFromViewModel() {
         self.viewModel = nil
     }
 }
 
-fileprivate final class TestSupplementaryLayout: NSCollectionViewLayout {
-    fileprivate static let SupplementaryLayoutKind = NSCollectionView.SupplementaryElementKind.sectionHeader
+private final class TestSupplementaryLayout: NSCollectionViewLayout {
+    private static let SupplementaryLayoutKind = NSCollectionView.SupplementaryElementKind.sectionHeader
 
-    fileprivate override func layoutAttributesForElements(in rect: NSRect) -> [NSCollectionViewLayoutAttributes] {
+    private override func layoutAttributesForElements(in rect: NSRect) -> [NSCollectionViewLayoutAttributes] {
         var layoutAttrs = [NSCollectionViewLayoutAttributes]()
 
         if let attrs = layoutAttributesForItem(at: IndexPath(item: 0, section: 0)) {
@@ -190,13 +190,13 @@ fileprivate final class TestSupplementaryLayout: NSCollectionViewLayout {
         return layoutAttrs
     }
 
-    fileprivate override func layoutAttributesForItem(at indexPath: IndexPath) -> NSCollectionViewLayoutAttributes? {
+    private override func layoutAttributesForItem(at indexPath: IndexPath) -> NSCollectionViewLayoutAttributes? {
         let attrs = NSCollectionViewLayoutAttributes(forItemWith: indexPath)
         attrs.frame = NSRect(x: 0, y: 0, width: 20, height: 20)
         return attrs
     }
 
-    fileprivate override func layoutAttributesForSupplementaryView(
+    private override func layoutAttributesForSupplementaryView(
         ofKind elementKind: NSCollectionView.SupplementaryElementKind,
         at indexPath: IndexPath
     ) -> NSCollectionViewLayoutAttributes? {
