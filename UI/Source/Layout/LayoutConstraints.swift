@@ -59,7 +59,7 @@ extension NSLayoutConstraint {
         #if os(OSX)
         priority = NSLayoutConstraint.Priority(p)
         #else
-        priority = p
+        priority = UILayoutPriority(rawValue: p)
         #endif
         return self
     }
