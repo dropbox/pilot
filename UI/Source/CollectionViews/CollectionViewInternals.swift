@@ -33,7 +33,7 @@ public struct CollectionZeroItemViewModel: ViewModel {
     // MARK: ViewModel
 
     public init(model: Model, context: Context) {
-        fatalError("Unsupported initializer")
+        Log.fatal(message: "Unsupported initializer")
     }
 
     public let context = Context()

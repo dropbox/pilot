@@ -24,7 +24,7 @@ public final class NestedModelCollectionView: UICollectionView, View {
 
     @available(*, unavailable, message: "init(coder:) has not been implemented")
     required public init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        Log.fatal(message: "init(coder:) has not been implemented")
     }
 
     // MARK: CollectionView
@@ -78,6 +78,6 @@ public final class NestedModelCollectionView: UICollectionView, View {
 
     // MARK: Private
 
-    fileprivate var collectionViewModel: NestedModelCollectionViewViewModel?
-    fileprivate var alreadyCalledLayout = false
+    private var collectionViewModel: NestedModelCollectionViewViewModel?
+    private var alreadyCalledLayout = false
 }

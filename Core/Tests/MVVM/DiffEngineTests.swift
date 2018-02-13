@@ -18,12 +18,12 @@ class DiffEngineTests: XCTestCase {
 
         func compare1<T: Equatable>(_ name: String, _ e: T, _ a: T) {
             if e != a {
-                self.recordFailure(withDescription: name + " differs. actual: \(a) expected: \(e)", inFile: file, atLine: line, expected: true)
+                self.recordFailure(withDescription: name + " differs. actual: \(a) expected: \(e)", inFile: file, atLine: Int(line), expected: true)
             }
         }
         func compare<T: Equatable>(_ name: String, _ e: [T], _ a: [T]) {
             if e != a {
-                self.recordFailure(withDescription: name + " differs. actual: \(a) expected: \(e)", inFile: file, atLine: line, expected: true)
+                self.recordFailure(withDescription: name + " differs. actual: \(a) expected: \(e)", inFile: file, atLine: Int(line), expected: true)
             }
         }
 

@@ -82,13 +82,23 @@ class FilteredModelCollectionTests: XCTestCase {
             return false
         }
         XCTAssert(subject.state.isLoading)
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.5) { expectation.fulfill() }
-        waitForExpectations(timeout: 2)
-        assertModelCollectionState(expected: .loaded([]), actual: subject.state)
+        let expected = ModelCollectionState.loaded([])
+        let token = subject.observe { (event) in
+            guard case .didChangeState(let state) = event else { return }
+            if validateModelCollectionState(expected: expected, actual: state) {
+                expectation.fulfill()
+            }
+        }
+        waitForExpectations(timeout: 2) { (err) in
+            if let err = err {
+                let message = describeModelCollectionStateDiscrepancy(expected: expected, actual: subject.state)
+                XCTFail(message ?? err.localizedDescription)
+            }
+            _ = token
+        }
     }
 
     func testDiscardsStaleAsyncResults() {
-        let expectation = self.expectation(description: "slowFilter")
         var hasSlept = false
         let subject = createFilteredModelCollection(testData, kind: .async(queue: .background)) { _ in
             if !hasSlept {
@@ -99,8 +109,26 @@ class FilteredModelCollectionTests: XCTestCase {
         }
         subject.filter = { _ in return false }
         XCTAssert(subject.state.isLoading)
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) { expectation.fulfill() }
-        waitForExpectations(timeout: 2)
+        let expected = ModelCollectionState.loaded([])
+        let expectation1 = self.expectation(description: "correctFilter")
+        // We expect this expectation to timeout, since the initial filter will not update the collection.
+        let expectation2 = self.expectation(description: "Stale filter results shouldn't be applied!")
+        expectation2.isInverted = true
+        var correctResultsLoaded = false
+        let token = subject.observe { (event) in
+            guard case .didChangeState(let state) = event else { return }
+            if validateModelCollectionState(expected: expected, actual: state) {
+                expectation1.fulfill()
+                correctResultsLoaded = true
+            } else if correctResultsLoaded {
+                if !state.isEmpty {
+                    expectation2.fulfill()
+                }
+            }
+        }
+        waitForExpectations(timeout: 2) { _ in
+            _ = token
+        }
         assertModelCollectionState(expected: .loaded([]), actual: subject.state)
     }
 
@@ -131,7 +159,7 @@ class FilteredModelCollectionTests: XCTestCase {
 
     // MARK: Test Helpers
 
-    fileprivate func createFilteredModelCollection(
+    private func createFilteredModelCollection(
         _ data: [SModel] = testData,
         kind: FilteredModelCollection.FilterKind = .sync,
         filter: ModelFilter? = nil
@@ -141,5 +169,5 @@ class FilteredModelCollectionTests: XCTestCase {
         return FilteredModelCollection(sourceCollection: source, kind: kind, filter: filter)
     }
 
-    fileprivate var filteredModelCollection: FilteredModelCollection!
+    private var filteredModelCollection: FilteredModelCollection!
 }

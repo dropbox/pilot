@@ -4,6 +4,35 @@ import Foundation
 
 // MARK: ViewModel
 
+/// Protocol representing the view model type, acting acting as the business logic layer providing the necessary data
+/// and methods for `View` binding and responding to user actions.
+///
+/// This interface is shared by both ViewModel and SelectionViewModel and most application code should refer to one of
+/// those more specific protocols.
+public protocol ViewModelType {
+
+    /// Access to the underlying `Context`.
+    var context: Context { get }
+
+    /// Returns the `Action` that should be fired for a given `ViewModelUserEvent`. The default implementation returns
+    /// nil.
+    func actionForUserEvent(_ event: ViewModelUserEvent) -> Action?
+
+    /// An array of secondary actions - typically displayed as a context menu or long-press menu depending on platform.
+    /// Default implementation returns an empty list.
+    func secondaryActions(for event: ViewModelUserEvent) -> [SecondaryAction]
+
+    /// Returns `true` if the target view model type can handle the given user event, `false` if it cannot.
+    ///
+    /// The default implementation calls secondaryActions(for:) for .secondaryClick events and returns `true` if the
+    /// result is not-empty, for all other event types it calls actionForUserEvent(_:) and returns `true` if the
+    /// function returns any non-nil action.
+    func canHandleUserEvent(_ event: ViewModelUserEvent) -> Bool
+
+    /// Invoked on the view model when the view layer wants it to handle a given user event. The default implementation
+    /// sends the action from action(_:) to the context. For most usecases implementing this is unnecessary.
+    func handleUserEvent(_ event: ViewModelUserEvent)
+}
 
 /// Protocol representing a view model type, acting as the business logic layer above a `Model` and providing the
 /// necessary data and methods for `View` binding.
@@ -16,130 +45,37 @@ import Foundation
 /// binding step.
 ///
 /// Ideally, view models should be value-types, but may be reference-types if identity/state is required.
-public protocol ViewModel {
-
+public protocol ViewModel: ViewModelType {
     init(model: Model, context: Context)
-
-    /// Access to the underlying `Context`.
-    var context: Context { get }
-
-    // MARK: Interactions
-
-    /// Returns `true` if the target view model type can handle the given user event, `false` if it cannot. The default
-    /// implementation returns `true` for everything.
-    func canHandleUserEvent(_ event: ViewModelUserEvent) -> Bool
-
-    /// Invoked on the view model when the view layer wants it to handle a given user event.
-    func handleUserEvent(_ event: ViewModelUserEvent)
-
-    // MARK: Actions
-
-    /// An array of secondary actions - typically displayed as a context menu or long-press menu depending on platform.
-    func secondaryActions(for event: ViewModelUserEvent) -> [SecondaryAction]
 }
 
-/// Event types that view models may handle, typically sent from the view layer.
-public enum ViewModelUserEvent {
-    /// On mouse-supporting platforms, represents a click by the user.
-    case click
-
-    /// Represents the user typing enter/return.
-    case enterKey
-
-    /// Represents the user typing space.
-    case spaceKey
-
-    /// Reprsents the user performing a long-press on the target view model.
-    case longPress
-
-    /// On mouse-supporting platforms, represents a secondary (right) click by the user.
-    case secondaryClick
-
-    /// On any platform, represents the target being selected (via mouse, programatically, or tap).
-    case select
-
-    /// On touch platforms, represents the target receiving a single tap.
-    case tap
-}
-
-/// Wraps an `Action` with additional data to be rendered in a "secondary" context like context menus or long-press
-/// menus.
-public struct SecondaryActionInfo {
-
-    public init(action: Action, title: String, state: State = .off, enabled: Bool = true) {
-        self.action = action
-        self.title = title
-        self.state = state
-        self.enabled = enabled
-    }
-
-    /// State of the secondary action. Note that this differs from enabled, but instead represents whether the action
-    /// is "checked" in a list.
-    public enum State {
-        case on
-        case off
-        case mixed
-    }
-
-    public let action: Action
-    public let title: String
-    public let state: State
-    public let enabled: Bool
-}
-
-/// Represents a secondary action to be displayed in a list to the user (typically from right-click or long-press).
-public enum SecondaryAction {
-    case action(SecondaryActionInfo)
-    case info(String)
-    case separator
+/// Protocol representing a collection of one or more view models that respresent a user selection and can provide
+/// customizable handling of user actions based on the selection and context.
+public protocol SelectionViewModel: ViewModelType {
+    /// Initialize with a collection of view models.
+    init(viewModels: [ViewModel], context: Context)
 }
 
 /// Default implementations so `ViewModel`s may opt-in to only interactions they care about.
-public extension ViewModel {
+public extension ViewModelType {
 
-    func handleUserEvent(_ event: ViewModelUserEvent) {}
+    func actionForUserEvent(_ event: ViewModelUserEvent) -> Action? {
+        return nil
+    }
+
+    func handleUserEvent(_ event: ViewModelUserEvent) {
+        actionForUserEvent(event)?.send(from: context)
+    }
 
     func canHandleUserEvent(_ event: ViewModelUserEvent) -> Bool {
-        return true
+        if .secondaryClick == event {
+            return !secondaryActions(for: event).isEmpty
+        } else {
+            return actionForUserEvent(event) != nil
+        }
     }
 
     func secondaryActions(for event: ViewModelUserEvent) -> [SecondaryAction] {
         return []
-    }
-}
-
-// MARK: Binding
-
-/// An optional protocol that types may adopt in order to provide a `ViewModel` directly. This is the default method
-/// `ViewModelBindingProvider` uses to instantiate a `ViewModel`.
-public protocol ViewModelConvertible {
-
-    /// Return a `ViewModel` representing the target type.
-    func viewModelWithContext(_ context: Context) -> ViewModel
-}
-
-/// Core binding provider protocol to generate `ViewModel` instances from `Model` instances.
-public protocol ViewModelBindingProvider {
-
-    /// Returns a `ViewModel` for the given `Model` and context.
-    func viewModel(for model: Model, context: Context) -> ViewModel
-}
-
-/// A `ViewModelBindingProvider` which provides default behavior to check the `Model` for conformance to
-/// `ViewModelConvertible`.
-public struct DefaultViewModelBindingProvider: ViewModelBindingProvider {
-
-    public init() {}
-
-    // MARK: ViewModelBindingProvider
-
-    public func viewModel(for model: Model, context: Context) -> ViewModel {
-        guard let convertible = model as? ViewModelConvertible else {
-            // Programmer error to fail to provide a binding.
-            // - TODO:(wkiefer) Avoid `fatalError` for programmer binding errors - return default empty views & assert.
-            fatalError(
-                "Default ViewModel binding requires model to conform to `ViewModelConvertible`: \(type(of: model))")
-        }
-        return convertible.viewModelWithContext(context)
     }
 }

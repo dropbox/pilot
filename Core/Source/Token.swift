@@ -35,12 +35,14 @@ public struct Token: Hashable, Equatable {
         self.value = value
     }
 
-    fileprivate let value: Int64
+    private let value: Int64
 
     // If we created tokens once per nanosecond (impossible), it would take almost 300 years to overflow
     private static var nextValue: Int64 = 0
-}
 
-public func == (lhs: Token, rhs: Token) -> Bool {
-    return lhs.value == rhs.value
+    // MARK: Equatable
+
+    public static func == (lhs: Token, rhs: Token) -> Bool {
+        return lhs.value == rhs.value
+    }
 }

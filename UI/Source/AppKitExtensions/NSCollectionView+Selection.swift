@@ -88,7 +88,7 @@ public extension NSCollectionView {
             let hostScrollView = hostScrollView,
             let layoutAttributes = layoutAttributesForItem(at: indexPath as IndexPath)
         else {
-            scrollToItems(at: Set([indexPath]) as Set<IndexPath>, scrollPosition: .centeredVertically)
+            scrollToItems(at: Set([indexPath]) as Set<IndexPath>, scrollPosition: NSCollectionView.ScrollPosition.centeredVertically)
             return
         }
         let currentY = hostScrollView.documentVisibleRect.origin.y
@@ -120,7 +120,7 @@ public extension NSCollectionView {
         }
     }
 
-    fileprivate var hostScrollView: NSScrollView? {
+    private var hostScrollView: NSScrollView? {
         var next = superview
         while next != nil && next as? NSScrollView == nil {
             next = next?.superview
@@ -128,7 +128,7 @@ public extension NSCollectionView {
         return next as? NSScrollView
     }
 
-    fileprivate func setSingleSelection(_ item: Int, section: Int) {
+    private func setSingleSelection(_ item: Int, section: Int) {
         let selectedIndexPath = IndexPath(forModelItem: item, inSection: section)
         selectionIndexPaths = [selectedIndexPath]
         verticallyScrollTo(itemAtIndexPath: selectedIndexPath)

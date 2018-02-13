@@ -40,7 +40,7 @@ internal final class CollectionViewHostCell: UICollectionViewCell {
 
     @available(*, unavailable, message: "Unsupported initializer.")
     required init?(coder aDecoder: NSCoder) {
-        fatalError("Unsupported initializer.")
+        Log.fatal(message: "Unsupported initializer.")
     }
 
     // MARK: UICollectionReusableView

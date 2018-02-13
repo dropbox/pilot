@@ -11,8 +11,8 @@ public final class CollectionViewHostItem: NSCollectionViewItem {
     public var hostedView: View? {
         willSet {
             if let view = hostedView as? NSView {
-                if let newValue = newValue as? NSView , newValue.classForCoder == view.classForCoder {
-                    // NOOP: The view classes are the same, so no need to remove.
+                if let newValue = newValue as? NSView, newValue == view {
+                    // NOOP: The view is the same, so no need to remove.
                 } else {
                     // TODO:(wkiefer) This also needs to unbind here (see TODO in the data source)
                     view.removeFromSuperview()
@@ -47,7 +47,7 @@ public final class CollectionViewHostItem: NSCollectionViewItem {
 
     public override func loadView() {
         view = NSView()
-        view.autoresizingMask = [.viewWidthSizable, .viewHeightSizable]
+        view.autoresizingMask = [NSView.AutoresizingMask.width, NSView.AutoresizingMask.height]
     }
 
     // MARK: NSCollectionViewElement
@@ -79,7 +79,7 @@ public final class CollectionViewHostItem: NSCollectionViewItem {
         }
     }
 
-    public override var highlightState: NSCollectionViewItemHighlightState {
+    public override var highlightState: NSCollectionViewItem.HighlightState {
         didSet {
             hostedView?.highlightStyle = highlightState.style
         }
@@ -91,10 +91,10 @@ public final class CollectionViewHostItem: NSCollectionViewItem {
 
     // MARK: Private
 
-    fileprivate var cachedLayoutAttributes: NSCollectionViewLayoutAttributes?
+    private var cachedLayoutAttributes: NSCollectionViewLayoutAttributes?
 }
 
-extension NSCollectionViewItemHighlightState {
+extension NSCollectionViewItem.HighlightState {
     fileprivate var style: ViewHighlightStyle {
         switch self {
         case .none:

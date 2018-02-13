@@ -9,7 +9,6 @@ public typealias PlatformCollectionViewLayoutInvalidationContext = UICollectionV
 public typealias PlatformCollectionViewUpdateItem = UICollectionViewUpdateItem
 public typealias PlatformEdgeInsets = UIEdgeInsets
 public typealias PlatformFont = UIFont
-public typealias PlatformLayoutPriority = UILayoutPriority
 public typealias PlatformScrollView = UIScrollView
 public typealias PlatformViewController = UIViewController
 public typealias PlatformView = UIView
@@ -23,10 +22,12 @@ public typealias PlatformCollectionViewLayout = NSCollectionViewLayout
 public typealias PlatformCollectionViewLayoutAttributes = NSCollectionViewLayoutAttributes
 public typealias PlatformCollectionViewLayoutInvalidationContext = NSCollectionViewLayoutInvalidationContext
 public typealias PlatformCollectionViewUpdateItem = NSCollectionViewUpdateItem
-public typealias PlatformEdgeInsets = EdgeInsets
+public typealias PlatformEdgeInsets = NSEdgeInsets
 public typealias PlatformFont = NSFont
-public typealias PlatformLayoutPriority = NSLayoutPriority
 public typealias PlatformScrollView = NSScrollView
 public typealias PlatformViewController = NSViewController
 public typealias PlatformView = NSView
 #endif
+
+// Temporary workaround to support swift 3 linking against pilot.
+public typealias PlatformLayoutPriority = Float

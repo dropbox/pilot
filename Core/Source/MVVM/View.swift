@@ -144,6 +144,20 @@ public extension ViewBindingProvider {
     }
 }
 
+/// A `ViewBindingProvider` that delegates to a closure to provide the appropriate `View` for the
+/// supplied `ViewModel` and `Context`.
+public struct BlockViewBindingProvider: ViewBindingProvider {
+    public init(binder: @escaping (ViewModel, Context) -> ViewBinding) {
+        self.binder = binder
+    }
+
+    public func viewBinding(for viewModel: ViewModel, context: Context) -> ViewBinding {
+        return binder(viewModel, context)
+    }
+
+    private let binder: (ViewModel, Context) -> ViewBinding
+}
+
 /// Enum which encompases an optional preferred size.
 public enum PreferredLayout: Equatable {
     /// No preferred size.

@@ -42,12 +42,12 @@ open class CollectionViewController: UIViewController, UICollectionViewDelegate 
 
     @available(*, unavailable, message: "Use `init(model:modelBinder:viewBinder:layout:context:)`")
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-        fatalError("Use `init(model:modelBinder:viewBinder:layout:context:)`")
+        Log.fatal(message: "Use `init(model:modelBinder:viewBinder:layout:context:)`")
     }
 
     @available(*, unavailable, message: "Use `init(model:modelBinder:viewBinder:layout:context:)`")
     public required init?(coder aDecoder: NSCoder) {
-        fatalError("Use `init(model:modelBinder:viewBinder:layout:context:)`")
+        Log.fatal(message: "Use `init(model:modelBinder:viewBinder:layout:context:)`")
     }
 
     deinit {
@@ -217,9 +217,9 @@ open class CollectionViewController: UIViewController, UICollectionViewDelegate 
 
     // MARK: Private
 
-    fileprivate var collectionObserver: Observer?
+    private var collectionObserver: Observer?
 
-    fileprivate func registerForModelEvents() {
+    private func registerForModelEvents() {
         assertWithLog(collectionObserver == nil, message: "Expected to start with a nil token")
 
         collectionObserver = collection.observe { [weak self] event in
@@ -230,11 +230,11 @@ open class CollectionViewController: UIViewController, UICollectionViewDelegate 
         handleModelEvent(.didChangeState(collection.state))
     }
 
-    fileprivate func unregisterForModelEvents() {
+    private func unregisterForModelEvents() {
         collectionObserver = nil
     }
 
-    fileprivate func handleModelEvent(_ event: CollectionEvent) {
+    private func handleModelEvent(_ event: CollectionEvent) {
         hideEmptyContentView()
 
         switch event {
@@ -259,12 +259,12 @@ open class CollectionViewController: UIViewController, UICollectionViewDelegate 
     }
 
     /// Spinner to show when in the `Loading` state.
-    fileprivate var spinner: UIActivityIndicatorView?
+    private var spinner: UIActivityIndicatorView?
 
     /// View which is displayed when there is no content (either due to error or lack of loaded data).
-    fileprivate var emptyContentView: UIView?
+    private var emptyContentView: UIView?
 
-    fileprivate func showEmptyContentView() {
+    private func showEmptyContentView() {
         guard self.emptyContentView == nil else { return }
 
         let display: EmptyCollectionDisplay
@@ -284,12 +284,12 @@ open class CollectionViewController: UIViewController, UICollectionViewDelegate 
         }
     }
 
-    fileprivate func hideEmptyContentView() {
+    private func hideEmptyContentView() {
         emptyContentView?.removeFromSuperview()
         emptyContentView = nil
     }
 
-    fileprivate func updateEmptyContentViewVisibility() {
+    private func updateEmptyContentViewVisibility() {
         switch collection.state {
         case .error(_), .loaded:
             if collection.state.isEmpty {
@@ -302,7 +302,7 @@ open class CollectionViewController: UIViewController, UICollectionViewDelegate 
         }
     }
 
-    fileprivate func emptyContentViewForDisplay(_ display: EmptyCollectionDisplay) -> UIView? {
+    private func emptyContentViewForDisplay(_ display: EmptyCollectionDisplay) -> UIView? {
         switch display {
         case .none:
             return nil

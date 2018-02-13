@@ -36,3 +36,7 @@ Packages/
 
 # macOS
 .DS_Store
+
+# GYP generated projects
+**/*.dxbuild.xcodeproj/project.*
+**/*.dxbuild.xcodeproj/xcuserdata/
