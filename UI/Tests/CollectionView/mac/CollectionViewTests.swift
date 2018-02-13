@@ -101,7 +101,7 @@ class CollectionViewTests: XCTestCase {
 
     func makeCollectionViewController(layout: NSCollectionViewLayout = makeDefaultLayout()) -> CollectionViewController {
         let context = Context()
-        let collection = StaticModelCollection([[StaticModel(modelId: "MODEL_1", data: "First")]])
+        let collection = StaticModelCollection([StaticModel(modelId: "MODEL_1", data: "First")])
 
         let cvc = CollectionViewController(
             model: collection,
