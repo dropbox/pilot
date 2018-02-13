@@ -8,7 +8,7 @@ public final class DirectoryModelCollection: ModelCollection, ProxyingCollection
             at: url,
             includingPropertiesForKeys: nil,
             options: [.skipsHiddenFiles, .skipsSubdirectoryDescendants, .skipsPackageDescendants])
-        self.state = .loaded([fileURLs.map { File(url: $0) }])
+        self.state = .loaded(fileURLs.map { File(url: $0) })
     }
 
     // MARK: CollectionEventObservable
@@ -27,7 +27,7 @@ public final class DirectoryModelCollection: ModelCollection, ProxyingCollection
 
     private var fileURLs: [URL] {
         didSet {
-            state = .loaded([fileURLs.map({ File(url: $0) })])
+            state = .loaded(fileURLs.map({ File(url: $0) }))
         }
     }
 }
