@@ -21,7 +21,7 @@ public extension ModelCollection {
         if let sectioned = self as? SectionedModelCollection {
             return sectioned
         }
-        return StaticSectionedModelCollection(self)
+        return SingleSectionedModelCollection(self)
     }
 }
 
@@ -127,7 +127,7 @@ extension SectionedModelCollection {
 }
 
 /// Internal only class used for wrapping a non-sectioned `ModelCollection` with `SectionedModelCollection` support.
-internal final class StaticSectionedModelCollection: SectionedModelCollection {
+internal final class SingleSectionedModelCollection: SectionedModelCollection {
     internal init(_ modelCollection: ModelCollection) {
         self.represented = modelCollection
     }
