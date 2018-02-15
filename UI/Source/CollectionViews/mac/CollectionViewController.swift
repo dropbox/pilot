@@ -87,7 +87,7 @@ open class CollectionViewController: NSViewController, CollectionViewDelegate {
     /// has been told. If the current code path is initiated by the CollectionView and uses an IndexPath,
     /// this is the collection that should be used.
     /// See `CollectionViewModelDataSource.currentCollection` for more documentation.
-    public var collection: ModelCollection {
+    public var collection: SectionedModelCollection {
         return dataSource.currentCollection
     }
 
