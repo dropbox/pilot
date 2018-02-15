@@ -33,7 +33,7 @@ private enum CollectionViewState {
     case synced
 }
 
-public final class CurrentCollection: ModelCollection, SectionedModelCollection, ProxyingCollectionEventObservable {
+public final class CurrentCollection: SectionedModelCollection, ProxyingCollectionEventObservable {
 
     // MARK: Init
 
@@ -45,22 +45,32 @@ public final class CurrentCollection: ModelCollection, SectionedModelCollection,
 
     public let collectionId: ModelCollectionId
 
-    public private(set) var state: ModelCollectionState = .notLoaded {
-        didSet {
-            observers.notify(.didChangeState(state))
-        }
+    public var state: ModelCollectionState {
+        // `sectionedState` is the source-of-truth for this class.
+        return sectionedState.flattenedState()
     }
 
     public var proxiedObservable: GenericObservable<CollectionEvent> { return observers }
     private let observers = ObserverList<CollectionEvent>()
 
+    // MARK: SectionedModelCollection
+
+    public private(set) var sectionedState: [ModelCollectionState] = []  {
+        didSet {
+            observers.notify(.didChangeState(state))
+        }
+    }
+
     // MARK: Private
 
     fileprivate func beginUpdate(_ collection: ModelCollection) -> (CollectionEventUpdates, () -> Void){
-        let updates = diffEngine.update(collection.withSections().sections, debug: false)
-        let commitState = collection.state
+        // If the collection is already sectioned, this will honor those sections. Otherwise, it will
+        // provide a single section wrapping the original collection.
+        let sectionedCollection = collection.asSectioned()
+        let updates = diffEngine.update(sectionedCollection.sections, debug: false)
+        let commitSectionedState = sectionedCollection.sectionedState
         return (updates, {
-            self.state = commitState
+            self.sectionedState = commitSectionedState
         })
     }
 
@@ -467,10 +477,16 @@ public class CollectionViewModelDataSource: NSObject, ProxyingObservable {
         let (updates, commitCollectionChanges) = currentCollection.beginUpdate(underlyingCollection)
         guard updates.hasUpdates else {
             // Still synced - no need to fire a collection view update pass.
-            // However, if there are no updates, the underlying case may still change (e.g. .loading(_) -> .error(_)),
-            // so a commit is still needed.
-            if underlyingCollection.state.isDifferentCase(than: currentCollection.state) {
-                commitCollectionChanges()
+            // However, if there are no updates, the underlying case of any section may still change
+            // (e.g. .loading(_) -> .error(_)), so a commit is still needed.
+            for (underlying, current) in zip(
+                underlyingCollection.asSectioned().sectionedState,
+                currentCollection.sectionedState
+            ) {
+                if underlying.isDifferentCase(than: current) {
+                    commitCollectionChanges()
+                    break
+                }
             }
             return
         }
