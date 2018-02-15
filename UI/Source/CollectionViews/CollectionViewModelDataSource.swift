@@ -96,8 +96,7 @@ public class CollectionViewModelDataSource: NSObject, ProxyingObservable {
         context: Context,
         reuseIdProvider: CollectionViewCellReuseIdProvider
     ) {
-        let underlyingCollection = SwitchableModelCollection(collectionId: "CVMDS-Switch", modelCollection: model)
-        self.underlyingCollection = underlyingCollection
+        self.underlyingCollection = model
         self.currentCollection = CurrentCollection("CVMDS-Current")
         self.modelBinder = modelBinder
         self.viewBinder = viewBinder
@@ -288,23 +287,6 @@ public class CollectionViewModelDataSource: NSObject, ProxyingObservable {
         viewModelCache = mutatedViewModelCache
     }
 
-    /// Allows the caller to swap out the `ModelCollection` for this collection view data source.  The CollectionView will
-    /// animate from the old state to the new state.  Useful for asynchronously swapping in ModelCollections after they're
-    /// loaded.
-    /// Note: does not update the `Context`
-    public func updateModel(_ model: ModelCollection) {
-        underlyingCollection.switchTo(model)
-    }
-
-    /// Same as `updateModel` but allows swapping out the `ModelCollection` and `Context`.
-    public func updateModel(_ model: ModelCollection, with newContext: Context) {
-        self.context = newContext
-
-        // TODO:(wkiefer) If context has changed - this needs to clear the VM cache and reload data.
-
-        updateModel(model)
-    }
-
     /// Possible styles for any model update animations.
     public enum UpdateAnimationStyle {
         /// All model update changes are animated.
@@ -349,7 +331,7 @@ public class CollectionViewModelDataSource: NSObject, ProxyingObservable {
 
     /// The collection whose contents are synchronized to this CollectionView.
     /// The underlyingCollection's data may be newer than the CollectionView's understanding of the world.
-    private let underlyingCollection: SwitchableModelCollection
+    private let underlyingCollection: ModelCollection
     private var collectionViewState: CollectionViewState
 
     private var collectionObserver: Observer?
