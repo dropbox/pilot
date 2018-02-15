@@ -40,10 +40,7 @@ public extension Sequence where Iterator.Element == ModelCollectionState {
         var reducedStates = ModelCollectionStateReduction()
         for substate in self {
             count += 1
-
-            substate.models.forEach {
-                consolidatedModels.append($0)
-            }
+            consolidatedModels += substate.models
 
             switch substate {
             case .notLoaded:
