@@ -73,6 +73,13 @@ public extension Sequence where Iterator.Element == ModelCollectionState {
     }
 }
 
+public extension Sequence where Iterator.Element == [Model] {
+    /// Convenience method for returning a `[ModelCollectionState]` from a two-dimentional `Model` array.
+    public func asSectionedState(loading: Bool = false) -> [ModelCollectionState] {
+        return self.map { loading ? .loading($0) : .loaded($0) }
+    }
+}
+
 extension SectionedModelCollection {
 
     /// Returns sections of `Model` items.
