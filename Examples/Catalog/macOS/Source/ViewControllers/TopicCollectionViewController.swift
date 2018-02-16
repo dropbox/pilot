@@ -13,19 +13,9 @@ public final class TopicCollectionViewController: CollectionViewController {
         return TopicCollectionViewController(
             model: CommonModelCollections.makeTopics(),
             modelBinder: DefaultViewModelBindingProvider(),
-            viewBinder: TopicViewBinder(),
+            viewBinder: StaticViewBindingProvider(type: TopicView.self) ,
             layout: layout,
             context: context)
         
-    }
-}
-
-// TODO:(wkiefer) Replace when Pilot has a block-based view binding provider.
-fileprivate struct TopicViewBinder: ViewBindingProvider {
-    public func viewBinding(for viewModel: ViewModel, context: Context) -> ViewBinding {
-        if viewModel is TopicViewModel {
-            return ViewBinding { return TopicView() }
-        }
-        fatalError()
     }
 }

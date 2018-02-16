@@ -46,7 +46,7 @@ public final class CurrentCollection: SectionedModelCollection, ProxyingCollecti
     public let collectionId: ModelCollectionId
 
     public var state: ModelCollectionState {
-        // `sectionedState` is the source-of-truth for this class.
+        // Dynamic getter because `sectionedState` is the source-of-truth for this class.
         return sectionedState.flattenedState()
     }
 

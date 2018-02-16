@@ -12,7 +12,7 @@ public final class ModelCollectionExampleCollectionViewController: CollectionVie
         return ModelCollectionExampleCollectionViewController(
             model: CommonModelCollections.makeModelCollectionExamples(),
             modelBinder: DefaultViewModelBindingProvider(),
-            viewBinder: ModelCollectionExampleViewBinder(),
+            viewBinder: StaticViewBindingProvider(type: ExampleView.self),
             layout: layout,
             context: context)
         
@@ -25,14 +25,3 @@ public final class ModelCollectionExampleCollectionViewController: CollectionVie
         backgroundColor = .white
     }
 }
-
-// TODO:(wkiefer) Replace when Pilot has a block-based view binding provider.
-fileprivate struct ModelCollectionExampleViewBinder: ViewBindingProvider {
-    public func viewBinding(for viewModel: ViewModel, context: Context) -> ViewBinding {
-        if viewModel is ModelCollectionExampleViewModel {
-            return ViewBinding { return ExampleView() }
-        }
-        fatalError()
-    }
-}
-

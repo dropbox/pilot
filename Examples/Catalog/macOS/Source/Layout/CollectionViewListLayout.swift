@@ -3,7 +3,7 @@ import Pilot
 
 /// `NSCollectionViewFlowLayout` which presents items as a full-width list. This class handles auto-invalidating itself
 /// when the bounds change in a way that requires a new layout pass.
-open class CollectionViewListLayout: NSCollectionViewFlowLayout {
+public class CollectionViewListLayout: NSCollectionViewFlowLayout {
     
     // MARK: Init
     
