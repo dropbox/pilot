@@ -11,7 +11,7 @@ public final class EmptyModelCollection: ModelCollection {
 
     public let collectionId: ModelCollectionId = { return "empty-\(UUID().uuidString)" }()
 
-    public let state = ModelCollectionState.loaded([[]])
+    public let state = ModelCollectionState.loaded([])
 
     // MARK: CollectionEventObservable
 

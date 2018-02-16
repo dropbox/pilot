@@ -78,7 +78,7 @@ final class TelevisionEpisodeView: UIView, View {
         televisionIcon.rightAnchor.constraint(equalTo: rightAnchor, constant: -6).isActive = true
         televisionIcon.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         televisionIcon.text = "📺"
-        televisionIcon.setContentHuggingPriority(UILayoutPriorityDefaultHigh, for: .horizontal)
+        televisionIcon.setContentHuggingPriority(UILayoutPriority.defaultHigh, for: .horizontal)
 
         addSubview(nameLabel)
         nameLabel.font = UIFont.boldSystemFont(ofSize: 15)

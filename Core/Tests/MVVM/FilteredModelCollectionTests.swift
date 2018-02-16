@@ -3,25 +3,19 @@ import XCTest
 
 private typealias SModel = StaticModel<String>
 
-private let testData: [[SModel]] = [
-    [
+private let testData: [SModel] = [
         StaticModel(modelId: "454", data: "Archon"),
         StaticModel(modelId: "455", data: "Destiny"),
         StaticModel(modelId: "456", data: "Nine Fives"),
         StaticModel(modelId: "457", data: "Focus"),
-    ],
-    [
         StaticModel(modelId: "354", data: "R.I.C.E."),
         StaticModel(modelId: "355", data: "Chai Time"),
         StaticModel(modelId: "356", data: "Flavor of the Day"),
         StaticModel(modelId: "357", data: "Scooter's"),
-    ],
-    [
         StaticModel(modelId: "254", data: "Bikeshed"),
         StaticModel(modelId: "255", data: "Dropboat"),
         StaticModel(modelId: "256", data: "Emperor Norton Bridge"),
         StaticModel(modelId: "257", data: "Client Someday"),
-    ],
 ]
 
 class FilteredModelCollectionTests: XCTestCase {
@@ -45,9 +39,9 @@ class FilteredModelCollectionTests: XCTestCase {
             return ["454", "355", "257"].contains(model.modelId)
         }
         let expected = ModelCollectionState.loaded([
-            [StaticModel(modelId: "454", data: "Archon")],
-            [StaticModel(modelId: "355", data: "Chai Time")],
-            [StaticModel(modelId: "257", data: "Client Someday")]
+            StaticModel(modelId: "454", data: "Archon"),
+            StaticModel(modelId: "355", data: "Chai Time"),
+            StaticModel(modelId: "257", data: "Client Someday")
         ])
         assertModelCollectionState(expected: expected, actual: collection.state)
     }
@@ -57,20 +51,17 @@ class FilteredModelCollectionTests: XCTestCase {
             return model.modelId.hasPrefix("4")
         }
         var expected = ModelCollectionState.loaded([
-            [
-                StaticModel(modelId: "454", data: "Archon"),
-                StaticModel(modelId: "455", data: "Destiny"),
-                StaticModel(modelId: "456", data: "Nine Fives"),
-                StaticModel(modelId: "457", data: "Focus")
-            ],
-            [],[]])
+            StaticModel(modelId: "454", data: "Archon"),
+            StaticModel(modelId: "455", data: "Destiny"),
+            StaticModel(modelId: "456", data: "Nine Fives"),
+            StaticModel(modelId: "457", data: "Focus")
+        ])
         assertModelCollectionState(expected: expected, actual: collection.state)
         collection.limit = 2
         expected = ModelCollectionState.loaded([
-            [
-                StaticModel(modelId: "454", data: "Archon"),
-                StaticModel(modelId: "455", data: "Destiny"),
-            ],[],[]])
+            StaticModel(modelId: "454", data: "Archon"),
+            StaticModel(modelId: "455", data: "Destiny"),
+        ])
         assertModelCollectionState(expected: expected, actual: collection.state)
     }
 
@@ -78,7 +69,7 @@ class FilteredModelCollectionTests: XCTestCase {
         let collection = createFilteredModelCollection(testData) { model in
             return model.modelId == "454"
         }
-        var expected = ModelCollectionState.loaded([[StaticModel(modelId: "454", data: "Archon")],[],[]])
+        var expected = ModelCollectionState.loaded([StaticModel(modelId: "454", data: "Archon")])
         assertModelCollectionState(expected: expected, actual: collection.state)
         collection.filter = { _ in return true }
         expected = ModelCollectionState.loaded(testData)
@@ -91,7 +82,7 @@ class FilteredModelCollectionTests: XCTestCase {
             return false
         }
         XCTAssert(subject.state.isLoading)
-        let expected = ModelCollectionState.loaded([[],[],[]])
+        let expected = ModelCollectionState.loaded([])
         let token = subject.observe { (event) in
             guard case .didChangeState(let state) = event else { return }
             if validateModelCollectionState(expected: expected, actual: state) {
@@ -118,7 +109,7 @@ class FilteredModelCollectionTests: XCTestCase {
         }
         subject.filter = { _ in return false }
         XCTAssert(subject.state.isLoading)
-        let expected = ModelCollectionState.loaded([[],[],[]])
+        let expected = ModelCollectionState.loaded([])
         let expectation1 = self.expectation(description: "correctFilter")
         // We expect this expectation to timeout, since the initial filter will not update the collection.
         let expectation2 = self.expectation(description: "Stale filter results shouldn't be applied!")
@@ -138,7 +129,7 @@ class FilteredModelCollectionTests: XCTestCase {
         waitForExpectations(timeout: 2) { _ in
             _ = token
         }
-        assertModelCollectionState(expected: .loaded([[],[],[]]), actual: subject.state)
+        assertModelCollectionState(expected: .loaded([]), actual: subject.state)
     }
 
     func testUpdateSource() {
@@ -149,10 +140,10 @@ class FilteredModelCollectionTests: XCTestCase {
         let archon = StaticModel(modelId: "454", data: "Archon")
         let destiny = StaticModel(modelId: "455", data: "Destiny")
         let models = [archon, destiny]
-        source.onNext(.loading([models]))
-        assertModelCollectionState(expected: .loading([[archon]]), actual: subject.state)
-        source.onNext(.loaded([models]))
-        assertModelCollectionState(expected: .loaded([[archon]]), actual: subject.state)
+        source.onNext(.loading(models))
+        assertModelCollectionState(expected: .loading([archon]), actual: subject.state)
+        source.onNext(.loaded(models))
+        assertModelCollectionState(expected: .loaded([archon]), actual: subject.state)
     }
 
     func testReRun() {
@@ -163,13 +154,13 @@ class FilteredModelCollectionTests: XCTestCase {
         assertModelCollectionState(expected: .loaded(testData), actual: subject.state)
         value = false
         subject.rerunFilter()
-        assertModelCollectionState(expected: .loaded([[],[],[]]), actual: subject.state)
+        assertModelCollectionState(expected: .loaded([]), actual: subject.state)
     }
 
     // MARK: Test Helpers
 
     private func createFilteredModelCollection(
-        _ data: [[SModel]] = testData,
+        _ data: [SModel] = testData,
         kind: FilteredModelCollection.FilterKind = .sync,
         filter: ModelFilter? = nil
     ) -> FilteredModelCollection {

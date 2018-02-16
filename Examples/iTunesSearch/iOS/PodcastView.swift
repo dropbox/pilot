@@ -67,7 +67,7 @@ final class PodcastView: UIView, View {
         songIcon.translatesAutoresizingMaskIntoConstraints = false
         songIcon.rightAnchor.constraint(equalTo: rightAnchor, constant: -6).isActive = true
         songIcon.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
-        songIcon.setContentHuggingPriority(UILayoutPriorityDefaultHigh, for: .horizontal)
+        songIcon.setContentHuggingPriority(UILayoutPriority.defaultHigh, for: .horizontal)
 
         let labelContainer = UIView()
         labelContainer.translatesAutoresizingMaskIntoConstraints = false

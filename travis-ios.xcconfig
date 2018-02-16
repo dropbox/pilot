@@ -1,0 +1,2 @@
+// Build Setting overrides for use on Travis CI.
+FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/../../build/Release-iphonesimulator/";

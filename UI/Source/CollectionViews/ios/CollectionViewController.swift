@@ -292,7 +292,7 @@ open class CollectionViewController: UIViewController, UICollectionViewDelegate 
     private func updateEmptyContentViewVisibility() {
         switch collection.state {
         case .error(_), .loaded:
-            if collection.isEmpty {
+            if collection.state.isEmpty {
                 showEmptyContentView()
             } else {
                 hideEmptyContentView()

@@ -33,7 +33,7 @@ private enum CollectionViewState {
     case synced
 }
 
-public final class CurrentCollection: ModelCollection, ProxyingCollectionEventObservable {
+public final class CurrentCollection: SectionedModelCollection, ProxyingCollectionEventObservable {
 
     // MARK: Init
 
@@ -45,22 +45,32 @@ public final class CurrentCollection: ModelCollection, ProxyingCollectionEventOb
 
     public let collectionId: ModelCollectionId
 
-    public private(set) var state: ModelCollectionState = .notLoaded {
-        didSet {
-            observers.notify(.didChangeState(state))
-        }
+    public var state: ModelCollectionState {
+        // Dynamic getter because `sectionedState` is the source-of-truth for this class.
+        return sectionedState.flattenedState()
     }
 
     public var proxiedObservable: GenericObservable<CollectionEvent> { return observers }
     private let observers = ObserverList<CollectionEvent>()
 
+    // MARK: SectionedModelCollection
+
+    public private(set) var sectionedState: [ModelCollectionState] = []  {
+        didSet {
+            observers.notify(.didChangeState(state))
+        }
+    }
+
     // MARK: Private
 
     fileprivate func beginUpdate(_ collection: ModelCollection) -> (CollectionEventUpdates, () -> Void){
-        let updates = diffEngine.update(collection.sections, debug: false)
-        let commitState = collection.state
+        // If the collection is already sectioned, this will honor those sections. Otherwise, it will
+        // provide a single section wrapping the original collection.
+        let sectionedCollection = collection.asSectioned()
+        let updates = diffEngine.update(sectionedCollection.sections, debug: false)
+        let commitSectionedState = sectionedCollection.sectionedState
         return (updates, {
-            self.state = commitState
+            self.sectionedState = commitSectionedState
         })
     }
 
@@ -86,8 +96,7 @@ public class CollectionViewModelDataSource: NSObject, ProxyingObservable {
         context: Context,
         reuseIdProvider: CollectionViewCellReuseIdProvider
     ) {
-        let underlyingCollection = SwitchableModelCollection(collectionId: "CVMDS-Switch", modelCollection: model)
-        self.underlyingCollection = underlyingCollection
+        self.underlyingCollection = model
         self.currentCollection = CurrentCollection("CVMDS-Current")
         self.modelBinder = modelBinder
         self.viewBinder = viewBinder
@@ -278,23 +287,6 @@ public class CollectionViewModelDataSource: NSObject, ProxyingObservable {
         viewModelCache = mutatedViewModelCache
     }
 
-    /// Allows the caller to swap out the `ModelCollection` for this collection view data source.  The CollectionView will
-    /// animate from the old state to the new state.  Useful for asynchronously swapping in ModelCollections after they're
-    /// loaded.
-    /// Note: does not update the `Context`
-    public func updateModel(_ model: ModelCollection) {
-        underlyingCollection.switchTo(model)
-    }
-
-    /// Same as `updateModel` but allows swapping out the `ModelCollection` and `Context`.
-    public func updateModel(_ model: ModelCollection, with newContext: Context) {
-        self.context = newContext
-
-        // TODO:(wkiefer) If context has changed - this needs to clear the VM cache and reload data.
-
-        updateModel(model)
-    }
-
     /// Possible styles for any model update animations.
     public enum UpdateAnimationStyle {
         /// All model update changes are animated.
@@ -339,7 +331,7 @@ public class CollectionViewModelDataSource: NSObject, ProxyingObservable {
 
     /// The collection whose contents are synchronized to this CollectionView.
     /// The underlyingCollection's data may be newer than the CollectionView's understanding of the world.
-    private let underlyingCollection: SwitchableModelCollection
+    private let underlyingCollection: ModelCollection
     private var collectionViewState: CollectionViewState
 
     private var collectionObserver: Observer?
@@ -467,10 +459,16 @@ public class CollectionViewModelDataSource: NSObject, ProxyingObservable {
         let (updates, commitCollectionChanges) = currentCollection.beginUpdate(underlyingCollection)
         guard updates.hasUpdates else {
             // Still synced - no need to fire a collection view update pass.
-            // However, if there are no updates, the underlying case may still change (e.g. .loading(_) -> .error(_)),
-            // so a commit is still needed.
-            if underlyingCollection.state.isDifferentCase(than: currentCollection.state) {
-                commitCollectionChanges()
+            // However, if there are no updates, the underlying case of any section may still change
+            // (e.g. .loading(_) -> .error(_)), so a commit is still needed.
+            for (underlying, current) in zip(
+                underlyingCollection.asSectioned().sectionedState,
+                currentCollection.sectionedState
+            ) {
+                if underlying.isDifferentCase(than: current) {
+                    commitCollectionChanges()
+                    break
+                }
             }
             return
         }
@@ -683,7 +681,7 @@ extension CollectionViewModelDataSource: UICollectionViewDataSource {
         guard let cell = collectionView.cellForItem(at: indexPath) as? CollectionViewHostCell else { return }
 
         willRebindViewModel(viewModel)
-        cell.hostedView?.bindToViewModel(viewModel)
+        cell.hostedView?.rebindToViewModel(viewModel)
     }
 
     // MARK: UICollectionViewDataSource
@@ -1075,7 +1073,7 @@ extension CollectionViewModelDataSource: NSCollectionViewDataSource {
         guard let item = collectionView.item(at: indexPath) as? CollectionViewHostItem else { return }
 
         willRebindViewModel(viewModel)
-        item.hostedView?.bindToViewModel(viewModel)
+        item.hostedView?.rebindToViewModel(viewModel)
     }
 
     private func shouldFakeMoves(updates: CollectionEventUpdates) -> Bool {

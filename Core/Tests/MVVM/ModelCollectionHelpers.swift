@@ -4,7 +4,7 @@ import XCTest
 /// Fails test case if `actual` model collection state isn't equivelant to `expected`.
 ///
 /// Checks that the case for both is the same (ex: .loading(*) != .loaded(*)), but if the case is the same then it
-/// checks the sections have same number of models with the same model ids.
+/// checks the models have same number of models with the same model ids.
 internal func assertModelCollectionState(
     expected: ModelCollectionState,
     actual: ModelCollectionState,
@@ -31,35 +31,35 @@ internal func describeModelCollectionStateDiscrepancy(
     case .error:
         if case .error = actual { return nil }
         return "Expected .error state, got \(actual)"
-    case .loading(let expectedSections):
-        if case .loading(let actualSections) = actual {
-            if expectedSections?.count != actualSections?.count {
-                let e = String(describing: expectedSections?.count)
-                let a = String(describing: actualSections?.count)
-                return "Expected .loading with \(e) sections got \(a)"
+    case .loading(let expectedModels):
+        if case .loading(let actualModels) = actual {
+            if expectedModels?.count != actualModels?.count {
+                let e = String(describing: expectedModels?.count)
+                let a = String(describing: actualModels?.count)
+                return "Expected .loading with \(e) models got \(a)"
             }
-            if let expectedSections = expectedSections, let actualSections = actualSections {
-                for (e, a) in zip(expectedSections, actualSections) {
-                    if (e.map({ $0.modelId }) != a.map({ $0.modelId })) {
+            if let expectedModels = expectedModels, let actualModels = actualModels {
+                for (e, a) in zip(expectedModels, actualModels) {
+                    if e.modelId != a.modelId {
                         return "\(e) != \(a)"
                     }
                 }
             }
         } else {
-            return "Expected .loading(\(String(describing: expectedSections))). Actual: \(actual)"
+            return "Expected .loading(\(String(describing: expectedModels))). Actual: \(actual)"
         }
-    case .loaded(let expectedSections):
-        if case .loaded(let actualSections) = actual {
-            if expectedSections.count != actualSections.count {
-                return "Expected .loaded with \(expectedSections.count) sections got \(actualSections.count)"
+    case .loaded(let expectedModels):
+        if case .loaded(let actualModels) = actual {
+            if expectedModels.count != actualModels.count {
+                return "Expected .loaded with \(expectedModels.count) models got \(actualModels.count)"
             }
-            for (e, a) in zip(expectedSections, actualSections) {
-                if (e.map({ $0.modelId }) != a.map({ $0.modelId })) {
+            for (e, a) in zip(expectedModels, actualModels) {
+                if e.modelId != a.modelId {
                     return "\(e) != \(a)"
                 }
             }
         } else {
-            return "Expected .loaded with \(expectedSections)). Actual: \(actual)"
+            return "Expected .loaded with \(expectedModels)). Actual: \(actual)"
         }
     }
     return nil

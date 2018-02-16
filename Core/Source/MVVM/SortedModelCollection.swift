@@ -14,16 +14,16 @@ public final class SortedModelCollection: ModelCollection, ProxyingCollectionEve
         self.comparator = { _, _ in false }
 
         sourceObserver = self.sourceCollection.observe { [weak self] event in
-            self?.updateSections()
+            self?.sortModels()
         }
-        updateSections()
+        sortModels()
     }
 
     // MARK: Public
 
     public var comparator: ModelComparator {
         didSet {
-            updateSections()
+            sortModels()
         }
     }
 
@@ -49,19 +49,15 @@ public final class SortedModelCollection: ModelCollection, ProxyingCollectionEve
     private let sourceCollection: ModelCollection
     private var sourceObserver: Observer?
 
-    private func updateSections() {
-        var sortedSections: [[Model]] = []
-        for section in sourceCollection.sections {
-            sortedSections.append(section.sorted(by: comparator))
-        }
-
+    private func sortModels() {
+        let sorted = sourceCollection.models.sorted(by: comparator)
         switch sourceCollection.state {
         case .error, .notLoaded:
             state = sourceCollection.state
         case .loading:
-            state = .loading(sortedSections)
+            state = .loading(sorted)
         case .loaded:
-            state = .loaded(sortedSections)
+            state = .loaded(sorted)
         }
     }
 }
