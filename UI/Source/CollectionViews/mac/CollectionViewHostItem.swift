@@ -91,7 +91,7 @@ public final class CollectionViewHostItem: NSCollectionViewItem {
 
     // MARK: Private
 
-    fileprivate var cachedLayoutAttributes: NSCollectionViewLayoutAttributes?
+    private var cachedLayoutAttributes: NSCollectionViewLayoutAttributes?
 }
 
 extension NSCollectionViewItem.HighlightState {

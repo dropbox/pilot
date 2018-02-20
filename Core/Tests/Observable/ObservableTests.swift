@@ -15,8 +15,8 @@ class SemaphoreExpectation {
         expectations.popLast()!.fulfill()
     }
 
-    fileprivate let testCase: XCTestCase
-    fileprivate var expectations: [XCTestExpectation] = []
+    private let testCase: XCTestCase
+    private var expectations: [XCTestExpectation] = []
 }
 
 class ObservableTests: XCTestCase {

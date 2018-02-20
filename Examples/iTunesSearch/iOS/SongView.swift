@@ -72,8 +72,8 @@ final class SongView: UIView, View {
         songIcon.translatesAutoresizingMaskIntoConstraints = false
         songIcon.rightAnchor.constraint(equalTo: rightAnchor, constant: -6).isActive = true
         songIcon.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
-        songIcon.setContentHuggingPriority(UILayoutPriorityDefaultHigh, for: .horizontal)
-        songIcon.setContentCompressionResistancePriority(UILayoutPriorityDefaultHigh, for: .horizontal)
+        songIcon.setContentHuggingPriority(UILayoutPriority.defaultHigh, for: .horizontal)
+        songIcon.setContentCompressionResistancePriority(UILayoutPriority.defaultHigh, for: .horizontal)
 
         let labelContainer = UIView()
         labelContainer.translatesAutoresizingMaskIntoConstraints = false
@@ -81,15 +81,15 @@ final class SongView: UIView, View {
         labelContainer.leftAnchor.constraint(equalTo: imageView.rightAnchor, constant: 6).isActive = true
         labelContainer.rightAnchor.constraint(equalTo: songIcon.leftAnchor, constant: -6).isActive = true
         labelContainer.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
-        labelContainer.setContentCompressionResistancePriority(UILayoutPriorityDefaultHigh-1, for: .horizontal)
+        labelContainer.setContentCompressionResistancePriority(UILayoutPriority(rawValue: UILayoutPriority.RawValue(Int(UILayoutPriority.defaultHigh.rawValue)-1)), for: .horizontal)
 
         labelContainer.addSubview(durationLabel)
         durationLabel.font = UIFont(name: "Courier", size: 10)
         durationLabel.translatesAutoresizingMaskIntoConstraints = false
         durationLabel.rightAnchor.constraint(equalTo: labelContainer.rightAnchor).isActive = true
         durationLabel.centerYAnchor.constraint(equalTo: labelContainer.centerYAnchor).isActive = true
-        durationLabel.setContentHuggingPriority(UILayoutPriorityDefaultHigh, for: .horizontal)
-        durationLabel.setContentCompressionResistancePriority(UILayoutPriorityDefaultHigh, for: .horizontal)
+        durationLabel.setContentHuggingPriority(UILayoutPriority.defaultHigh, for: .horizontal)
+        durationLabel.setContentCompressionResistancePriority(UILayoutPriority.defaultHigh, for: .horizontal)
 
         labelContainer.addSubview(nameLabel)
         nameLabel.font = UIFont.boldSystemFont(ofSize: 15)
@@ -97,7 +97,7 @@ final class SongView: UIView, View {
         nameLabel.topAnchor.constraint(equalTo: labelContainer.topAnchor).isActive = true
         nameLabel.leftAnchor.constraint(equalTo: labelContainer.leftAnchor).isActive = true
         nameLabel.rightAnchor.constraint(equalTo: durationLabel.leftAnchor).isActive = true
-        nameLabel.setContentCompressionResistancePriority(UILayoutPriorityDefaultHigh-1, for: .horizontal)
+        nameLabel.setContentCompressionResistancePriority(UILayoutPriority(rawValue: UILayoutPriority.RawValue(Int(UILayoutPriority.defaultHigh.rawValue)-1)), for: .horizontal)
 
         labelContainer.addSubview(descriptionLabel)
         descriptionLabel.font = UIFont.italicSystemFont(ofSize: 10)
@@ -107,7 +107,7 @@ final class SongView: UIView, View {
         descriptionLabel.leftAnchor.constraint(equalTo: labelContainer.leftAnchor).isActive = true
         descriptionLabel.rightAnchor.constraint(equalTo: durationLabel.leftAnchor).isActive = true
         descriptionLabel.bottomAnchor.constraint(equalTo: labelContainer.bottomAnchor).isActive = true
-        descriptionLabel.setContentCompressionResistancePriority(UILayoutPriorityDefaultHigh-1, for: .horizontal)
+        descriptionLabel.setContentCompressionResistancePriority(UILayoutPriority(rawValue: UILayoutPriority.RawValue(Int(UILayoutPriority.defaultHigh.rawValue)-1)), for: .horizontal)
     }
 
     private let nameLabel = UILabel()

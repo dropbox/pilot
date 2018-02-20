@@ -16,22 +16,22 @@ public final class ScoredModelCollection: ModelCollection, ProxyingCollectionEve
             self?.handleSourceEvent(event)
         }
 
-        updateSections()
+        updateModels()
     }
 
     // MARK: Public
 
-    public var sectionLimit: Int? = nil {
+    public var limit: Int? = nil {
         didSet {
-            if sectionLimit != oldValue {
-                updateSections()
+            if limit != oldValue {
+                updateModels()
             }
         }
     }
 
     public var scorer: ModelScorer {
         didSet {
-            updateSections()
+            updateModels()
         }
     }
 
@@ -58,42 +58,37 @@ public final class ScoredModelCollection: ModelCollection, ProxyingCollectionEve
     private var sourceObserver: Observer?
 
     private func handleSourceEvent(_ event: CollectionEvent) {
-        updateSections()
+        updateModels()
     }
 
-    private func updateSections() {
-        var scoredSections: [[Model]] = []
-        for section in sourceCollection.sections {
-
-            var scores: [(Int, Double)] = []
-            scores.reserveCapacity(section.count)
-            for (index, model) in section.enumerated() {
-                if let score = scorer(model) {
-                    scores.append((index, score))
-                }
+    private func updateModels() {
+        var scores: [(Int, Double)] = []
+        scores.reserveCapacity(sourceCollection.models.count)
+        for (index, model) in sourceCollection.models.enumerated() {
+            if let score = scorer(model) {
+                scores.append((index, score))
             }
-            scores.sort(by: {
-                if ($0.1 < $1.1) {
-                    return false
-                } else if ($0.1 > $1.1) {
-                    return true
-                } else {
-                    return $0.0 < $1.0
-                }
-            })
-            if let sectionLimit = sectionLimit, scores.count > sectionLimit {
-                scores = Array(scores.prefix(sectionLimit))
-            }
-
-            scoredSections.append(scores.map { section[$0.0] })
         }
+        scores.sort(by: {
+            if ($0.1 < $1.1) {
+                return false
+            } else if ($0.1 > $1.1) {
+                return true
+            } else {
+                return $0.0 < $1.0
+            }
+        })
+        if let limit = limit, scores.count > limit {
+            scores = Array(scores.prefix(limit))
+        }
+        let results = scores.map { sourceCollection.models[$0.0] }
         switch sourceCollection.state {
         case .error, .notLoaded:
             state = sourceCollection.state
         case .loading:
-            state = .loading(scoredSections)
+            state = .loading(results)
         case .loaded:
-            state = .loaded(scoredSections)
+            state = .loaded(results)
         }
     }
 }

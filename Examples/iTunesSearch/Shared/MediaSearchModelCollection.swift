@@ -17,7 +17,7 @@ public final class MediaSearchModelCollection: SimpleModelCollection {
 
     public func updateQuery(_ query: String) {
         guard query != previousQuery else { return }
-        onNext(.loading(state.sections))
+        onNext(.loading(state.models))
         previousQuery = query
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) { [weak self] in
             guard query == self?.previousQuery else { return }
@@ -25,7 +25,7 @@ public final class MediaSearchModelCollection: SimpleModelCollection {
                 DispatchQueue.main.async {
                     guard let strongSelf = self, strongSelf.previousQuery == query else { return }
                     if let media = media {
-                        strongSelf.onNext(.loaded([media]))
+                        strongSelf.onNext(.loaded(media))
                     } else {
                         let error: MediaSearchError = error.flatMap({ .service($0) }) ?? .unknown
                         strongSelf.onNext(.error(error))

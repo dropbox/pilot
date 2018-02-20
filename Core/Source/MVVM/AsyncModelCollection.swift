@@ -3,7 +3,7 @@
 public final class AsyncModelCollection: SimpleModelCollection {
 
     public enum Result {
-        case success([[Model]])
+        case success([Model])
         case error(Error)
     }
     public typealias Callback = (Result) -> Void
@@ -27,7 +27,7 @@ public final class AsyncModelCollection: SimpleModelCollection {
         case .notLoaded:
             onNext(.loading(nil))
         default:
-            onNext(.loading(sections))
+            onNext(.loading(models))
         }
 
         modelProvider { [weak self] (result) in

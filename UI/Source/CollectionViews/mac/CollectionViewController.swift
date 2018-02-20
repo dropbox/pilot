@@ -87,7 +87,7 @@ open class CollectionViewController: NSViewController, CollectionViewDelegate {
     /// has been told. If the current code path is initiated by the CollectionView and uses an IndexPath,
     /// this is the collection that should be used.
     /// See `CollectionViewModelDataSource.currentCollection` for more documentation.
-    public var collection: ModelCollection {
+    public var collection: SectionedModelCollection {
         return dataSource.currentCollection
     }
 
@@ -232,8 +232,10 @@ open class CollectionViewController: NSViewController, CollectionViewDelegate {
     open func collectionView(_ collectionView: NSCollectionView, didClickIndexPath indexPath: IndexPath) {
         guard let vm = viewModelAtIndexPath(indexPath) else { return }
 
-        if vm.canHandleUserEvent(.click) {
-            vm.handleUserEvent(.click)
+        let modifierFlags = NSApp.currentEvent?.eventKeyModifierFlags ?? []
+        let event = ViewModelUserEvent.click(modifierFlags)
+        if vm.canHandleUserEvent(event) {
+            vm.handleUserEvent(event)
         }
     }
 
@@ -502,7 +504,7 @@ open class CollectionViewController: NSViewController, CollectionViewDelegate {
     private func updateEmptyContentViewVisibility() {
         switch collection.state {
         case .error(_), .loaded:
-            if collection.isEmpty {
+            if collection.state.isEmpty {
                 showEmptyContentView()
             } else {
                 hideEmptyContentView()
@@ -590,7 +592,7 @@ private final class FullWidthScroller: NSScroller {
 }
 
 /// Private helper class to force the vertical scroller to always appear as a modern over-content scroller.
-fileprivate final class FullWidthScrollView: NSScrollView {
+private final class FullWidthScrollView: NSScrollView {
 
     fileprivate var scrollEnabled: Bool = true
 

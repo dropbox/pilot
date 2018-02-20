@@ -78,6 +78,6 @@ public final class NestedModelCollectionView: UICollectionView, View {
 
     // MARK: Private
 
-    fileprivate var collectionViewModel: NestedModelCollectionViewViewModel?
-    fileprivate var alreadyCalledLayout = false
+    private var collectionViewModel: NestedModelCollectionViewViewModel?
+    private var alreadyCalledLayout = false
 }
