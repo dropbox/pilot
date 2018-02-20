@@ -232,8 +232,10 @@ open class CollectionViewController: NSViewController, CollectionViewDelegate {
     open func collectionView(_ collectionView: NSCollectionView, didClickIndexPath indexPath: IndexPath) {
         guard let vm = viewModelAtIndexPath(indexPath) else { return }
 
-        if vm.canHandleUserEvent(.click) {
-            vm.handleUserEvent(.click)
+        let modifierFlags = NSApp.currentEvent?.eventKeyModifierFlags ?? []
+        let event = ViewModelUserEvent.click(modifierFlags)
+        if vm.canHandleUserEvent(event) {
+            vm.handleUserEvent(event)
         }
     }
 

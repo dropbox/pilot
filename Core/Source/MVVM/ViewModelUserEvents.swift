@@ -3,7 +3,8 @@ import Foundation
 /// Event types that view models may handle, typically sent from the view layer.
 public enum ViewModelUserEvent {
     /// On mouse-supporting platforms, represents a click by the user.
-    case click
+    /// Note: Event modifier key flags allows for things like `Cmd+Click` behaviour
+    case click(EventKeyModifierFlags)
 
     /// Represents the user typing a key with modifier flags.
     ///
@@ -58,8 +59,8 @@ public struct EventKeyModifierFlags: OptionSet {
 extension ViewModelUserEvent: Hashable {
     public var hashValue: Int {
         switch self {
-        case .click:
-            return 1<<0
+        case .click(let flags):
+            return "click-\(flags)".hashValue
         case .keyDown(let key, let flags, let characters):
             let charValue = characters ?? "nil"
             return "keyDown-\(key)-\(flags)-\(charValue)".hashValue
@@ -78,7 +79,9 @@ extension ViewModelUserEvent: Hashable {
 
     public static func ==(lhs: ViewModelUserEvent, rhs: ViewModelUserEvent) -> Bool {
         switch (lhs, rhs) {
-        case (.click, .click), (.longPress, .longPress), (.secondaryClick, .secondaryClick), (.select, .select),
+        case (.click(let lModifiers), .click(let rModifiers)):
+            return lModifiers == rModifiers
+        case (.longPress, .longPress), (.secondaryClick, .secondaryClick), (.select, .select),
              (.tap, .tap), (.copy, .copy):
             return true
         case (.keyDown(let lKey, let lModifiers, let lCharacters), .keyDown(let rKey, let rModifiers, let rCharacters)):
