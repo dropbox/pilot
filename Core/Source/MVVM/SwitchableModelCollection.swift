@@ -1,7 +1,7 @@
 import Foundation
 
 /// A ModelCollection whose backing collection can be swapped out at runtime.
-public final class SwitchableModelCollection: ModelCollection, ProxyingCollectionEventObservable {
+public final class SwitchableModelCollection: SectionedModelCollection, ProxyingCollectionEventObservable {
 
     // MARK: Init
 
@@ -43,6 +43,14 @@ public final class SwitchableModelCollection: ModelCollection, ProxyingCollectio
 
     public var state: ModelCollectionState {
         return self.currentCollection.state
+    }
+
+    public var sectionedState: [ModelCollectionState] {
+        if let sectioned = currentCollection as? SectionedModelCollection {
+            return sectioned.sectionedState
+        } else {
+            return [currentCollection.state]
+        }
     }
 
     // MARK: CollectionEventObservable

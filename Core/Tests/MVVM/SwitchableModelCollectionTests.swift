@@ -40,4 +40,18 @@ class SwitchableModelCollectionTests: XCTestCase {
         old.onNext(.loading(nil))
         assertModelCollectionState(expected: new.state, actual: subject.state)
     }
+
+    func testSwitchableSectioned() {
+        let old = SimpleModelCollection()
+        old.onNext(.loaded([]))
+        let subject = SwitchableModelCollection(modelCollection: old)
+        assertSectionedModelCollectionState(expected: subject.asSectioned().sectionedState, actual: [.loaded([])])
+        let newLoading = SimpleModelCollection()
+        newLoading.onNext(.loading(nil))
+        let new = ComposedModelCollection.multiplexing([old, newLoading])
+        subject.switchTo(new)
+        assertSectionedModelCollectionState(
+            expected: subject.asSectioned().sectionedState,
+            actual: [.loaded([]), .loading(nil)])
+    }
 }
