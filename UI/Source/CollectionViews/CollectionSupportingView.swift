@@ -36,6 +36,10 @@ extension CollectionSupportingView {
         guard let collectionView = view.superview?.superview as? PlatformCollectionView else { return }
 
         // TODO(alan): Figure out how to only invalidate the single cell
+    #if os(iOS)
+        collectionView.collectionViewLayout.invalidateLayout()
+    #elseif os(OSX)
         collectionView.collectionViewLayout?.invalidateLayout()
+    #endif
     }
 }
