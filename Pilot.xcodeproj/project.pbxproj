@@ -109,8 +109,8 @@
 		69FADC381D3068A1001F2E11 /* CollectionViewHostReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69FADC331D3068A1001F2E11 /* CollectionViewHostReusableView.swift */; };
 		69FADC591D306AF4001F2E11 /* CollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69FADC581D306AF4001F2E11 /* CollectionViewController.swift */; };
 		69FADC851D3076E2001F2E11 /* CollectionViewHostItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69FADC841D3076E2001F2E11 /* CollectionViewHostItem.swift */; };
-		69FADC891D30B7FC001F2E11 /* CollectionHostedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69FADC881D30B7FC001F2E11 /* CollectionHostedView.swift */; };
-		69FADC8A1D30B7FC001F2E11 /* CollectionHostedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69FADC881D30B7FC001F2E11 /* CollectionHostedView.swift */; };
+		69FADC891D30B7FC001F2E11 /* CollectionSupportingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69FADC881D30B7FC001F2E11 /* CollectionSupportingView.swift */; };
+		69FADC8A1D30B7FC001F2E11 /* CollectionSupportingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69FADC881D30B7FC001F2E11 /* CollectionSupportingView.swift */; };
 		69FADC8C1D30BBF0001F2E11 /* CollectionViewInternals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69FADC8B1D30BBF0001F2E11 /* CollectionViewInternals.swift */; };
 		69FADC8D1D30BBF0001F2E11 /* CollectionViewInternals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69FADC8B1D30BBF0001F2E11 /* CollectionViewInternals.swift */; };
 		69FADC901D30BDB9001F2E11 /* Pilot.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 696534871D17100900DF97CB /* Pilot.framework */; };
@@ -282,7 +282,7 @@
 		69FADC331D3068A1001F2E11 /* CollectionViewHostReusableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = CollectionViewHostReusableView.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		69FADC581D306AF4001F2E11 /* CollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = CollectionViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		69FADC841D3076E2001F2E11 /* CollectionViewHostItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = CollectionViewHostItem.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
-		69FADC881D30B7FC001F2E11 /* CollectionHostedView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionHostedView.swift; sourceTree = "<group>"; };
+		69FADC881D30B7FC001F2E11 /* CollectionSupportingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionSupportingView.swift; sourceTree = "<group>"; };
 		69FADC8B1D30BBF0001F2E11 /* CollectionViewInternals.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = CollectionViewInternals.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		69FADC911D30BDBE001F2E11 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		69FADC931D30BDC2001F2E11 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk/System/Library/Frameworks/AppKit.framework; sourceTree = DEVELOPER_DIR; };
@@ -535,7 +535,7 @@
 		69048A9A1C470F08000CE840 /* CollectionViews */ = {
 			isa = PBXGroup;
 			children = (
-				69FADC881D30B7FC001F2E11 /* CollectionHostedView.swift */,
+				69FADC881D30B7FC001F2E11 /* CollectionSupportingView.swift */,
 				69FADC8B1D30BBF0001F2E11 /* CollectionViewInternals.swift */,
 				697D10751D3D8FD300310F81 /* CollectionViewModelDataSource.swift */,
 				69FADC301D306886001F2E11 /* ios */,
@@ -1102,7 +1102,7 @@
 				69FADC381D3068A1001F2E11 /* CollectionViewHostReusableView.swift in Sources */,
 				A478F9321D3850EB000B2ADB /* NestedModelCollectionView.swift in Sources */,
 				3C6C9E231F31257F00D13B52 /* AlertAction.swift in Sources */,
-				69FADC891D30B7FC001F2E11 /* CollectionHostedView.swift in Sources */,
+				69FADC891D30B7FC001F2E11 /* CollectionSupportingView.swift in Sources */,
 				697D10761D3D8FD300310F81 /* CollectionViewModelDataSource.swift in Sources */,
 				690E1AA41E54CAA000B257CA /* AssociatedObjects.swift in Sources */,
 				69FADC361D3068A1001F2E11 /* CollectionViewController.swift in Sources */,
@@ -1194,7 +1194,7 @@
 				697D13351D4056CC00310F81 /* PlatformAliases.swift in Sources */,
 				69BACAE61DA8D5D500EF6E70 /* NSCollectionView+Selection.swift in Sources */,
 				697D10771D3D8FD300310F81 /* CollectionViewModelDataSource.swift in Sources */,
-				69FADC8A1D30B7FC001F2E11 /* CollectionHostedView.swift in Sources */,
+				69FADC8A1D30B7FC001F2E11 /* CollectionSupportingView.swift in Sources */,
 				690E1AA11E54C0E100B257CA /* NSMenu+Action.swift in Sources */,
 				697D0FCE1D37008D00310F81 /* NSEvent+Keys.swift in Sources */,
 				690E1AA71E54CAA000B257CA /* Collection.swift in Sources */,
