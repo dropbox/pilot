@@ -2,7 +2,8 @@ import Pilot
 import UIKit
 
 /// `UICollectionViewCell` subclass which provies hosting for a given `View`.
-/// - Note: Because cells are `UIView`s, the `View` must also be a `UIView` for hosting to be supported.
+/// - Note: Because cells are `UIView`s, the `View` must also be a `UIView` or `UIViewController`
+/// for hosting to be supported.
 internal final class CollectionViewHostCell: UICollectionViewCell {
 
     /// The hosted `View` instance.
@@ -15,6 +16,13 @@ internal final class CollectionViewHostCell: UICollectionViewCell {
                     // TODO:(wkiefer) This also needs to unbind here (see TODO in the data source)
                     view.removeFromSuperview()
                 }
+            } else if let vc = hostedView as? UIViewController {
+                if let newValue = newValue as? UIViewController, newValue == vc {
+                    // NOOP: The view is the same, so no need to remove.
+                } else {
+                    // TODO:(wkiefer) This also needs to unbind here (see TODO in the data source)
+                    vc.view.removeFromSuperview()
+                }
             }
         }
         didSet {
@@ -23,6 +31,10 @@ internal final class CollectionViewHostCell: UICollectionViewCell {
                 view.autoresizingMask = [ .flexibleWidth, .flexibleHeight ]
                 view.frame = contentView.bounds
                 contentView.addSubview(view)
+            } else if let theVC = hostedView as? UIViewController, theVC.view.superview != view {
+                theVC.view.autoresizingMask = [ .flexibleWidth, .flexibleHeight ]
+                theVC.view.frame = contentView.bounds
+                contentView.addSubview(theVC.view)
             }
             if let attribs = cachedLayoutAttributes, let cvt = hostedView as? CollectionSupportingView {
                 cvt.apply(attribs)

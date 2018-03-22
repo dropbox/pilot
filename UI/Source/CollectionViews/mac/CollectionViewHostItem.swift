@@ -2,7 +2,8 @@ import AppKit
 import Pilot
 
 /// `NSCollectionViewItem` subclass which provies hosting for a given `View`.
-/// - Note: Because items are `NSView`s, the `View` must also be a `NSView` for hosting to be supported.
+/// - Note: Because items are `NSView`s, the `View` must also be an `NSView` or an `NSViewController`
+/// for hosting to be supported.
 public final class CollectionViewHostItem: NSCollectionViewItem {
 
     // MARK: Public
