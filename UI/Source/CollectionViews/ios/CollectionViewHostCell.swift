@@ -10,8 +10,8 @@ internal final class CollectionViewHostCell: UICollectionViewCell {
     internal var hostedView: View? {
         willSet {
             if let view = hostedView as? UIView {
-                if let newValue = newValue as? UIView , newValue.classForCoder == view.classForCoder {
-                    // NOOP: The view classes are the same, so no need to remove.
+                if let newValue = newValue as? UIView, newValue == view {
+                    // NOOP: The view is the same no need to remove.
                 } else {
                     // TODO:(wkiefer) This also needs to unbind here (see TODO in the data source)
                     view.removeFromSuperview()
@@ -27,7 +27,7 @@ internal final class CollectionViewHostCell: UICollectionViewCell {
         }
         didSet {
             // Only add the view if it isn't already added (i.e. hit the noop case in `willSet`.
-            if let view = hostedView as? UIView , view.superview != contentView {
+            if let view = hostedView as? UIView, view.superview != contentView {
                 view.autoresizingMask = [ .flexibleWidth, .flexibleHeight ]
                 view.frame = contentView.bounds
                 contentView.addSubview(view)
