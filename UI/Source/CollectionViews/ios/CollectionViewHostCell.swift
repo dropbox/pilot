@@ -31,7 +31,7 @@ internal final class CollectionViewHostCell: UICollectionViewCell {
                 view.autoresizingMask = [ .flexibleWidth, .flexibleHeight ]
                 view.frame = contentView.bounds
                 contentView.addSubview(view)
-            } else if let theVC = hostedView as? UIViewController, theVC.view.superview != view {
+            } else if let theVC = hostedView as? UIViewController, theVC.view.superview != contentView {
                 theVC.view.autoresizingMask = [ .flexibleWidth, .flexibleHeight ]
                 theVC.view.frame = contentView.bounds
                 contentView.addSubview(theVC.view)
