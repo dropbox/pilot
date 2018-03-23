@@ -10,7 +10,7 @@ internal final class CollectionViewHostCell: UICollectionViewCell {
     internal var hostedView: View? {
         willSet {
             if let view = hostedView as? UIView {
-                if let newValue = newValue as? UIView , newValue.classForCoder == view.classForCoder {
+                if let newValue = newValue as? UIView, newValue == view {
                     // NOOP: The view classes are the same, so no need to remove.
                 } else {
                     // TODO:(wkiefer) This also needs to unbind here (see TODO in the data source)
