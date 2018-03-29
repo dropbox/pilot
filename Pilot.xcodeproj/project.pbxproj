@@ -162,6 +162,7 @@
 		D560D4511D123C08000DA826 /* LoggingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D560D4501D123C08000DA826 /* LoggingTests.swift */; };
 		D560D4611D136E11000DA826 /* ConsoleLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = D560D45F1D136E11000DA826 /* ConsoleLogger.swift */; };
 		D560D4621D136E11000DA826 /* FileLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = D560D4601D136E11000DA826 /* FileLogger.swift */; };
+		E725E2EF206C5FF200786A12 /* NestableScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E725E2EE206C5FF200786A12 /* NestableScrollView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -311,6 +312,7 @@
 		D560D4501D123C08000DA826 /* LoggingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoggingTests.swift; sourceTree = "<group>"; };
 		D560D45F1D136E11000DA826 /* ConsoleLogger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConsoleLogger.swift; sourceTree = "<group>"; };
 		D560D4601D136E11000DA826 /* FileLogger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileLogger.swift; sourceTree = "<group>"; };
+		E725E2EE206C5FF200786A12 /* NestableScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NestableScrollView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -570,6 +572,7 @@
 				02BB0CAA1D551C31001145D2 /* NSCollectionView+Selection.swift */,
 				697D0FCD1D37008D00310F81 /* NSEvent+Keys.swift */,
 				690E1AA01E54C0E100B257CA /* NSMenu+Action.swift */,
+				E725E2EE206C5FF200786A12 /* NestableScrollView.swift */,
 			);
 			path = AppKitExtensions;
 			sourceTree = "<group>";
@@ -1198,6 +1201,7 @@
 				690E1AA11E54C0E100B257CA /* NSMenu+Action.swift in Sources */,
 				697D0FCE1D37008D00310F81 /* NSEvent+Keys.swift in Sources */,
 				690E1AA71E54CAA000B257CA /* Collection.swift in Sources */,
+				E725E2EF206C5FF200786A12 /* NestableScrollView.swift in Sources */,
 				69FADC591D306AF4001F2E11 /* CollectionViewController.swift in Sources */,
 				69FADC8D1D30BBF0001F2E11 /* CollectionViewInternals.swift in Sources */,
 				690E1AA51E54CAA000B257CA /* AssociatedObjects.swift in Sources */,

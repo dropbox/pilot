@@ -592,44 +592,7 @@ private final class FullWidthScroller: NSScroller {
 }
 
 /// Private helper class to force the vertical scroller to always appear as a modern over-content scroller.
-private final class FullWidthScrollView: NSScrollView {
-
-    fileprivate var scrollEnabled: Bool = true
-
-    // MARK: NSScrollView
-
-    fileprivate override func scrollWheel(with theEvent: NSEvent) {
-        guard scrollEnabled else {
-            enclosingScrollView?.scrollWheel(with: theEvent)
-            return
-        }
-
-        var selfShouldScroll = true
-        if let enclosingScrollView = enclosingScrollView, let documentView = documentView {
-            let documentVisibleRect = contentView.documentVisibleRect
-            let scrolledPastTop = documentVisibleRect.minY < documentView.frame.minY - contentInsets.top
-            let scrolledPastBottom = documentVisibleRect.maxY > documentView.frame.maxY + contentInsets.bottom
-
-            if scrolledPastBottom && theEvent.scrollingDeltaY < 0.0 {
-                enclosingScrollView.scrollWheel(with: theEvent)
-                selfShouldScroll = false
-            }
-            if scrolledPastTop && theEvent.scrollingDeltaY > 0.0 {
-                enclosingScrollView.scrollWheel(with: theEvent)
-                selfShouldScroll = false
-            }
-        }
-
-        if selfShouldScroll {
-            super.scrollWheel(with: theEvent)
-        }
-    }
-
-    fileprivate override func flashScrollers() {
-        if scrollEnabled {
-            super.flashScrollers()
-        }
-    }
+private final class FullWidthScrollView: NestableScrollView {
 
     fileprivate override func tile() {
         // For the superclass's tile implementation, the scroller returns zero width so content underneath is always
