@@ -1,5 +1,10 @@
 import AppKit
 
+/// A NSScrollView subclass that has two added features:
+/// - It can have scrolling disabled by setting `scrollEnabled = false`
+/// - It will forward scrollWheel events to an enclosing scrollView after
+///   the top or bottom of the documentView is reached.
+///   TODO(alan): Support left-right scroll forwarding
 open class NestableScrollView : NSScrollView {
     open var scrollEnabled: Bool = true
 
