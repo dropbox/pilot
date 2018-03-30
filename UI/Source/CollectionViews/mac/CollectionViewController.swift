@@ -119,13 +119,23 @@ open class CollectionViewController: NSViewController, CollectionViewDelegate {
 
     /// Read-only access to the underlying scroll view.
     open var scrollView: NSScrollView {
-        return internalScrollView
+        if let scrollView = internalScrollView { return scrollView }
+
+        let scrollView = makeScrollView()
+        internalScrollView = scrollView
+        return scrollView
     }
 
     /// Enables or disables scrolling on the hosted scrollview.
     open var scrollEnabled: Bool {
-        get { return internalScrollView.scrollEnabled }
-        set { internalScrollView.scrollEnabled = newValue }
+        get {
+            guard let scrollView = scrollView as? NestableScrollView else { return false }
+            return scrollView.scrollEnabled
+        }
+        set {
+            guard let scrollView = scrollView as? NestableScrollView else { return }
+            scrollView.scrollEnabled = newValue
+        }
     }
 
     /// Determines what should be displayed for an empty collection that is loading.
@@ -137,6 +147,12 @@ open class CollectionViewController: NSViewController, CollectionViewDelegate {
     /// view instance.
     open func makeRootView() -> NSView {
         return NSView()
+    }
+
+    /// Returns the scrollView view created during `loadView`. Subclasses may override to provide their own customized
+    /// scrollView instance.
+    open func makeScrollView() -> NSScrollView {
+        return FullWidthScrollView()
     }
 
     /// Returns an `EmptyCollectionDisplay` struct defining what to show for an empty collection in the `Error` state.
@@ -299,7 +315,7 @@ open class CollectionViewController: NSViewController, CollectionViewDelegate {
     // MARK: Private
 
     private var lastBounds = CGRect.zero
-    private let internalScrollView = FullWidthScrollView()
+    private var internalScrollView: NSScrollView?
     private var modelBinder: ViewModelBindingProvider
 
     private func viewModelAtIndexPath(_ indexPath: IndexPath) -> ViewModel? {
