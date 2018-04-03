@@ -15,17 +15,15 @@ public protocol ViewModelBindingProvider {
     func viewModel(for model: Model, context: Context) -> ViewModel
 
     /// Returns the `SelectionViewModel` for given collection of models and a context. The default implementation
-    /// returns selection view model that works for a single model.
+    /// returns selection view model wrapping the view models of the given models.
     func selectionViewModel(for models: [Model], context: Context) -> SelectionViewModel?
 }
 
 extension ViewModelBindingProvider {
     public func selectionViewModel(for models: [Model], context: Context) -> SelectionViewModel? {
-        if let firstModel = models.first, models.count == 1 {
-            let firstViewModel = viewModel(for: firstModel, context: context)
-            return ViewModelSelectionShim(viewModels: [firstViewModel], context: context)
-        }
-        return nil
+        guard !models.isEmpty else { return nil }
+        let viewModels = models.map { viewModel(for: $0, context: context) }
+        return ViewModelSelectionShim(viewModels: viewModels, context: context)
     }
 }
 
