@@ -172,6 +172,10 @@ open class CollectionViewController: NSViewController, CollectionViewDelegate {
         // NOP - intended for subclassing.
     }
 
+    public func model(at indexPath: IndexPath) -> Model {
+        return dataSource.currentCollection.sections[indexPath.section][indexPath.item]
+    }
+
     // MARK: NSViewController
 
     public final override func loadView() {
@@ -256,8 +260,10 @@ open class CollectionViewController: NSViewController, CollectionViewDelegate {
     }
 
     open func collectionView(_ collectionView: NSCollectionView, menuForIndexPath indexPath: IndexPath) -> NSMenu? {
-        let selectedIndexPaths = collectionView.selectionIndexPaths.union([indexPath])
-        let selectedModels = selectedIndexPaths.map { dataSource.currentCollection.sections[$0.section][$0.item] }
+        let selectedIndexPaths = collectionView.selectionIndexPaths.contains(indexPath) ?
+            collectionView.selectionIndexPaths : Set([indexPath])
+        let selectedModels = selectedIndexPaths.map { model(at: $0) }
+
         guard
             let selection = modelBinder.selectionViewModel(for: selectedModels, context: context),
             selection.canHandleUserEvent(.secondaryClick)
