@@ -2,6 +2,9 @@ import Foundation
 import Pilot
 
 /// Protocol extending `NSCollectionViewDelegate` with a few missing callbacks around item clicking and key events.
+///
+/// Note: Optionally if the CollectionViewDelegate conforms to NSDraggingDestination the methods in that protocol the
+/// delegate implements will also be forwarded (ex: draggingEntered(_:))
 @objc
 public protocol CollectionViewDelegate: NSCollectionViewDelegate {
 
@@ -27,6 +30,24 @@ public protocol CollectionViewDelegate: NSCollectionViewDelegate {
     /// This is provided since NSCV delegate method has a corresponding function for -begin and -end functions in
     /// NSDraggingSource, but no equivelant for -movedTo.
     @objc optional func collectionView(_ collectionView: NSCollectionView, session: NSDraggingSession, movedTo: NSPoint)
+
+    /// Invoked when NSDraggingDestination method of parallel signature is called.
+    ///
+    /// This is provided since NSCV delegate method has a corresponding function for most of the functions in
+    /// NSDraggingDestination, but is missing equivelant for -dragigngExited.
+    @objc optional func collectionView(_ collectionView: NSCollectionView, draggingExited: NSDraggingInfo?)
+
+    /// Invoked when NSDraggingDestination method of parallel signature is called.
+    ///
+    /// This is provided since NSCV delegate method has a corresponding function for most of the functions in
+    /// NSDraggingDestination, but is missing equivelant for -concludeDragOperation.
+    @objc optional func collectionView(_ collectionView: NSCollectionView, concludeDragOperation: NSDraggingInfo?)
+
+    /// Invoked when NSDraggingDestination method of parallel signature is called.
+    ///
+    /// This is provided since NSCV delegate method has a corresponding function for most of the functions in
+    /// NSDraggingDestination, but is missing equivelant for -draggingEnded.
+    @objc optional func collectionView(_ collectionView: NSCollectionView, draggingEnded: NSDraggingInfo)
 
     /// Invoked when an arrow key goes off the end of a collection view. Delegate may respond by changing the responder
     /// focus.
@@ -134,6 +155,23 @@ public final class CollectionView: NSCollectionView {
     public override func draggingSession(_ session: NSDraggingSession, movedTo screenPoint: NSPoint) {
         super.draggingSession(session, movedTo: screenPoint)
         internalDelegate?.collectionView?(self, session: session, movedTo: screenPoint)
+    }
+
+    // MARK: NSDraggingDestination
+
+    public override func draggingExited(_ sender: NSDraggingInfo?) {
+        super.draggingExited(sender)
+        internalDelegate?.collectionView?(self, draggingExited: sender)
+    }
+
+    public override func concludeDragOperation(_ sender: NSDraggingInfo?) {
+        super.concludeDragOperation(sender)
+        internalDelegate?.collectionView?(self, concludeDragOperation: sender)
+    }
+
+    public override func draggingEnded(_ sender: NSDraggingInfo) {
+        super.draggingEnded(sender)
+        internalDelegate?.collectionView?(self, draggingEnded: sender)
     }
 
     // MARK: Private
