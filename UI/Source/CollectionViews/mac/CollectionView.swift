@@ -2,9 +2,6 @@ import Foundation
 import Pilot
 
 /// Protocol extending `NSCollectionViewDelegate` with a few missing callbacks around item clicking and key events.
-///
-/// Note: Optionally if the CollectionViewDelegate conforms to NSDraggingDestination the methods in that protocol the
-/// delegate implements will also be forwarded (ex: draggingEntered(_:))
 @objc
 public protocol CollectionViewDelegate: NSCollectionViewDelegate {
 
