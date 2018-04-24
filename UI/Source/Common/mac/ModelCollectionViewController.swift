@@ -105,10 +105,9 @@ open class ModelCollectionViewController: NSViewController {
         registerForModelEvents()
     }
 
-    // MARK: Internal
-
     /// Intended to be overridden by subclass. Returns the documentView of the scrollView, called once during loadView.
-    internal func makeDocumentView() -> NSView {
+    // TODO:(danielh) This should be able to be internal, but linking fails on release builds when it is, file radar.
+    public func makeDocumentView() -> NSView {
         return NSView()
     }
 

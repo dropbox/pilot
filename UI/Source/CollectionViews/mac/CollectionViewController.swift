@@ -70,7 +70,7 @@ open class CollectionViewController: ModelCollectionViewController, CollectionVi
 
     // MARK: ModelCollectionViewController
 
-    internal final override func makeDocumentView() -> NSView {
+    public final override func makeDocumentView() -> NSView {
         collectionView.wantsLayer = true
         collectionView.layerContentsRedrawPolicy = .onSetNeedsDisplay
 
