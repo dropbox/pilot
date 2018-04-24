@@ -26,6 +26,10 @@ public final class DirectoryViewController: CollectionViewController {
         collectionView.allowsMultipleSelection = true
     }
 
+    public override func displayForNoContentState() -> EmptyCollectionDisplay {
+        return .text("Nothing to see here…", NSFont.boldSystemFont(ofSize: 14), NSColor.disabledControlTextColor)
+    }
+
     // MARK: Private
 
     private let flowLayout: NSCollectionViewFlowLayout
