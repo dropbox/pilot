@@ -124,6 +124,8 @@
 		9CA5FC521FB9A81A00F85B98 /* CollectionViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CA5FC511FB9A81A00F85B98 /* CollectionViewTests.swift */; };
 		A4002D36208F933F00B95A90 /* ModelCollectionStateViewTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4002D35208F933F00B95A90 /* ModelCollectionStateViewTypes.swift */; };
 		A4002D38208F937A00B95A90 /* ModelCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4002D37208F937A00B95A90 /* ModelCollectionViewController.swift */; };
+		A4002D3C208FA4A300B95A90 /* OutlineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4002D3B208FA4A300B95A90 /* OutlineViewController.swift */; };
+		A4002D3E208FA51500B95A90 /* OutlineViewModelDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4002D3D208FA51500B95A90 /* OutlineViewModelDataSource.swift */; };
 		A428996E1FA137F300EA4422 /* SecondaryActionInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = A428996D1FA137F300EA4422 /* SecondaryActionInfo.swift */; };
 		A428996F1FA137F300EA4422 /* SecondaryActionInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = A428996D1FA137F300EA4422 /* SecondaryActionInfo.swift */; };
 		A42899711FA1393500EA4422 /* ViewModelBinding.swift in Sources */ = {isa = PBXBuildFile; fileRef = A42899701FA1393500EA4422 /* ViewModelBinding.swift */; };
@@ -148,8 +150,11 @@
 		A468F8011EC3B7E4009717A4 /* CompoundActionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A468F7FF1EC3B7AE009717A4 /* CompoundActionTests.swift */; };
 		A468F8021EC3B7E5009717A4 /* CompoundActionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A468F7FF1EC3B7AE009717A4 /* CompoundActionTests.swift */; };
 		A468F8031EC3B7EF009717A4 /* CompoundAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = A468F7FD1EC3B61D009717A4 /* CompoundAction.swift */; };
-		A478F9321D3850EB000B2ADB /* NestedModelCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A478F92A1D3850B5000B2ADB /* NestedModelCollectionView.swift */; };
 		A47FC6691D909DFB00529DA9 /* LayoutConstraints.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4CACF591D6FCBFC003D572D /* LayoutConstraints.swift */; };
+		A47FD341208FF86B0045D6F7 /* NestedModelCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = A47FD340208FF86B0045D6F7 /* NestedModelCollection.swift */; };
+		A47FD342208FF86B0045D6F7 /* NestedModelCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = A47FD340208FF86B0045D6F7 /* NestedModelCollection.swift */; };
+		A47FD367209145710045D6F7 /* NestedModelCollectionTreeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A47FD3602091231F0045D6F7 /* NestedModelCollectionTreeController.swift */; };
+		A47FD3682091458A0045D6F7 /* NestedModelCollectionTreeControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A47FD363209123540045D6F7 /* NestedModelCollectionTreeControllerTests.swift */; };
 		A4897B631F95582100727514 /* ViewModelUserEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4897B621F95582100727514 /* ViewModelUserEvents.swift */; };
 		A4897B641F95582100727514 /* ViewModelUserEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4897B621F95582100727514 /* ViewModelUserEvents.swift */; };
 		A4AED3D51D402D73001F3524 /* MappedModelCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4AED3D41D402D73001F3524 /* MappedModelCollection.swift */; };
@@ -295,6 +300,8 @@
 		9CA5FC511FB9A81A00F85B98 /* CollectionViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewTests.swift; sourceTree = "<group>"; };
 		A4002D35208F933F00B95A90 /* ModelCollectionStateViewTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelCollectionStateViewTypes.swift; sourceTree = "<group>"; };
 		A4002D37208F937A00B95A90 /* ModelCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelCollectionViewController.swift; sourceTree = "<group>"; };
+		A4002D3B208FA4A300B95A90 /* OutlineViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutlineViewController.swift; sourceTree = "<group>"; };
+		A4002D3D208FA51500B95A90 /* OutlineViewModelDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutlineViewModelDataSource.swift; sourceTree = "<group>"; };
 		A428996D1FA137F300EA4422 /* SecondaryActionInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondaryActionInfo.swift; sourceTree = "<group>"; };
 		A42899701FA1393500EA4422 /* ViewModelBinding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModelBinding.swift; sourceTree = "<group>"; };
 		A437EDA71E56507600F67B37 /* SimpleModelCollectionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleModelCollectionTests.swift; sourceTree = "<group>"; };
@@ -305,7 +312,9 @@
 		A460CC821E56195F00F9AC6F /* Downcast.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Downcast.swift; sourceTree = "<group>"; };
 		A468F7FD1EC3B61D009717A4 /* CompoundAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompoundAction.swift; sourceTree = "<group>"; };
 		A468F7FF1EC3B7AE009717A4 /* CompoundActionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompoundActionTests.swift; sourceTree = "<group>"; };
-		A478F92A1D3850B5000B2ADB /* NestedModelCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = NestedModelCollectionView.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		A47FD340208FF86B0045D6F7 /* NestedModelCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NestedModelCollection.swift; sourceTree = "<group>"; };
+		A47FD3602091231F0045D6F7 /* NestedModelCollectionTreeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NestedModelCollectionTreeController.swift; sourceTree = "<group>"; };
+		A47FD363209123540045D6F7 /* NestedModelCollectionTreeControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NestedModelCollectionTreeControllerTests.swift; sourceTree = "<group>"; };
 		A4897B621F95582100727514 /* ViewModelUserEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModelUserEvents.swift; sourceTree = "<group>"; };
 		A4AED3D41D402D73001F3524 /* MappedModelCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = MappedModelCollection.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		A4AED3D71D402EBB001F3524 /* MappedModelCollectionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MappedModelCollectionTests.swift; sourceTree = "<group>"; };
@@ -514,16 +523,17 @@
 		69048A4D1C470489000CE840 /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				A4002D33208F931800B95A90 /* Common */,
 				3C6C9E211F31254F00D13B52 /* Alerts */,
 				697D0FCC1D37006300310F81 /* AppKitExtensions */,
 				69048A9A1C470F08000CE840 /* CollectionViews */,
+				A4002D33208F931800B95A90 /* Common */,
+				690E1A9B1E54C04700B257CA /* Extensions */,
 				69FADB581D305440001F2E11 /* Info-iOS.plist */,
 				69FADB591D305440001F2E11 /* Info-macOS.plist */,
 				69F91DB91C4ED7A300B1EA1F /* Layout */,
+				A4002D39208FA48400B95A90 /* OutlineViews */,
 				69048A351C47045D000CE840 /* PilotUI.h */,
 				697D13331D4056CC00310F81 /* PlatformAliases.swift */,
-				690E1A9B1E54C04700B257CA /* Extensions */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -605,6 +615,7 @@
 				A4AED3D41D402D73001F3524 /* MappedModelCollection.swift */,
 				69F89E761C52F06200F08E28 /* Model.swift */,
 				69F89E741C52F06200F08E28 /* ModelCollection.swift */,
+				A47FD340208FF86B0045D6F7 /* NestedModelCollection.swift */,
 				022120341DFB807C007C4039 /* ScoredModelCollection.swift */,
 				A428996D1FA137F300EA4422 /* SecondaryActionInfo.swift */,
 				69A8692C20339DF40076B36A /* SectionedModelCollection.swift */,
@@ -686,10 +697,28 @@
 			path = mac;
 			sourceTree = "<group>";
 		};
+		A4002D39208FA48400B95A90 /* OutlineViews */ = {
+			isa = PBXGroup;
+			children = (
+				A4002D3A208FA48C00B95A90 /* mac */,
+			);
+			path = OutlineViews;
+			sourceTree = "<group>";
+		};
+		A4002D3A208FA48C00B95A90 /* mac */ = {
+			isa = PBXGroup;
+			children = (
+				A47FD3602091231F0045D6F7 /* NestedModelCollectionTreeController.swift */,
+				A47FD363209123540045D6F7 /* NestedModelCollectionTreeControllerTests.swift */,
+				A4002D3B208FA4A300B95A90 /* OutlineViewController.swift */,
+				A4002D3D208FA51500B95A90 /* OutlineViewModelDataSource.swift */,
+			);
+			path = mac;
+			sourceTree = "<group>";
+		};
 		A478F9301D3850BA000B2ADB /* Nested */ = {
 			isa = PBXGroup;
 			children = (
-				A478F92A1D3850B5000B2ADB /* NestedModelCollectionView.swift */,
 			);
 			path = Nested;
 			sourceTree = "<group>";
@@ -1072,6 +1101,7 @@
 				690E1AAA1E54CDB600B257CA /* Token.swift in Sources */,
 				A468F8031EC3B7EF009717A4 /* CompoundAction.swift in Sources */,
 				692936121E130468001303D2 /* Action.swift in Sources */,
+				A47FD342208FF86B0045D6F7 /* NestedModelCollection.swift in Sources */,
 				69A8692E20339DF40076B36A /* ComposedModelCollection.swift in Sources */,
 				A437EDAC1E5655AD00F67B37 /* SimpleModelCollection.swift in Sources */,
 				A437EDB61E567AE900F67B37 /* Async.swift in Sources */,
@@ -1125,7 +1155,6 @@
 				690E1AA61E54CAA000B257CA /* Collection.swift in Sources */,
 				A47FC6691D909DFB00529DA9 /* LayoutConstraints.swift in Sources */,
 				69FADC381D3068A1001F2E11 /* CollectionViewHostReusableView.swift in Sources */,
-				A478F9321D3850EB000B2ADB /* NestedModelCollectionView.swift in Sources */,
 				3C6C9E231F31257F00D13B52 /* AlertAction.swift in Sources */,
 				69FADC891D30B7FC001F2E11 /* CollectionHostedView.swift in Sources */,
 				697D10761D3D8FD300310F81 /* CollectionViewModelDataSource.swift in Sources */,
@@ -1189,6 +1218,7 @@
 				690E1AA91E54CDB600B257CA /* Token.swift in Sources */,
 				A468F7FE1EC3B61D009717A4 /* CompoundAction.swift in Sources */,
 				A437EDAB1E5655AD00F67B37 /* SimpleModelCollection.swift in Sources */,
+				A47FD341208FF86B0045D6F7 /* NestedModelCollection.swift in Sources */,
 				69A8692D20339DF40076B36A /* ComposedModelCollection.swift in Sources */,
 				A460CC831E56195F00F9AC6F /* Downcast.swift in Sources */,
 				A437EDB51E567AE800F67B37 /* Async.swift in Sources */,
@@ -1215,12 +1245,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				A4CACF5C1D6FCC89003D572D /* LayoutConstraints.swift in Sources */,
+				A4002D3C208FA4A300B95A90 /* OutlineViewController.swift in Sources */,
 				9CA5FC4E1FB9A65300F85B98 /* CollectionViewHostReusableView.swift in Sources */,
 				697D13351D4056CC00310F81 /* PlatformAliases.swift in Sources */,
 				69BACAE61DA8D5D500EF6E70 /* NSCollectionView+Selection.swift in Sources */,
 				697D10771D3D8FD300310F81 /* CollectionViewModelDataSource.swift in Sources */,
 				69FADC8A1D30B7FC001F2E11 /* CollectionHostedView.swift in Sources */,
 				690E1AA11E54C0E100B257CA /* NSMenu+Action.swift in Sources */,
+				A47FD367209145710045D6F7 /* NestedModelCollectionTreeController.swift in Sources */,
 				697D0FCE1D37008D00310F81 /* NSEvent+Keys.swift in Sources */,
 				A4002D36208F933F00B95A90 /* ModelCollectionStateViewTypes.swift in Sources */,
 				690E1AA71E54CAA000B257CA /* Collection.swift in Sources */,
@@ -1229,6 +1261,7 @@
 				69FADC591D306AF4001F2E11 /* CollectionViewController.swift in Sources */,
 				69FADC8D1D30BBF0001F2E11 /* CollectionViewInternals.swift in Sources */,
 				690E1AA51E54CAA000B257CA /* AssociatedObjects.swift in Sources */,
+				A4002D3E208FA51500B95A90 /* OutlineViewModelDataSource.swift in Sources */,
 				69519ADA1D34C669000426A9 /* CollectionView.swift in Sources */,
 				69FADC851D3076E2001F2E11 /* CollectionViewHostItem.swift in Sources */,
 			);
@@ -1239,6 +1272,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A455A7E71E5F6C3900F63A37 /* PilotUI.swift in Sources */,
+				A47FD3682091458A0045D6F7 /* NestedModelCollectionTreeControllerTests.swift in Sources */,
 				9CA5FC521FB9A81A00F85B98 /* CollectionViewTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
