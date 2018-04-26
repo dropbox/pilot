@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A4002D5D208FA87900B95A90 /* Pilot.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = A4143C9E1F7AD3CA00E91697 /* Pilot.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A4002D5E208FA87900B95A90 /* PilotUI.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = A4143CAA1F7AD3CA00E91697 /* PilotUI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A4143C851F7AD3A000E91697 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4143C841F7AD3A000E91697 /* AppDelegate.swift */; };
 		A4143C871F7AD3A000E91697 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A4143C861F7AD3A000E91697 /* Assets.xcassets */; };
 		A4143C8A1F7AD3A000E91697 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = A4143C881F7AD3A000E91697 /* MainMenu.xib */; };
@@ -92,6 +94,20 @@
 			remoteInfo = "PilotUI macOS";
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		A4002D54208FA87000B95A90 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				A4002D5D208FA87900B95A90 /* Pilot.framework in CopyFiles */,
+				A4002D5E208FA87900B95A90 /* PilotUI.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		A4143C811F7AD3A000E91697 /* DirectoryViewer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DirectoryViewer.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -190,6 +206,7 @@
 				A4143C7D1F7AD3A000E91697 /* Sources */,
 				A4143C7E1F7AD3A000E91697 /* Frameworks */,
 				A4143C7F1F7AD3A000E91697 /* Resources */,
+				A4002D54208FA87000B95A90 /* CopyFiles */,
 			);
 			buildRules = (
 			);

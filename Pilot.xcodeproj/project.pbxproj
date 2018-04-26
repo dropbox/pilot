@@ -122,6 +122,8 @@
 		8E0E6F291EE89A3D00D1CB86 /* SortedModelCollectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E0E6F271EE89A3D00D1CB86 /* SortedModelCollectionTests.swift */; };
 		9CA5FC4E1FB9A65300F85B98 /* CollectionViewHostReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CA5FC4D1FB9A65300F85B98 /* CollectionViewHostReusableView.swift */; };
 		9CA5FC521FB9A81A00F85B98 /* CollectionViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CA5FC511FB9A81A00F85B98 /* CollectionViewTests.swift */; };
+		A4002D36208F933F00B95A90 /* ModelCollectionStateViewTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4002D35208F933F00B95A90 /* ModelCollectionStateViewTypes.swift */; };
+		A4002D38208F937A00B95A90 /* ModelCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4002D37208F937A00B95A90 /* ModelCollectionViewController.swift */; };
 		A428996E1FA137F300EA4422 /* SecondaryActionInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = A428996D1FA137F300EA4422 /* SecondaryActionInfo.swift */; };
 		A428996F1FA137F300EA4422 /* SecondaryActionInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = A428996D1FA137F300EA4422 /* SecondaryActionInfo.swift */; };
 		A42899711FA1393500EA4422 /* ViewModelBinding.swift in Sources */ = {isa = PBXBuildFile; fileRef = A42899701FA1393500EA4422 /* ViewModelBinding.swift */; };
@@ -291,6 +293,8 @@
 		8E0E6F271EE89A3D00D1CB86 /* SortedModelCollectionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SortedModelCollectionTests.swift; sourceTree = "<group>"; };
 		9CA5FC4D1FB9A65300F85B98 /* CollectionViewHostReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewHostReusableView.swift; sourceTree = "<group>"; };
 		9CA5FC511FB9A81A00F85B98 /* CollectionViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewTests.swift; sourceTree = "<group>"; };
+		A4002D35208F933F00B95A90 /* ModelCollectionStateViewTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelCollectionStateViewTypes.swift; sourceTree = "<group>"; };
+		A4002D37208F937A00B95A90 /* ModelCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelCollectionViewController.swift; sourceTree = "<group>"; };
 		A428996D1FA137F300EA4422 /* SecondaryActionInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondaryActionInfo.swift; sourceTree = "<group>"; };
 		A42899701FA1393500EA4422 /* ViewModelBinding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModelBinding.swift; sourceTree = "<group>"; };
 		A437EDA71E56507600F67B37 /* SimpleModelCollectionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleModelCollectionTests.swift; sourceTree = "<group>"; };
@@ -510,6 +514,7 @@
 		69048A4D1C470489000CE840 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				A4002D33208F931800B95A90 /* Common */,
 				3C6C9E211F31254F00D13B52 /* Alerts */,
 				697D0FCC1D37006300310F81 /* AppKitExtensions */,
 				69048A9A1C470F08000CE840 /* CollectionViews */,
@@ -660,6 +665,23 @@
 			isa = PBXGroup;
 			children = (
 				9CA5FC511FB9A81A00F85B98 /* CollectionViewTests.swift */,
+			);
+			path = mac;
+			sourceTree = "<group>";
+		};
+		A4002D33208F931800B95A90 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				A4002D34208F932000B95A90 /* mac */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		A4002D34208F932000B95A90 /* mac */ = {
+			isa = PBXGroup;
+			children = (
+				A4002D35208F933F00B95A90 /* ModelCollectionStateViewTypes.swift */,
+				A4002D37208F937A00B95A90 /* ModelCollectionViewController.swift */,
 			);
 			path = mac;
 			sourceTree = "<group>";
@@ -1200,8 +1222,10 @@
 				69FADC8A1D30B7FC001F2E11 /* CollectionHostedView.swift in Sources */,
 				690E1AA11E54C0E100B257CA /* NSMenu+Action.swift in Sources */,
 				697D0FCE1D37008D00310F81 /* NSEvent+Keys.swift in Sources */,
+				A4002D36208F933F00B95A90 /* ModelCollectionStateViewTypes.swift in Sources */,
 				690E1AA71E54CAA000B257CA /* Collection.swift in Sources */,
 				E725E2EF206C5FF200786A12 /* NestableScrollView.swift in Sources */,
+				A4002D38208F937A00B95A90 /* ModelCollectionViewController.swift in Sources */,
 				69FADC591D306AF4001F2E11 /* CollectionViewController.swift in Sources */,
 				69FADC8D1D30BBF0001F2E11 /* CollectionViewInternals.swift in Sources */,
 				690E1AA51E54CAA000B257CA /* AssociatedObjects.swift in Sources */,
