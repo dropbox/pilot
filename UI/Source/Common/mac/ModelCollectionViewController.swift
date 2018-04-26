@@ -2,7 +2,7 @@ import AppKit
 import Pilot
 
 /// Common view controller to support a scrollable views of a ModelCollection.
-open class ModelCollectionViewController: NSViewController {
+public class ModelCollectionViewController: NSViewController {
 
     public init(model: ModelCollection, context: Context) {
         self.model = model
