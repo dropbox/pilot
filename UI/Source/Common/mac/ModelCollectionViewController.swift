@@ -2,7 +2,10 @@ import AppKit
 import Pilot
 
 /// Common view controller to support a scrollable views of a ModelCollection.
-public class ModelCollectionViewController: NSViewController {
+///
+/// Note: this is open to facilitate subclassing with open classes like CollectionViewController, but isn't intended or
+/// useful to subclass this class directly outside of PilotUI.
+open class ModelCollectionViewController: NSViewController {
 
     public init(model: ModelCollection, context: Context) {
         self.model = model
