@@ -27,6 +27,7 @@ internal final class NestedModelCollectionTreeController: ProxyingObservable {
         } else {
             self.observers = ObserverList<Event>()
         }
+        // Update diff engine state up to current state of ModelCollection so future calls to .update get correct diffs.
         _ = diffEngine.update([modelCollection.models])
         self.modelCollectionObserver = modelCollection.observe { [weak self] (event) in
             self?.handleCollectionEvent(event)
@@ -36,7 +37,7 @@ internal final class NestedModelCollectionTreeController: ProxyingObservable {
     internal func isExpandable(_ path: IndexPath) -> Bool {
         let model = modelAtIndexPath(path)
         let containingNode = findOrCreateNode(path.dropLast())
-        return containingNode.modelCollection.isModelExpandable(model)
+        return containingNode.modelCollection.canExpand(model)
     }
 
     internal func countOfChildNodes(_ path: IndexPath) -> Int {
@@ -111,7 +112,7 @@ internal final class NestedModelCollectionTreeController: ProxyingObservable {
         if let cached = childrenCache[model.modelId] {
             return cached.findOrCreateNode(path.dropFirst())
         } else {
-            let childModelCollection = modelCollection.childModelCollection(model)
+            let childModelCollection = modelCollection.childModelCollection(for: model)
             let node = NestedModelCollectionTreeController(
                 modelCollection: childModelCollection,
                 modelId: model.modelId,

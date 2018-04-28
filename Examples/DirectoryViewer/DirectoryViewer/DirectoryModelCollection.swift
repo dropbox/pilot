@@ -60,15 +60,15 @@ public final class DirectoryModelCollection: NestedModelCollection, ProxyingColl
 
     // MARK: NestedModelCollection
 
-    public func isModelExpandable(_ model: Model) -> Bool {
+    public func canExpand(_ model: Model) -> Bool {
         let file: File = model.typedModel()
         var isDir: ObjCBool = false
         FileManager.default.fileExists(atPath: file.url.path, isDirectory: &isDir)
         return isDir.boolValue
     }
 
-    public func childModelCollection(_ model: Model) -> NestedModelCollection {
-        guard isModelExpandable(model) else {
+    public func childModelCollection(for model: Model) -> NestedModelCollection {
+        guard canExpand(model) else {
             return EmptyModelCollection().asNested()
         }
         let file: File = model.typedModel()

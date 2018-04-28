@@ -143,11 +143,11 @@ private final class TestMC: NestedModelCollection, ProxyingCollectionEventObserv
     var collectionId: ModelCollectionId
     var state: ModelCollectionState { didSet { observers.notify(.didChangeState(state)) }}
 
-    func isModelExpandable(_ model: Model) -> Bool {
+    func canExpand(_ model: Model) -> Bool {
         return canExpand(model)
     }
 
-    func childModelCollection(_ model: Model) -> NestedModelCollection {
+    func childModelCollection(for model: Model) -> NestedModelCollection {
         return expand(model)
     }
 

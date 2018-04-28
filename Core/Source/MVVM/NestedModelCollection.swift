@@ -3,8 +3,8 @@ import Foundation
 /// Specialization of a `ModelCollection` that provides support for nesting - that is having multiple levels of models
 /// for example when displaying in an outline or browser view.
 public protocol NestedModelCollection: ModelCollection {
-    func isModelExpandable(_ model: Model) -> Bool
-    func childModelCollection(_ model: Model) -> NestedModelCollection
+    func canExpand(_ model: Model) -> Bool
+    func childModelCollection(for: Model) -> NestedModelCollection
 }
 
 public extension ModelCollection {
@@ -14,8 +14,8 @@ public extension ModelCollection {
     }
 }
 
-/// Internal only class used for wrapping non-nested `ModelCollection` into a nested model collection.
-internal final class SingleLevelNestedModelCollection: NestedModelCollection {
+/// Private only class used for wrapping non-nested `ModelCollection` into a nested model collection.
+private final class SingleLevelNestedModelCollection: NestedModelCollection {
 
     internal init(_ modelCollection: ModelCollection) {
         self.represented = modelCollection
@@ -23,11 +23,11 @@ internal final class SingleLevelNestedModelCollection: NestedModelCollection {
 
     // MARK: NestedModelCollection
 
-    func isModelExpandable(_ model: Model) -> Bool {
+    func canExpand(_ model: Model) -> Bool {
         return false
     }
 
-    func childModelCollection(_ model: Model) -> NestedModelCollection {
+    func childModelCollection(for model: Model) -> NestedModelCollection {
         return EmptyModelCollection().asNested()
     }
 
