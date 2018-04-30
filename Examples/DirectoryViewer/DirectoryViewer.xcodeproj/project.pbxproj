@@ -7,12 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A4002D40208FA59E00B95A90 /* DirectoryOutlineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4002D3F208FA59E00B95A90 /* DirectoryOutlineViewController.swift */; };
 		A4002D5D208FA87900B95A90 /* Pilot.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = A4143C9E1F7AD3CA00E91697 /* Pilot.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A4002D5E208FA87900B95A90 /* PilotUI.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = A4143CAA1F7AD3CA00E91697 /* PilotUI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A4002D62208FAB1300B95A90 /* Binding.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4002D61208FAB1300B95A90 /* Binding.swift */; };
 		A4143C851F7AD3A000E91697 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4143C841F7AD3A000E91697 /* AppDelegate.swift */; };
 		A4143C871F7AD3A000E91697 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A4143C861F7AD3A000E91697 /* Assets.xcassets */; };
 		A4143C8A1F7AD3A000E91697 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = A4143C881F7AD3A000E91697 /* MainMenu.xib */; };
-		A4143CBD1F7AD46D00E91697 /* DirectoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4143CBC1F7AD46D00E91697 /* DirectoryViewController.swift */; };
+		A4143CBD1F7AD46D00E91697 /* DirectoryCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4143CBC1F7AD46D00E91697 /* DirectoryCollectionViewController.swift */; };
 		A43FA82E1F7ADAEE00C3C650 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = A43FA82D1F7ADAEE00C3C650 /* File.swift */; };
 		A43FA8BF1F7AFA5900C3C650 /* FileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A43FA8BE1F7AFA5900C3C650 /* FileViewModel.swift */; };
 		A4AC3BEE2006D8D20098735D /* Pilot.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A4143C9E1F7AD3CA00E91697 /* Pilot.framework */; };
@@ -110,6 +112,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		A4002D3F208FA59E00B95A90 /* DirectoryOutlineViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectoryOutlineViewController.swift; sourceTree = "<group>"; };
+		A4002D61208FAB1300B95A90 /* Binding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Binding.swift; sourceTree = "<group>"; };
 		A4143C811F7AD3A000E91697 /* DirectoryViewer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DirectoryViewer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A4143C841F7AD3A000E91697 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A4143C861F7AD3A000E91697 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -117,7 +121,7 @@
 		A4143C8B1F7AD3A000E91697 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A4143C8C1F7AD3A000E91697 /* DirectoryViewer.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DirectoryViewer.entitlements; sourceTree = "<group>"; };
 		A4143C921F7AD3CA00E91697 /* Pilot.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Pilot.xcodeproj; path = ../../Pilot.xcodeproj; sourceTree = "<group>"; };
-		A4143CBC1F7AD46D00E91697 /* DirectoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectoryViewController.swift; sourceTree = "<group>"; };
+		A4143CBC1F7AD46D00E91697 /* DirectoryCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectoryCollectionViewController.swift; sourceTree = "<group>"; };
 		A43FA82D1F7ADAEE00C3C650 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		A43FA8BE1F7AFA5900C3C650 /* FileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileViewModel.swift; sourceTree = "<group>"; };
 		A4B1D4A31F7AFC1200760F7F /* DirectoryModelCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectoryModelCollection.swift; sourceTree = "<group>"; };
@@ -161,8 +165,10 @@
 			children = (
 				A4143C841F7AD3A000E91697 /* AppDelegate.swift */,
 				A4143C861F7AD3A000E91697 /* Assets.xcassets */,
+				A4002D61208FAB1300B95A90 /* Binding.swift */,
+				A4143CBC1F7AD46D00E91697 /* DirectoryCollectionViewController.swift */,
 				A4B1D4A31F7AFC1200760F7F /* DirectoryModelCollection.swift */,
-				A4143CBC1F7AD46D00E91697 /* DirectoryViewController.swift */,
+				A4002D3F208FA59E00B95A90 /* DirectoryOutlineViewController.swift */,
 				A4143C8C1F7AD3A000E91697 /* DirectoryViewer.entitlements */,
 				A43FA82D1F7ADAEE00C3C650 /* File.swift */,
 				A4C2DAEB1F9F7AAE005C0554 /* FileActions.swift */,
@@ -340,8 +346,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				A4B1D4AC1F7AFD7900760F7F /* FileView.swift in Sources */,
-				A4143CBD1F7AD46D00E91697 /* DirectoryViewController.swift in Sources */,
+				A4143CBD1F7AD46D00E91697 /* DirectoryCollectionViewController.swift in Sources */,
 				A43FA82E1F7ADAEE00C3C650 /* File.swift in Sources */,
+				A4002D40208FA59E00B95A90 /* DirectoryOutlineViewController.swift in Sources */,
+				A4002D62208FAB1300B95A90 /* Binding.swift in Sources */,
 				A43FA8BF1F7AFA5900C3C650 /* FileViewModel.swift in Sources */,
 				A4C2DAEC1F9F7AAE005C0554 /* FileActions.swift in Sources */,
 				A4B1D4A41F7AFC1200760F7F /* DirectoryModelCollection.swift in Sources */,

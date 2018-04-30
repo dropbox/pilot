@@ -4,7 +4,7 @@ public struct File: Model {
     public var url: URL
 
     public var modelId: ModelId {
-        return ModelId(url.absoluteString.hashValue)
+        return ModelId(url.absoluteString)
     }
 
     public var modelVersion: ModelVersion {
