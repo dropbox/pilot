@@ -115,7 +115,12 @@ public final class OutlineViewModelDataSource: NSObject, NSOutlineViewDataSource
         outlineView.beginUpdates()
 
         for (item, removed) in removedByItem {
-            let indexSet = IndexSet(removed.flatMap({ $0.last }))
+            #if swift(>=4.1)
+                let indexSet = IndexSet(removed.compactMap({ $0.last }))
+            #else
+                let indexSet = IndexSet(removed.flatMap({ $0.last }))
+            #endif
+
             if item == IndexPath() {
                 outlineView.removeItems(at: indexSet, inParent: nil, withAnimation: options)
             } else {
@@ -124,7 +129,11 @@ public final class OutlineViewModelDataSource: NSObject, NSOutlineViewDataSource
         }
         
         for (item, added) in addedByItem {
-            let indexSet = IndexSet(added.flatMap({ $0.last }))
+            #if swift(>=4.1)
+                let indexSet = IndexSet(added.compactMap({ $0.last }))
+            #else
+                let indexSet = IndexSet(added.flatMap({ $0.last }))
+            #endif
             if item == IndexPath() {
                 outlineView.insertItems(at: indexSet, inParent: nil, withAnimation: options)
             } else {
