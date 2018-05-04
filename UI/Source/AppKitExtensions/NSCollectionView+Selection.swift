@@ -3,7 +3,7 @@ import Foundation
 
 public extension NSCollectionView {
 
-    /// Sets the selection to the first item in the collection view.
+    /// Sets the selection to the first item in the collection view, and calls the delegate's selection method.
     public func selectFirstItem() {
         for section in 0..<numberOfSections {
             if numberOfItems(inSection: section) > 0 {
@@ -13,7 +13,7 @@ public extension NSCollectionView {
         }
     }
 
-    /// Sets the selection to the last item in the collection view.
+    /// Sets the selection to the last item in the collection view, and calls the delegate's selection method.
     public func selectLastItem() {
         for section in (0..<numberOfSections).reversed() {
             let itemCount = numberOfItems(inSection: section)
@@ -24,8 +24,8 @@ public extension NSCollectionView {
         }
     }
 
-    /// Sets the selection to item immediately following the current selection.
-    /// Assumes the current selection has one item.
+    /// Sets the selection to item immediately following the current selection,
+    /// and calls the delegate's selection method. Assumes the current selection has one item.
     public func selectNextItem() {
         let sectionCount = numberOfSections
         if sectionCount == 0 { return }
@@ -53,8 +53,8 @@ public extension NSCollectionView {
         setSingleSelection(currentPath.item, section: currentPath.section)
     }
 
-    /// Sets the selection to item immediately preceding the current selection.
-    /// Assumes the current selection has one item.
+    /// Sets the selection to item immediately preceding the current selection,
+    /// and calls the delegate's selection method. Assumes the current selection has one item.
     public func selectPreviousItem() {
         let sectionCount = numberOfSections
         if sectionCount == 0 { return }
@@ -132,5 +132,6 @@ public extension NSCollectionView {
         let selectedIndexPath = IndexPath(forModelItem: item, inSection: section)
         selectionIndexPaths = [selectedIndexPath]
         verticallyScrollTo(itemAtIndexPath: selectedIndexPath)
+        self.delegate?.collectionView?(self, didSelectItemsAt: selectionIndexPaths)
     }
 }
