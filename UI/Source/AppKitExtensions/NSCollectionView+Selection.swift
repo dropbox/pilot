@@ -4,21 +4,21 @@ import Foundation
 public extension NSCollectionView {
 
     /// Sets the selection to the first item in the collection view, and calls the delegate's selection method.
-    public func selectFirstItem() {
+    public func selectFirstItem(notifyingDelegate: Bool = false) {
         for section in 0..<numberOfSections {
             if numberOfItems(inSection: section) > 0 {
-                setSingleSelection(0, section: section)
+                setSingleSelection(0, section: section, notifyingDelegate: notifyingDelegate)
                 return
             }
         }
     }
 
     /// Sets the selection to the last item in the collection view, and calls the delegate's selection method.
-    public func selectLastItem() {
+    public func selectLastItem(notifyingDelegate: Bool = false) {
         for section in (0..<numberOfSections).reversed() {
             let itemCount = numberOfItems(inSection: section)
             if itemCount > 0 {
-                setSingleSelection(itemCount - 1, section: section)
+                setSingleSelection(itemCount - 1, section: section, notifyingDelegate: notifyingDelegate)
                 return
             }
         }
@@ -26,7 +26,7 @@ public extension NSCollectionView {
 
     /// Sets the selection to item immediately following the current selection,
     /// and calls the delegate's selection method. Assumes the current selection has one item.
-    public func selectNextItem() {
+    public func selectNextItem(notifyingDelegate: Bool = false) {
         let sectionCount = numberOfSections
         if sectionCount == 0 { return }
 
@@ -50,12 +50,12 @@ public extension NSCollectionView {
             }
         }
 
-        setSingleSelection(currentPath.item, section: currentPath.section)
+        setSingleSelection(currentPath.item, section: currentPath.section, notifyingDelegate: notifyingDelegate)
     }
 
     /// Sets the selection to item immediately preceding the current selection,
     /// and calls the delegate's selection method. Assumes the current selection has one item.
-    public func selectPreviousItem() {
+    public func selectPreviousItem(notifyingDelegate: Bool = false) {
         let sectionCount = numberOfSections
         if sectionCount == 0 { return }
 
@@ -79,7 +79,7 @@ public extension NSCollectionView {
             currentPath.item = numberOfItems(inSection: currentPath.section) - 1
         }
 
-        setSingleSelection(currentPath.item, section: currentPath.section)
+        setSingleSelection(currentPath.item, section: currentPath.section, notifyingDelegate: notifyingDelegate)
     }
 
     /// Scrolls to nearest edge taking into account the host scoll view's content inset.
@@ -128,10 +128,13 @@ public extension NSCollectionView {
         return next as? NSScrollView
     }
 
-    private func setSingleSelection(_ item: Int, section: Int) {
+    private func setSingleSelection(_ item: Int, section: Int, notifyingDelegate: Bool) {
         let selectedIndexPath = IndexPath(forModelItem: item, inSection: section)
         selectionIndexPaths = [selectedIndexPath]
         verticallyScrollTo(itemAtIndexPath: selectedIndexPath)
-        self.delegate?.collectionView?(self, didSelectItemsAt: selectionIndexPaths)
+
+        if notifyingDelegate {
+            self.delegate?.collectionView?(self, didSelectItemsAt: selectionIndexPaths)
+        }
     }
 }
