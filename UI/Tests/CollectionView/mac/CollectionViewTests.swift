@@ -122,13 +122,13 @@ class CollectionViewTests: XCTestCase {
         let kind = TestSupplementaryLayout.SupplementaryLayoutKind
         cvc.dataSource.setModelProvider(
             provider: BlockModelProvider { _, _ in StaticModel(modelId: "SUPPLEMENTARY_MODEL_1", data: Void()) },
-            forSupplementaryElementOfKind: kind.rawValue)
+            forSupplementaryElementOfKind: kind)
         cvc.dataSource.setViewModelBinder(
             BlockViewModelBindingProvider { TestViewModel(model: $0, context: $1) },
-            forSupplementaryElementOfKind: kind.rawValue)
+            forSupplementaryElementOfKind: kind)
         cvc.dataSource.setViewBinder(
             BlockViewBindingProvider { _, _ in ViewBinding(TestView.self) },
-            forSupplementaryElementOfKind: kind.rawValue)
+            forSupplementaryElementOfKind: kind)
         cvc.collectionView.layout()
     }
 }
