@@ -153,6 +153,7 @@ public class CollectionViewModelDataSource: NSObject, ProxyingObservable {
         }
     }
 
+#if os(iOS)
     /// Adds a `ViewModelBindingProvider` for any supplementary views of `kind`. If not set the
     /// `DefaultViewModelBindingProvider` is used.
     open func setViewModelBinder(_ binder: ViewModelBindingProvider, forSupplementaryElementOfKind kind: String) {
@@ -186,6 +187,54 @@ public class CollectionViewModelDataSource: NSObject, ProxyingObservable {
     public func clearModelProviderForSupplementaryElementOfKind(kind: String) {
         supplementaryModelProviderMap[kind] = nil
     }
+#elseif os(macOS)
+    /// Adds a `ViewModelBindingProvider` for any supplementary views of `kind`. If not set the
+    /// `DefaultViewModelBindingProvider` is used.
+    open func setViewModelBinder(
+        _ binder: ViewModelBindingProvider,
+        forSupplementaryElementOfKind kind: NSCollectionView.SupplementaryElementKind
+    ) {
+        supplementaryViewModelBinderMap[kind.rawValue] = binder
+    }
+
+    /// Removes any `ViewModelBindingProvider` for supplementary views of `kind`. Once cleared the
+    /// `DefaultViewModelBindingProvider` will be used.
+    open func clearViewModelBinder(forSupplementaryElementOfKind kind: NSCollectionView.SupplementaryElementKind) {
+        supplementaryViewModelBinderMap[kind.rawValue] = nil
+    }
+
+    /// Adds a `ViewBindingProvider` to provide views for any supplementary views of the given `kind`.
+    open func setViewBinder(
+        _ viewBinder: ViewBindingProvider,
+        forSupplementaryElementOfKind kind: NSCollectionView.SupplementaryElementKind
+    ) {
+        supplementaryViewBinderMap[kind.rawValue] = viewBinder
+    }
+
+    /// Removes a previously-added `ViewBindingProvider` for supplementary views.
+    open func clearViewBinderForSupplementaryElementOfKind(
+        _ kind: NSCollectionView.SupplementaryElementKind
+    ) {
+        supplementaryViewBinderMap[kind.rawValue] = nil
+    }
+
+    /// Adds an `IndexedModelProvider` for any supplementary views of `kind`. If not set,
+    /// supplementary views default to the ModelType provided by the ModelCollection for the given
+    /// index path, or a CollectionZeroItemModel otherwise.
+    public func setModelProvider(
+        provider: IndexedModelProvider,
+        forSupplementaryElementOfKind kind: NSCollectionView.SupplementaryElementKind
+    ) {
+        supplementaryModelProviderMap[kind.rawValue] = provider
+    }
+
+    /// Removes a previously-added `IndexedModelProvider` for supplementary views.
+    public func clearModelProviderForSupplementaryElementOfKind(
+        kind: NSCollectionView.SupplementaryElementKind
+    ) {
+        supplementaryModelProviderMap[kind.rawValue] = nil
+    }
+#endif
 
 #if os(iOS)
     /// Configures the default background color for all host cells.
@@ -197,7 +246,8 @@ public class CollectionViewModelDataSource: NSObject, ProxyingObservable {
     /// TODO(ca): change this to take a ModelPath instead of the heavier IndexPath
     open func preferredLayoutForItemAtIndexPath(
         _ indexPath: IndexPath,
-        availableSize: AvailableSize) -> PreferredLayout {
+        availableSize: AvailableSize
+    ) -> PreferredLayout {
         guard let modelItem: Model = currentCollection.atIndexPath(indexPath) else { return .none }
         var cachedViewModel = self.cachedViewModel(for: modelItem)
         if let layout = cachedViewModel.preferredLayout.layout {
@@ -248,15 +298,18 @@ public class CollectionViewModelDataSource: NSObject, ProxyingObservable {
     /// Attempts to reload a supplementary element at index path by re-binding the hosted view to the view model
     /// Note: This function makes no attempt to determine whether layout needs to be invalidated, so if you're making an
     /// update that should trigger the collection view layout being invalidated make sure to do that separately.
-    public func reloadSupplementaryElementAtIndexPath(indexPath: IndexPath, kind: String) {
+    public func reloadSupplementaryElementAtIndexPath(
+        indexPath: IndexPath,
+        kind: NSCollectionView.SupplementaryElementKind
+    ) {
         guard let cv = collectionView else { return }
-        guard let supplementaryViewBinder = supplementaryViewBinderMap[kind] else { return }
+        guard let supplementaryViewBinder = supplementaryViewBinderMap[kind.rawValue] else { return }
 
-        let supplementaryView = cv.supplementaryView(forElementKind: NSCollectionView.SupplementaryElementKind(rawValue: kind), at: indexPath)
+        let supplementaryView = cv.supplementaryView(forElementKind: kind, at: indexPath)
         guard let hostView = supplementaryView as? CollectionViewHostReusableView else { return }
         guard var hostedView = hostView.hostedView else { return }
 
-        let viewModel = viewModelForSupplementaryElementAtIndexPath(kind, indexPath: indexPath)
+        let viewModel = viewModelForSupplementaryElementAtIndexPath(kind.rawValue, indexPath: indexPath)
         hostedView = supplementaryViewBinder.view(for: viewModel, context: context, reusing: hostedView, layout: nil)
 
         hostView.hostedView = hostedView
