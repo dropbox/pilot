@@ -3,7 +3,8 @@ import Foundation
 
 public extension NSCollectionView {
 
-    /// Sets the selection to the first item in the collection view, and calls the delegate's selection method.
+    /// Sets the selection to the first item in the collection view,
+    /// and optionally calls the delegate's selection method.
     public func selectFirstItem(notifyingDelegate: Bool = false) {
         for section in 0..<numberOfSections {
             if numberOfItems(inSection: section) > 0 {
@@ -13,7 +14,8 @@ public extension NSCollectionView {
         }
     }
 
-    /// Sets the selection to the last item in the collection view, and calls the delegate's selection method.
+    /// Sets the selection to the last item in the collection view,
+    /// and optionally calls the delegate's selection method.
     public func selectLastItem(notifyingDelegate: Bool = false) {
         for section in (0..<numberOfSections).reversed() {
             let itemCount = numberOfItems(inSection: section)
@@ -24,8 +26,8 @@ public extension NSCollectionView {
         }
     }
 
-    /// Sets the selection to item immediately following the current selection,
-    /// and calls the delegate's selection method. Assumes the current selection has one item.
+    /// Sets the selection to item immediately following the current selection, and optionally calls the delegate's
+    /// selection method. Assumes the current selection has one item.
     public func selectNextItem(notifyingDelegate: Bool = false) {
         let sectionCount = numberOfSections
         if sectionCount == 0 { return }
@@ -53,8 +55,8 @@ public extension NSCollectionView {
         setSingleSelection(currentPath.item, section: currentPath.section, notifyingDelegate: notifyingDelegate)
     }
 
-    /// Sets the selection to item immediately preceding the current selection,
-    /// and calls the delegate's selection method. Assumes the current selection has one item.
+    /// Sets the selection to item immediately preceding the current selection, and optionally calls the delegate's
+    /// selection method. Assumes the current selection has one item.
     public func selectPreviousItem(notifyingDelegate: Bool = false) {
         let sectionCount = numberOfSections
         if sectionCount == 0 { return }
@@ -134,7 +136,7 @@ public extension NSCollectionView {
         verticallyScrollTo(itemAtIndexPath: selectedIndexPath)
 
         if notifyingDelegate {
-            self.delegate?.collectionView?(self, didSelectItemsAt: selectionIndexPaths)
+            delegate?.collectionView?(self, didSelectItemsAt: selectionIndexPaths)
         }
     }
 }
