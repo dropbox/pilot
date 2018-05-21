@@ -17,15 +17,16 @@ public struct TelevisionEpisodeViewModel: ViewModel {
     }
 
     public var artwork: URL? {
-        return episode.artwork
+        return episode.artworkUrl100
     }
 
     public var description: String {
-        return episode.description
+        return episode.shortDescription
     }
 
     public var localPreview: URL? {
-        return episode.localPreview
+        // Not implemented.
+        return nil
     }
 
     // MARK: ViewModel
@@ -34,7 +35,7 @@ public struct TelevisionEpisodeViewModel: ViewModel {
 
     public func actionForUserEvent(_ event: ViewModelUserEvent) -> Action? {
         if case .select = event {
-            return ViewMediaAction(url: episode.preview)
+            return ViewMediaAction(url: episode.previewUrl)
         }
         return nil
     }
