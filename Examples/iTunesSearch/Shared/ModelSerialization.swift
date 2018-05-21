@@ -1,16 +1,14 @@
 import Foundation
 import Pilot
 
-public protocol Media: Model {
-    //init?(json: [String: Any])
-}
+/// Common protocol representing a search result media.
+public protocol Media: Model {}
 
 extension Song: Media {
     public var release: Date {
         return serviceDateFormatter.date(from: releaseDate) ?? NSDate.distantPast
     }
 }
-
 extension TelevisionEpisode: Media {}
 extension Podcast: Media {}
 
