@@ -29,7 +29,7 @@ public struct SongViewModel: ViewModel {
     }
 
     public var duration: String {
-        let totalSeconds = song.durationMilliseconds / 1000
+        let totalSeconds = song.trackTimeMillis / 1000
         let hours = totalSeconds / 3600
         let minutes = (totalSeconds % 3600) / 60
         let seconds = (totalSeconds % 60)
@@ -43,7 +43,7 @@ public struct SongViewModel: ViewModel {
     }
 
     public var artwork: URL? {
-        return song.artwork
+        return song.artworkUrl100
     }
 
     // MARK: ViewModel
@@ -52,7 +52,7 @@ public struct SongViewModel: ViewModel {
 
     public func actionForUserEvent(_ event: ViewModelUserEvent) -> Action? {
         if case .select = event {
-            return ViewMediaAction(url: song.preview)
+            return ViewMediaAction(url: song.previewUrl)
         }
         return nil
     }

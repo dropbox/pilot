@@ -17,7 +17,7 @@ public struct PodcastViewModel: ViewModel {
     }
 
     public var artwork: URL? {
-        return podcast.artwork
+        return podcast.artworkUrl100
     }
 
     // MARK: ViewModel
@@ -26,7 +26,7 @@ public struct PodcastViewModel: ViewModel {
 
     public func actionForUserEvent(_ event: ViewModelUserEvent) -> Action? {
         if case .select = event {
-            return ViewURLAction(url: podcast.collectionView)
+            return ViewURLAction(url: podcast.collectionViewUrl)
         }
         return nil
     }

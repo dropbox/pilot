@@ -33,23 +33,22 @@ public class SearchService {
                 return completion(nil, ServiceError.service(description: "Empty response"))
             }
             do {
-                let json = try JSONSerialization.jsonObject(with: data, options: [])
-                let map = json as? [String: Any]
-                let results = (map?["results"] as? [Any]) ?? []
-                let media = results.flatMap { (media: Any) -> Media? in
-                    if
-                        let mediaJSON = media as? [String: Any],
-                        let mediaKind = mediaJSON["kind"] as? String,
-                        let mediaType = TrackKind(rawValue: mediaKind)?.modelType
-                    {
-                        return mediaType.init(json: mediaJSON)
+                let decoder = JSONDecoder()
+                let serviceResponse = try decoder.decode(SearchServiceResponse.self, from: data)
+
+                let media: [Media] = serviceResponse.results.compactMap { result in
+                    switch result.model {
+                    case .podcast(let podcast): return podcast
+                    case .song(let song): return song
+                    case .televisionEpisode(let episode): return episode
+                    case .unknown:
+                        return nil
                     }
-                    return nil
                 }
+
                 return completion(media, nil)
             } catch let e {
-                completion(nil, .json(e))
-                return
+                return completion(nil, .json(e))
             }
         }
         task.resume()
