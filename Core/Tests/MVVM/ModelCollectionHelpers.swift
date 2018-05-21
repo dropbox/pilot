@@ -16,6 +16,26 @@ internal func assertModelCollectionState(
     }
 }
 
+/// Fails test case if `actual` model collection states aren't equivelant to `expected`.
+///
+/// Checks counts match then loops assertModelCollectionState, so inherits same caveats.
+internal func assertSectionedModelCollectionState(
+    expected: [ModelCollectionState],
+    actual: [ModelCollectionState],
+    file: StaticString = #file,
+    line: UInt = #line
+) {
+    guard expected.count == actual.count else {
+        XCTFail("Expected \(expected.count) sections got \(actual.count)")
+        return
+    }
+    for (idx, (expected, actual)) in zip(expected, actual).enumerated() {
+        if let error = describeModelCollectionStateDiscrepancy(expected: expected, actual: actual) {
+            XCTFail("Section \(idx): \(error)", file: file, line: line)
+        }
+    }
+}
+
 /// Gives debugging description of why an actual model collection state is different from an expected state. Returns nil
 /// if the states are the same.
 ///

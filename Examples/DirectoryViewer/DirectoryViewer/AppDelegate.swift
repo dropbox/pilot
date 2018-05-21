@@ -1,5 +1,6 @@
 import Cocoa
 import Pilot
+import PilotUI
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
@@ -8,7 +9,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         window.minSize = CGSize(width: 480, height: 360)
-        window.contentViewController = DirectoryViewController(
+
+        /* TODO:(danielh) add toggle for outline view / colleciton view
+        window.contentViewController = DirectoryOutlineViewController(
+            url: FileManager.default.homeDirectoryForCurrentUser,
+            context: rootContext)
+        */
+        window.contentViewController = DirectoryCollectionViewController(
             url: FileManager.default.homeDirectoryForCurrentUser,
             context: rootContext)
 
@@ -62,7 +69,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             backing: .buffered,
             defer: false)
         window.minSize = size
-        let content = DirectoryViewController(
+        let content = DirectoryCollectionViewController(
             url: url,
             context: rootContext)
         window.contentViewController = content

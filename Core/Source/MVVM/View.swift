@@ -5,7 +5,7 @@ import QuartzCore
 // on any platform-specific view implementation. i.e. Do not import UIKit or AppKit here.
 
 /// Protocol defining an application-defined view object which binds and displays the data from a `ViewModel`
-/// (typically a `UIView` or `NSView`).
+/// (typically a `UIView` or `NSView`), however `UIViewController` or `NSViewController` is also supported.
 ///
 /// `View`s representing view model objects can be hosted in various contexts: as content for collection view
 /// cells, table view cells, popovers, static views, any any other situation. Some of these contexts support additional
