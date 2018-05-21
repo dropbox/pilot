@@ -39,7 +39,7 @@ class SongViewModelTests: XCTestCase {
         let subject = SongViewModel(model: song, context: context)
         let result = subject.actionForUserEvent(.select)
         if let result = result as? ViewMediaAction {
-            XCTAssertEqual(result.url, song.preview)
+            XCTAssertEqual(result.url, song.previewUrl)
         } else {
             XCTFail("Expected a 'ViewMediaAction' for .select events. Got \(String(describing: result)).")
         }
@@ -53,14 +53,14 @@ private let stubSong = Song(
     artistName: "You've probably never heard of them",
     collectionName: "Self-titled",
     trackName: "Untitled",
-    artistView: URL(string: "https://en.wikipedia.org/wiki/Creed_(band)")!,
-    collectionView: URL(string: "https://en.wikipedia.org/wiki/My_Own_Prison")!,
-    trackView: URL(string: "https://en.wikipedia.org/wiki/My_Own_Prison_(song)")!,
-    preview: URL(string: "https://en.wikipedia.org/wiki/My_Own_Prison_(song)?preview=true")!,
-    artwork: nil,
+    artistViewUrl: URL(string: "https://en.wikipedia.org/wiki/Creed_(band)")!,
+    collectionViewUrl: URL(string: "https://en.wikipedia.org/wiki/My_Own_Prison")!,
+    trackViewUrl: URL(string: "https://en.wikipedia.org/wiki/My_Own_Prison_(song)")!,
+    previewUrl: URL(string: "https://en.wikipedia.org/wiki/My_Own_Prison_(song)?preview=true")!,
+    artworkUrl100: nil,
     collectionPrice: 1.1,
     trackPrice: 9.9,
-    release: Date(timeIntervalSince1970: 0),
-    durationMilliseconds: 42,
+    releaseDate: "2005-03-01T08:00:00Z",
+    trackTimeMillis: 42,
     trackNumber: 1,
     trackCount: 112)
