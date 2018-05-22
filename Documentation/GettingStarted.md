@@ -74,16 +74,14 @@ Your model object doesn't have to come from JSON, it could come from Core Data, 
 
 > How to serialize & deserialize from your data source into a model struct like the above example is beyond the scope of this document.
 
-> The example application happens to add an initializer to the `Song` struct to inflate from JSON, along with a protocol to make that common across the other model types returned from iTunes. If interested, you can see that [here](../Examples/iTunesSearch/Shared/ModelSerialization.swift).
-
-> - [ ] TODO for @wkiefer: Replace this with `Codable` in Swift 4.
+The example application happens to leverage Swift's `Decodable` implementation on the `Song` struct to deflate from JSON.
 
 Conformance to `Model` is quite simple, as there are only two properties to implement:
 
 - `modelId` is a string that guarantees uniqueness for that model object across your application.
 - `modelVersion` is a hash that represents the version of that object and lets Pilot know if important model data has changed.
 
-These two properties are used to provide automated delta updates across any heterogeneous collection of model objects. We'll see more about that later one.
+These two properties are used to provide automated delta updates across any heterogeneous collection of model objects. We'll see more about that later on.
 
 For our `Song`, we can conform to `Model` with the following code:
 
@@ -96,32 +94,38 @@ extension Song: Model {
 }
 ```
 
-Implementing `modelId` was easy, as iTunes already has a unique track id for all song results — so we return that.
+Implementing `modelId` was easy, as iTunes already has a unique track id for its results — so we return that.
 
 However, iTunes does not have a concept of a version for a given song — the only way to know if any song metadata has changed is to look at the metadata itself. No problem! If your server or data source has no concept of version, Pilot has a handy `ModelVersionMixer` class that lets you combine important metadata into an efficient hashed value. For `Song`, we would want to mix in all the metadata to contribute to the hash. Then if any metadata changes, the version will change:
 
 ```swift    
   var modelVersion: ModelVersion {
-    var mixer = ModelVersionMixer()
-    mixer.mix(artistId)
-    mixer.mix(collectionId)
-    mixer.mix(trackId)
-    mixer.mix(artistName)
-    mixer.mix(collectionName)
-    mixer.mix(trackName)
-    mixer.mix(preview.absoluteString)
-    if let artwork = artwork {
-      mixer.mix(artwork.absoluteString)
+        var mixer = ModelVersionMixer()
+        mixer.mix(artistId)
+        mixer.mix(collectionId)
+        mixer.mix(trackId)
+        mixer.mix(artistName)
+        mixer.mix(collectionName)
+        mixer.mix(trackName)
+        mixer.mix(artistViewUrl.absoluteString)
+        mixer.mix(collectionViewUrl.absoluteString)
+        mixer.mix(trackViewUrl.absoluteString)
+        mixer.mix(previewUrl.absoluteString)
+        if let artwork = artworkUrl100 {
+            mixer.mix(artwork.absoluteString)
+        }
+        mixer.mix(Float64(collectionPrice))
+        mixer.mix(Float64(trackPrice))
+        mixer.mix(releaseDate)
+        mixer.mix(trackTimeMillis)
+        if let trackNumber = trackNumber {
+            mixer.mix(trackNumber)
+        }
+        if let trackCount = trackCount {
+            mixer.mix(trackCount)
+        }
+        return mixer.result()
     }
-    mixer.mix(durationMilliseconds)
-    if let trackNumber = trackNumber {
-      mixer.mix(trackNumber)
-    }
-    if let trackCount = trackCount {
-      mixer.mix(trackCount)
-    }
-    return mixer.result()
-  }
 }
 ```
 
@@ -133,13 +137,13 @@ Now that we have a model representing a Song, things can get more interesting.
   
 In Pilot, a `ViewModel` is bound to a specific `Model` type and has the following responsibilities:
 
-- Implement any necessary application business logic for the bound `Model` object.
+- Implement any necessary application business logic atop the bound `Model` object.
 - Expose properties for the view to display. If those properties change over time (e.g. a relative timestamp), those properties should be [observable](../Core/Source/Observable/ObservableData.swift).
 - Handle all user interactions by emitting `Action` types.
 
-Given these responsibilities, the `View` that displays data from a `ViewModel` should hopefully be completely underwhelming — it will simply connect `ViewModel` properties to whatever UI framework is being used.
+Given these responsibilities, the `View` that displays data from a `ViewModel` will be purposely underwhelming — it will simply connect `ViewModel` properties to whatever UI framework is being used.
 
-Let's dig a bit deeper on how to implement `ViewModel` before discussing some key benefits. Most of the methods on the `ViewModel` protocol have default implementations, so conformance is fairly trivial:
+Let's dig a bit deeper on how to implement `ViewModel` before discussing some key benefits. Most of the methods on the `ViewModel` protocol have default implementations, so conformance only requires an initializer and public read-only variable:
 
 ```swift
 public struct SongViewModel: ViewModel {    
@@ -158,7 +162,17 @@ public struct SongViewModel: ViewModel {
 }
 ```
 
-- [ ] TODO for @wkiefer
+The required initializer has two parameters:
+
+- The `Context` object has two responsibilities: it supplies any application-specific dependencies your view model may need and it acts as the mechanism for sending actions from the view model. More detail about how `Context` accomplishes this is covered below.
+
+- The `Model` object, in this case, will be the `Song` struct we created above. View models are lifetime-bound to a specific `Model` type with a single `modelVersion`. If that model object gets updated, Pilot will create a new `ViewModel` object and initialize it with the updated `Model`.
+
+You'll notice that the signature of the initializer uses `Model` rather than `Song`. This is due to a [limitation in Swift generics](https://github.com/apple/swift/blob/master/docs/GenericsManifesto.md#generalized-existentials). As a workaround, Pilot provides the `typedModel()` helper to easily downcast to the specific model type your view model expects. When Swift supports more ergonomic usage of protocols with associated types, Pilot will be able to strongly type the initializer by default.
+
+> Later on, when discussing binding, you'll see a technique where you can upgrade a `ViewModel` to have a strongly-typed initializer. In our `SongViewModel` case, the signature will evolve to `init(song: Song, context: MyAppContext)`.
+
+So far, our view model is just holding onto the `Context` and the `Song`. Next, let's add an example property that demonstrates some application business logic:
 
 ```swift
 public struct SongViewModel: ViewModel {
@@ -175,7 +189,9 @@ public struct SongViewModel: ViewModel {
   }
 ```
 
-- [ ] TODO for @wkiefer
+While this is simple example, it illustrates the kind of responsibilities a view model should have: taking the model data, and deciding what to do with it and how to present it. The above example conditionally formats a general description string to be displayed next to the song title.
+
+We start to see how the `ViewModel` is easily unit tested, without the need for involving UI or other application objects:
 
 ```swift
 class SongViewModelTests: XCTestCase {
@@ -192,7 +208,13 @@ class SongViewModelTests: XCTestCase {
     func testDescriptionWithNoTrackCount() { ... }
 ```
 
-- [ ] TODO for @wkiefer
+Pilot `ViewModel`s are self-contained, which make them ideal for unit testing:
+
+- The immutable model does not change throughout the lifetime of the view model.
+- Everything needed by the view model is provided at initialization.
+- More complex view models are provided dependencies via the `Context`, which can be mocked, stubbed, or faked in testing.
+
+Here is the full `SongViewModel` from the iTunes Search example:
 
 ```swift
 
@@ -247,37 +269,39 @@ public struct SongViewModel: ViewModel {
 }
 ```
 
-- [ ] TODO for @wkiefer 
-
-Before we learn about handling user interaction, let's finish the end-to-end display.
+Before we learn about how View Models respond to and act upon user interaction, let's finish the end-to-end display of our `Song`.
 
 ### `View`
 
-- [ ] TODO for @wkiefer
+Unlike view models, `View` classes
 
 ```swift
-final class SongView: UIView, View {
+public final class SongView: UIView, View {
 
   public func bindToViewModel(_ viewModel: ViewModel) {
-    let song: SongViewModel = viewModel.typedViewModel()
+    let songVM: SongViewModel = viewModel.typedViewModel()
+    self.songVM = songVM
     
-    nameLabel.text = song.name
-    descriptionLabel.text = song.description
-    durationLabel.text = song.duration
+    nameLabel.text = songVM.name
+    descriptionLabel.text = songVM.description
+    durationLabel.text = songVM.duration
     
-    if let artwork = song.artwork {
+    if let artwork = songVM.artwork {
       // Rudimentary image fetch - your app would likely
       // have something better.
       URLSession.shared.imageTask(with: artwork, completionHandler: { [weak self] (image, error) in
-        if let image = image, artwork == self?.song?.artwork {
+        if let image = image, artwork == self?.songVM?.artwork {
           self?.imageView.image = image
         }
       }).resume()
     } else {
       imageView.image = nil
     }
-    self.song = song
   }
+}
+
+public var viewModel: ViewModel? {
+    return songVM
 }
 ```
 
@@ -319,6 +343,9 @@ extension Song: ViewModelConvertible {
 }
 ```
 
+- [ ] alternative around a specific binding
+
+
 ```swift
 struct AppViewBindingProvider: ViewBindingProvider {
 
@@ -337,6 +364,8 @@ struct AppViewBindingProvider: ViewBindingProvider {
     }
   }
 ```
+
+- [ ] maybe add a note about a strongly-typed initializer
 
 ## `ModelCollection`
 
