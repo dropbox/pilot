@@ -55,6 +55,11 @@ open class CollectionViewController: ModelCollectionViewController, CollectionVi
         didSet {
             guard isViewLoaded else { return }
             collectionView.collectionViewLayout = layout
+            if #available(OSX 10.13, *) {
+                if let contentSize = collectionView.collectionViewLayout?.collectionViewContentSize {
+                    collectionView.setFrameSize(contentSize)
+                }
+            }
         }
     }
 
