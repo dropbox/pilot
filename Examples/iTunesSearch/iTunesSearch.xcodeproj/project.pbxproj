@@ -44,8 +44,6 @@
 		A45F44FB1E5271D6001C947F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A45F44D31E5271D6001C947F /* Assets.xcassets */; };
 		A49C31FC1E57B20700416296 /* SongViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49C31FB1E57B20700416296 /* SongViewModelTests.swift */; };
 		A49C31FD1E57B20700416296 /* SongViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49C31FB1E57B20700416296 /* SongViewModelTests.swift */; };
-		A4ED44791E54BEDD00DEF227 /* ModelSerialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4ED44781E54BEDD00DEF227 /* ModelSerialization.swift */; };
-		A4ED447A1E54BEDD00DEF227 /* ModelSerialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4ED44781E54BEDD00DEF227 /* ModelSerialization.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -182,7 +180,6 @@
 		A45F44F11E5271D6001C947F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		A45F44F31E5271D6001C947F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A49C31FB1E57B20700416296 /* SongViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SongViewModelTests.swift; path = SharedTests/SongViewModelTests.swift; sourceTree = "<group>"; };
-		A4ED44781E54BEDD00DEF227 /* ModelSerialization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModelSerialization.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -302,7 +299,6 @@
 				A45F44D31E5271D6001C947F /* Assets.xcassets */,
 				A4553DEA1E53B9EB00B99345 /* MediaSearchModelCollection.swift */,
 				A4553D8C1E5277CF00B99345 /* Models.swift */,
-				A4ED44781E54BEDD00DEF227 /* ModelSerialization.swift */,
 				A4553D891E5276F300B99345 /* SearchService.swift */,
 				A437EDC01E5791F700F67B37 /* ViewModel */,
 			);
@@ -607,7 +603,6 @@
 			files = (
 				A4553E0E1E53CD6800B99345 /* TelevisionEpisodeView.swift in Sources */,
 				A4553E071E53CD2100B99345 /* TelevisionEpisodeViewModel.swift in Sources */,
-				A4ED44791E54BEDD00DEF227 /* ModelSerialization.swift in Sources */,
 				A45F44DE1E5271D6001C947F /* MediaSearchViewController.swift in Sources */,
 				A4553DE71E53A7DA00B99345 /* WebViewController.swift in Sources */,
 				A437EDBC1E57860300F67B37 /* PodcastView.swift in Sources */,
@@ -634,7 +629,6 @@
 				A4553D8B1E5276F300B99345 /* SearchService.swift in Sources */,
 				A4553E081E53CD2100B99345 /* TelevisionEpisodeViewModel.swift in Sources */,
 				A437EDBF1E57874F00F67B37 /* PodcastViewModel.swift in Sources */,
-				A4ED447A1E54BEDD00DEF227 /* ModelSerialization.swift in Sources */,
 				A45F44ED1E5271D6001C947F /* AppDelegate.swift in Sources */,
 				A4553D8E1E5277CF00B99345 /* Models.swift in Sources */,
 				A4553DD91E5378A500B99345 /* SongViewModel.swift in Sources */,
