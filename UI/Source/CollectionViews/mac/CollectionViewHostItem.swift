@@ -38,21 +38,24 @@ public final class CollectionViewHostItem: NSCollectionViewItem {
                 theVC.view.translatesAutoresizingMaskIntoConstraints = false
                 theVC.view.constrain(edgesEqualToView: view)
             }
-            hostedView?.selected = isSelected
+
+            // Preserve selection and highlight state across hostedView set.
+            hostedView?.selected = oldValue?.selected ?? false
+            hostedView?.highlightStyle = oldValue?.highlightStyle ?? .none
+
+            // Preserve cachedLayoutAttributes across hostedView set.
             if let attribs = cachedLayoutAttributes, let cvt = hostedView as? CollectionSupportingView {
                 cvt.apply(attribs)
             }
+
             menuTrackingCookie += 1
         }
     }
 
+    /// Mapped to `hostedView?.highlightStyle`.
     public var highlightStyle: ViewHighlightStyle {
-        get {
-            return (hostedView?.highlightStyle ?? .none)!
-        }
-        set {
-            hostedView?.highlightStyle = newValue
-        }
+        get { return hostedView?.highlightStyle ?? .none }
+        set { hostedView?.highlightStyle = newValue }
     }
 
     // MARK: NSViewController
@@ -85,16 +88,16 @@ public final class CollectionViewHostItem: NSCollectionViewItem {
         }
     }
 
+    /// Mapped to `hostedView?.isSelected`.
     public override var isSelected: Bool {
-        didSet {
-            hostedView?.selected = isSelected
-        }
+        get { return hostedView?.selected ?? false }
+        set { hostedView?.selected = newValue }
     }
 
+    /// Mapped to `hostedView?.highlightStyle`.
     public override var highlightState: NSCollectionViewItem.HighlightState {
-        didSet {
-            hostedView?.highlightStyle = highlightState.style
-        }
+        get { return hostedView?.highlightStyle.state ?? .none }
+        set { hostedView?.highlightStyle = newValue.style }
     }
 
     // MARK: Internal
@@ -117,6 +120,21 @@ extension NSCollectionViewItem.HighlightState {
             return .deselection
         case .asDropTarget:
             return .drop
+        }
+    }
+}
+
+extension ViewHighlightStyle {
+    fileprivate var state: NSCollectionViewItem.HighlightState {
+        switch self {
+        case .none:
+            return .none
+        case .selection, .contextMenu:
+            return .forSelection
+        case .deselection:
+            return .forDeselection
+        case .drop:
+            return .asDropTarget
         }
     }
 }
