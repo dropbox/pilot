@@ -242,7 +242,7 @@ open class CollectionViewController: ModelCollectionViewController, CollectionVi
 
         let cookie = item.menuTrackingCookie
 
-        NotificationCenter.default.addObserver(
+        menuNotificationObserver = NotificationCenter.default.addObserver(
             forName: NSMenu.didEndTrackingNotification,
             object: menu,
             queue: OperationQueue.main) { [weak item] _ in
