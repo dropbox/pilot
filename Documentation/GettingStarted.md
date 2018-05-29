@@ -343,7 +343,7 @@ extension Song: ViewModelConvertible {
 }
 ```
 
-- [ ] alternative around a specific binding
+- [ ] TODO for @wkiefer. alternative around a specific binding
 
 
 ```swift
@@ -365,7 +365,7 @@ struct AppViewBindingProvider: ViewBindingProvider {
   }
 ```
 
-- [ ] maybe add a note about a strongly-typed initializer
+- [ ] TODO for @wkiefer. maybe add a note about a strongly-typed initializer
 
 ## `ModelCollection`
 
@@ -375,8 +375,7 @@ struct AppViewBindingProvider: ViewBindingProvider {
 
 ## PilotUI Bindings
 
-- [ ] TODO for @wkiefer
-    - collection view controller
+- [ ] TODO for @wkiefer. collection view controller
 
 ## User Interaction
 
@@ -385,18 +384,14 @@ struct AppViewBindingProvider: ViewBindingProvider {
 ## `Action`
 
 - [ ] TODO for @wkiefer
-    - think redux
 
 ## `Context`
 
-- [ ] TODO for @wkiefer
-    - providing context and acting as a responder chain
+- [ ] TODO for @wkiefer. providing context and acting as a responder chain
 
 
 ## Future Work
 
-- [ ] TODO for @wkiefer
-    - using a ViewModel as the core VC logic, making that easier
-    - formalizing the store
+- [ ] TODO for @wkiefer. using a ViewModel as the core VC logic, making that easier. formalizing the store
 
 
