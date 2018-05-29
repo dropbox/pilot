@@ -35,7 +35,7 @@ Features may shift slightly during the flight, depending on feedback and request
 
 ### Future Legs
 
-- [ ] `View` adds a `VieWModel` associated type for more strongly-typed bindings (pending Swift generics changes).
+- [ ] `View` adds a `ViewModel` associated type for more strongly-typed bindings (pending Swift generics changes).
 - [ ] Android support (pending [Swift](https://github.com/apple/swift) & [CoreLibs](https://github.com/apple/swift-corelibs-foundation) support).
 - [ ] Android bindings.
 - [ ] Windows support (pending [Swift](https://github.com/apple/swift) & [CoreLibs](https://github.com/apple/swift-corelibs-foundation) support).

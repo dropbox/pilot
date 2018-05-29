@@ -23,8 +23,8 @@ Otherwise, please see type documentation and let us know if anything is unclear.
 
 ## Requirements
 
-- Xcode 8.2
-- Swift 3.0
+- Xcode 9.2
+- Swift 4.0
 - iOS 9.0+ / macOS 10.11+
 
 ## Installation
