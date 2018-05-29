@@ -55,6 +55,13 @@ open class CollectionViewController: ModelCollectionViewController, CollectionVi
         didSet {
             guard isViewLoaded else { return }
             collectionView.collectionViewLayout = layout
+            // Workaround for a 10.13 bug where the NSCollectionView frame is not updated when it's layout is changed.
+            // See https://stackoverflow.com/questions/46433652/nscollectionview-does-not-scroll-items-past-initial-visible-rect?rq=1
+            if #available(OSX 10.13, *) {
+                if let contentSize = collectionView.collectionViewLayout?.collectionViewContentSize {
+                    collectionView.setFrameSize(contentSize)
+                }
+            }
         }
     }
 
@@ -235,7 +242,7 @@ open class CollectionViewController: ModelCollectionViewController, CollectionVi
 
         let cookie = item.menuTrackingCookie
 
-        NotificationCenter.default.addObserver(
+        menuNotificationObserver = NotificationCenter.default.addObserver(
             forName: NSMenu.didEndTrackingNotification,
             object: menu,
             queue: OperationQueue.main) { [weak item] _ in
