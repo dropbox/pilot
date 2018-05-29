@@ -49,3 +49,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     private let context = Context()
     private var contextObserver: Observer?
 }
+
+// Temporary until Xcode9.3 is baseline.
+#if !swift(>=4.1)
+extension Sequence {
+    internal func compactMap<ElementOfResult>(
+        _ transform: (Self.Element) throws -> ElementOfResult?
+        ) rethrows -> [ElementOfResult] {
+            return try flatMap(transform)
+    }
+}
+#endif
