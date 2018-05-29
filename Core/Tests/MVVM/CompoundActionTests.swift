@@ -1,6 +1,18 @@
 @testable import Pilot
 import XCTest
 
+import Foundation
+
+#if !swift(>=4.1)
+extension Sequence {
+    private func compactMap<ElementOfResult>(
+        _ transform: (Self.Element) throws -> ElementOfResult?
+    ) rethrows -> [ElementOfResult] {
+        return try flatMap(transform)
+    }
+}
+#endif
+
 class CompoundActionTests: XCTestCase {
 
     struct StubAction: Action {
@@ -55,7 +67,7 @@ class CompoundActionTests: XCTestCase {
         let s2 = StubAction()
         let subject = CompoundAction([s1])
         let result = subject.with(CompoundAction([s2]))
-        let identifiers = result.actions.flatMap { (action) -> Token? in
+        let identifiers = result.actions.compactMap { (action) -> Token? in
             if let act = action as? StubAction {
                 return act.identifier
             }
