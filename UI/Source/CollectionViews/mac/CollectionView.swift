@@ -25,25 +25,31 @@ public protocol CollectionViewDelegate: NSCollectionViewDelegate {
     /// Invoked when NSDraggingSource method of parallel signature is called.
     ///
     /// This is provided since NSCV delegate method has a corresponding function for -begin and -end functions in
-    /// NSDraggingSource, but no equivelant for -movedTo.
+    /// NSDraggingSource, but no equivalent for -movedTo.
     @objc optional func collectionView(_ collectionView: NSCollectionView, session: NSDraggingSession, movedTo: NSPoint)
 
     /// Invoked when NSDraggingDestination method of parallel signature is called.
     ///
     /// This is provided since NSCV delegate method has a corresponding function for most of the functions in
-    /// NSDraggingDestination, but is missing equivelant for -dragigngExited.
+    /// NSDraggingDestination, but is missing equivalent for -draggingEntered.
+    @objc optional func collectionView(_ collectionView: NSCollectionView, draggingEntered: NSDraggingInfo?)
+
+    /// Invoked when NSDraggingDestination method of parallel signature is called.
+    ///
+    /// This is provided since NSCV delegate method has a corresponding function for most of the functions in
+    /// NSDraggingDestination, but is missing equivalent for -draggingExited.
     @objc optional func collectionView(_ collectionView: NSCollectionView, draggingExited: NSDraggingInfo?)
 
     /// Invoked when NSDraggingDestination method of parallel signature is called.
     ///
     /// This is provided since NSCV delegate method has a corresponding function for most of the functions in
-    /// NSDraggingDestination, but is missing equivelant for -concludeDragOperation.
+    /// NSDraggingDestination, but is missing equivalent for -concludeDragOperation.
     @objc optional func collectionView(_ collectionView: NSCollectionView, concludeDragOperation: NSDraggingInfo?)
 
     /// Invoked when NSDraggingDestination method of parallel signature is called.
     ///
     /// This is provided since NSCV delegate method has a corresponding function for most of the functions in
-    /// NSDraggingDestination, but is missing equivelant for -draggingEnded.
+    /// NSDraggingDestination, but is missing equivalent for -draggingEnded.
     @objc optional func collectionView(_ collectionView: NSCollectionView, draggingEnded: NSDraggingInfo)
 
     /// Invoked when an arrow key goes off the end of a collection view. Delegate may respond by changing the responder
@@ -155,6 +161,11 @@ public final class CollectionView: NSCollectionView {
     }
 
     // MARK: NSDraggingDestination
+
+    public override func draggingEntered(_ sender: NSDraggingInfo) -> NSDragOperation {
+        internalDelegate?.collectionView?(self, draggingEntered: sender)
+        return super.draggingEntered(sender)
+    }
 
     public override func draggingExited(_ sender: NSDraggingInfo?) {
         super.draggingExited(sender)
