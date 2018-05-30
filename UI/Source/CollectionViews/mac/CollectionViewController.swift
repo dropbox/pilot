@@ -75,6 +75,13 @@ open class CollectionViewController: ModelCollectionViewController, CollectionVi
     /// Read-only access to the underlying collection view.
     open let collectionView: CollectionView = CollectionView()
 
+    /// Access to the current view model of selected items.
+    public var selectionViewModel: SelectionViewModel? {
+        guard !collectionView.selectionIndexPaths.isEmpty else { return nil }
+        let selectedModels = collectionView.selectionIndexPaths.map { model(at: $0) }
+        return modelBinder.selectionViewModel(for: selectedModels, context: context)
+    }
+
     // MARK: ModelCollectionViewController
 
     public final override func makeDocumentView() -> NSView {
@@ -144,14 +151,7 @@ open class CollectionViewController: ModelCollectionViewController, CollectionVi
     }
 
     open func collectionView(_ collectionView: NSCollectionView, menuForIndexPath indexPath: IndexPath) -> NSMenu? {
-        let selectedIndexPaths = collectionView.selectionIndexPaths.contains(indexPath) ?
-            collectionView.selectionIndexPaths : Set([indexPath])
-        let selectedModels = selectedIndexPaths.map { model(at: $0) }
-
-        guard
-            let selection = modelBinder.selectionViewModel(for: selectedModels, context: context),
-            selection.canHandleUserEvent(.secondaryClick)
-        else {
+        guard let selection = selectionViewModel, selection.canHandleUserEvent(.secondaryClick) else {
             return nil
         }
 
@@ -159,6 +159,9 @@ open class CollectionViewController: ModelCollectionViewController, CollectionVi
         let actions = selection.secondaryActions(for: .secondaryClick)
 
         if !actions.isEmpty {
+            let selectedIndexPaths = collectionView.selectionIndexPaths.contains(indexPath) ?
+                collectionView.selectionIndexPaths : Set([indexPath])
+
             let menu = NSMenu.fromSecondaryActions(actions, action: #selector(didSelectContextMenuItem(_:)))
             for indexPath in selectedIndexPaths {
                 if let item = collectionView.item(at: indexPath) as? CollectionViewHostItem {
@@ -213,19 +216,12 @@ open class CollectionViewController: ModelCollectionViewController, CollectionVi
     }
 
     private func handleUserEvent(_ event: ViewModelUserEvent) -> Bool {
-        guard let selectionViewModel = selectionViewModel() else { return false }
+        guard let selectionViewModel = selectionViewModel else { return false }
         if selectionViewModel.canHandleUserEvent(event) {
             selectionViewModel.handleUserEvent(event)
             return true
         }
         return false
-    }
-
-    private func selectionViewModel() -> SelectionViewModel? {
-        guard !collectionView.selectionIndexPaths.isEmpty else { return nil }
-        let selectedModels = collectionView.selectionIndexPaths
-            .map { dataSource.currentCollection.sections[$0.section][$0.item] }
-        return modelBinder.selectionViewModel(for: selectedModels, context: context)
     }
 
     @objc
