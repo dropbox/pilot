@@ -151,9 +151,15 @@ open class CollectionViewController: ModelCollectionViewController, CollectionVi
     }
 
     open func collectionView(_ collectionView: NSCollectionView, menuForIndexPath indexPath: IndexPath) -> NSMenu? {
-        guard let selection = selectionViewModel, selection.canHandleUserEvent(.secondaryClick) else {
-            return nil
-        }
+        // The index path for the menu may not be in the existing selection, this creates a view model if it's not.
+        guard let selection: SelectionViewModel = {
+            if collectionView.selectionIndexPaths.contains(indexPath) {
+                return selectionViewModel
+            }
+            return modelBinder.selectionViewModel(for: [model(at: indexPath)], context: context)
+        }() else { return nil }
+
+        guard selection.canHandleUserEvent(.secondaryClick) else { return nil }
 
         selection.handleUserEvent(.secondaryClick)
         let actions = selection.secondaryActions(for: .secondaryClick)
