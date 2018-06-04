@@ -185,7 +185,9 @@ public struct ModelVersionMixer {
         return ModelVersion(hash1: hash1, hash2: hash2)
     }
 
-    private var hasher = Hasher()
+    private var hasher = Hasher(internal: (0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                           0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                           0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0))
 }
 
 // MARK: ModelVersionMixer Encoder conformance
