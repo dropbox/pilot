@@ -10,6 +10,12 @@ public final class OutlineViewModelDataSource: NSObject, NSOutlineViewDataSource
         self.treeController = NestedModelCollectionTreeController(modelCollection: model)
         (self.modelBinders, self.viewBinders) = OutlineViewModelDataSource.extractBinders(columns)
         self.context = context
+
+        guard let outlineColumn = OutlineViewModelDataSource.outlineColumn(from: columns) else {
+            fatalError("Outline views require a primary outline column.")
+        }
+        outlineModelBinder = outlineColumn.modelBinder
+
         super.init()
         self.collectionObserver = treeController.observe { [weak self] in
             self?.handleTreeControllerEvent($0)
@@ -84,6 +90,22 @@ public final class OutlineViewModelDataSource: NSObject, NSOutlineViewDataSource
         return NSMenu.fromSecondaryActions(actions, action: #selector(didSelectContextMenuItem(_:)), target: self)
     }
 
+    internal func indexPaths(from rows: IndexSet) -> Set<IndexPath> {
+        guard let outlineView = outlineView else { return [] }
+        var indexPathSet: Set<IndexPath> = []
+        for row in rows {
+            if let indexPath = downcast(outlineView.item(atRow: row)) {
+                indexPathSet.insert(indexPath)
+            }
+        }
+        return indexPathSet
+    }
+
+    internal func selectionViewModel(for indexPaths: Set<IndexPath>) -> SelectionViewModel? {
+        let models = indexPaths.map { treeController.modelAtIndexPath($0) }
+        return outlineModelBinder.selectionViewModel(for: models, context: context)
+    }
+
     // MARK: Private
 
     private var collectionObserver: Observer?
@@ -91,6 +113,17 @@ public final class OutlineViewModelDataSource: NSObject, NSOutlineViewDataSource
     private let treeController: NestedModelCollectionTreeController
     private let viewBinders: [NSUserInterfaceItemIdentifier: ViewBindingProvider]
     private let modelBinders: [NSUserInterfaceItemIdentifier: ViewModelBindingProvider]
+
+    // The model binder from the `outlineTableColumn` column — used for binding in situations
+    // that aren't tied to a specific column (e.g. selection state binding).
+    private let outlineModelBinder: ViewModelBindingProvider
+
+    private static func outlineColumn(from columns: [OutlineColumnConfig]) -> OutlineColumnConfig? {
+        if let column = columns.first(where: { $0.isOutlineColumn }) {
+            return column
+        }
+        return nil
+    }
 
     /// Responsible for taking a tree controller event and turnin it into NSOutlineView updates.
     private func handleTreeControllerEvent(_ event: NestedModelCollectionTreeController.Event) {

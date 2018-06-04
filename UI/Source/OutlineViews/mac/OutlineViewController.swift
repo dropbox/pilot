@@ -25,7 +25,7 @@ public struct OutlineColumnConfig {
 ///
 /// As with CollectionViewController, subclassing should typically be only for app-specific view controlle behavior (not
 /// cell configuration).
-open class OutlineViewController: ModelCollectionViewController, NSMenuDelegate {
+open class OutlineViewController: ModelCollectionViewController, NSMenuDelegate, NSOutlineViewDelegate {
 
     /// Multi-column outline view.
     public init(
@@ -72,6 +72,18 @@ open class OutlineViewController: ModelCollectionViewController, NSMenuDelegate 
     public let outlineView: NSOutlineView
     public let dataSource: OutlineViewModelDataSource
 
+    /// Access to the current view model of selected items.
+    public var selectionViewModel: SelectionViewModel? {
+        let indexPaths = dataSource.indexPaths(from: outlineView.selectedRowIndexes)
+        return dataSource.selectionViewModel(for: indexPaths)
+    }
+
+    // MARK: NSOutlineViewDelegate
+
+    public func outlineView(_ outlineView: NSOutlineView, viewFor tableColumn: NSTableColumn?, item: Any) -> NSView? {
+        return dataSource.outlineView(outlineView, viewFor:tableColumn, item: item)
+    }
+
     // MARK: ModelCollectionViewContoller
 
     public final override func makeScrollView() -> NSScrollView {
@@ -104,7 +116,7 @@ open class OutlineViewController: ModelCollectionViewController, NSMenuDelegate 
                 message: "OutlineViewController created without an outlineTableColumn, this will disable expanding.")
         }
         outlineView.autoresizesOutlineColumn = true
-        outlineView.delegate = dataSource
+        outlineView.delegate = self
         outlineView.dataSource = dataSource
         scrollView.scrollerStyle = .overlay
         dataSource.outlineView = outlineView
