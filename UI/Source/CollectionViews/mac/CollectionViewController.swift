@@ -73,7 +73,7 @@ open class CollectionViewController: ModelCollectionViewController, CollectionVi
     }
 
     /// Read-only access to the underlying collection view.
-    open let collectionView: CollectionView = CollectionView()
+    public let collectionView: CollectionView = CollectionView()
 
     /// Access to the current view model of selected items.
     public var selectionViewModel: SelectionViewModel? {

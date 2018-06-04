@@ -72,7 +72,7 @@ public final class AnyObservableData<T>: ObservableData {
 open class ObservableVariable<T>: GenericObservable<T>, ObservableData {
     /// Construct an ObservableVariable given a value of Equatable type.
     /// This static could go away when https://bugs.swift.org/browse/SR-2892 is fixed.
-    open static func make<U: Equatable>(withEquatable initialData: U) -> ObservableVariable<U> {
+    public static func make<U: Equatable>(withEquatable initialData: U) -> ObservableVariable<U> {
         return ObservableVariable<U>(initialData: initialData, equalityCheck: (==))
     }
 
@@ -124,11 +124,11 @@ open class DerivedData<Result>: ProxyingObservable, ObservableData {
 
     // MARK: Make Equatable
 
-    open static func make<T: ObservableData, R: Equatable>(_ root: T, transform: @escaping (T.Event) -> R) -> DerivedData<R> {
+    public static func make<T: ObservableData, R: Equatable>(_ root: T, transform: @escaping (T.Event) -> R) -> DerivedData<R> {
         return DerivedData<R>(root, equalityCheck: (==), transform: transform)
     }
 
-    open static func make<A: ObservableData, B: ObservableData, R: Equatable>(_ a: A, _ b: B, transform: @escaping (A.Event, B.Event) -> R) -> DerivedData<R> {
+    public static func make<A: ObservableData, B: ObservableData, R: Equatable>(_ a: A, _ b: B, transform: @escaping (A.Event, B.Event) -> R) -> DerivedData<R> {
         return DerivedData<R>(a, b, equalityCheck: (==), transform: transform)
     }
 

@@ -99,7 +99,7 @@ open class Context: ActionSender {
     ///     MyNavigateAction().send(from: context)
     /// }
     /// ```
-    open let navigatingUserEvents: Set<ViewModelUserEvent>
+    public let navigatingUserEvents: Set<ViewModelUserEvent>
 
     /// Determines if the context indicates that the given `ViewModelUserEvent` should consititute a navigation action.
     open func shouldNavigate(for event: ViewModelUserEvent) -> Bool {

@@ -317,7 +317,7 @@ public class CollectionViewModelDataSource: NSObject, ProxyingObservable {
 
     /// Provider for collection reuse ids. This is set with a default based on the names of the
     /// ViewModel and View, but can be overridden to optimize reuse ids for a collection.
-    open let reuseIdProvider: CollectionViewCellReuseIdProvider
+    public let reuseIdProvider: CollectionViewCellReuseIdProvider
 
     // MARK: Observable
 

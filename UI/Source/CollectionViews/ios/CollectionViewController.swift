@@ -93,7 +93,7 @@ open class CollectionViewController: UIViewController, UICollectionViewDelegate 
     }
 
     /// Read-only access to the hosted `UICollectionView`.
-    open let collectionView: UICollectionView
+    public let collectionView: UICollectionView
 
     // MARK: Public Intended for subclass override
 
