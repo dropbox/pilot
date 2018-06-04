@@ -110,11 +110,6 @@ open class OutlineViewController: ModelCollectionViewController, NSMenuDelegate,
                 outlineView.outlineTableColumn = config.column
             }
         }
-        if outlineView.outlineTableColumn == nil {
-            // https://twitter.com/warrenm/status/970729145457025024
-            Log.warning(
-                message: "OutlineViewController created without an outlineTableColumn, this will disable expanding.")
-        }
         outlineView.autoresizesOutlineColumn = true
         outlineView.delegate = self
         outlineView.dataSource = dataSource

@@ -1,6 +1,8 @@
 import AppKit
 import Pilot
 
+/// Data source for `OutlineViewController`. This `NSOutlineViewDelegate` conformance is so that the view controller
+/// fowards appropriate delegate methods to this data source (allowing for VC subclasses to also see them).
 public final class OutlineViewModelDataSource: NSObject, NSOutlineViewDataSource, NSOutlineViewDelegate {
     public init(
         model: NestedModelCollection,
