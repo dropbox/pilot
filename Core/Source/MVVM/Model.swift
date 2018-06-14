@@ -59,6 +59,15 @@ public struct ModelVersion: Equatable {
     fileprivate let hash2: UInt64
 }
 
+extension ModelVersion: ExpressibleByIntegerLiteral {
+    public typealias IntegerLiteralType = Int
+
+    public init(integerLiteral value: IntegerLiteralType) {
+        self.hash1 = UInt64(bitPattern: Int64(value))
+        self.hash2 = 0
+    }
+}
+
 public func ==(lhs: ModelVersion, rhs: ModelVersion) -> Bool {
     return lhs.hash1 == rhs.hash1 && lhs.hash2 == rhs.hash2
 }

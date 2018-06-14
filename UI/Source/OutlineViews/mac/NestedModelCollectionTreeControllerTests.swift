@@ -16,16 +16,16 @@ class LazyNestedModelCollectionTreeTests: XCTestCase {
     func testCanExpand() {
         let mc: TestMC = [("A", [("A.1", nil), ("A.2", [("A.2.a", nil)])])]
         let subject = NestedModelCollectionTreeController(modelCollection: mc)
-        XCTAssert(!subject.isExpandable([0, 0]))
-        XCTAssert(subject.isExpandable([0, 1]))
+        XCTAssert(!subject.isExpandable(subject.treePathFromIndexPath([0, 0])))
+        XCTAssert(subject.isExpandable(subject.treePathFromIndexPath([0, 1])))
     }
 
     func testCountChildren() {
         let mc: TestMC = [("A", [("A.1", nil), ("A.2", [("A.2.a", nil)])])]
         let subject = NestedModelCollectionTreeController(modelCollection: mc)
-        XCTAssertEqual(subject.countOfChildNodes([]), 1)
-        XCTAssertEqual(subject.countOfChildNodes([0]), 2)
-        XCTAssertEqual(subject.countOfChildNodes([0, 0]), 0)
+        XCTAssertEqual(subject.numberOfChildren(subject.treePathFromIndexPath([])), 1)
+        XCTAssertEqual(subject.numberOfChildren(subject.treePathFromIndexPath([0])), 2)
+        XCTAssertEqual(subject.numberOfChildren(subject.treePathFromIndexPath([0, 0])), 0)
     }
 
     func testIsLazy() {
@@ -43,7 +43,7 @@ class LazyNestedModelCollectionTreeTests: XCTestCase {
         let subject = NestedModelCollectionTreeController(modelCollection: parentMC)
         let spy = TestObserver(subject)
         _ = subject.modelAtIndexPath([0, 1, 0])
-        childMC.state = .loaded([TestM("A.2.a", version: ModelVersion(UInt64(2)))])
+        childMC.state = .loaded([TestM("A.2.a", version: 2)])
         assertEqual(spy.events.first?.updated, [[0, 1, 0]])
     }
 
@@ -80,6 +80,18 @@ class LazyNestedModelCollectionTreeTests: XCTestCase {
         childMC.state = .loaded([(TestM("A.1"))])
         grandchildMC.state = .loaded([TestM("A.2.a"), TestM("A.2.b")])
         XCTAssertEqual(spy.events.count, 1)
+    }
+
+    func testMoveToSublevel() {
+        let grandchildMC: TestMC = [("A.3.1", nil)]
+        let childMC: TestMC = [("A.1", nil), ("A.2", nil), ("A.3", grandchildMC)]
+        let parentMC: TestMC = [("A", childMC)]
+        let subject = NestedModelCollectionTreeController(modelCollection: parentMC)
+        _ = subject.modelAtIndexPath([0, 0])
+        // Move A.2 to be child of A.3
+        grandchildMC.state = .loaded([TestM("A.3.1"), TestM("A.2")])
+        childMC.state = .loaded([TestM("A.1"), TestM("A.3")])
+        XCTAssertEqual(subject.modelAtIndexPath([0, 1, 0]).modelId, "A.3.1")
     }
 
     private func assertEqual<T: Equatable>(

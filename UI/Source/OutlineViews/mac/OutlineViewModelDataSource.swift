@@ -27,18 +27,19 @@ public final class OutlineViewModelDataSource: NSObject, NSOutlineViewDataSource
     public weak var outlineView: NSOutlineView?
     public let context: Context
 
+    public func model(forItem item: Any) -> Model? {
+        guard let indexPath = downcast(item) else { return nil }
+        return treeController.modelAtPath(indexPath)
+    }
+
     // MARK: NSOutlineViewDataSource
 
     public func outlineView(_ outlineView: NSOutlineView, numberOfChildrenOfItem item: Any?) -> Int {
-        return treeController.countOfChildNodes(downcast(item) ?? [])
+        return treeController.numberOfChildren(downcast(item))
     }
 
     public func outlineView(_ outlineView: NSOutlineView, child index: Int, ofItem item: Any?) -> Any {
-        if let indexPath = downcast(item) {
-            return indexPath.appending(index) as NSIndexPath
-        } else {
-            return NSIndexPath(index: index)
-        }
+        return treeController.pathForChild(index, of: downcast(item))
     }
 
     public func outlineView(_ outlineView: NSOutlineView, isItemExpandable item: Any) -> Bool {
@@ -51,7 +52,7 @@ public final class OutlineViewModelDataSource: NSObject, NSOutlineViewDataSource
     // MARK: NSOutlineViewDelegate
 
     public func outlineView(_ outlineView: NSOutlineView, viewFor tableColumn: NSTableColumn?, item: Any) -> NSView? {
-        guard let indexPath = downcast(item) else { return nil }
+        guard let path = downcast(item) else { return nil }
         guard let identifier = tableColumn?.identifier else {
             Log.error(message: "Group rows not supported by OutlineViewModelDataSource")
             return nil
@@ -61,7 +62,7 @@ public final class OutlineViewModelDataSource: NSObject, NSOutlineViewDataSource
             return nil
         }
 
-        let model = treeController.modelAtIndexPath(indexPath)
+        let model = treeController.modelAtPath(path)
         let viewModel = modelBinder.viewModel(for: model, context: context)
 
         var reuse: View?
@@ -92,19 +93,21 @@ public final class OutlineViewModelDataSource: NSObject, NSOutlineViewDataSource
         return NSMenu.fromSecondaryActions(actions, action: #selector(didSelectContextMenuItem(_:)), target: self)
     }
 
-    internal func indexPaths(from rows: IndexSet) -> Set<IndexPath> {
+    internal func paths(from rows: IndexSet) -> Set<NestedModelCollectionTreeController.TreePath> {
         guard let outlineView = outlineView else { return [] }
-        var indexPathSet: Set<IndexPath> = []
+        var pathSet: Set<NestedModelCollectionTreeController.TreePath> = []
         for row in rows {
-            if let indexPath = downcast(outlineView.item(atRow: row)) {
-                indexPathSet.insert(indexPath)
+            if let path = downcast(outlineView.item(atRow: row)) {
+                pathSet.insert(path)
             }
         }
-        return indexPathSet
+        return pathSet
     }
 
-    internal func selectionViewModel(for indexPaths: Set<IndexPath>) -> SelectionViewModel? {
-        let models = indexPaths.map { treeController.modelAtIndexPath($0) }
+    internal func selectionViewModel(
+        for paths: Set<NestedModelCollectionTreeController.TreePath>
+    ) -> SelectionViewModel? {
+        let models = paths.map { treeController.modelAtPath($0) }
         return outlineModelBinder.selectionViewModel(for: models, context: context)
     }
 
@@ -126,12 +129,14 @@ public final class OutlineViewModelDataSource: NSObject, NSOutlineViewDataSource
 
         // Group the updates based on index path of their parent, and filter out ones that are not visible.
 
-        let removedByItem = Dictionary(grouping: event.removed, by: { $0.dropLast() as IndexPath })
-            .filter({ $0.key == IndexPath() || outlineView.isItemExpanded($0.key as NSIndexPath) })
-        let addedByItem = Dictionary(grouping: event.added, by: { $0.dropLast() as IndexPath })
-            .filter({ $0.key == IndexPath() || outlineView.isItemExpanded($0.key as NSIndexPath) })
+        let isVisible: (IndexPath, [IndexPath]) -> Bool = { [treeController] (indexPath, _) in
+            if indexPath.isEmpty { return true }
+            return outlineView.isItemExpanded(treeController.treePathFromIndexPath(indexPath))
+        }
+
+        let removedByItem = Dictionary(grouping: event.removed, by: { $0.dropLast() as IndexPath }).filter(isVisible)
+        let addedByItem = Dictionary(grouping: event.added, by: { $0.dropLast() as IndexPath }).filter(isVisible)
         let updatedItems = event.updated.map { $0 as IndexPath }
-            .filter({ $0 == IndexPath() || outlineView.isItemExpanded($0.dropLast() as NSIndexPath) })
 
         guard !removedByItem.isEmpty || !addedByItem.isEmpty || !updatedItems.isEmpty else {
             return
@@ -142,35 +147,37 @@ public final class OutlineViewModelDataSource: NSObject, NSOutlineViewDataSource
 
         outlineView.beginUpdates()
 
-        for (item, removed) in removedByItem {
+        for (indexPath, removed) in removedByItem {
             #if swift(>=4.1)
                 let indexSet = IndexSet(removed.compactMap({ $0.last }))
             #else
                 let indexSet = IndexSet(removed.flatMap({ $0.last }))
             #endif
 
-            if item == IndexPath() {
+            if indexPath.isEmpty {
                 outlineView.removeItems(at: indexSet, inParent: nil, withAnimation: options)
             } else {
-                outlineView.removeItems(at: indexSet, inParent: item as NSIndexPath, withAnimation: options)
+                let parent = treeController.treePathFromIndexPath(indexPath)
+                outlineView.removeItems(at: indexSet, inParent: parent, withAnimation: options)
             }
         }
         
-        for (item, added) in addedByItem {
+        for (indexPath, added) in addedByItem {
             #if swift(>=4.1)
                 let indexSet = IndexSet(added.compactMap({ $0.last }))
             #else
                 let indexSet = IndexSet(added.flatMap({ $0.last }))
             #endif
-            if item == IndexPath() {
+            if indexPath.isEmpty {
                 outlineView.insertItems(at: indexSet, inParent: nil, withAnimation: options)
             } else {
-                outlineView.insertItems(at: indexSet, inParent: item as NSIndexPath, withAnimation: options)
+                let parent = treeController.treePathFromIndexPath(indexPath)
+                outlineView.insertItems(at: indexSet, inParent: parent, withAnimation: options)
             }
         }
 
         for updated in updatedItems {
-            outlineView.reloadItem(updated as NSIndexPath)
+            outlineView.reloadItem(treeController.treePathFromIndexPath(updated))
         }
 
         outlineView.endUpdates()
@@ -185,11 +192,10 @@ public final class OutlineViewModelDataSource: NSObject, NSOutlineViewDataSource
         action.send(from: context)
     }
 
-    private func downcast(_ item: Any?) -> IndexPath? {
-        if let item = item as? NSIndexPath {
-            return item as IndexPath
-        }
-        if item != nil {
+    private func downcast(_ item: Any?) -> NestedModelCollectionTreeController.TreePath? {
+        if let item = item as? NestedModelCollectionTreeController.TreePath {
+            return item
+        } else if item != nil {
             Log.fatal(message: "Unexpected item returned from NSOutlineView \(String(reflecting: item))")
         }
         return nil
