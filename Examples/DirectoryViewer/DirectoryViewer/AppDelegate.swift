@@ -15,6 +15,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             url: FileManager.default.homeDirectoryForCurrentUser,
             context: rootContext)
         */
+
         window.contentViewController = DirectoryCollectionViewController(
             url: FileManager.default.homeDirectoryForCurrentUser,
             context: rootContext)

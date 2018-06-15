@@ -74,8 +74,7 @@ open class OutlineViewController: ModelCollectionViewController, NSMenuDelegate,
 
     /// Access to the current view model of selected items.
     public var selectionViewModel: SelectionViewModel? {
-        let indexPaths = dataSource.indexPaths(from: outlineView.selectedRowIndexes)
-        return dataSource.selectionViewModel(for: indexPaths)
+        return dataSource.selectionViewModel(for: dataSource.paths(from: outlineView.selectedRowIndexes))
     }
 
     // MARK: NSOutlineViewDelegate
