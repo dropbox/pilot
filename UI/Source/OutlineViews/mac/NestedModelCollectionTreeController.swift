@@ -121,7 +121,9 @@ internal final class NestedModelCollectionTreeController: ProxyingObservable {
             let nextIndex = path.removeFirst()
             let nextModelId = node.modelCollection.models[nextIndex].modelId
             result = result.appending(nextModelId)
-            node = node.findOrCreateNode(TreePath(components: [nextModelId]))
+            if !path.isEmpty {
+                node = node.findOrCreateNode(TreePath(components: [nextModelId]))
+            }
         }
         return result
     }

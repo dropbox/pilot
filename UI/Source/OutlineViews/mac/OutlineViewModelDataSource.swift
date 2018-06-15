@@ -136,7 +136,7 @@ public final class OutlineViewModelDataSource: NSObject, NSOutlineViewDataSource
 
         let removedByItem = Dictionary(grouping: event.removed, by: { $0.dropLast() as IndexPath }).filter(isVisible)
         let addedByItem = Dictionary(grouping: event.added, by: { $0.dropLast() as IndexPath }).filter(isVisible)
-        let updatedItems = event.updated.map { $0 as IndexPath }
+        let updatedItems = event.updated.map({ $0 as IndexPath }).filter({ isVisible($0.dropLast(), []) })
 
         guard !removedByItem.isEmpty || !addedByItem.isEmpty || !updatedItems.isEmpty else {
             return
