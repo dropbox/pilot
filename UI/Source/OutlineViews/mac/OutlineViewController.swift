@@ -23,9 +23,14 @@ public struct OutlineColumnConfig {
 
 /// View Controller implementation to show a given `ModelCollection` in an outline view.
 ///
-/// As with CollectionViewController, subclassing should typically be only for app-specific view controlle behavior (not
-/// cell configuration).
-open class OutlineViewController: ModelCollectionViewController, NSMenuDelegate, NSOutlineViewDelegate {
+/// As with CollectionViewController, subclassing should typically be only for app-specific view controller behavior
+/// (not cell configuration).
+open class OutlineViewController:
+    ModelCollectionViewController,
+    NSMenuDelegate,
+    NSOutlineViewDataSource,
+    NSOutlineViewDelegate
+{
 
     /// Multi-column outline view.
     public init(
@@ -77,6 +82,20 @@ open class OutlineViewController: ModelCollectionViewController, NSMenuDelegate,
         return dataSource.selectionViewModel(for: dataSource.paths(from: outlineView.selectedRowIndexes))
     }
 
+    // MARK: NSOutlineViewDataSource
+
+    public func outlineView(_ outlineView: NSOutlineView, numberOfChildrenOfItem item: Any?) -> Int {
+        return dataSource.outlineView(outlineView, numberOfChildrenOfItem: item)
+    }
+
+    public func outlineView(_ outlineView: NSOutlineView, child index: Int, ofItem item: Any?) -> Any {
+        return dataSource.outlineView(outlineView, child: index, ofItem: item)
+    }
+
+    public func outlineView(_ outlineView: NSOutlineView, isItemExpandable item: Any) -> Bool {
+        return dataSource.outlineView(outlineView, isItemExpandable: item)
+    }
+
     // MARK: NSOutlineViewDelegate
 
     public func outlineView(_ outlineView: NSOutlineView, viewFor tableColumn: NSTableColumn?, item: Any) -> NSView? {
@@ -111,7 +130,7 @@ open class OutlineViewController: ModelCollectionViewController, NSMenuDelegate,
         }
         outlineView.autoresizesOutlineColumn = true
         outlineView.delegate = self
-        outlineView.dataSource = dataSource
+        outlineView.dataSource = self
         scrollView.scrollerStyle = .overlay
         dataSource.outlineView = outlineView
     }
