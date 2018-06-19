@@ -102,10 +102,6 @@ open class OutlineViewController:
         return dataSource.outlineView(outlineView, viewFor:tableColumn, item: item)
     }
 
-    internal func outlineView(_ outlineView: NSOutlineView, menuForEvent event: NSEvent) -> NSMenu? {
-        return dataSource.outlineView(outlineView, menuForEvent:event)
-    }
-
     // MARK: ModelCollectionViewContoller
 
     public final override func makeScrollView() -> NSScrollView {
@@ -144,6 +140,6 @@ open class OutlineViewController:
 
 private final class OutlineView: NSOutlineView {
     override func menu(for event: NSEvent) -> NSMenu? {
-        return (delegate as? OutlineViewController)?.outlineView(self, menuForEvent: event)
+        return (delegate as? OutlineViewController)?.dataSource.outlineView(self, menuForEvent: event)
     }
 }
