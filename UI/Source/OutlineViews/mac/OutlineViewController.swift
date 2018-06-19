@@ -140,6 +140,6 @@ open class OutlineViewController:
 
 private final class OutlineView: NSOutlineView {
     override func menu(for event: NSEvent) -> NSMenu? {
-        return (delegate as? OutlineViewModelDataSource)?.outlineView(self, menuForEvent: event)
+        return (delegate as? OutlineViewController)?.dataSource.outlineView(self, menuForEvent: event)
     }
 }
