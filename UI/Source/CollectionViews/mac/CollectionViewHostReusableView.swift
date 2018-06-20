@@ -22,7 +22,7 @@ public final class CollectionViewHostReusableView: NSView {
     public var hostedView: View? {
         willSet {
             if let view = hostedView as? NSView {
-                if let newValue = newValue as? NSView , newValue.classForCoder == view.classForCoder {
+                if let newValue = newValue as? NSView, newValue == view {
                     // NOOP: The view classes are the same, so no need to remove.
                 } else {
                     // TODO:(wkiefer) This also needs to unbind here (see TODO in the data source)
@@ -32,7 +32,7 @@ public final class CollectionViewHostReusableView: NSView {
         }
         didSet {
             // Only add the view if it isn't already added (i.e. hit the noop case in `willSet`.)
-            if let theView = hostedView as? NSView , theView.superview != self {
+            if let theView = hostedView as? NSView, theView.superview != self {
                 addSubview(theView)
                 theView.translatesAutoresizingMaskIntoConstraints = false
                 theView.constrain(edgesEqualToView: self)
