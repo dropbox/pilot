@@ -128,7 +128,7 @@ open class OutlineViewController:
                 outlineView.outlineTableColumn = config.column
             }
         }
-        outlineView.autoresizesOutlineColumn = true
+        outlineView.autoresizesOutlineColumn = false
         outlineView.delegate = self
         outlineView.dataSource = self
         scrollView.scrollerStyle = .overlay
