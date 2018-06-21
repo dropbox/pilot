@@ -115,6 +115,12 @@ open class CollectionViewController: ModelCollectionViewController, CollectionVi
         }
 
         scrollView.scrollerStyle = .overlay
+
+        let recognizer = NSClickGestureRecognizer(target: self, action: #selector(doubleClick(_:)))
+        recognizer.numberOfClicksRequired = 2
+        // Don't delay single-click waiting for double-click failure.
+        recognizer.delaysPrimaryMouseButtonEvents = false
+        collectionView.addGestureRecognizer(recognizer)
     }
 
     open override func viewWillLayout() {
@@ -269,5 +275,11 @@ open class CollectionViewController: ModelCollectionViewController, CollectionVi
     @objc
     private func copy(_ sender: Any) {
         selectedViewModel()?.handleUserEvent(.copy)
+    }
+
+    @objc
+    private func doubleClick(_ sender: Any) {
+        guard let action = selectionViewModel?.actionForUserEvent(.doubleClick) else { return }
+        action.send(from: context)
     }
 }
