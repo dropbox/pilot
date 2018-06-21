@@ -82,13 +82,14 @@ public final class OutlineViewModelDataSource: NSObject, NSOutlineViewDataSource
     internal func outlineView(_ outlineView: NSOutlineView, menuForEvent event: NSEvent) -> NSMenu? {
         guard
             let location = outlineView.superview?.convert(event.locationInWindow, from: nil),
-            let hitItem = outlineView.hitTest(location) as? View,
-            let hitViewModel = hitItem.viewModel
+            let path = downcast(outlineView.item(atRow: outlineView.row(at: location)))
         else {
             return nil
         }
+        let model = treeController.modelAtPath(path)
+        let viewModel = outlineModelBinder.viewModel(for: model, context: context)
 
-        let actions = hitViewModel.secondaryActions(for: .secondaryClick)
+        let actions = viewModel.secondaryActions(for: .secondaryClick)
         guard !actions.isEmpty else { return nil }
         return NSMenu.fromSecondaryActions(actions, action: #selector(didSelectContextMenuItem(_:)), target: self)
     }
