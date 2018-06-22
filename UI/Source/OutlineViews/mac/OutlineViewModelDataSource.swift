@@ -32,6 +32,12 @@ public final class OutlineViewModelDataSource: NSObject, NSOutlineViewDataSource
         return treeController.modelAtPath(indexPath)
     }
 
+    // Returns the depth of an item given a path
+    public func depth(forItem item: Any) -> Int? {
+        guard let indexPath = downcast(item) else { return nil }
+        return indexPath.depth
+    }
+
     // MARK: NSOutlineViewDataSource
 
     public func outlineView(_ outlineView: NSOutlineView, numberOfChildrenOfItem item: Any?) -> Int {
