@@ -27,6 +27,9 @@ public enum ViewModelUserEvent {
 
     /// Represents the user attempting to copy the view model to the pasteboard.
     case copy
+
+    /// Represents the user double clicking a target
+    case doubleClick
 }
 
 /// Simple wrapper around NSEvent.ModifierFlags to avoid importing AppKit.
@@ -74,6 +77,8 @@ extension ViewModelUserEvent: Hashable {
             return 1<<4
         case .copy:
             return 1<<5
+        case .doubleClick:
+            return 1<<6
         }
     }
 

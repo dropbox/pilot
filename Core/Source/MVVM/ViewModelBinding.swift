@@ -76,6 +76,10 @@ private struct ViewModelSelectionShim: SelectionViewModel {
 
     // MARK: ViewModelType
 
+    func actionForUserEvent(_ event: ViewModelUserEvent) -> Action? {
+        return viewModel.actionForUserEvent(event)
+    }
+
     func canHandleUserEvent(_ event: ViewModelUserEvent) -> Bool {
         return viewModel.canHandleUserEvent(event)
     }

@@ -133,9 +133,18 @@ open class OutlineViewController:
         outlineView.dataSource = self
         scrollView.scrollerStyle = .overlay
         dataSource.outlineView = outlineView
+
+        outlineView.target = self
+        outlineView.doubleAction = #selector(doubleClick(_:))
     }
 
     private let columnConfigs: [OutlineColumnConfig]
+
+    @objc
+    private func doubleClick(_ sender: AnyObject) {
+        guard let action = selectionViewModel?.actionForUserEvent(.doubleClick) else { return }
+        action.send(from: context)
+    }
 }
 
 private final class OutlineView: NSOutlineView {
