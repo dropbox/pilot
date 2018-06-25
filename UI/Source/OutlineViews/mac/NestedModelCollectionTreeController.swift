@@ -23,6 +23,12 @@ internal final class NestedModelCollectionTreeController: ProxyingObservable {
             super.init()
         }
 
+        // MARK: Public
+
+        public var depth: Int {
+            return components.count
+        }
+
         // MARK: Equatable
 
         static func ==(lhs: TreePath, rhs: TreePath) -> Bool {
