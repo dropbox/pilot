@@ -86,14 +86,27 @@ public final class OutlineViewModelDataSource: NSObject, NSOutlineViewDataSource
     // MARK: Internal
 
     internal func outlineView(_ outlineView: NSOutlineView, menuForEvent event: NSEvent) -> NSMenu? {
+        // Map the event's location to a path.
         guard
             let location = outlineView.superview?.convert(event.locationInWindow, from: nil),
             let path = downcast(outlineView.item(atRow: outlineView.row(at: location)))
         else {
             return nil
         }
-        let model = treeController.modelAtPath(path)
-        let viewModel = outlineModelBinder.viewModel(for: model, context: context)
+
+        // If the event location is inside the current selection, generate menu for the entire current selection.
+        // Otherwise, generate menu for the mapped item.
+        let viewModel: ViewModelType
+        if outlineView.selectedRowIndexes.contains(outlineView.row(at: location)) {
+            if let vm = selectionViewModel(for: Set<NestedModelCollectionTreeController.TreePath>()) {
+                viewModel = vm
+            } else {
+                return nil
+            }
+        } else {
+            let model = treeController.modelAtPath(path)
+            viewModel = outlineModelBinder.viewModel(for: model, context: context)
+        }
 
         let actions = viewModel.secondaryActions(for: .secondaryClick)
         guard !actions.isEmpty else { return nil }

@@ -28,7 +28,7 @@ open class CollectionViewController: ModelCollectionViewController, CollectionVi
     }
 
     deinit {
-        unreigsterForMenuTrackingEnd()
+        unregisterForMenuTrackingEnd()
         collectionView.delegate = nil
         collectionView.dataSource = nil
     }
@@ -157,7 +157,8 @@ open class CollectionViewController: ModelCollectionViewController, CollectionVi
     }
 
     open func collectionView(_ collectionView: NSCollectionView, menuForIndexPath indexPath: IndexPath) -> NSMenu? {
-        // The index path for the menu may not be in the existing selection, this creates a view model if it's not.
+        // If the event location is inside the current selection, generate menu for the entire current selection.
+        // Otherwise, generate menu for the mapped item.
         guard let selection: SelectionViewModel = {
             if collectionView.selectionIndexPaths.contains(indexPath) {
                 return selectionViewModel
@@ -246,7 +247,7 @@ open class CollectionViewController: ModelCollectionViewController, CollectionVi
     }
 
     private func registerForMenuTrackingEnd(_ menu: NSMenu, item: CollectionViewHostItem) {
-        unreigsterForMenuTrackingEnd()
+        unregisterForMenuTrackingEnd()
 
         let cookie = item.menuTrackingCookie
 
@@ -261,7 +262,7 @@ open class CollectionViewController: ModelCollectionViewController, CollectionVi
     }
 
     private var menuNotificationObserver: NSObjectProtocol?
-    private func unreigsterForMenuTrackingEnd() {
+    private func unregisterForMenuTrackingEnd() {
         guard let menuNotificationObserver = self.menuNotificationObserver else { return }
         NotificationCenter.default.removeObserver(menuNotificationObserver)
         self.menuNotificationObserver = nil
