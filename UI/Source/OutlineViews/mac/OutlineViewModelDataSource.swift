@@ -98,7 +98,7 @@ public final class OutlineViewModelDataSource: NSObject, NSOutlineViewDataSource
         // Otherwise, generate menu for the mapped item.
         let viewModel: ViewModelType
         if outlineView.selectedRowIndexes.contains(outlineView.row(at: location)) {
-            if let vm = selectionViewModel(for: Set<NestedModelCollectionTreeController.TreePath>()) {
+            if let vm = selectionViewModel(for: paths(from: outlineView.selectedRowIndexes)) {
                 viewModel = vm
             } else {
                 return nil
