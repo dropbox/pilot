@@ -145,6 +145,13 @@ open class OutlineViewController:
         guard let action = selectionViewModel?.actionForUserEvent(.doubleClick) else { return }
         action.send(from: context)
     }
+
+    open override func keyDown(with event: NSEvent) {
+        guard let keyCode = EventKeyCode(rawValue: event.keyCode) else { return }
+        let event = ViewModelUserEvent.keyDown(keyCode, event.modifierFlags.eventKeyModifierFlags, event.characters)
+        guard let action = selectionViewModel?.actionForUserEvent(event) else { return }
+        action.send(from: context)
+    }
 }
 
 private final class OutlineView: NSOutlineView {
