@@ -157,8 +157,18 @@ public final class OutlineViewModelDataSource: NSObject, NSOutlineViewDataSource
         let removedByItem = Dictionary(grouping: event.removed, by: { $0.dropLast() as IndexPath }).filter(isVisible)
         let addedByItem = Dictionary(grouping: event.added, by: { $0.dropLast() as IndexPath }).filter(isVisible)
         let updatedItems = event.updated.map({ $0 as IndexPath }).filter({ isVisible($0.dropLast(), []) })
+        let movedItems = event.moved
 
-        guard !removedByItem.isEmpty || !addedByItem.isEmpty || !updatedItems.isEmpty else {
+        guard !removedByItem.isEmpty || !addedByItem.isEmpty || !updatedItems.isEmpty || !movedItems.isEmpty else {
+            return
+        }
+
+        // The moveItem(at:inParent:to:inParent:) api doesn't seem to do what we want as it doesn't do a batch update on a
+        // static version list of the list. For example if you have one item, it will move that item then the next move will occur
+        // on the updated version. reloadItem(_:) also doesn't seem to fully work for our purposes. We can try to look into this a
+        // little bit further to improve it, but as a temporary workaround, just call reloadData any time we move items.
+        if !movedItems.isEmpty {
+            outlineView.reloadData()
             return
         }
 
