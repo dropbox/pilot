@@ -77,6 +77,15 @@ open class OutlineViewController:
     public let outlineView: NSOutlineView
     public let dataSource: OutlineViewModelDataSource
 
+    /// Enables mouse down on OutlineView to drag window.
+    public var windowDragEnabled: Bool = false {
+        didSet {
+            if let outlineView = outlineView as? OutlineView {
+                outlineView.windowDragEnabled = windowDragEnabled
+            }
+        }
+    }
+
     /// Access to the current view model of selected items.
     public var selectionViewModel: SelectionViewModel? {
         return dataSource.selectionViewModel(for: dataSource.paths(from: outlineView.selectedRowIndexes))
@@ -163,5 +172,11 @@ open class OutlineViewController:
 private final class OutlineView: NSOutlineView {
     override func menu(for event: NSEvent) -> NSMenu? {
         return (delegate as? OutlineViewController)?.dataSource.outlineView(self, menuForEvent: event)
+    }
+
+    public var windowDragEnabled: Bool = false
+
+    public override var mouseDownCanMoveWindow: Bool {
+        return windowDragEnabled
     }
 }
