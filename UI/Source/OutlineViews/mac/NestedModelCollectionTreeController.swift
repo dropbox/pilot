@@ -159,6 +159,7 @@ internal final class NestedModelCollectionTreeController: ProxyingObservable {
         var removed: [IndexPath]
         var added: [IndexPath]
         var updated: [IndexPath]
+        var moved: [MovedModel]
     }
 
     public final var proxiedObservable: GenericObservable<Event> { return observers }
@@ -199,11 +200,17 @@ internal final class NestedModelCollectionTreeController: ProxyingObservable {
         let removedIndexPaths = changes.removedModelPaths.map {
             indexPath.appending($0.itemIndex)
         }
+        let movedPaths = changes.movedModelPaths
+
         let modelIds = Set(modelCollection.models.map({ $0.modelId }))
         childrenCache = childrenCache.filter {
             modelIds.contains($0.key)
         }
-        let event = Event(removed: removedIndexPaths, added: addedIndexPaths, updated: updatedIndexPaths)
+        let event = Event(
+            removed: removedIndexPaths,
+            added: addedIndexPaths,
+            updated: updatedIndexPaths,
+            moved: movedPaths)
         observers.notify(event)
     }
 
