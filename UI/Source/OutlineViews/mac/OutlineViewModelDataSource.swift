@@ -163,6 +163,15 @@ public final class OutlineViewModelDataSource: NSObject, NSOutlineViewDataSource
             return
         }
 
+        // The moveItem(at:inParent:to:inParent:) api doesn't seem to do what we want as it doesn't do a batch update on a
+        // static version list of the list. For example if you have one item, it will move that item then the next move will occur
+        // on the updated version. reloadItem(_:) also doesn't seem to fully work for our purposes. We can try to look into this a
+        // little bit further to improve it, but as a temporary workaround, just call reloadData any time we move items.
+        if !movedItems.isEmpty {
+            outlineView.reloadData()
+            return
+        }
+
         // TODO:(danielh) Configuaration options for animations.
         let options = NSTableView.AnimationOptions.effectFade
 
@@ -199,14 +208,6 @@ public final class OutlineViewModelDataSource: NSObject, NSOutlineViewDataSource
 
         for updated in updatedItems {
             outlineView.reloadItem(treeController.treePathFromIndexPath(updated))
-        }
-
-        // The moveItem(at:inParent:to:inParent:) api doesn't seem to do what we want as it doesn't do a batch update on a
-        // static version list of the list. For example if you have one item, it will move that item then the next move will occur
-        // on the updated version. reloadItem(_:) also doesn't seem to fully work for our purposes. We can try to look into this a
-        // little bit further to improve it, but as a temporary workaround, just call reloadData any time we move items.
-        if !movedItems.isEmpty {
-            outlineView.reloadData()
         }
 
         outlineView.endUpdates()
