@@ -72,7 +72,7 @@ public typealias CollectionEventObserverToken = Token
 /// private let observers = ObserverList<CollectionEvent>()
 /// ```
 public protocol ProxyingCollectionEventObservable {
-    var proxiedObservable: GenericObservable<CollectionEvent> { get }
+    var proxiedObservable: Observable<CollectionEvent> { get }
 }
 
 /// The default CollectionEventObservable implementations.

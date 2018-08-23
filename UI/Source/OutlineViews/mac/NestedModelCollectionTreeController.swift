@@ -162,7 +162,7 @@ internal final class NestedModelCollectionTreeController: ProxyingObservable {
         var moved: [MovedModel]
     }
 
-    public final var proxiedObservable: GenericObservable<Event> { return observers }
+    public final var proxiedObservable: Observable<Event> { return observers }
     private final let observers: ObserverList<Event>
 
     // MARK: Private

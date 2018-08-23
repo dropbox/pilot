@@ -163,7 +163,7 @@ private final class TestMC: NestedModelCollection, ProxyingCollectionEventObserv
         return expand(model)
     }
 
-    public final var proxiedObservable: GenericObservable<CollectionEvent> { return observers }
+    public final var proxiedObservable: Observable<CollectionEvent> { return observers }
     private final let observers = ObserverList<CollectionEvent>()
 }
 

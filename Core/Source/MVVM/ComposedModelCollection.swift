@@ -63,7 +63,7 @@ public final class ComposedModelCollection: SectionedModelCollection, ProxyingCo
 
     // MARK: CollectionEventObservable
 
-    public final var proxiedObservable: GenericObservable<CollectionEvent> { return observers }
+    public final var proxiedObservable: Observable<CollectionEvent> { return observers }
     private final let observers = ObserverList<CollectionEvent>()
 
     // MARK: Private
