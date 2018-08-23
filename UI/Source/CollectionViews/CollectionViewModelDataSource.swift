@@ -319,7 +319,7 @@ public class CollectionViewModelDataSource: NSObject, ProxyingObservable {
     /// ViewModel and View, but can be overridden to optimize reuse ids for a collection.
     public let reuseIdProvider: CollectionViewCellReuseIdProvider
 
-    // MARK: Observable
+    // MARK: ObservableType
 
     public var proxiedObservable: GenericObservable<Event> { return observers }
     private let observers = ObserverList<Event>()

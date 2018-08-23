@@ -150,7 +150,7 @@ internal final class NestedModelCollectionTreeController: ProxyingObservable {
         return lhs.indexPath == rhs.indexPath && lhs.modelCollection.collectionId == rhs.modelCollection.collectionId
     }
 
-    // MARK: Observable
+    // MARK: ObservableType
 
     /// Description of mutations to model collection tree.
     ///
