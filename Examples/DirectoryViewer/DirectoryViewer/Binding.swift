@@ -6,7 +6,7 @@ public struct DirectoryModelBinder: ViewModelBindingProvider {
     }
 
     public func selectionViewModel(for models: [Model], context: Context) -> SelectionViewModel? {
-        let files: [FileViewModel] = models.compactMap { (file) in
+        let files: [FileViewModel] = models.flatMap { (file) in
             (file as? File)?.viewModelWithContext(context) as? FileViewModel
         }
         return FileSelectionViewModel(viewModels: files, context: context)
