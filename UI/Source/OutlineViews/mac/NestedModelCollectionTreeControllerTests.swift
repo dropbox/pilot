@@ -113,7 +113,7 @@ class LazyNestedModelCollectionTreeTests: XCTestCase {
 
 private final class TestObserver {
 
-    init<T: Observable>(_ subject: T) where T.Event == NestedModelCollectionTreeController.Event {
+    init<T: ObservableType>(_ subject: T) where T.Event == NestedModelCollectionTreeController.Event {
         self.observer = subject.observe({ [weak self] in
             self?.events.append($0)
         })
@@ -163,7 +163,7 @@ private final class TestMC: NestedModelCollection, ProxyingCollectionEventObserv
         return expand(model)
     }
 
-    public final var proxiedObservable: GenericObservable<CollectionEvent> { return observers }
+    public final var proxiedObservable: Observable<CollectionEvent> { return observers }
     private final let observers = ObserverList<CollectionEvent>()
 }
 

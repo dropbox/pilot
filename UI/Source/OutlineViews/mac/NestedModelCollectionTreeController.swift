@@ -150,7 +150,7 @@ internal final class NestedModelCollectionTreeController: ProxyingObservable {
         return lhs.indexPath == rhs.indexPath && lhs.modelCollection.collectionId == rhs.modelCollection.collectionId
     }
 
-    // MARK: Observable
+    // MARK: ObservableType
 
     /// Description of mutations to model collection tree.
     ///
@@ -162,7 +162,7 @@ internal final class NestedModelCollectionTreeController: ProxyingObservable {
         var moved: [MovedModel]
     }
 
-    public final var proxiedObservable: GenericObservable<Event> { return observers }
+    public final var proxiedObservable: Observable<Event> { return observers }
     private final let observers: ObserverList<Event>
 
     // MARK: Private

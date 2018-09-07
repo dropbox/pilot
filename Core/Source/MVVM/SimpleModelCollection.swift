@@ -38,7 +38,7 @@ open class SimpleModelCollection: ModelCollection, ProxyingCollectionEventObserv
 
     // MARK: CollectionEventObservable
 
-    public final var proxiedObservable: GenericObservable<CollectionEvent> { return observers }
+    public final var proxiedObservable: Observable<CollectionEvent> { return observers }
     private final let observers = ObserverList<CollectionEvent>()
 }
 
@@ -95,6 +95,6 @@ open class SimpleSectionedModelCollection: SectionedModelCollection, ProxyingCol
 
     // MARK: CollectionEventObservable
 
-    public final var proxiedObservable: GenericObservable<CollectionEvent> { return observers }
+    public final var proxiedObservable: Observable<CollectionEvent> { return observers }
     private final let observers = ObserverList<CollectionEvent>()
 }

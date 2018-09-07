@@ -51,11 +51,11 @@ public enum CollectionEvent {
 
 // MARK: Observing
 
-/// There are many similarities between this code and the code around Observable.  The
-/// primary distinction is that Observable has an associated Event type, where CollectionEventObservable
-/// is hard-coded to observe CollectionEvents.  Because Observable has an associated type,
+/// There are many similarities between this code and the code around ObservableType.  The
+/// primary distinction is that ObservableType has an associated Event type, where CollectionEventObservable
+/// is hard-coded to observe CollectionEvents.  Because ObservableType has an associated type,
 /// it cannot be used as a type, only as a generic constraint.  If this restriction is lifted in a future
-/// version of Swift, CollectionEventObservable can be replaced with Observable.
+/// version of Swift, CollectionEventObservable can be replaced with ObservableType.
 
 /// Observer defined as a closure. Type-erasing in this closure allows the actual observer to be a value type or
 /// reference type with a captured weak self.
@@ -72,7 +72,7 @@ public typealias CollectionEventObserverToken = Token
 /// private let observers = ObserverList<CollectionEvent>()
 /// ```
 public protocol ProxyingCollectionEventObservable {
-    var proxiedObservable: GenericObservable<CollectionEvent> { get }
+    var proxiedObservable: Observable<CollectionEvent> { get }
 }
 
 /// The default CollectionEventObservable implementations.
@@ -179,7 +179,7 @@ public struct BlockModelProvider: IndexedModelProvider {
 /// PilotUI framework.
 public protocol ModelCollection: class {
 
-    // MARK: Observable
+    // MARK: ObservableType
 
     func addObserver(_ observer: @escaping  CollectionEventObserver) -> CollectionEventObserverToken
     func removeObserver(with token: CollectionEventObserverToken)

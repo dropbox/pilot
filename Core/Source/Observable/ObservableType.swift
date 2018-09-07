@@ -5,7 +5,7 @@ public typealias ObserverToken = Token
 /// Protocol for any object that is observable for a given associated `Event` type (typically an enum with associated
 /// data).
 /// TODO:(wkiefer) Expand docs here - explain benefit of block-based observer which allows non-class observation.
-public protocol Observable: class {
+public protocol ObservableType: class {
     associatedtype Event
 
     /// Adds the given observer to the target type. A `ObserverToken` is returned and must be used to stop observation
@@ -23,7 +23,7 @@ public protocol Observable: class {
 /// See https://gist.github.com/chadaustin/74786d6ca3c34bba8b33af381606b207 for what
 /// this might look like.
 /// NOTE: does not expose the notifyObserversOfEvent method because this is read-only.
-open class GenericObservable<Event>: Observable {
+open class Observable<Event>: ObservableType {
     public init() {}
     open func addObserver(_ observer: @escaping (Event) -> Void) -> ObserverToken {
         Log.fatal(message: "addObserver must be overridden")
@@ -46,8 +46,8 @@ open class GenericObservable<Event>: Observable {
 /// Implementing ProxyingObservable gives your class `addObserver`, `removeObserver`, and
 /// `observe` for free.
 /// The implementation should call `observers.notify` to fire an event to its observers.
-public protocol ProxyingObservable: Observable {
-    var proxiedObservable: GenericObservable<Event> { get }
+public protocol ProxyingObservable: ObservableType {
+    var proxiedObservable: Observable<Event> { get }
 }
 
 /// The default Observable implementations on ProxyingObservable.
@@ -62,7 +62,7 @@ public extension ProxyingObservable {
 
 /// A concrete, writeable implementation of ObserverList and thus Observer.
 /// Use the `notify` method to fire an event to all of the observers.
-public final class ObserverList<Event>: GenericObservable<Event> {
+public final class ObserverList<Event>: Observable<Event> {
     public override init() {
         self.observers = [:]
     }
@@ -121,7 +121,7 @@ public final class Observer {
     private let remover: () -> Void
 }
 
-public extension Observable {
+public extension ObservableType {
 
     public func observe(_ handler: @escaping (Event) -> Void) -> Observer {
         let token = addObserver(handler)

@@ -1,6 +1,11 @@
+#if !canImport(RxSwift)
+
+// Note: Exclude ObservableData & AnyObservableData to avoid confusion with RxSwift's comparable features with different
+// terminology.
+
 /// Represents a value whose changes can be observed.  Use the standard `Observable`
 /// APIs to observe changes.
-public protocol ObservableData: Observable {
+public protocol ObservableData: ObservableType {
     var data: Event { get }
 }
 
@@ -69,7 +74,7 @@ public final class AnyObservableData<T>: ObservableData {
 /// previous value).  This makes ObservableVariable more useful for value types, since mutations to a
 /// reference type won't trigger a change notification.  That said, it's okay to use ObservableVariable
 /// with reference types.
-open class ObservableVariable<T>: GenericObservable<T>, ObservableData {
+open class ObservableVariable<T>: Observable<T>, ObservableData {
     /// Construct an ObservableVariable given a value of Equatable type.
     /// This static could go away when https://bugs.swift.org/browse/SR-2892 is fixed.
     public static func make<U: Equatable>(withEquatable initialData: U) -> ObservableVariable<U> {
@@ -194,7 +199,7 @@ open class DerivedData<Result>: ProxyingObservable, ObservableData {
 
     // MARK: ProxyingObservable
 
-    open var proxiedObservable: GenericObservable<Result> { return observers }
+    open var proxiedObservable: Observable<Result> { return observers }
     private let observers = ObserverList<Result>()
 
     // MARK: ObservableData
@@ -224,3 +229,5 @@ public extension ObservableData {
         return observer
     }
 }
+
+#endif // !RxSwift

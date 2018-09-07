@@ -50,7 +50,7 @@ public final class CurrentCollection: SectionedModelCollection, ProxyingCollecti
         return sectionedState.flattenedState()
     }
 
-    public var proxiedObservable: GenericObservable<CollectionEvent> { return observers }
+    public var proxiedObservable: Observable<CollectionEvent> { return observers }
     private let observers = ObserverList<CollectionEvent>()
 
     // MARK: SectionedModelCollection
@@ -319,9 +319,9 @@ public class CollectionViewModelDataSource: NSObject, ProxyingObservable {
     /// ViewModel and View, but can be overridden to optimize reuse ids for a collection.
     public let reuseIdProvider: CollectionViewCellReuseIdProvider
 
-    // MARK: Observable
+    // MARK: ObservableType
 
-    public var proxiedObservable: GenericObservable<Event> { return observers }
+    public var proxiedObservable: Observable<Event> { return observers }
     private let observers = ObserverList<Event>()
 
     // MARK: Private

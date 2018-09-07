@@ -1,3 +1,5 @@
+#if !canImport(RxSwift)
+
 @testable import Pilot
 import XCTest
 
@@ -42,3 +44,5 @@ class ObservableTests: XCTestCase {
         XCTAssertEqual(["hello", "world"], events)
     }
 }
+
+#endif // !RxSwift

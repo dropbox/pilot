@@ -49,7 +49,7 @@ public final class ScoredModelCollection: ModelCollection, ProxyingCollectionEve
 
     // MARK: CollectionEventObservable
 
-    public var proxiedObservable: GenericObservable<CollectionEvent> { return observers }
+    public var proxiedObservable: Observable<CollectionEvent> { return observers }
     private let observers = ObserverList<CollectionEvent>()
 
     // MARK: Private
