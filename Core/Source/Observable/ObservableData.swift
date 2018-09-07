@@ -1,7 +1,7 @@
-#if canImport(RxSwift)
-// Don't include ObservableData & AnyObservableData to avoid confusion with RxSwift's comparable features with different
+#if !canImport(RxSwift)
+
+// Note: Exclude ObservableData & AnyObservableData to avoid confusion with RxSwift's comparable features with different
 // terminology.
-#else
 
 /// Represents a value whose changes can be observed.  Use the standard `Observable`
 /// APIs to observe changes.
@@ -229,4 +229,5 @@ public extension ObservableData {
         return observer
     }
 }
+
 #endif // !RxSwift

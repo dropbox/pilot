@@ -1,6 +1,5 @@
-#if canImport(RxSwift)
-// Don't test ObservableVariable when missing.
-#else
+#if !canImport(RxSwift)
+
 @testable import Pilot
 import XCTest
 
@@ -45,4 +44,5 @@ class ObservableTests: XCTestCase {
         XCTAssertEqual(["hello", "world"], events)
     }
 }
-#endif
+
+#endif // !RxSwift
