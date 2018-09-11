@@ -159,6 +159,8 @@
 		A49431362143134B001268E0 /* ObservableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49431342143134B001268E0 /* ObservableTests.swift */; };
 		A49431382143136A001268E0 /* ObservableData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49431372143136A001268E0 /* ObservableData.swift */; };
 		A49431392143136A001268E0 /* ObservableData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49431372143136A001268E0 /* ObservableData.swift */; };
+		A4A0D540214895AD00142E00 /* ModelCollection+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4A0D53F214895AD00142E00 /* ModelCollection+Rx.swift */; };
+		A4A0D541214895AD00142E00 /* ModelCollection+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4A0D53F214895AD00142E00 /* ModelCollection+Rx.swift */; };
 		A4AED3D51D402D73001F3524 /* MappedModelCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4AED3D41D402D73001F3524 /* MappedModelCollection.swift */; };
 		A4AED3D61D402D73001F3524 /* MappedModelCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4AED3D41D402D73001F3524 /* MappedModelCollection.swift */; };
 		A4AED3DA1D402F26001F3524 /* MappedModelCollectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4AED3D71D402EBB001F3524 /* MappedModelCollectionTests.swift */; };
@@ -319,6 +321,7 @@
 		A4897B621F95582100727514 /* ViewModelUserEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModelUserEvents.swift; sourceTree = "<group>"; };
 		A49431342143134B001268E0 /* ObservableTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObservableTests.swift; sourceTree = "<group>"; };
 		A49431372143136A001268E0 /* ObservableData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObservableData.swift; sourceTree = "<group>"; };
+		A4A0D53F214895AD00142E00 /* ModelCollection+Rx.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ModelCollection+Rx.swift"; sourceTree = "<group>"; };
 		A4AED3D41D402D73001F3524 /* MappedModelCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = MappedModelCollection.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		A4AED3D71D402EBB001F3524 /* MappedModelCollectionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MappedModelCollectionTests.swift; sourceTree = "<group>"; };
 		A4C8D5991CF23F3900F9721A /* FilteredModelCollectionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = FilteredModelCollectionTests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -611,6 +614,7 @@
 				A4AED3D41D402D73001F3524 /* MappedModelCollection.swift */,
 				69F89E761C52F06200F08E28 /* Model.swift */,
 				69F89E741C52F06200F08E28 /* ModelCollection.swift */,
+				A4A0D53F214895AD00142E00 /* ModelCollection+Rx.swift */,
 				A47FD340208FF86B0045D6F7 /* NestedModelCollection.swift */,
 				022120341DFB807C007C4039 /* ScoredModelCollection.swift */,
 				A428996D1FA137F300EA4422 /* SecondaryActionInfo.swift */,
@@ -1092,6 +1096,7 @@
 				D560D44D1D1211A4000DA826 /* Logger.swift in Sources */,
 				69F89E7A1C52F06200F08E28 /* Context.swift in Sources */,
 				D560D4621D136E11000DA826 /* FileLogger.swift in Sources */,
+				A4A0D541214895AD00142E00 /* ModelCollection+Rx.swift in Sources */,
 				655664B81EC90529005DB413 /* (null) in Sources */,
 				69F89E7B1C52F06200F08E28 /* Model.swift in Sources */,
 				69AECEF71CAB07FF00EEE780 /* FilteredModelCollection.swift in Sources */,
@@ -1210,6 +1215,7 @@
 				6965349E1D1710C900DF97CB /* FileLogger.swift in Sources */,
 				696534A71D1710D400DF97CB /* StaticModel.swift in Sources */,
 				655664B71EC90074005DB413 /* (null) in Sources */,
+				A4A0D540214895AD00142E00 /* ModelCollection+Rx.swift in Sources */,
 				696534A81D1710D400DF97CB /* StaticViewBindingProvider.swift in Sources */,
 				696534A21D1710D400DF97CB /* FilteredModelCollection.swift in Sources */,
 				69A8692F20339DF40076B36A /* SectionedModelCollection.swift in Sources */,

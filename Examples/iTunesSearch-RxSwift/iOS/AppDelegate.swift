@@ -19,8 +19,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?
     ) -> Bool {
-
-        _ = PublishSubject<Void>()
         
         contextObserver = context.receiveAll { [weak self] (action) -> ActionResult in
             if let action = action as? ViewURLAction {

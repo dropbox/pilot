@@ -1,4 +1,5 @@
 import Foundation
+import RxSwift
 
 // Temporary until Xcode9.3 is baseline.
 #if !swift(>=4.1)
@@ -19,6 +20,18 @@ public class SearchService {
         case network(Error)
         case json(Error)
         case unknown
+    }
+    
+    public func search(term: String, limit: Int) -> Single<[Media]?> {
+        return Single.create(subscribe: { (sub) -> Disposable in
+            self.search(term: term, limit: limit) { (media, error) in
+                if let error = error {
+                    sub(SingleEvent.error(error))
+                }
+                sub(SingleEvent.success(media ?? []))
+            }
+            return Disposables.create()
+        })
     }
 
     public func search(

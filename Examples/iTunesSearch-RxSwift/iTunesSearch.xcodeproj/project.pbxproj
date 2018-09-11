@@ -29,8 +29,6 @@
 		A4553DE41E53975E00B99345 /* Actions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4553DE31E53975E00B99345 /* Actions.swift */; };
 		A4553DE51E53975E00B99345 /* Actions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4553DE31E53975E00B99345 /* Actions.swift */; };
 		A4553DE71E53A7DA00B99345 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4553DE61E53A7DA00B99345 /* WebViewController.swift */; };
-		A4553DEB1E53B9EB00B99345 /* MediaSearchModelCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4553DEA1E53B9EB00B99345 /* MediaSearchModelCollection.swift */; };
-		A4553DEC1E53B9EB00B99345 /* MediaSearchModelCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4553DEA1E53B9EB00B99345 /* MediaSearchModelCollection.swift */; };
 		A4553E071E53CD2100B99345 /* TelevisionEpisodeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4553E061E53CD2100B99345 /* TelevisionEpisodeViewModel.swift */; };
 		A4553E081E53CD2100B99345 /* TelevisionEpisodeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4553E061E53CD2100B99345 /* TelevisionEpisodeViewModel.swift */; };
 		A4553E0E1E53CD6800B99345 /* TelevisionEpisodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4553E0D1E53CD6800B99345 /* TelevisionEpisodeView.swift */; };
@@ -46,6 +44,7 @@
 		A45F44FB1E5271D6001C947F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A45F44D31E5271D6001C947F /* Assets.xcassets */; };
 		A49C31FC1E57B20700416296 /* SongViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49C31FB1E57B20700416296 /* SongViewModelTests.swift */; };
 		A49C31FD1E57B20700416296 /* SongViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49C31FB1E57B20700416296 /* SongViewModelTests.swift */; };
+		A4A0D55D2148A2A800142E00 /* RxCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A402873C212E2D2800487391 /* RxCocoa.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -308,6 +307,13 @@
 			remoteGlobalIDString = 69FADB3E1D30518C001F2E11;
 			remoteInfo = "PilotUI macOS";
 		};
+		A4A0D55B2148A2A100142E00 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A4028717212E2D2800487391 /* Rx.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = C80938F51B8A71760088E94D;
+			remoteInfo = "RxCocoa-iOS";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -327,7 +333,6 @@
 		A4553DE11E53900100B99345 /* URLSession+Image.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "URLSession+Image.swift"; sourceTree = "<group>"; };
 		A4553DE31E53975E00B99345 /* Actions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Actions.swift; sourceTree = "<group>"; };
 		A4553DE61E53A7DA00B99345 /* WebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
-		A4553DEA1E53B9EB00B99345 /* MediaSearchModelCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaSearchModelCollection.swift; sourceTree = "<group>"; };
 		A4553E061E53CD2100B99345 /* TelevisionEpisodeViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TelevisionEpisodeViewModel.swift; sourceTree = "<group>"; };
 		A4553E0D1E53CD6800B99345 /* TelevisionEpisodeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TelevisionEpisodeView.swift; sourceTree = "<group>"; };
 		A4553E0F1E53CDDF00B99345 /* AppViewBindingProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppViewBindingProvider.swift; sourceTree = "<group>"; };
@@ -365,6 +370,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A4A0D55D2148A2A800142E00 /* RxCocoa.framework in Frameworks */,
 				A4028763212E2D5500487391 /* RxSwift.framework in Frameworks */,
 				A4553DCF1E5376B600B99345 /* Pilot.framework in Frameworks */,
 				A4553DD01E5376B600B99345 /* PilotUI.framework in Frameworks */,
@@ -500,7 +506,6 @@
 			children = (
 				A4553DE31E53975E00B99345 /* Actions.swift */,
 				A45F44D31E5271D6001C947F /* Assets.xcassets */,
-				A4553DEA1E53B9EB00B99345 /* MediaSearchModelCollection.swift */,
 				A4553D8C1E5277CF00B99345 /* Models.swift */,
 				A4553D891E5276F300B99345 /* SearchService.swift */,
 				A437EDC01E5791F700F67B37 /* ViewModel */,
@@ -598,6 +603,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				A4A0D55C2148A2A100142E00 /* PBXTargetDependency */,
 				A4028762212E2D4D00487391 /* PBXTargetDependency */,
 				A4553DCC1E5376AD00B99345 /* PBXTargetDependency */,
 				A4553DCE1E5376AD00B99345 /* PBXTargetDependency */,
@@ -970,7 +976,6 @@
 				A4553DE21E53900100B99345 /* URLSession+Image.swift in Sources */,
 				A437EDBE1E57874F00F67B37 /* PodcastViewModel.swift in Sources */,
 				A4553D8D1E5277CF00B99345 /* Models.swift in Sources */,
-				A4553DEB1E53B9EB00B99345 /* MediaSearchModelCollection.swift in Sources */,
 				A4553E101E53CDDF00B99345 /* AppViewBindingProvider.swift in Sources */,
 				A4553DD81E5378A500B99345 /* SongViewModel.swift in Sources */,
 			);
@@ -982,7 +987,6 @@
 			files = (
 				A4553DE51E53975E00B99345 /* Actions.swift in Sources */,
 				A45F44EF1E5271D6001C947F /* RootViewController.swift in Sources */,
-				A4553DEC1E53B9EB00B99345 /* MediaSearchModelCollection.swift in Sources */,
 				A4553D8B1E5276F300B99345 /* SearchService.swift in Sources */,
 				A4553E081E53CD2100B99345 /* TelevisionEpisodeViewModel.swift in Sources */,
 				A437EDBF1E57874F00F67B37 /* PodcastViewModel.swift in Sources */,
@@ -1034,6 +1038,11 @@
 			isa = PBXTargetDependency;
 			name = "PilotUI macOS";
 			targetProxy = A4553DD31E5376BE00B99345 /* PBXContainerItemProxy */;
+		};
+		A4A0D55C2148A2A100142E00 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "RxCocoa-iOS";
+			targetProxy = A4A0D55B2148A2A100142E00 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 

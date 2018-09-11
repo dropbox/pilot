@@ -1,8 +1,10 @@
 import UIKit
 import Pilot
 import PilotUI
+import RxSwift
+import RxCocoa
 
-public final class MediaSearchViewController: CollectionViewController, UISearchBarDelegate, UICollectionViewDelegateFlowLayout {
+public final class MediaSearchViewController: CollectionViewController, UICollectionViewDelegateFlowLayout {
 
     public init(context: Context) {
         let context = context.newScope()
@@ -10,35 +12,38 @@ public final class MediaSearchViewController: CollectionViewController, UISearch
         let layout = UICollectionViewFlowLayout()
         layout.itemSize = CGSize(width: 300, height: 48)
 
-        searchModel = MediaSearchModelCollection()
-        filteredModel = FilteredModelCollection(sourceCollection: searchModel)
+        self.searchQuery =  BehaviorRelay(value: "")
+        self.contentFilter = BehaviorRelay(value: .all)
+
+        let service = SearchService()
+        let media = searchQuery
+            .throttle(0.3, scheduler: MainScheduler.instance)
+            .distinctUntilChanged()
+            .flatMapLatest {
+                service.search(term: $0, limit: 100).asObservable().retry(3).startWith(nil)
+            }
+            .observeOn(MainScheduler.instance)
+
+        let mediaFilter = contentFilter.map { $0.match(_:) }
+        
+        let model = Observable.combineLatest(media, mediaFilter)
+            .mappedModelCollection { (media, mediaFilter) in
+                guard let media = media else { return .loading(nil) }
+                return .loaded(media.filter(mediaFilter))
+            }
 
         super.init(
-            model: filteredModel,
+            model: model,
             modelBinder: DefaultViewModelBindingProvider(),
             viewBinder: AppViewBindingProvider(),
             layout: layout,
             context: context)
-
-        self.navigationItem.titleView = searchBar
-        self.navigationItem.rightBarButtonItem = barItemForContentFilter(.all)
-        self.modelObserver = searchModel.observeValues { [weak self] event in
-            if case .didChangeState(let state) = event {
-                guard let strongSelf = self else { return }
-                if state.isLoading {
-                    strongSelf.navigationItem.rightBarButtonItem = strongSelf.barItemForLoading()
-                } else {
-                    let item = strongSelf.barItemForContentFilter(strongSelf.contentFilter)
-                    strongSelf.navigationItem.rightBarButtonItem = item
-                }
-            }
-        }
     }
 
     // MARK: CollectionViewController
 
     public override func displayForNoContentState() -> EmptyCollectionDisplay {
-        let query = searchBar.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+        let query = searchQuery.value.trimmingCharacters(in: .whitespacesAndNewlines)
         let emptyLabel = UILabel()
         emptyLabel.numberOfLines = 0
         emptyLabel.textColor = .lightGray
@@ -51,7 +56,27 @@ public final class MediaSearchViewController: CollectionViewController, UISearch
 
     public override func viewDidLoad() {
         super.viewDidLoad()
-        searchBar.delegate = self
+
+        let searchBar = UISearchBar()
+        self.navigationItem.titleView = searchBar
+
+        searchBar.rx.text
+            .map({ $0 ?? "" })
+            .bind(to: searchQuery)
+            .disposed(by: disposeBag)
+
+        let loading = self.dataSource.currentCollection.stateObservable().map({ $0.isLoading })
+
+        Observable<UIBarButtonItem>
+            .combineLatest(loading, contentFilter) { (loading, filter) in
+                if loading {
+                    return MediaSearchViewController.barItemForLoading()
+                } else {
+                    return MediaSearchViewController.barItemForContentFilter(filter)
+                }
+            }
+            .bind(onNext: { [weak self] in self?.navigationItem.rightBarButtonItem = $0 })
+            .disposed(by: disposeBag)
     }
 
     // MARK: FlowLayoutDelegate
@@ -68,35 +93,23 @@ public final class MediaSearchViewController: CollectionViewController, UISearch
         return dataSource.preferredLayoutForItemAtIndexPath(indexPath, availableSize: available).size ?? defaultSize
     }
 
-    // MARK: UISearchBarDelegate
-
-    public func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        let query = searchBar.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
-        searchModel.updateQuery(query)
-    }
-
-    public func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        let query = searchBar.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
-        searchModel.updateQuery(query)
-    }
-
     @objc
     private func filterAction() {
         let alert = UIAlertController(title: "Filter", message: nil, preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: "All ⭐️", style: .default, handler: { _ in
-            self.contentFilter = .all
+            self.contentFilter.accept(.all)
         }))
         alert.addAction(UIAlertAction(title: "Podcasts 🎙", style: .default, handler: { _ in
-            self.contentFilter = .podcast
+            self.contentFilter.accept(.podcast)
         }))
         alert.addAction(UIAlertAction(title: "Songs 🎵", style: .default, handler: { _ in
-            self.contentFilter = .songs
+            self.contentFilter.accept(.songs)
         }))
         alert.addAction(
             UIAlertAction(
                 title: "TV Episodes 📺",
                 style: .default,
-                handler: { _ in self.contentFilter = .televisionEpisodes }))
+                handler: { _ in self.contentFilter.accept(.televisionEpisodes) }))
         self.present(alert, animated: true, completion: nil)
     }
 
@@ -116,35 +129,25 @@ public final class MediaSearchViewController: CollectionViewController, UISearch
             case .televisionEpisodes: return "📺"
             }
         }
-    }
 
-    private var contentFilter: ContentType = .all {
-        didSet {
-            navigationItem.rightBarButtonItem = barItemForContentFilter(contentFilter)
-            let content = contentFilter
-            filteredModel.filter = { model in
-                switch content {
-                case .all:
-                    return true
-                case .podcast:
-                    return model is Podcast
-                case .songs:
-                    return model is Song
-                case .televisionEpisodes:
-                    return model is TelevisionEpisode
-                }
+        func match(_ media: Media) -> Bool {
+            switch self {
+            case .all: return true
+            case .podcast: return media is Podcast
+            case .songs: return media is Song
+            case .televisionEpisodes: return media is TelevisionEpisode
             }
         }
     }
 
-    private func barItemForLoading() -> UIBarButtonItem {
+    private static func barItemForLoading() -> UIBarButtonItem {
         let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
         let item = UIBarButtonItem(customView: activityIndicator)
         activityIndicator.startAnimating()
         return item
     }
 
-    private func barItemForContentFilter(_ contentFilter: ContentType) -> UIBarButtonItem {
+    private static func barItemForContentFilter(_ contentFilter: ContentType) -> UIBarButtonItem {
         return UIBarButtonItem(
             title: contentFilter.label,
             style: .plain,
@@ -152,8 +155,7 @@ public final class MediaSearchViewController: CollectionViewController, UISearch
             action: #selector(filterAction))
     }
 
-    private var modelObserver: Subscription?
-    private let searchBar = UISearchBar()
-    private let searchModel: MediaSearchModelCollection
-    private let filteredModel: FilteredModelCollection
+    private let disposeBag = DisposeBag()
+    private let searchQuery: BehaviorRelay<String>
+    private let contentFilter: BehaviorRelay<ContentType>
 }
