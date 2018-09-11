@@ -36,7 +36,7 @@ class MappedModelCollectionTests: XCTestCase {
 
     func testPerformsMapWhenUpdated() {
         let expectation = self.expectation(description: "Should call reload")
-        _ = modelCollection.addObserver { event in
+        let observer = modelCollection.observeValues { event in
             if case .loaded = self.modelCollection.state {
                 expectation.fulfill()
             }
@@ -49,6 +49,7 @@ class MappedModelCollectionTests: XCTestCase {
             if let error = error {
                 print("ERROR: \(error)")
             }
+            observer.unsubscribe()
         }
         zip(testData, modelCollection.models).forEach { inModel, outputModel in
             let out: Model = outputModel.typedModel()
@@ -63,7 +64,7 @@ class MappedModelCollectionTests: XCTestCase {
         let modelCollection = MappedModelCollection(sourceCollection: source)
         modelCollection.transform = { model in return model }
         let expectation = self.expectation(description: "should call observers with reload after setup")
-        let initialReloadObserver = modelCollection.addObserver { [modelCollection] event in
+        let initialReloadObserver = modelCollection.observeValues { [modelCollection] event in
             if case .loaded = modelCollection.state {
                 expectation.fulfill()
             }
@@ -74,7 +75,7 @@ class MappedModelCollectionTests: XCTestCase {
             }
         }
         if case .loaded = modelCollection.state {
-            modelCollection.removeObserver(with: initialReloadObserver)
+            initialReloadObserver.unsubscribe()
         } else {
             XCTFail("Filtered model not loaded.")
         }

@@ -138,6 +138,8 @@
 		A437EDB61E567AE900F67B37 /* Async.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6974F89B1C504BD50029ED48 /* Async.swift */; };
 		A43E720C1F01AD1000EC443F /* (null) in Sources */ = {isa = PBXBuildFile; };
 		A43E720D1F01AD1000EC443F /* (null) in Sources */ = {isa = PBXBuildFile; };
+		A441EDB3212F7E0D00711152 /* Subscription.swift in Sources */ = {isa = PBXBuildFile; fileRef = A441EDB2212F7E0D00711152 /* Subscription.swift */; };
+		A441EDB4212F7E0D00711152 /* Subscription.swift in Sources */ = {isa = PBXBuildFile; fileRef = A441EDB2212F7E0D00711152 /* Subscription.swift */; };
 		A455A7E61E5F6C3900F63A37 /* PilotUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = A455A7E51E5F6C3900F63A37 /* PilotUI.swift */; };
 		A455A7E71E5F6C3900F63A37 /* PilotUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = A455A7E51E5F6C3900F63A37 /* PilotUI.swift */; };
 		A460CC831E56195F00F9AC6F /* Downcast.swift in Sources */ = {isa = PBXBuildFile; fileRef = A460CC821E56195F00F9AC6F /* Downcast.swift */; };
@@ -306,6 +308,7 @@
 		A437EDAA1E5655AD00F67B37 /* SimpleModelCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleModelCollection.swift; sourceTree = "<group>"; };
 		A437EDAD1E5660CE00F67B37 /* AsyncModelCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AsyncModelCollection.swift; sourceTree = "<group>"; };
 		A437EDB01E56628900F67B37 /* AsyncModelCollectionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncModelCollectionTests.swift; sourceTree = "<group>"; };
+		A441EDB2212F7E0D00711152 /* Subscription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Subscription.swift; sourceTree = "<group>"; };
 		A455A7E51E5F6C3900F63A37 /* PilotUI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PilotUI.swift; sourceTree = "<group>"; };
 		A460CC821E56195F00F9AC6F /* Downcast.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Downcast.swift; sourceTree = "<group>"; };
 		A468F7FD1EC3B61D009717A4 /* CompoundAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompoundAction.swift; sourceTree = "<group>"; };
@@ -589,6 +592,7 @@
 			children = (
 				A49431372143136A001268E0 /* ObservableData.swift */,
 				69EAC5BA1D04C84E00584C7E /* ObservableType.swift */,
+				A441EDB2212F7E0D00711152 /* Subscription.swift */,
 			);
 			path = Observable;
 			sourceTree = "<group>";
@@ -1114,6 +1118,7 @@
 				69F89E791C52F06200F08E28 /* ModelCollection.swift in Sources */,
 				620B50531FE8AFFF00D1A8ED /* Mutex.swift in Sources */,
 				D560D4611D136E11000DA826 /* ConsoleLogger.swift in Sources */,
+				A441EDB4212F7E0D00711152 /* Subscription.swift in Sources */,
 				022862591DB0070500FCD03F /* DiffEngine.swift in Sources */,
 				A49431392143136A001268E0 /* ObservableData.swift in Sources */,
 				69F89E7D1C52F06200F08E28 /* View.swift in Sources */,
@@ -1231,6 +1236,7 @@
 				620B50521FE8AFFF00D1A8ED /* Mutex.swift in Sources */,
 				696534A41D1710D400DF97CB /* Context.swift in Sources */,
 				6965349D1D1710C600DF97CB /* ConsoleLogger.swift in Sources */,
+				A441EDB3212F7E0D00711152 /* Subscription.swift in Sources */,
 				696534A31D1710D400DF97CB /* ModelCollection.swift in Sources */,
 				A49431382143136A001268E0 /* ObservableData.swift in Sources */,
 				696534A51D1710D400DF97CB /* Model.swift in Sources */,

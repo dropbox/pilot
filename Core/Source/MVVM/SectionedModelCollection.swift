@@ -147,12 +147,8 @@ internal final class SingleSectionedModelCollection: SectionedModelCollection {
 
     // MARK: ModelCollection
 
-    internal func addObserver(_ observer: @escaping  CollectionEventObserver) -> CollectionEventObserverToken {
-        return represented.addObserver(observer)
-    }
-
-    internal func removeObserver(with token: CollectionEventObserverToken) {
-        represented.removeObserver(with: token)
+    internal func observeValues(_ observer: @escaping (CollectionEvent) -> Void) -> Subscription {
+        return represented.observeValues(observer)
     }
 
     internal var collectionId: ModelCollectionId { return represented.collectionId }

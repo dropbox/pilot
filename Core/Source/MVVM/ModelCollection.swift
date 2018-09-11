@@ -71,17 +71,14 @@ public typealias CollectionEventObserverToken = Token
 /// public var proxiedObservable: GenericObservable<CollectionEvent> { return observers }
 /// private let observers = ObserverList<CollectionEvent>()
 /// ```
-public protocol ProxyingCollectionEventObservable {
+public protocol ProxyingCollectionEventObservable: ObservableType where Event == CollectionEvent {
     var proxiedObservable: Observable<CollectionEvent> { get }
 }
 
 /// The default CollectionEventObservable implementations.
 extension ProxyingCollectionEventObservable {
-    public func addObserver(_ observer: @escaping (CollectionEvent) -> Void) -> ObserverToken {
-        return proxiedObservable.addObserver(observer)
-    }
-    public func removeObserver(with token: ObserverToken) {
-        return proxiedObservable.removeObserver(with: token)
+    public func observeValues(_ observer: @escaping (CollectionEvent) -> Void) -> Subscription {
+        return proxiedObservable.observeValues(observer)
     }
 }
 
@@ -179,27 +176,17 @@ public struct BlockModelProvider: IndexedModelProvider {
 /// PilotUI framework.
 public protocol ModelCollection: class {
 
+    var collectionId: ModelCollectionId { get }
+
     // MARK: ObservableType
 
-    func addObserver(_ observer: @escaping  CollectionEventObserver) -> CollectionEventObserverToken
-    func removeObserver(with token: CollectionEventObserverToken)
-
-    var collectionId: ModelCollectionId { get }
+    func observeValues(_ observer: @escaping (CollectionEvent) -> Void) -> Subscription
 
     // MARK: State
 
     /// Current state of the model collection. Typically used by reference-type implementations, as value-type
     /// implementations stay `.Loaded`.
     var state: ModelCollectionState { get }
-}
-
-public extension ModelCollection {
-    public func observe(_ handler: @escaping (CollectionEvent) -> Void) -> Observer {
-        let token = addObserver(handler)
-        return Observer { [weak self] in
-            self?.removeObserver(with: token)
-        }
-    }
 }
 
 // MARK: Common helper methods.

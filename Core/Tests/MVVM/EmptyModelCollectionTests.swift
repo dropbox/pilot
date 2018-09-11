@@ -6,7 +6,7 @@ class EmptyModelCollectionTests: XCTestCase {
     func testEmptyModelCollection() {
         var observerCallCount = 0
         let emptyModelCollection = EmptyModelCollection()
-        let observerToken = emptyModelCollection.addObserver() { event in
+        let observer = emptyModelCollection.observeValues { event in
             observerCallCount = observerCallCount + 1
         }
         XCTAssertTrue(emptyModelCollection.collectionId.hasPrefix("empty"))
@@ -23,8 +23,7 @@ class EmptyModelCollectionTests: XCTestCase {
         } else {
             XCTFail("State should be .loaded got \(emptyModelCollection.state)")
         }
-        
-        emptyModelCollection.removeObserver(with: observerToken)
+        observer.unsubscribe()
         XCTAssertTrue(observerCallCount == 0)
     }
 }

@@ -12,7 +12,7 @@ public final class ScoredModelCollection: ModelCollection, ProxyingCollectionEve
         self.sourceCollection = sourceCollection
         self.scorer = { _ in 0 }
 
-        sourceObserver = self.sourceCollection.observe { [weak self] event in
+        sourceObserver = self.sourceCollection.observeValues { [weak self] event in
             self?.handleSourceEvent(event)
         }
 
@@ -55,7 +55,7 @@ public final class ScoredModelCollection: ModelCollection, ProxyingCollectionEve
     // MARK: Private
 
     private let sourceCollection: ModelCollection
-    private var sourceObserver: Observer?
+    private var sourceObserver: Subscription?
 
     private func handleSourceEvent(_ event: CollectionEvent) {
         updateModels()

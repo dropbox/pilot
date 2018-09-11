@@ -36,8 +36,8 @@ public final class ComposedModelCollection: SectionedModelCollection, ProxyingCo
         self.strategy = strategy
         self.modelCollections = modelCollections
         self.reducer = reducer
-        self.composedCollectionObservers = modelCollections.map { (modelCollection) -> Observer in
-            return modelCollection.observe { [weak self] _ in
+        self.composedCollectionObservers = modelCollections.map { (modelCollection) -> Subscription in
+            return modelCollection.observeValues { [weak self] _ in
                 self?.updateState()
             }
         }
@@ -68,7 +68,7 @@ public final class ComposedModelCollection: SectionedModelCollection, ProxyingCo
 
     // MARK: Private
 
-    private var composedCollectionObservers = [Observer]()
+    private var composedCollectionObservers = [Subscription]()
     private func updateState() {
         precondition(Thread.isMainThread)
 

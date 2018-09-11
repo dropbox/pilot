@@ -83,7 +83,7 @@ class FilteredModelCollectionTests: XCTestCase {
         }
         XCTAssert(subject.state.isLoading)
         let expected = ModelCollectionState.loaded([])
-        let token = subject.observe { (event) in
+        let token = subject.observeValues { (event) in
             guard case .didChangeState(let state) = event else { return }
             if validateModelCollectionState(expected: expected, actual: state) {
                 expectation.fulfill()
@@ -115,7 +115,7 @@ class FilteredModelCollectionTests: XCTestCase {
         let expectation2 = self.expectation(description: "Stale filter results shouldn't be applied!")
         expectation2.isInverted = true
         var correctResultsLoaded = false
-        let token = subject.observe { (event) in
+        let token = subject.observeValues { (event) in
             guard case .didChangeState(let state) = event else { return }
             if validateModelCollectionState(expected: expected, actual: state) {
                 expectation1.fulfill()

@@ -8,12 +8,9 @@ public typealias ObserverToken = Token
 public protocol ObservableType: class {
     associatedtype Event
 
-    /// Adds the given observer to the target type. A `ObserverToken` is returned and must be used to stop observation
-    //. via `removeObserverWithToken`.
-    func addObserver(_ observer: @escaping (Event) -> Void) -> ObserverToken
-
-    /// Removes the previously-registered observer for the given `ObserverToken.
-    func removeObserver(with: ObserverToken)
+    /// Adds the given observer to the target type. A object conforming to `Subscription` is returned, which must be
+    /// retained observing using the `unsubscribe()`.
+    func observeValues(_ observer: @escaping (Event) -> Void) -> Subscription
 }
 
 /// The GenericObservable<Event> is a "protocol" that allows use of the associated Event
@@ -25,11 +22,8 @@ public protocol ObservableType: class {
 /// NOTE: does not expose the notifyObserversOfEvent method because this is read-only.
 open class Observable<Event>: ObservableType {
     public init() {}
-    open func addObserver(_ observer: @escaping (Event) -> Void) -> ObserverToken {
-        Log.fatal(message: "addObserver must be overridden")
-    }
-    open func removeObserver(with token: ObserverToken) {
-        Log.fatal(message: "removeObserverWithToken must be overridden")
+    open func observeValues(_ observer: @escaping (Event) -> Void) -> Subscription {
+        Log.fatal(message: "observeValues(_:) must be overridden")
     }
 }
 
@@ -52,11 +46,8 @@ public protocol ProxyingObservable: ObservableType {
 
 /// The default Observable implementations on ProxyingObservable.
 public extension ProxyingObservable {
-    public func addObserver(_ observer: @escaping (Event) -> Void) -> ObserverToken {
-        return proxiedObservable.addObserver(observer)
-    }
-    public func removeObserver(with token: ObserverToken) {
-        return proxiedObservable.removeObserver(with: token)
+    public func observeValues(_ observer: @escaping (Event) -> Void) -> Subscription {
+        return proxiedObservable.observeValues(observer)
     }
 }
 
@@ -67,14 +58,12 @@ public final class ObserverList<Event>: Observable<Event> {
         self.observers = [:]
     }
 
-    public override func addObserver(_ observer: @escaping (Event) -> Void) -> ObserverToken {
+    public override func observeValues(_ observer: @escaping (Event) -> Void) -> Subscription {
         let token = Token.makeUnique()
         lock.locked { self.observers[token] = observer }
-        return token
-    }
-
-    public override func removeObserver(with token: ObserverToken) {
-        lock.locked { self.observers[token] = nil }
+        return Subscription {
+            self.lock.locked { self.observers[token] = nil }
+        }
     }
 
     public func notify(_ event: Event) {
@@ -88,45 +77,4 @@ public final class ObserverList<Event>: Observable<Event> {
 
     private var observers: [ObserverToken: (Event) -> Void]
     private let lock = Mutex()
-}
-
-/// The Observer class represents the binding of an observable to a function.  While
-/// the Observer is alive, the function will be called.  When the Observer is deallocated,
-/// it is automatically unregistered from the observable.  This prevents forgetting to remove
-/// the observer and often avoids the need to write deinit implementations.
-///
-/// NOTE: Observer holds a weak reference to the observed object.
-///
-/// Usage:
-///
-///   // in init
-///   thingObserver = thing.observe { [weak self] in
-///     ...
-///   }
-///
-///   // as property
-///   private let thingObserver: Observer?
-///
-/// Sometimes you want to hold the Observer in an optional, sometimes not, depending on
-/// whether the field is constructed by default.
-public final class Observer {
-    internal init(_ remover: @escaping () -> Void) {
-        self.remover = remover
-    }
-
-    deinit {
-        remover()
-    }
-
-    private let remover: () -> Void
-}
-
-public extension ObservableType {
-
-    public func observe(_ handler: @escaping (Event) -> Void) -> Observer {
-        let token = addObserver(handler)
-        return Observer { [weak self] in
-            self?.removeObserver(with: token)
-        }
-    }
 }

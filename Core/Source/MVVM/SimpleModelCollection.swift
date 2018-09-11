@@ -10,14 +10,14 @@ open class SimpleModelCollection: ModelCollection, ProxyingCollectionEventObserv
     ///
     /// SimpleModelCollection will begin as a notLoaded ModelCollection, the other event cases match 1:1 with
     /// state values.
-    public enum Event {
+    public enum SimpleEvent {
         case loading([Model]?)
         case error(Error)
         case loaded([Model])
     }
 
     /// Public called to notify the model collection of an event.
-    public final func onNext(_ event: Event) {
+    public final func onNext(_ event: SimpleEvent) {
         switch event {
         case .loading(let models): state = .loading(models)
         case .error(let e): state = .error(e)
@@ -54,14 +54,14 @@ open class SimpleSectionedModelCollection: SectionedModelCollection, ProxyingCol
     ///
     /// SimpleSectionedModelCollection will begin as a notLoaded SectionedModelCollection, the other event cases match
     /// 1:1 with state values.
-    public enum Event {
+    public enum SimpleSectionedEvent {
         case loading([[Model]]?)
         case error(Error)
         case loaded([[Model]])
     }
 
     /// Public called to notify the model collection of an event.
-    public final func onNext(_ event: Event) {
+    public final func onNext(_ event: SimpleSectionedEvent) {
         switch event {
         case .loading(let sections):
             if let sections = sections {

@@ -14,10 +14,8 @@ public final class EmptyModelCollection: ModelCollection {
     public let state = ModelCollectionState.loaded([])
 
     // MARK: CollectionEventObservable
-
-    public func addObserver(_ observer: @escaping CollectionEventObserver) -> CollectionEventObserverToken {
-        return Token.dummy
+    
+    public func observeValues(_ observer: @escaping (CollectionEvent) -> Void) -> Subscription {
+        return Subscription.inert
     }
-
-    public func removeObserver(with token: CollectionEventObserverToken) {}
 }

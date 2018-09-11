@@ -114,24 +114,28 @@ open class Context: ActionSender {
         file: String = #file,
         line: Int = #line,
         _ handler: @escaping (T) -> ActionResult
-    ) -> Observer {
+    ) -> Subscription {
         let token = addReceiver(file: file, line: line) { action in
             if let typedAction = action as? T {
                 return handler(typedAction)
             }
             return .notHandled
         }
-        return Observer { [weak self] in
+        return Subscription { [weak self] in
             self?.removeReceiver(with: token)
         }
     }
 
     /// Registers a receiver for all `Action` types. Typically used by types that need to receive many types of actions.
-    public func receiveAll(file: String = #file, line: Int = #line, _ handler: @escaping ActionReceiver) -> Observer {
+    public func receiveAll(
+        file: String = #file,
+        line: Int = #line,
+        _ handler: @escaping ActionReceiver
+    ) -> Subscription {
         let token = addReceiver(file: file, line: line) { action in
             return handler(action)
         }
-        return Observer { [weak self] in
+        return Subscription { [weak self] in
             self?.removeReceiver(with: token)
         }
     }

@@ -14,12 +14,11 @@ public protocol ObservableData: ObservableType {
 public final class AnyObservableData<T>: ObservableData {
 
     // MARK: Init
-
+    
     public static func make<U: ObservableData>(_ observable: U, retained: AnyObject? = nil) -> AnyObservableData<U.Event> {
-        return AnyObservableData<U.Event>(
-            getter: { return observable.data },
-            addObserver: { cb in return observable.addObserver(cb) },
-            removeObserver: { token in return observable.removeObserver(with: token) },
+        return AnyObservableData<U.Event>.init(
+            getter: { observable.data },
+            subscribe: { observable.observeValues($0) },
             retained: retained)
     }
 
@@ -31,31 +30,24 @@ public final class AnyObservableData<T>: ObservableData {
         return getter()
     }
 
-    public func addObserver(_ observer: @escaping (T) -> Void) -> ObserverToken {
-        return self.addObserver_(observer)
+    public func observeValues(_ observer: @escaping (T) -> Void) -> Subscription {
+        return subscribe(observer)
     }
-
-    public func removeObserver(with token: ObserverToken) {
-        return self.removeObserver_(token)
-    }
-
+    
     // MARK: Private
 
     private init(
         getter: @escaping () -> T,
-        addObserver: @escaping (@escaping (T) -> Void) -> ObserverToken,
-        removeObserver: @escaping (ObserverToken) -> Void,
+        subscribe: @escaping (@escaping (T) -> Void) -> Subscription,
         retained: AnyObject?
     ) {
         self.getter = getter
-        self.addObserver_ = addObserver
-        self.removeObserver_ = removeObserver
+        self.subscribe = subscribe
         self.retained = retained
     }
 
     private let getter: () -> T
-    private let addObserver_: (@escaping (T) -> Void) -> ObserverToken
-    private let removeObserver_: (ObserverToken) -> Void
+    private let subscribe: (@escaping (T) -> Void) -> Subscription
     private let retained: AnyObject?
 }
 
@@ -89,13 +81,9 @@ open class ObservableVariable<T>: Observable<T>, ObservableData {
     }
 
     // MARK: GenericObservable
-
-    open override func addObserver(_ observer: @escaping (T) -> Void) -> ObserverToken {
-        return observers.addObserver(observer)
-    }
-
-    open override func removeObserver(with token: ObserverToken) {
-        return observers.removeObserver(with: token)
+    
+    open override func observeValues(_ observer: @escaping (T) -> Void) -> Subscription {
+        return observers.observeValues(observer)
     }
 
     // MARK: ObservableData
@@ -154,7 +142,7 @@ open class DerivedData<Result>: ProxyingObservable, ObservableData {
         self.equalityCheck = equalityCheck
         self.retained = nil // need to initialize before creating a closure including self
 
-        let observer = a.observe { [weak self] event in
+        let observer = a.observeValues { [weak self] event in
             // TODO(ca): figure out how to convince Swift that event is always an ObservableDataEvent
             // and only recalculate on DidChange
             self?.data = transform(a.data)
@@ -172,8 +160,8 @@ open class DerivedData<Result>: ProxyingObservable, ObservableData {
         }
 
         let observers = [
-            a.observe(cb),
-            b.observe(cb),
+            a.observeValues(cb),
+            b.observeValues(cb),
         ]
         retained = observers as AnyObject?
     }
@@ -188,9 +176,9 @@ open class DerivedData<Result>: ProxyingObservable, ObservableData {
         }
 
         let observers = [
-            a.observe(cb),
-            b.observe(cb),
-            c.observe(cb),
+            a.observeValues(cb),
+            b.observeValues(cb),
+            c.observeValues(cb),
         ]
         retained = observers as AnyObject?
     }
@@ -221,10 +209,10 @@ open class DerivedData<Result>: ProxyingObservable, ObservableData {
 }
 
 public extension ObservableData {
-    /// Same as `Observable.observe` except it calls the callback immediately with the initial value.
+    /// Same as `Observable.observeValues` except it also calls the callback immediately with the initial value.
     /// Useful when binding some UI to an observable value.
-    public func bind(_ cb: @escaping (Event) -> Void) -> Observer {
-        let observer = observe(cb)
+    public func bind(_ cb: @escaping (Event) -> Void) -> Subscription {
+        let observer = observeValues(cb)
         cb(data)
         return observer
     }

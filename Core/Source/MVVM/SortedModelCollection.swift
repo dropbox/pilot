@@ -12,8 +12,7 @@ public final class SortedModelCollection: ModelCollection, ProxyingCollectionEve
     public init(_ sourceCollection: ModelCollection) {
         self.sourceCollection = sourceCollection
         self.comparator = { _, _ in false }
-
-        sourceObserver = self.sourceCollection.observe { [weak self] event in
+        sourceObserver = self.sourceCollection.observeValues { [weak self] event in
             self?.sortModels()
         }
         sortModels()
@@ -47,7 +46,7 @@ public final class SortedModelCollection: ModelCollection, ProxyingCollectionEve
     // MARK: Private
 
     private let sourceCollection: ModelCollection
-    private var sourceObserver: Observer?
+    private var sourceObserver: Subscription?
 
     private func sortModels() {
         let sorted = sourceCollection.models.sorted(by: comparator)

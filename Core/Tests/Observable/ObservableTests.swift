@@ -22,7 +22,7 @@ class SemaphoreExpectation {
 }
 
 class ObservableTests: XCTestCase {
-    var observer: Observer?
+    var observer: Subscription?
 
     func testObservableVariable() {
         let variable = ObservableVariable<String>.make(withEquatable: "initial")
@@ -30,7 +30,7 @@ class ObservableTests: XCTestCase {
 
         let expectation = SemaphoreExpectation(self)
 
-        observer = variable.observe({ event in
+        observer = variable.observeValues({ event in
             events.append(event)
             expectation.dec()
         })

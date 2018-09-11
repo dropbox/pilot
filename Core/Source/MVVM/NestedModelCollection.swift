@@ -33,12 +33,8 @@ private final class SingleLevelNestedModelCollection: NestedModelCollection {
 
     // MARK: ModelCollection
 
-    func addObserver(_ observer: @escaping CollectionEventObserver) -> CollectionEventObserverToken {
-        return represented.addObserver(observer)
-    }
-
-    func removeObserver(with token: CollectionEventObserverToken) {
-        represented.removeObserver(with: token)
+    func observeValues(_ observer: @escaping (CollectionEvent) -> Void) -> Subscription {
+        return represented.observeValues(observer)
     }
 
     var collectionId: ModelCollectionId { return represented.collectionId }

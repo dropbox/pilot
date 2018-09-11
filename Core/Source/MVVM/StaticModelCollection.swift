@@ -22,11 +22,8 @@ public final class StaticModelCollection: ModelCollection {
 
     // MARK: CollectionEventObservable
 
-    public func addObserver(_ observer: @escaping CollectionEventObserver) -> CollectionEventObserverToken {
-        return Token.dummy
-    }
-
-    public func removeObserver(with token: CollectionEventObserverToken) {
+    public func observeValues(_ observer: @escaping (CollectionEvent) -> Void) -> Subscription {
+        return Subscription.inert
     }
 }
 
@@ -60,12 +57,8 @@ public final class StaticSectionedModelCollection: SectionedModelCollection {
     public let sectionedState: [ModelCollectionState]
 
     // MARK: CollectionEventObservable
-
-    public func addObserver(_ observer: @escaping CollectionEventObserver) -> CollectionEventObserverToken {
-        return Token.dummy
-    }
-
-    public func removeObserver(with token: CollectionEventObserverToken) {
+    
+    public func observeValues(_ observer: @escaping (CollectionEvent) -> Void) -> Subscription {
+        return Subscription.inert
     }
 }
-
