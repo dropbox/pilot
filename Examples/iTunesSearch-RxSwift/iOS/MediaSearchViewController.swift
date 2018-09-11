@@ -22,7 +22,7 @@ public final class MediaSearchViewController: CollectionViewController, UISearch
 
         self.navigationItem.titleView = searchBar
         self.navigationItem.rightBarButtonItem = barItemForContentFilter(.all)
-        self.modelObserver = searchModel.observe { [weak self] event in
+        self.modelObserver = searchModel.observeValues { [weak self] event in
             if case .didChangeState(let state) = event {
                 guard let strongSelf = self else { return }
                 if state.isLoading {
@@ -152,7 +152,7 @@ public final class MediaSearchViewController: CollectionViewController, UISearch
             action: #selector(filterAction))
     }
 
-    private var modelObserver: Observer?
+    private var modelObserver: Subscription?
     private let searchBar = UISearchBar()
     private let searchModel: MediaSearchModelCollection
     private let filteredModel: FilteredModelCollection

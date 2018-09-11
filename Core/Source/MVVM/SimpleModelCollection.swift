@@ -1,3 +1,7 @@
+#if canImport(RxSwift)
+import RxSwift
+#endif
+
 /// Simple class that provides ModelCollection conformance to a series of events, easiest way to quickly wrap something
 /// that will emit models into a ModelCollection.
 open class SimpleModelCollection: ModelCollection, ProxyingCollectionEventObservable {

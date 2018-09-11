@@ -62,6 +62,23 @@ public enum CollectionEvent {
 public typealias CollectionEventObserver = (CollectionEvent) -> Void
 public typealias CollectionEventObserverToken = Token
 
+
+#if canImport(RxSwift)
+
+import RxSwift
+
+public protocol ProxyingCollectionEventObservable: ObservableType where E == CollectionEvent {
+    var proxiedObservable: Observable<CollectionEvent> { get }
+}
+
+extension ProxyingCollectionEventObservable {
+    public func subscribe<O>(_ observer: O) -> Disposable where O : ObserverType, Self.E == O.E {
+        return proxiedObservable.subscribe(observer)
+    }
+}
+
+#else
+
 /// ProxyingCollectionEventObservable is the easiest way to implement the CollectionEventObservable protocol.
 /// See the documentation for `ProxyingObservable` - it has the same API.
 ///
@@ -81,6 +98,8 @@ extension ProxyingCollectionEventObservable {
         return proxiedObservable.observeValues(observer)
     }
 }
+
+#endif
 
 /// IndexPath is too expensive (given it contains an NSArray) for what really is just two indices, so we pass these simple ModelPath pairs
 /// around.  `sectionIndex` is the index of the section and `itemIndex` is the index of the model in the corresponding section.

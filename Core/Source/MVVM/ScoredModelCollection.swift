@@ -1,4 +1,7 @@
 import Foundation
+#if canImport(RxSwift)
+import RxSwift
+#endif
 
 /// Scoring closure - returns a score for each model.  If no score, model is filtered out of collection. Otherwise the collection is sorted with higher scores at the top.
 public typealias ModelScorer = (Model) -> Double?

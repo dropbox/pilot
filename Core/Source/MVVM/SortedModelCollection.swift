@@ -1,4 +1,7 @@
 import Foundation
+#if canImport(RxSwift)
+import RxSwift
+#endif
 
 /// Compares two models and returns a `Bool` indicating if the first model should be ordered first.
 public typealias ModelComparator = (Model, Model) -> Bool

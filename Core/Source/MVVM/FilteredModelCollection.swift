@@ -1,4 +1,7 @@
 import Foundation
+#if canImport(RxSwift)
+import RxSwift
+#endif
 
 /// Filter closure - returns `true` to include the element, and `false` to exclude (same as `Array.filter`).
 public typealias ModelFilter = (Model) -> Bool

@@ -217,12 +217,12 @@ open class CollectionViewController: UIViewController, UICollectionViewDelegate 
 
     // MARK: Private
 
-    private var collectionObserver: Observer?
+    private var collectionObserver: Subscription?
 
     private func registerForModelEvents() {
         assertWithLog(collectionObserver == nil, message: "Expected to start with a nil token")
 
-        collectionObserver = collection.observe { [weak self] event in
+        collectionObserver = collection.observeValues { [weak self] event in
             self?.handleModelEvent(event)
         }
 

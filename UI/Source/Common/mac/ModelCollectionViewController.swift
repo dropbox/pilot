@@ -268,12 +268,12 @@ open class ModelCollectionViewController: NSViewController {
 
     // MARK: Observing model state changes.
 
-    private var collectionObserver: Observer?
+    private var collectionObserver: Subscription?
 
     private func registerForModelEvents() {
         assertWithLog(collectionObserver == nil, message: "Expected to start with a nil token")
 
-        collectionObserver = model.observe { [weak self] event in
+        collectionObserver = model.observeValues { [weak self] event in
             self?.handleModelEvent(event)
         }
 

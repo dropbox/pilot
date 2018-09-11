@@ -4,6 +4,7 @@ import PilotUI
 import SafariServices
 import AVFoundation
 import AVKit
+import RxSwift
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -19,6 +20,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?
     ) -> Bool {
 
+        _ = PublishSubject<Void>()
+        
         contextObserver = context.receiveAll { [weak self] (action) -> ActionResult in
             if let action = action as? ViewURLAction {
                 self?.pushWebView(url: action.url)
@@ -47,5 +50,5 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     private let context = Context()
-    private var contextObserver: Observer?
+    private var contextObserver: Subscription?
 }

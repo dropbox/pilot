@@ -2,6 +2,45 @@ import Foundation
 
 public typealias ObserverToken = Token
 
+#if canImport(RxSwift)
+
+import RxSwift
+
+public protocol ProxyingObservable: RxSwift.ObservableType {
+    associatedtype E
+    var proxiedObservable: Observable<E> { get }
+}
+
+extension ProxyingObservable {
+    
+    public func subscribe<O: ObserverType>(_ observer: O) -> Disposable where O.E == E {
+        return proxiedObservable.subscribe(observer)
+    }
+    
+    public func asObservable() -> Observable<E> {
+        return proxiedObservable.asObservable()
+    }
+}
+
+extension RxSwift.ObservableType {
+    public func observeValues(_ observer: @escaping (E) -> Void) -> Subscription {
+        let disposable = self.subscribe(onNext: { observer($0) })
+        return Subscription { disposable.dispose() }
+    }
+}
+
+public typealias ObserverList<Event> = PublishSubject<Event>
+
+extension ObserverList {
+    public func notify(_ event: E) {
+        onNext(event)
+    }
+}
+
+public func foo() {}
+
+#elseif !canImport(RxSwift)
+
 /// Protocol for any object that is observable for a given associated `Event` type (typically an enum with associated
 /// data).
 /// TODO:(wkiefer) Expand docs here - explain benefit of block-based observer which allows non-class observation.
@@ -78,3 +117,5 @@ public final class ObserverList<Event>: Observable<Event> {
     private var observers: [ObserverToken: (Event) -> Void]
     private let lock = Mutex()
 }
+
+#endif

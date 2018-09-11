@@ -89,7 +89,7 @@ internal final class NestedModelCollectionTreeController: ProxyingObservable {
         // Update diff engine state up to current state of ModelCollection so future calls to .update get correct diffs.
         _ = diffEngine.update([modelCollection.models])
         recreateModelCollectionCache()
-        self.modelCollectionObserver = modelCollection.observe { [weak self] (event) in
+        self.modelCollectionObserver = modelCollection.observeValues { [weak self] (event) in
             self?.handleCollectionEvent(event)
         }
     }
@@ -172,7 +172,7 @@ internal final class NestedModelCollectionTreeController: ProxyingObservable {
     private var childrenCache = [ModelId: NestedModelCollectionTreeController]()
     private var modelCollectionCache = [ModelId: (Int, Model)]()
     private let modelCollection: NestedModelCollection
-    private var modelCollectionObserver: Observer?
+    private var modelCollectionObserver: Subscription?
     private var diffEngine = DiffEngine()
 
     private var indexPath: IndexPath {

@@ -19,7 +19,7 @@ public final class OutlineViewModelDataSource: NSObject, NSOutlineViewDataSource
         outlineModelBinder = outlineColumn.modelBinder
 
         super.init()
-        self.collectionObserver = treeController.observe { [weak self] in
+        self.collectionObserver = treeController.observeValues { [weak self] in
             self?.handleTreeControllerEvent($0)
         }
     }
@@ -133,7 +133,7 @@ public final class OutlineViewModelDataSource: NSObject, NSOutlineViewDataSource
 
     // MARK: Private
 
-    private var collectionObserver: Observer?
+    private var collectionObserver: Subscription?
     private var diffEngine = DiffEngine()
     private let treeController: NestedModelCollectionTreeController
     private let viewBinders: [NSUserInterfaceItemIdentifier: ViewBindingProvider]

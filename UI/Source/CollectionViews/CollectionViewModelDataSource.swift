@@ -1,5 +1,8 @@
 import Pilot
 import QuartzCore
+#if canImport(RxSwift)
+import RxSwift
+#endif
 
 /// Can be used to provide reuse ids for collection view cells.
 public protocol CollectionViewCellReuseIdProvider {
@@ -107,7 +110,7 @@ public class CollectionViewModelDataSource: NSObject, ProxyingObservable {
 
         super.init()
 
-        self.collectionObserver = self.underlyingCollection.observe { [weak self] event in
+        self.collectionObserver = self.underlyingCollection.observeValues { [weak self] event in
             self?.handleCollectionEvent(event)
         }
 
@@ -334,7 +337,7 @@ public class CollectionViewModelDataSource: NSObject, ProxyingObservable {
     private let underlyingCollection: ModelCollection
     private var collectionViewState: CollectionViewState
 
-    private var collectionObserver: Observer?
+    private var collectionObserver: Subscription?
 
     /// Cache of view models and sizing information.
     private var viewModelCache: [ModelId: CachedViewModel] = [:]
@@ -461,7 +464,7 @@ public class CollectionViewModelDataSource: NSObject, ProxyingObservable {
             // Still synced - no need to fire a collection view update pass.
             // However, if there are no updates, the underlying case of any section may still change
             // (e.g. .loading(_) -> .error(_)), so a commit is still needed.
-            for (underlying, current) in zip(
+            for (underlying, current) in Swift.zip(
                 underlyingCollection.asSectioned().sectionedState,
                 currentCollection.sectionedState
             ) {

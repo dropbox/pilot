@@ -1,4 +1,7 @@
 import Foundation
+#if canImport(RxSwift)
+import RxSwift
+#endif
 
 /// A ModelCollection whose backing collection can be swapped out at runtime.
 public final class SwitchableModelCollection: SectionedModelCollection, ProxyingCollectionEventObservable {

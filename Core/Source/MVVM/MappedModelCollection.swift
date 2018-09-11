@@ -1,4 +1,7 @@
 import Foundation
+#if canImport(RxSwift)
+import RxSwift
+#endif
 
 /// Transform closure that is performed on each model item.
 public typealias ModelTransform = (Model) -> Model

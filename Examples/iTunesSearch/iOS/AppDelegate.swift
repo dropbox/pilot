@@ -47,5 +47,5 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     private let context = Context()
-    private var contextObserver: Observer?
+    private var contextObserver: Subscription?
 }
