@@ -144,7 +144,7 @@ public final class OutlineViewModelDataSource: NSObject, NSOutlineViewDataSource
     private let outlineModelBinder: ViewModelBindingProvider
 
     /// Responsible for taking a tree controller event and turnin it into NSOutlineView updates.
-    private func handleTreeControllerEvent(_ event: NestedModelCollectionTreeController.Event) {
+    private func handleTreeControllerEvent(_ event: NestedModelCollectionTreeController.TreeControllerEvent) {
         guard let outlineView = outlineView else { return }
 
         // Group the updates based on index path of their parent, and filter out ones that are not visible.

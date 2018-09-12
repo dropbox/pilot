@@ -1,5 +1,8 @@
 import Foundation
 import Pilot
+#if canImport(RxSwift)
+import RxSwift
+#endif
 
 /// Responsible for managing a lazily evaluated tree of nested model collections.
 ///
@@ -84,7 +87,7 @@ internal final class NestedModelCollectionTreeController: ProxyingObservable {
         if let parent = parent {
             self.observers = parent.observers
         } else {
-            self.observers = ObserverList<Event>()
+            self.observers = ObserverList<TreeControllerEvent>()
         }
         // Update diff engine state up to current state of ModelCollection so future calls to .update get correct diffs.
         _ = diffEngine.update([modelCollection.models])
@@ -155,15 +158,15 @@ internal final class NestedModelCollectionTreeController: ProxyingObservable {
     /// Description of mutations to model collection tree.
     ///
     /// IndexPaths are consistent when interpreted in order of removed, added, updated.
-    struct Event {
+    struct TreeControllerEvent {
         var removed: [IndexPath]
         var added: [IndexPath]
         var updated: [IndexPath]
         var moved: [MovedModel]
     }
-
-    public final var proxiedObservable: Observable<Event> { return observers }
-    private final let observers: ObserverList<Event>
+    
+    public final var proxiedObservable: Observable<TreeControllerEvent> { return observers }
+    private final let observers: ObserverList<TreeControllerEvent>
 
     // MARK: Private
 
@@ -206,7 +209,7 @@ internal final class NestedModelCollectionTreeController: ProxyingObservable {
         childrenCache = childrenCache.filter {
             modelIds.contains($0.key)
         }
-        let event = Event(
+        let event = TreeControllerEvent(
             removed: removedIndexPaths,
             added: addedIndexPaths,
             updated: updatedIndexPaths,
