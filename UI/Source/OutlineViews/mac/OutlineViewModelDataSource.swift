@@ -19,6 +19,7 @@ public final class OutlineViewModelDataSource: NSObject, NSOutlineViewDataSource
         outlineModelBinder = outlineColumn.modelBinder
 
         super.init()
+
         self.collectionObserver = treeController.observeValues { [weak self] in
             self?.handleTreeControllerEvent($0)
         }

@@ -164,7 +164,8 @@ internal final class NestedModelCollectionTreeController: ProxyingObservable {
         var updated: [IndexPath]
         var moved: [MovedModel]
     }
-    
+
+    typealias Event = TreeControllerEvent
     public final var proxiedObservable: Observable<TreeControllerEvent> { return observers }
     private final let observers: ObserverList<TreeControllerEvent>
 
