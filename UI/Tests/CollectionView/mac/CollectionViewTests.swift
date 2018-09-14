@@ -177,6 +177,7 @@ fileprivate final class TestSupplementaryLayout: NSCollectionViewLayout {
     fileprivate static let SupplementaryLayoutKind = NSCollectionView.SupplementaryElementKind.sectionHeader
 
     fileprivate override func layoutAttributesForElements(in rect: NSRect) -> [NSCollectionViewLayoutAttributes] {
+
         var layoutAttrs = [NSCollectionViewLayoutAttributes]()
 
         if let attrs = layoutAttributesForItem(at: IndexPath(item: 0, section: 0)) {

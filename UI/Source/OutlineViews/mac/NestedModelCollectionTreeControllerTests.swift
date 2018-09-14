@@ -1,5 +1,8 @@
 import XCTest
 import Pilot
+#if canImport(RxSwift)
+import RxSwift
+#endif
 @testable import PilotUI
 
 class LazyNestedModelCollectionTreeTests: XCTestCase {
@@ -111,6 +114,19 @@ class LazyNestedModelCollectionTreeTests: XCTestCase {
     }
 }
 
+#if canImport(RxSwift)
+private final class TestObserver {
+
+    init<T: ObservableType>(_ subject: T) where T.E == NestedModelCollectionTreeController.Event {
+        self.observer = subject.observeValues({ [weak self] in
+            self?.events.append($0)
+        })
+    }
+
+    fileprivate var events = [NestedModelCollectionTreeController.Event]()
+    private var observer: Subscription?
+}
+#else
 private final class TestObserver {
 
     init<T: ObservableType>(_ subject: T) where T.Event == NestedModelCollectionTreeController.Event {
@@ -122,6 +138,7 @@ private final class TestObserver {
     fileprivate var events = [NestedModelCollectionTreeController.Event]()
     private var observer: Subscription?
 }
+#endif
 
 private final class TestM: Model, ExpressibleByStringLiteral {
     typealias StringLiteralType = String

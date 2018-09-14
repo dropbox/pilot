@@ -18,8 +18,6 @@
 		A4553D8E1E5277CF00B99345 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4553D8C1E5277CF00B99345 /* Models.swift */; };
 		A4553DAE1E529BCD00B99345 /* ServiceTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4553DAD1E529BCD00B99345 /* ServiceTypes.swift */; };
 		A4553DAF1E529BCD00B99345 /* ServiceTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4553DAD1E529BCD00B99345 /* ServiceTypes.swift */; };
-		A4553DCF1E5376B600B99345 /* Pilot.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A4553DC01E53769600B99345 /* Pilot.framework */; };
-		A4553DD01E5376B600B99345 /* PilotUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A4553DC41E53769600B99345 /* PilotUI.framework */; };
 		A4553DD51E5376C600B99345 /* Pilot.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A4553DBC1E53769600B99345 /* Pilot.framework */; };
 		A4553DD61E5376C600B99345 /* PilotUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A4553DC81E53769600B99345 /* PilotUI.framework */; };
 		A4553DD81E5378A500B99345 /* SongViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4553DD71E5378A500B99345 /* SongViewModel.swift */; };
@@ -45,6 +43,8 @@
 		A49C31FC1E57B20700416296 /* SongViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49C31FB1E57B20700416296 /* SongViewModelTests.swift */; };
 		A49C31FD1E57B20700416296 /* SongViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49C31FB1E57B20700416296 /* SongViewModelTests.swift */; };
 		A4A0D55D2148A2A800142E00 /* RxCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A402873C212E2D2800487391 /* RxCocoa.framework */; };
+		A4F66970214B2A0E009A416E /* Pilot.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A4553DC01E53769600B99345 /* Pilot.framework */; };
+		A4F66971214B2A0E009A416E /* PilotUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A4553DC41E53769600B99345 /* PilotUI.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -279,20 +279,6 @@
 			remoteGlobalIDString = 69FADB481D30518C001F2E11;
 			remoteInfo = "PilotUITests macOS";
 		};
-		A4553DCB1E5376AD00B99345 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A4553DB01E53769600B99345 /* Pilot.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 69048A031C46FF23000CE840;
-			remoteInfo = "Pilot iOS";
-		};
-		A4553DCD1E5376AD00B99345 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A4553DB01E53769600B99345 /* Pilot.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 69048A321C47045D000CE840;
-			remoteInfo = "PilotUI iOS";
-		};
 		A4553DD11E5376BE00B99345 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A4553DB01E53769600B99345 /* Pilot.xcodeproj */;
@@ -313,6 +299,34 @@
 			proxyType = 1;
 			remoteGlobalIDString = C80938F51B8A71760088E94D;
 			remoteInfo = "RxCocoa-iOS";
+		};
+		A4F66956214B29F4009A416E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A4553DB01E53769600B99345 /* Pilot.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = A4F661C2214B06B8009A416E;
+			remoteInfo = "Pilot iOS Rx";
+		};
+		A4F66958214B29F4009A416E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A4553DB01E53769600B99345 /* Pilot.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = A4F66948214B1CFB009A416E;
+			remoteInfo = "PilotUI iOS Rx";
+		};
+		A4F6696C214B2A02009A416E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A4553DB01E53769600B99345 /* Pilot.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = A4F6618C214B06B8009A416E;
+			remoteInfo = "Pilot iOS Rx";
+		};
+		A4F6696E214B2A02009A416E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A4553DB01E53769600B99345 /* Pilot.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = A4F6692D214B1CFB009A416E;
+			remoteInfo = "PilotUI iOS Rx";
 		};
 /* End PBXContainerItemProxy section */
 
@@ -370,10 +384,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A4F66970214B2A0E009A416E /* Pilot.framework in Frameworks */,
+				A4F66971214B2A0E009A416E /* PilotUI.framework in Frameworks */,
 				A4A0D55D2148A2A800142E00 /* RxCocoa.framework in Frameworks */,
 				A4028763212E2D5500487391 /* RxSwift.framework in Frameworks */,
-				A4553DCF1E5376B600B99345 /* Pilot.framework in Frameworks */,
-				A4553DD01E5376B600B99345 /* PilotUI.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -483,6 +497,8 @@
 				A4553DC61E53769600B99345 /* PilotUITests iOS.xctest */,
 				A4553DC81E53769600B99345 /* PilotUI.framework */,
 				A4553DCA1E53769600B99345 /* PilotUITests macOS.xctest */,
+				A4F66957214B29F4009A416E /* Pilot.framework */,
+				A4F66959214B29F4009A416E /* PilotUI.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -603,10 +619,10 @@
 			buildRules = (
 			);
 			dependencies = (
+				A4F6696D214B2A02009A416E /* PBXTargetDependency */,
+				A4F6696F214B2A02009A416E /* PBXTargetDependency */,
 				A4A0D55C2148A2A100142E00 /* PBXTargetDependency */,
 				A4028762212E2D4D00487391 /* PBXTargetDependency */,
-				A4553DCC1E5376AD00B99345 /* PBXTargetDependency */,
-				A4553DCE1E5376AD00B99345 /* PBXTargetDependency */,
 			);
 			name = iOS;
 			productName = iOS;
@@ -903,6 +919,20 @@
 			remoteRef = A4553DC91E53769600B99345 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		A4F66957214B29F4009A416E /* Pilot.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Pilot.framework;
+			remoteRef = A4F66956214B29F4009A416E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		A4F66959214B29F4009A416E /* PilotUI.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = PilotUI.framework;
+			remoteRef = A4F66958214B29F4009A416E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -1019,16 +1049,6 @@
 			target = A45F44E91E5271D6001C947F /* macOS */;
 			targetProxy = A4553DA61E529B7700B99345 /* PBXContainerItemProxy */;
 		};
-		A4553DCC1E5376AD00B99345 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "Pilot iOS";
-			targetProxy = A4553DCB1E5376AD00B99345 /* PBXContainerItemProxy */;
-		};
-		A4553DCE1E5376AD00B99345 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "PilotUI iOS";
-			targetProxy = A4553DCD1E5376AD00B99345 /* PBXContainerItemProxy */;
-		};
 		A4553DD21E5376BE00B99345 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "Pilot macOS";
@@ -1043,6 +1063,16 @@
 			isa = PBXTargetDependency;
 			name = "RxCocoa-iOS";
 			targetProxy = A4A0D55B2148A2A100142E00 /* PBXContainerItemProxy */;
+		};
+		A4F6696D214B2A02009A416E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Pilot iOS Rx";
+			targetProxy = A4F6696C214B2A02009A416E /* PBXContainerItemProxy */;
+		};
+		A4F6696F214B2A02009A416E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "PilotUI iOS Rx";
+			targetProxy = A4F6696E214B2A02009A416E /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
