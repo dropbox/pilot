@@ -20,7 +20,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             url: FileManager.default.homeDirectoryForCurrentUser,
             context: rootContext)
 
-        openFilesObserver = rootContext.receive { [weak self] (open: OpenFilesAction) -> ActionResult in
+        openFilesSubscription = rootContext.receive { [weak self] (open: OpenFilesAction) -> ActionResult in
             for url in open.urls {
                 self?.openFile(url)
             }
@@ -35,7 +35,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     // MARK: Private
 
     private let rootContext = Context()
-    private var openFilesObserver: Observer?
+    private var openFilesSubscription: Subscription?
     private var subwindows = [NSWindowController]()
 
     @objc

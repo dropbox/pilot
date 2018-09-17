@@ -12,7 +12,7 @@ public final class WindowRouter {
         
         configureInitialViewControllers()
         
-        contextObserver = context.receiveAll { [weak self] action in
+        contextSubscription = context.receiveAll { [weak self] action in
             return self?.handle(action) ?? .notHandled
         }
     }
@@ -20,7 +20,7 @@ public final class WindowRouter {
     // MARK: Private
     
     private let context: CatalogContext
-    private var contextObserver: Observer?
+    private var contextSubscription: Subscription?
     
     private let rootSplitViewController: RootSplitViewController
 
