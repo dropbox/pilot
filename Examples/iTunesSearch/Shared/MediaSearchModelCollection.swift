@@ -1,6 +1,12 @@
 import Foundation
 import Pilot
+import RxSwift
 
+
+extension SearchService {
+}
+
+/*
 public final class MediaSearchModelCollection: SimpleModelCollection {
 
     init() {
@@ -10,10 +16,6 @@ public final class MediaSearchModelCollection: SimpleModelCollection {
 
     // MARK: Public
 
-    public enum MediaSearchError: Error {
-        case service(Error)
-        case unknown
-    }
 
     public func updateQuery(_ query: String) {
         guard query != previousQuery else { return }
@@ -40,3 +42,4 @@ public final class MediaSearchModelCollection: SimpleModelCollection {
     private let service = SearchService()
     private var previousQuery: String?
 }
+*/

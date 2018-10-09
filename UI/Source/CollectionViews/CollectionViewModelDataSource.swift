@@ -1,5 +1,6 @@
 import Pilot
 import QuartzCore
+import RxSwift
 
 /// Can be used to provide reuse ids for collection view cells.
 public protocol CollectionViewCellReuseIdProvider {
@@ -7,8 +8,7 @@ public protocol CollectionViewCellReuseIdProvider {
 }
 
 open class DefaultCollectionViewCellReuseIdProvider: CollectionViewCellReuseIdProvider {
-    public init() {
-    }
+    public init() {}
 
     // MARK: CollectionViewCellReuseIdProvider
 
@@ -20,96 +20,52 @@ open class DefaultCollectionViewCellReuseIdProvider: CollectionViewCellReuseIdPr
 
 private enum CollectionViewState {
     /// Don't know exactly what the CollectionView thinks the world looks like until it asks for the section count.
-    case loading
+    case loading([ModelCollectionState])
 
     /// Told CollectionView to performBatchUpdates but it hasn't completed yet.
     case animating
 
     /// If the underlying ModelCollection has changed while animating, it must be updated again when the animation
     /// completes.
-    case animatingWithPendingChanges
+    case animatingWithPendingChanges([ModelCollectionState])
 
     /// The CollectionView and ModelCollection are in sync with each other.
     case synced
 }
 
-public final class CurrentCollection: SectionedModelCollection, ProxyingCollectionEventObservable {
 
-    // MARK: Init
-
-    public init(_ collectionId: ModelCollectionId) {
-        self.collectionId = collectionId
-    }
-
-    // MARK: ModelCollection
-
-    public let collectionId: ModelCollectionId
-
-    public var state: ModelCollectionState {
-        // Dynamic getter because `sectionedState` is the source-of-truth for this class.
-        return sectionedState.flattenedState()
-    }
-
-    public var proxiedObservable: Observable<CollectionEvent> { return observers }
-    private let observers = ObserverList<CollectionEvent>()
-
-    // MARK: SectionedModelCollection
-
-    public private(set) var sectionedState: [ModelCollectionState] = []  {
-        didSet {
-            observers.notify(.didChangeState(state))
-        }
-    }
-
-    // MARK: Private
-
-    fileprivate func beginUpdate(_ collection: ModelCollection) -> (CollectionEventUpdates, () -> Void){
-        // If the collection is already sectioned, this will honor those sections. Otherwise, it will
-        // provide a single section wrapping the original collection.
-        let sectionedCollection = collection.asSectioned()
-        let updates = diffEngine.update(sectionedCollection.sections, debug: false)
-        let commitSectionedState = sectionedCollection.sectionedState
-        return (updates, {
-            self.sectionedState = commitSectionedState
-        })
-    }
-
-    fileprivate func update(_ collection: ModelCollection) {
-        let (_, commitCollectionChanges) = beginUpdate(collection)
-        commitCollectionChanges()
-    }
-
-    private var diffEngine = DiffEngine()
-}
 
 /// Data source for collection views which handles all the necessary binding between models -> view models, and view
 /// models -> view types. It handles observing the underlying model and handling all required updates to the collection
 /// view.
-public class CollectionViewModelDataSource: NSObject, ProxyingObservable {
+public class CollectionViewModelDataSource: NSObject {
 
     // MARK: Init
 
     public init(
-        model: ModelCollection,
+        model: SectionedModelCollection,
         modelBinder: ViewModelBindingProvider,
         viewBinder: ViewBindingProvider,
         context: Context,
         reuseIdProvider: CollectionViewCellReuseIdProvider
     ) {
         self.underlyingCollection = model
-        self.currentCollection = CurrentCollection("CVMDS-Current")
+        self.currentCollection = CurrentCollection()
         self.modelBinder = modelBinder
         self.viewBinder = viewBinder
         self.context = context
         self.reuseIdProvider = reuseIdProvider
 
-        self.collectionViewState = .loading
+        self.collectionViewState = .loading([])
 
         super.init()
 
-        self.collectionObserver = self.underlyingCollection.observe { [weak self] event in
-            self?.handleCollectionEvent(event)
-        }
+        underlyingCollection
+            .observeOn(ConcurrentMainScheduler.instance)
+            .subscribe(onNext: { [weak self] (states) in
+                self?.updateStates(states)
+            })
+            .disposed(by: disposeBag)
 
         registerForNotifications()
     }
@@ -131,6 +87,10 @@ public class CollectionViewModelDataSource: NSObject, ProxyingObservable {
         /// Implementation note: In the case of a reload, this event can fire before the CollectionView has updated
         /// with the new contents.
         case didUpdateItems(CollectionEventUpdates)
+    }
+
+    public var updateEvents: Observable<Event> {
+        return updateEventsSubject.asObservable()
     }
 
     /// A ModelCollection that provides access to the data as far as the CollectionView knows.  If the CollectionView
@@ -319,22 +279,19 @@ public class CollectionViewModelDataSource: NSObject, ProxyingObservable {
     /// ViewModel and View, but can be overridden to optimize reuse ids for a collection.
     public let reuseIdProvider: CollectionViewCellReuseIdProvider
 
-    // MARK: ObservableType
-
-    public var proxiedObservable: Observable<Event> { return observers }
-    private let observers = ObserverList<Event>()
-
     // MARK: Private
 
     private let modelBinder: ViewModelBindingProvider
     private let viewBinder: ViewBindingProvider
 
+    private let updateEventsSubject = PublishSubject<Event>()
+    private let disposeBag = DisposeBag()
+
     /// The collection whose contents are synchronized to this CollectionView.
     /// The underlyingCollection's data may be newer than the CollectionView's understanding of the world.
-    private let underlyingCollection: ModelCollection
+    private let underlyingCollection: SectionedModelCollection
     private var collectionViewState: CollectionViewState
 
-    private var collectionObserver: Observer?
 
     /// Cache of view models and sizing information.
     private var viewModelCache: [ModelId: CachedViewModel] = [:]
@@ -377,6 +334,20 @@ public class CollectionViewModelDataSource: NSObject, ProxyingObservable {
         let nc = NotificationCenter.default
         notificationTokens.forEach { nc.removeObserver($0) }
         notificationTokens.removeAll()
+    }
+
+    private func updateStates(_ states: [ModelCollectionState]) {
+        switch collectionViewState {
+        case .loading:
+            // The collection changed, but the CollectionView hasn't asked for any information yet, so there's nothing to do.
+            break
+        case .animating, .animatingWithPendingChanges:
+            // CollectionView is currently animating, so indicate further updates are required when it's done.
+            collectionViewState = .animatingWithPendingChanges(states)
+        case .synced:
+            // Everyone is idle so kick off an update.
+            applyDataToCollectionView(states)
+        }
     }
 
     private func modelForSupplementaryIndexPath(_ indexPath: IndexPath, ofKind kind: String) -> Model {
@@ -436,35 +407,15 @@ public class CollectionViewModelDataSource: NSObject, ProxyingObservable {
         return cachedViewModel
     }
 
-    private func handleCollectionEvent(_ event: CollectionEvent) {
-        switch collectionViewState {
-        case .loading:
-            // The collection changed, but the CollectionView hasn't asked for any information yet, so there's nothing to do.
-            break
-        case .animating:
-            // CollectionView is currently animating, so indicate further updates are required when it's done.
-            collectionViewState = .animatingWithPendingChanges
-        case .animatingWithPendingChanges:
-            // More changes? No problem.
-            break
-        case .synced:
-            // Everyone is idle so kick off an update.
-            applyCurrentDataToCollectionView()
-        }
-    }
+    private func applyDataToCollectionView(_ states: [ModelCollectionState]) {
+        guard case .synced = collectionViewState else { preconditionFailure() }
 
-    private func applyCurrentDataToCollectionView() {
-        precondition(collectionViewState == .synced)
-
-        let (updates, commitCollectionChanges) = currentCollection.beginUpdate(underlyingCollection)
+        let (updates, commitCollectionChanges) = currentCollection.beginUpdate(states)
         guard updates.hasUpdates else {
             // Still synced - no need to fire a collection view update pass.
             // However, if there are no updates, the underlying case of any section may still change
             // (e.g. .loading(_) -> .error(_)), so a commit is still needed.
-            for (underlying, current) in zip(
-                underlyingCollection.asSectioned().sectionedState,
-                currentCollection.sectionedState
-            ) {
+            for (underlying, current) in zip(states, currentCollection.state) {
                 if underlying.isDifferentCase(than: current) {
                     commitCollectionChanges()
                     break
@@ -473,14 +424,14 @@ public class CollectionViewModelDataSource: NSObject, ProxyingObservable {
             return
         }
 
-        observers.notify(.willUpdateItems(updates))
+        updateEventsSubject.onNext(.willUpdateItems(updates))
+
         commitCollectionChanges()
 
         handleUpdateItems(updates) { [weak self] in
-            self?.observers.notify(.didUpdateItems(updates))
+            self?.updateEventsSubject.onNext(.didUpdateItems(updates))
         }
     }
-
 
     private var collectionViewSectionCount: Int {
         return collectionView?.numberOfSections ?? 0
@@ -519,6 +470,69 @@ public class CollectionViewModelDataSource: NSObject, ProxyingObservable {
     }
 }
 
+public final class CurrentCollection: ObservableType {
+    public func subscribe<O>(_ observer: O) -> Disposable where O : ObserverType, CurrentCollection.E == O.E {
+        return subject.subscribe(observer)
+    }
+
+    public typealias E = [ModelCollectionState]
+
+    internal init() {}
+
+    public func asObservable() -> Observable<[ModelCollectionState]> {
+        return subject.asObservable()
+    }
+
+    public private(set) var state = [ModelCollectionState]() {
+        didSet {
+            subject.onNext(state)
+            models = state.map { $0.models }
+        }
+    }
+
+    public var models: [[Model]] = []
+
+    public func atModelPath<T>(_ modelPath: ModelPath) -> T? {
+        if case state.indices = modelPath.sectionIndex {
+            let section = state[modelPath.sectionIndex]
+            if case section.models.indices = modelPath.itemIndex {
+                if let typed = section.models[modelPath.itemIndex] as? T {
+                    return typed
+                }
+            }
+        }
+        return nil
+    }
+
+    public func atIndexPath<T>(_ indexPath: IndexPath) -> T? {
+        if case state.indices = indexPath.section {
+            let section = state[indexPath.section]
+            if case section.models.indices = indexPath.item {
+                if let typed = section.models[indexPath.item] as? T {
+                    return typed
+                }
+            }
+        }
+        return nil
+    }
+
+    fileprivate func beginUpdate(_ state: [ModelCollectionState]) -> (CollectionEventUpdates, () -> Void) {
+        let updates = diffEngine.update(state.map({ $0.models }), debug: false)
+        return (updates, {
+            self.state = state
+        })
+    }
+
+    fileprivate func update(_ state: [ModelCollectionState]) {
+        let (_, commitCollectionChanges) = beginUpdate(state)
+        commitCollectionChanges()
+    }
+
+    private let subject = PublishSubject<[ModelCollectionState]>()
+    private var diffEngine = DiffEngine()
+}
+
+
 #if os(iOS)
 
 // MARK: - iOS Data and Batch Updates
@@ -541,14 +555,13 @@ extension CollectionViewModelDataSource: UICollectionViewDataSource {
 
     public func handleUpdateItems(_ updates: CollectionEventUpdates, completion: @escaping () -> Void) {
         // preconditions
-        precondition(collectionViewState == .synced) // but not for long!
+        guard case .synced = collectionViewState else { preconditionFailure() } // but not for long!
         precondition(updates.hasUpdates)
         guard let collectionView = collectionView else {
             Log.fatal(message: "handleUpdateItems should never be called without a collectionView")
         }
 
         let invalidatedViewModelCache = invalidateViewModelCache(for: updates)
-
 
         // Workaround classic collection view bugs where some updates require using a full reload. This includes
         // reloading when the collection view is not part of the window hierarchy or the application is in the
@@ -577,9 +590,9 @@ extension CollectionViewModelDataSource: UICollectionViewDataSource {
                     Log.fatal(message: "Precondition failure - state cannot transition from animating to loading")
                 case .animating:
                     strongSelf.collectionViewState = .synced
-                case .animatingWithPendingChanges:
+                case .animatingWithPendingChanges(let states):
                     strongSelf.collectionViewState = .synced // applyCurrentDataToCollectionView will update
-                    strongSelf.applyCurrentDataToCollectionView()
+                    strongSelf.applyDataToCollectionView(states)
                 case .synced:
                     Log.fatal(message: "Precondition failure - state cannot transition from animating to synced")
                 }
@@ -592,7 +605,7 @@ extension CollectionViewModelDataSource: UICollectionViewDataSource {
         guard !fullReloadFallback else {
             // On iOS `reloadData` doesn't always dequeue new cells, so remove and add all sections here.
             let oldSectionCount = collectionViewSectionCount
-            let newSectionCount = currentCollection.sections.count
+            let newSectionCount = currentCollection.state.count
 
             collectionViewState = .animating
             collectionView.performBatchUpdates({
@@ -687,20 +700,17 @@ extension CollectionViewModelDataSource: UICollectionViewDataSource {
     // MARK: UICollectionViewDataSource
 
     public func numberOfSections(in collectionView: UICollectionView) -> Int {
-        switch collectionViewState {
-        case .loading:
-            _ = currentCollection.update(underlyingCollection)
+        if case .loading(let state) = collectionViewState {
+            _ = currentCollection.update(state)
             collectionViewState = .synced
-        default:
-            break
         }
-        return currentCollection.sections.count
+        return currentCollection.state.count
     }
 
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        precondition(collectionViewState != .loading)
-        if currentCollection.sections.indices.contains(section) {
-            return currentCollection.sections[section].count
+        if case .loading = collectionViewState { preconditionFailure() }
+        if currentCollection.state.indices.contains(section) {
+            return currentCollection.state[section].models.count
         }
         return 0
     }
@@ -709,9 +719,9 @@ extension CollectionViewModelDataSource: UICollectionViewDataSource {
         _ collectionView: UICollectionView,
         cellForItemAt indexPath: IndexPath
     ) -> UICollectionViewCell {
-        precondition(collectionViewState != .loading)
+        if case .loading = collectionViewState { preconditionFailure() }
         // Fetch the model item and view model.
-        let modelItem = currentCollection.sections[indexPath.section][indexPath.item]
+        let modelItem: Model = currentCollection.atIndexPath(indexPath)!
         var cachedViewModel = self.cachedViewModel(for: modelItem)
         let viewModel = cachedViewModel.viewModel
 

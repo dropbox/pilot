@@ -1,4 +1,5 @@
 import Pilot
+import RxSwift
 import UIKit
 
 /// Struct representing what to display when the collection view is empty.
@@ -17,6 +18,31 @@ open class CollectionViewController: UIViewController, UICollectionViewDelegate 
 
     public init(
         model: ModelCollection,
+        modelBinder: ViewModelBindingProvider,
+        viewBinder: ViewBindingProvider,
+        layout: UICollectionViewLayout,
+        context: Context,
+        reuseIdProvider: CollectionViewCellReuseIdProvider = DefaultCollectionViewCellReuseIdProvider()
+    ) {
+        let dataSource = CollectionViewModelDataSource(
+            model: model.map({ [$0] }),
+            modelBinder: modelBinder,
+            viewBinder: viewBinder,
+            context: context.newScope(),
+            reuseIdProvider: reuseIdProvider)
+
+        self.collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        self.collectionView.dataSource = dataSource
+
+        dataSource.collectionView = self.collectionView
+
+        self.dataSource = dataSource
+
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    public init(
+        model: SectionedModelCollection,
         modelBinder: ViewModelBindingProvider,
         viewBinder: ViewBindingProvider,
         layout: UICollectionViewLayout,
@@ -63,7 +89,7 @@ open class CollectionViewController: UIViewController, UICollectionViewDelegate 
     /// has been told. If the current code path is initiated by the CollectionView and uses an IndexPath,
     /// this is the collection that should be used.
     /// See `CollectionViewModelDataSource.currentCollection` for more documentation.
-    public var collection: ModelCollection {
+    public var collection: CurrentCollection {
         return dataSource.currentCollection
     }
 
@@ -217,44 +243,38 @@ open class CollectionViewController: UIViewController, UICollectionViewDelegate 
 
     // MARK: Private
 
-    private var collectionObserver: Observer?
+    private var collectionSubscription: Disposable?
 
     private func registerForModelEvents() {
-        assertWithLog(collectionObserver == nil, message: "Expected to start with a nil token")
+        assertWithLog(collectionSubscription == nil, message: "Expected to start with a nil token")
 
-        collectionObserver = collection.observe { [weak self] event in
-            self?.handleModelEvent(event)
-        }
-
-        // Upon registering, fire an initial state change to match existing state.
-        handleModelEvent(.didChangeState(collection.state))
+        collectionSubscription = collection.subscribe(onNext: { [weak self] (state) in
+            self?.handleState(state)
+        })
     }
 
     private func unregisterForModelEvents() {
-        collectionObserver = nil
+        collectionSubscription?.dispose()
+        collectionSubscription = nil
     }
 
-    private func handleModelEvent(_ event: CollectionEvent) {
+    private func handleState(_ state: [ModelCollectionState]) {
         hideEmptyContentView()
-
-        switch event {
-        case .didChangeState(let state):
-            if !state.isLoading {
-                hideSpinner()
+        let state = state.first ?? .notLoaded
+        if !state.isLoading {
+            hideSpinner()
+        }
+        switch state {
+        case .notLoaded:
+            break
+        case .loading(let models):
+            if models == nil || state.isEmpty {
+                showSpinner()
             }
-
-            switch state {
-            case .notLoaded:
-                break
-            case .loading(let models):
-                if models == nil || state.isEmpty {
-                    showSpinner()
-                }
-            case .loaded:
-                updateEmptyContentViewVisibility()
-            case .error(_):
-                updateEmptyContentViewVisibility()
-            }
+        case .loaded:
+            updateEmptyContentViewVisibility(state)
+        case .error(_):
+            updateEmptyContentViewVisibility(state)
         }
     }
 
@@ -264,11 +284,11 @@ open class CollectionViewController: UIViewController, UICollectionViewDelegate 
     /// View which is displayed when there is no content (either due to error or lack of loaded data).
     private var emptyContentView: UIView?
 
-    private func showEmptyContentView() {
+    private func showEmptyContentView(_ state: ModelCollectionState) {
         guard self.emptyContentView == nil else { return }
 
         let display: EmptyCollectionDisplay
-        if case .error(let error) = collection.state {
+        if case .error(let error) = state {
             display = displayForErrorState(error)
         } else {
             display = displayForNoContentState()
@@ -289,11 +309,11 @@ open class CollectionViewController: UIViewController, UICollectionViewDelegate 
         emptyContentView = nil
     }
 
-    private func updateEmptyContentViewVisibility() {
-        switch collection.state {
+    private func updateEmptyContentViewVisibility(_ state: ModelCollectionState) {
+        switch state {
         case .error(_), .loaded:
-            if collection.state.isEmpty {
-                showEmptyContentView()
+            if state.isEmpty {
+                showEmptyContentView(state)
             } else {
                 hideEmptyContentView()
             }
