@@ -27,8 +27,6 @@
 		A4553DE41E53975E00B99345 /* Actions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4553DE31E53975E00B99345 /* Actions.swift */; };
 		A4553DE51E53975E00B99345 /* Actions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4553DE31E53975E00B99345 /* Actions.swift */; };
 		A4553DE71E53A7DA00B99345 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4553DE61E53A7DA00B99345 /* WebViewController.swift */; };
-		A4553DEB1E53B9EB00B99345 /* MediaSearchModelCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4553DEA1E53B9EB00B99345 /* MediaSearchModelCollection.swift */; };
-		A4553DEC1E53B9EB00B99345 /* MediaSearchModelCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4553DEA1E53B9EB00B99345 /* MediaSearchModelCollection.swift */; };
 		A4553E071E53CD2100B99345 /* TelevisionEpisodeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4553E061E53CD2100B99345 /* TelevisionEpisodeViewModel.swift */; };
 		A4553E081E53CD2100B99345 /* TelevisionEpisodeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4553E061E53CD2100B99345 /* TelevisionEpisodeViewModel.swift */; };
 		A4553E0E1E53CD6800B99345 /* TelevisionEpisodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4553E0D1E53CD6800B99345 /* TelevisionEpisodeView.swift */; };
@@ -348,7 +346,6 @@
 		A4553DE11E53900100B99345 /* URLSession+Image.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "URLSession+Image.swift"; sourceTree = "<group>"; };
 		A4553DE31E53975E00B99345 /* Actions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Actions.swift; sourceTree = "<group>"; };
 		A4553DE61E53A7DA00B99345 /* WebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
-		A4553DEA1E53B9EB00B99345 /* MediaSearchModelCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaSearchModelCollection.swift; sourceTree = "<group>"; };
 		A4553E061E53CD2100B99345 /* TelevisionEpisodeViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TelevisionEpisodeViewModel.swift; sourceTree = "<group>"; };
 		A4553E0D1E53CD6800B99345 /* TelevisionEpisodeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TelevisionEpisodeView.swift; sourceTree = "<group>"; };
 		A4553E0F1E53CDDF00B99345 /* AppViewBindingProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppViewBindingProvider.swift; sourceTree = "<group>"; };
@@ -488,7 +485,6 @@
 			children = (
 				A4553DE31E53975E00B99345 /* Actions.swift */,
 				A45F44D31E5271D6001C947F /* Assets.xcassets */,
-				A4553DEA1E53B9EB00B99345 /* MediaSearchModelCollection.swift */,
 				A4553D8C1E5277CF00B99345 /* Models.swift */,
 				A47D61E7216EC5AD00BEFB8F /* Result.swift */,
 				A4553D891E5276F300B99345 /* SearchService.swift */,
@@ -996,7 +992,6 @@
 				A4553DE21E53900100B99345 /* URLSession+Image.swift in Sources */,
 				A437EDBE1E57874F00F67B37 /* PodcastViewModel.swift in Sources */,
 				A4553D8D1E5277CF00B99345 /* Models.swift in Sources */,
-				A4553DEB1E53B9EB00B99345 /* MediaSearchModelCollection.swift in Sources */,
 				A4553E101E53CDDF00B99345 /* AppViewBindingProvider.swift in Sources */,
 				A4553DD81E5378A500B99345 /* SongViewModel.swift in Sources */,
 			);
@@ -1008,7 +1003,6 @@
 			files = (
 				A4553DE51E53975E00B99345 /* Actions.swift in Sources */,
 				A45F44EF1E5271D6001C947F /* RootViewController.swift in Sources */,
-				A4553DEC1E53B9EB00B99345 /* MediaSearchModelCollection.swift in Sources */,
 				A4553D8B1E5276F300B99345 /* SearchService.swift in Sources */,
 				A4553E081E53CD2100B99345 /* TelevisionEpisodeViewModel.swift in Sources */,
 				A437EDBF1E57874F00F67B37 /* PodcastViewModel.swift in Sources */,
