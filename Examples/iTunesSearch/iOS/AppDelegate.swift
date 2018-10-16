@@ -4,6 +4,7 @@ import PilotUI
 import SafariServices
 import AVFoundation
 import AVKit
+import RxSwift
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -47,5 +48,5 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     private let context = Context()
-    private var contextObserver: Observer?
+    private var contextObserver: Disposable?
 }

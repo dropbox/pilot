@@ -1,10 +1,11 @@
+import Foundation
+import RxSwift
+
 /// Simple class that provides ModelCollection conformance to a series of events, easiest way to quickly wrap something
 /// that will emit models into a ModelCollection.
-open class SimpleModelCollection: ModelCollection, ProxyingCollectionEventObservable {
+open class SimpleModelCollection: ObservableType {
 
-    public init(collectionId: ModelCollectionId = "simplemodelcollection-" + Token.makeUnique().stringValue) {
-        self.collectionId = collectionId
-    }
+    public init() {}
 
     /// Event type the SimpleModelCollection consumes
     ///
@@ -19,41 +20,34 @@ open class SimpleModelCollection: ModelCollection, ProxyingCollectionEventObserv
     /// Public called to notify the model collection of an event.
     public final func onNext(_ event: Event) {
         switch event {
-        case .loading(let models): state = .loading(models)
-        case .error(let e): state = .error(e)
-        case .loaded(let models): state = .loaded(models)
+        case .loading(let models): subject.onNext(.loading(models))
+        case .error(let e): subject.onNext(.error(e))
+        case .loaded(let models): subject.onNext(.loaded(models))
         }
     }
 
-    // MARK: ModelCollection
+    // MARK: ObservableType
 
-    public let collectionId: ModelCollectionId
-
-    public private(set) final var state = ModelCollectionState.notLoaded {
-        didSet {
-            precondition(Thread.isMainThread)
-            observers.notify(.didChangeState(state))
-        }
+    public typealias E = ModelCollectionState
+    public func subscribe<O>(_ observer: O) -> Disposable where O : ObserverType, O.E == ModelCollectionState {
+        return subject.subscribe(observer)
     }
 
-    // MARK: CollectionEventObservable
+    // MARK: Private
 
-    public final var proxiedObservable: Observable<CollectionEvent> { return observers }
-    private final let observers = ObserverList<CollectionEvent>()
+    private let subject = BehaviorSubject<ModelCollectionState>(value: .notLoaded)
 }
 
 /// Simple class that provides SectionedModelCollection conformance to a series of events, easiest way to quickly wrap
 /// something that will emit models into a SectionedModelCollection.
-open class SimpleSectionedModelCollection: SectionedModelCollection, ProxyingCollectionEventObservable {
+open class SimpleSectionedModelCollection: ObservableType {
 
-    public init(collectionId: ModelCollectionId = "simplemodelcollection-" + Token.makeUnique().stringValue) {
-        self.collectionId = collectionId
-    }
+    public init() {}
 
-    /// Event type the SimpleSectionedModelCollection consumes
+    /// Event type the SimpleModelCollection consumes
     ///
-    /// SimpleSectionedModelCollection will begin as a notLoaded SectionedModelCollection, the other event cases match
-    /// 1:1 with state values.
+    /// SimpleModelCollection will begin as a notLoaded ModelCollection, the other event cases match 1:1 with
+    /// state values.
     public enum Event {
         case loading([[Model]]?)
         case error(Error)
@@ -63,38 +57,21 @@ open class SimpleSectionedModelCollection: SectionedModelCollection, ProxyingCol
     /// Public called to notify the model collection of an event.
     public final func onNext(_ event: Event) {
         switch event {
-        case .loading(let sections):
-            if let sections = sections {
-                sectionedState = sections.map { .loading($0) }
-            } else {
-                sectionedState = [.loading(nil)]
-            }
-        case .error(let e):
-            sectionedState = [.error(e)]
-        case .loaded(let sections):
-            sectionedState = sections.map { .loaded($0) }
+        case .loading(let models): subject.onNext(models?.map({ .loading($0) }) ?? [.loading(nil)])
+        case .error(let e): subject.onNext([.error(e)])
+        case .loaded(let models): subject.onNext(models.map({ .loaded($0) }))
         }
     }
 
-    // MARK: ModelCollection
+    // MARK: ObservableType
 
-    public let collectionId: ModelCollectionId
-
-    public final var state: ModelCollectionState {
-        return sectionedState.flattenedState()
+    public typealias E = [ModelCollectionState]
+    public func subscribe<O>(_ observer: O) -> Disposable where O : ObserverType, O.E == [ModelCollectionState] {
+        return subject.subscribe(observer)
     }
 
-    // MARK: SectionedModelCollection
+    // MARK: Private
 
-    public private(set) final var sectionedState: [ModelCollectionState] = [] {
-        didSet {
-            precondition(Thread.isMainThread)
-            observers.notify(.didChangeState(state))
-        }
-    }
-
-    // MARK: CollectionEventObservable
-
-    public final var proxiedObservable: Observable<CollectionEvent> { return observers }
-    private final let observers = ObserverList<CollectionEvent>()
+    private let subject = BehaviorSubject<[ModelCollectionState]>(value: [.notLoaded])
 }
+

@@ -1,4 +1,5 @@
 import Foundation
+import RxSwift
 
 /// Possible states for a `ModelCollection`. These states are typically used only for reference-type implementations
 /// of `ModelCollection` since value-type implementations will typically always be `Loaded`.
@@ -39,49 +40,6 @@ public enum ModelCollectionState {
         default:
             return true
         }
-    }
-}
-
-/// Event types sent to `CollectionEventObserver` types.
-public enum CollectionEvent {
-
-    /// Issued right after the `state` variable changes.
-    case didChangeState(ModelCollectionState)
-}
-
-// MARK: Observing
-
-/// There are many similarities between this code and the code around ObservableType.  The
-/// primary distinction is that ObservableType has an associated Event type, where CollectionEventObservable
-/// is hard-coded to observe CollectionEvents.  Because ObservableType has an associated type,
-/// it cannot be used as a type, only as a generic constraint.  If this restriction is lifted in a future
-/// version of Swift, CollectionEventObservable can be replaced with ObservableType.
-
-/// Observer defined as a closure. Type-erasing in this closure allows the actual observer to be a value type or
-/// reference type with a captured weak self.
-public typealias CollectionEventObserver = (CollectionEvent) -> Void
-public typealias CollectionEventObserverToken = Token
-
-/// ProxyingCollectionEventObservable is the easiest way to implement the CollectionEventObservable protocol.
-/// See the documentation for `ProxyingObservable` - it has the same API.
-///
-/// The relevant boilerplate to implement ProxyingCollectionEventObservable is as follows:
-///
-/// ```swift
-/// public var proxiedObservable: GenericObservable<CollectionEvent> { return observers }
-/// private let observers = ObserverList<CollectionEvent>()
-/// ```
-public protocol ProxyingCollectionEventObservable {
-    var proxiedObservable: Observable<CollectionEvent> { get }
-}
-
-/// The default CollectionEventObservable implementations.
-extension ProxyingCollectionEventObservable {
-    public func addObserver(_ observer: @escaping (CollectionEvent) -> Void) -> ObserverToken {
-        return proxiedObservable.addObserver(observer)
-    }
-    public func removeObserver(with token: ObserverToken) {
-        return proxiedObservable.removeObserver(with: token)
     }
 }
 
@@ -174,33 +132,8 @@ public struct BlockModelProvider: IndexedModelProvider {
 
 // MARK: ModelCollection
 
-/// Generic protocol defining a collection of `Model` items grouped into models. This is the core Pilot
-/// collection protocol for representing a collection of model items. View-specific bindings are provided by the
-/// PilotUI framework.
-public protocol ModelCollection: class {
-
-    // MARK: ObservableType
-
-    func addObserver(_ observer: @escaping  CollectionEventObserver) -> CollectionEventObserverToken
-    func removeObserver(with token: CollectionEventObserverToken)
-
-    var collectionId: ModelCollectionId { get }
-
-    // MARK: State
-
-    /// Current state of the model collection. Typically used by reference-type implementations, as value-type
-    /// implementations stay `.Loaded`.
-    var state: ModelCollectionState { get }
-}
-
-public extension ModelCollection {
-    public func observe(_ handler: @escaping (CollectionEvent) -> Void) -> Observer {
-        let token = addObserver(handler)
-        return Observer { [weak self] in
-            self?.removeObserver(with: token)
-        }
-    }
-}
+public typealias SectionedModelCollection = Observable<[ModelCollectionState]>
+public typealias ModelCollection = Observable<ModelCollectionState>
 
 // MARK: Common helper methods.
 
@@ -251,10 +184,6 @@ extension ModelCollectionState: CustomDebugStringConvertible {
         guard let models = models else { return "nil" }
         return "[\(models.count) Models]"
     }
-}
-
-extension ModelCollection {
-    public var models: [Model] { return state.models }
 }
 
 // Pilot does not depend on UIKit, so redefine similar section/item accessors and initializers here.

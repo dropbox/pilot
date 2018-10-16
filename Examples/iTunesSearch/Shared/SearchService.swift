@@ -1,16 +1,5 @@
 import Foundation
-
-// Temporary until Xcode9.3 is baseline.
-#if !swift(>=4.1)
-extension Sequence {
-    internal func compactMap<ElementOfResult>(
-        _ transform: (Self.Element) throws -> ElementOfResult?
-    ) rethrows -> [ElementOfResult] {
-        return try flatMap(transform)
-    }
-}
-#endif
-
+import RxSwift
 
 public class SearchService {
 
@@ -22,7 +11,7 @@ public class SearchService {
     }
 
     public func search(
-        term: String,
+        _ query: String,
         limit: Int,
         completion: @escaping ([Media]?, ServiceError?) -> Void
     ) {
@@ -30,7 +19,7 @@ public class SearchService {
         let baseURL = URL(string: "https://itunes.apple.com/search")!
         var components = URLComponents(url: baseURL, resolvingAgainstBaseURL: false)
         components?.queryItems = [
-            URLQueryItem(name: "term", value: term),
+            URLQueryItem(name: "term", value: query),
             URLQueryItem(name: "limit", value: String(limit))
         ]
         guard let requestURL = components?.url else {
@@ -64,5 +53,24 @@ public class SearchService {
             }
         }
         task.resume()
+    }
+
+    public enum MediaSearchError: Error {
+        case service(Error)
+        case unknown
+    }
+
+    public func search(_ query: String, limit: Int = 100) -> Single<[Media]> {
+        return Single.create(subscribe: { (complete) -> Disposable in
+            self.search(query, limit: limit) { (media, error) in
+                if let media = media {
+                    complete(.success(media))
+                } else {
+                    let error: MediaSearchError = error.flatMap({ .service($0) }) ?? .unknown
+                    complete(.error(error))
+                }
+            }
+            return Disposables.create()
+        })
     }
 }

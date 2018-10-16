@@ -1,6 +1,8 @@
 import UIKit
 import Pilot
 import PilotUI
+import RxSwift
+import RxCocoa
 
 public final class MediaSearchViewController: CollectionViewController, UISearchBarDelegate, UICollectionViewDelegateFlowLayout {
 
@@ -10,8 +12,70 @@ public final class MediaSearchViewController: CollectionViewController, UISearch
         let layout = UICollectionViewFlowLayout()
         layout.itemSize = CGSize(width: 300, height: 48)
 
-        searchModel = MediaSearchModelCollection()
-        filteredModel = FilteredModelCollection(sourceCollection: searchModel)
+        let service = SearchService()
+
+        self.query = BehaviorSubject(value: "")
+        self.filter = BehaviorSubject(value: .all)
+
+        let media: Observable<(String, ModelCollectionState)> = query
+            .throttle(0.5, latest: true, scheduler: MainScheduler.instance)
+            .distinctUntilChanged()
+            .flatMap { (query) in
+                service.search(query)
+                    .asObservable()
+                    .mappedToResult()
+                    .map { (query, $0) }
+                    .share()
+            }
+            .map { (q, result) in
+                let state: ModelCollectionState
+                switch result {
+                case .success(let media): state = .loaded(media)
+                case .failure(let error): state = .error(error)
+                }
+                return (q, state)
+            }
+            .share()
+
+        let model: ModelCollection = Observable
+            .combineLatest(query, media) { (currentQuery, result) in
+                let (resultQuery, state) = result
+                // If the current query doesn't start with the query the results are for ignore them
+                guard currentQuery.hasPrefix(resultQuery) else {
+                    return .loading(nil)
+                }
+                if currentQuery == resultQuery {
+                    return state
+                } else {
+                    return .loading(state.models)
+                }
+            }
+            .observeOn(MainScheduler.instance)
+
+        let filteredModel: ModelCollection = Observable
+            .combineLatest(model, filter) { (state, type) in
+                let modelFilter: (Model) -> Bool = {
+                    switch type {
+                    case .all:
+                        return true
+                    case .podcast:
+                        return $0 is Podcast
+                    case .songs:
+                        return $0 is Song
+                    case .televisionEpisodes:
+                        return $0 is TelevisionEpisode
+                    }
+                }
+
+                switch state {
+                case .notLoaded, .error:
+                    return state
+                case .loading(let models):
+                    return .loading(models?.filter(modelFilter))
+                case .loaded(let models):
+                    return .loaded(models.filter(modelFilter))
+                }
+            }
 
         super.init(
             model: filteredModel,
@@ -22,8 +86,9 @@ public final class MediaSearchViewController: CollectionViewController, UISearch
 
         self.navigationItem.titleView = searchBar
         self.navigationItem.rightBarButtonItem = barItemForContentFilter(.all)
-        self.modelObserver = searchModel.observe { [weak self] event in
-            if case .didChangeState(let state) = event {
+
+        model
+            .subscribe(onNext: { [weak self] (state) in
                 guard let strongSelf = self else { return }
                 if state.isLoading {
                     strongSelf.navigationItem.rightBarButtonItem = strongSelf.barItemForLoading()
@@ -31,8 +96,8 @@ public final class MediaSearchViewController: CollectionViewController, UISearch
                     let item = strongSelf.barItemForContentFilter(strongSelf.contentFilter)
                     strongSelf.navigationItem.rightBarButtonItem = item
                 }
-            }
-        }
+            })
+            .disposed(by: disposeBag)
     }
 
     // MARK: CollectionViewController
@@ -71,13 +136,11 @@ public final class MediaSearchViewController: CollectionViewController, UISearch
     // MARK: UISearchBarDelegate
 
     public func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        let query = searchBar.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
-        searchModel.updateQuery(query)
+        query.onNext(searchBar.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? "")
     }
 
     public func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        let query = searchBar.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
-        searchModel.updateQuery(query)
+        query.onNext(searchBar.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? "")
     }
 
     @objc
@@ -102,6 +165,13 @@ public final class MediaSearchViewController: CollectionViewController, UISearch
 
     // MARK: Private
 
+    private let disposeBag = DisposeBag()
+    private let query: BehaviorSubject<String>
+    private let filter: BehaviorSubject<ContentType>
+    private let searchBar = UISearchBar()
+
+    // MARK: Content Filtering
+
     private enum ContentType {
         case all
         case podcast
@@ -122,18 +192,7 @@ public final class MediaSearchViewController: CollectionViewController, UISearch
         didSet {
             navigationItem.rightBarButtonItem = barItemForContentFilter(contentFilter)
             let content = contentFilter
-            filteredModel.filter = { model in
-                switch content {
-                case .all:
-                    return true
-                case .podcast:
-                    return model is Podcast
-                case .songs:
-                    return model is Song
-                case .televisionEpisodes:
-                    return model is TelevisionEpisode
-                }
-            }
+            filter.onNext(content)
         }
     }
 
@@ -151,9 +210,4 @@ public final class MediaSearchViewController: CollectionViewController, UISearch
             target: self,
             action: #selector(filterAction))
     }
-
-    private var modelObserver: Observer?
-    private let searchBar = UISearchBar()
-    private let searchModel: MediaSearchModelCollection
-    private let filteredModel: FilteredModelCollection
 }

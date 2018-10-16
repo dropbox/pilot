@@ -1,4 +1,5 @@
 import Foundation
+import RxSwift
 import Pilot
 
 /// Responsible for managing a lazily evaluated tree of nested model collections.
@@ -8,7 +9,7 @@ import Pilot
 /// and is designd to be addressed by IndexPaths that can be used as pointers back into specific models.
 ///
 /// NOTE: NestedModelCollectionTreeController is considered == whenever the indexPath and ModelCollection ids are ==
-internal final class NestedModelCollectionTreeController: ProxyingObservable {
+internal final class NestedModelCollectionTreeController: ObservableConvertibleType {
 
     /// Opaque reference to a location of a node in the tree. NSObject subclass so this object can be used as the
     /// item in all NSOutlineView/NSOutlineViewDataSource APIs.
@@ -155,18 +156,24 @@ internal final class NestedModelCollectionTreeController: ProxyingObservable {
     /// Description of mutations to model collection tree.
     ///
     /// IndexPaths are consistent when interpreted in order of removed, added, updated.
-    struct Event {
+    struct TreeEvent {
         var removed: [IndexPath]
         var added: [IndexPath]
         var updated: [IndexPath]
         var moved: [MovedModel]
+
+        static var empty = TreeEvent(removed: [], added: [], updated: [], moved: [])
     }
 
-    public final var proxiedObservable: Observable<Event> { return observers }
-    private final let observers: ObserverList<Event>
+    public typealias E = TreeEvent
+
+    public func asObservable() -> Observable<NestedModelCollectionTreeController.TreeEvent> {
+        return subject.asObservable()
+    }
 
     // MARK: Private
 
+    private let subject = PublishSubject<NestedModelCollectionTreeController.TreeEvent>()
     private weak var parent: NestedModelCollectionTreeController? = nil
     private let modelId: ModelId?
     private var childrenCache = [ModelId: NestedModelCollectionTreeController]()
@@ -183,9 +190,7 @@ internal final class NestedModelCollectionTreeController: ProxyingObservable {
         return parent.indexPath.appending(index)
     }
 
-    private func handleCollectionEvent(_ event: CollectionEvent) {
-        guard case .didChangeState(let state) = event else { return }
-
+    private func handleCollectionEvent(_ state: ModelCollectionState) {
         recreateModelCollectionCache()
 
         let indexPath = self.indexPath
@@ -206,12 +211,13 @@ internal final class NestedModelCollectionTreeController: ProxyingObservable {
         childrenCache = childrenCache.filter {
             modelIds.contains($0.key)
         }
-        let event = Event(
+        let event = TreeEvent(
             removed: removedIndexPaths,
             added: addedIndexPaths,
             updated: updatedIndexPaths,
             moved: movedPaths)
-        observers.notify(event)
+
+        subject.onNext(event)
     }
 
     private func findOrCreateNode(_ path: TreePath) -> NestedModelCollectionTreeController {
