@@ -1,35 +1,45 @@
 import XCTest
+import RxSwift
+import RxTest
+import RxBlocking
 @testable import Pilot
 
 class SimpleModelCollectionTests: XCTestCase {
 
     func testShouldStartNotLoaded() {
-        let simple = SimpleModelCollection()
-        XCTAssert(simple.state.isNotLoaded, "SimpleModelCollection should be notLoaded before there are any events")
+        XCTAssertTrue(try SimpleModelCollection().take(1).toBlocking().first()?.isNotLoaded == true)
     }
 
     func testShouldPropegateLoading() {
-        let simple = SimpleModelCollection()
-        simple.onNext(.loading(nil))
-        XCTAssert(simple.state.isLoading, "SimpleModelCollection should be loading after receiving loading event")
+        let subject = SimpleModelCollection()
+        scheduler.scheduleAt(210) {
+            subject.onNext(.loading(nil))
+        }
+        let result = scheduler.start { subject.map({ $0.isLoading }) }
+        let expected: [Recorded<RxSwift.Event<Bool>>] = [
+            next(200, false),
+            next(210, true)
+        ]
+        XCTAssertEqual(result.events, expected)
     }
 
     func testShouldPropegateModels() {
-        let simple = SimpleModelCollection()
+        let subject = SimpleModelCollection()
         let test = TM(id: "stub", version: 1)
-        simple.onNext(.loaded([test]))
-        let first = simple.state.models
-        XCTAssertEqual(first.first?.modelId, test.modelId)
-        XCTAssertEqual(first.count, 1)
+        scheduler.scheduleAt(210) {
+            subject.onNext(.loaded([test]))
+        }
+        let result = scheduler.start { subject.map({ $0.models.map({ $0.modelId }) }) }
+        let expected: [Recorded<RxSwift.Event<[ModelId]>>] = [
+            next(200, []),
+            next(210, [test.modelId])
+        ]
+        XCTAssertEqual(result.events, expected)
     }
 
-    func testShouldPropegateLoadingMore() {
-        let simple = SimpleModelCollection()
-        let test = TM(id: "stub", version: 1)
-        simple.onNext(.loading([test]))
-        let first = simple.state.models
-        XCTAssert(simple.state.isLoading)
-        XCTAssertEqual(first.first?.modelId, test.modelId)
-        XCTAssertEqual(first.count, 1)
+    override func setUp() {
+        scheduler = TestScheduler(initialClock: 0)
     }
+
+    private var scheduler: TestScheduler!
 }
