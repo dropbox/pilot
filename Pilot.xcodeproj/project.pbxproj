@@ -65,6 +65,8 @@
 		693F04D31D22E21400CAE010 /* FilteredModelCollectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4C8D5991CF23F3900F9721A /* FilteredModelCollectionTests.swift */; };
 		693F04D41D22E21400CAE010 /* EmptyModelCollectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55407491CA5B1BC00069CB9 /* EmptyModelCollectionTests.swift */; };
 		69519ADA1D34C669000426A9 /* CollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69519AD91D34C669000426A9 /* CollectionView.swift */; };
+		695C06B920D178CC003F3354 /* RobMasonVisualEffectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 695C06B820D178CC003F3354 /* RobMasonVisualEffectView.swift */; };
+		695C06CA20D17906003F3354 /* ColorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 695C06C920D17906003F3354 /* ColorView.swift */; };
 		6965349D1D1710C600DF97CB /* ConsoleLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = D560D45F1D136E11000DA826 /* ConsoleLogger.swift */; };
 		6965349E1D1710C900DF97CB /* FileLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = D560D4601D136E11000DA826 /* FileLogger.swift */; };
 		6965349F1D1710CB00DF97CB /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = D560D44C1D1211A4000DA826 /* Logger.swift */; };
@@ -260,6 +262,8 @@
 		693A60C91CAC80F800E0D2A3 /* ViewLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewLayout.swift; sourceTree = "<group>"; };
 		693F04C51D22E1CA00CAE010 /* PilotTests macOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "PilotTests macOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		69519AD91D34C669000426A9 /* CollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionView.swift; sourceTree = "<group>"; };
+		695C06B820D178CC003F3354 /* RobMasonVisualEffectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RobMasonVisualEffectView.swift; sourceTree = "<group>"; };
+		695C06C920D17906003F3354 /* ColorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorView.swift; sourceTree = "<group>"; };
 		696534871D17100900DF97CB /* Pilot.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pilot.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6965348B1D17100900DF97CB /* Mac-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Mac-Info.plist"; sourceTree = "<group>"; };
 		6974F89B1C504BD50029ED48 /* Async.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Async.swift; sourceTree = "<group>"; };
@@ -526,6 +530,7 @@
 				A4002D39208FA48400B95A90 /* OutlineViews */,
 				69048A351C47045D000CE840 /* PilotUI.h */,
 				697D13331D4056CC00310F81 /* PlatformAliases.swift */,
+				695C06B620D17891003F3354 /* Views */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -571,6 +576,15 @@
 				690E1AA31E54CAA000B257CA /* Collection.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		695C06B620D17891003F3354 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				695C06B820D178CC003F3354 /* RobMasonVisualEffectView.swift */,
+				695C06C920D17906003F3354 /* ColorView.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		697D0FCC1D37006300310F81 /* AppKitExtensions */ = {
@@ -1246,6 +1260,7 @@
 			files = (
 				A4CACF5C1D6FCC89003D572D /* LayoutConstraints.swift in Sources */,
 				A4002D3C208FA4A300B95A90 /* OutlineViewController.swift in Sources */,
+				695C06CA20D17906003F3354 /* ColorView.swift in Sources */,
 				9CA5FC4E1FB9A65300F85B98 /* CollectionViewHostReusableView.swift in Sources */,
 				697D13351D4056CC00310F81 /* PlatformAliases.swift in Sources */,
 				69BACAE61DA8D5D500EF6E70 /* NSCollectionView+Selection.swift in Sources */,
@@ -1263,6 +1278,7 @@
 				690E1AA51E54CAA000B257CA /* AssociatedObjects.swift in Sources */,
 				A4002D3E208FA51500B95A90 /* OutlineViewModelDataSource.swift in Sources */,
 				69519ADA1D34C669000426A9 /* CollectionView.swift in Sources */,
+				695C06B920D178CC003F3354 /* RobMasonVisualEffectView.swift in Sources */,
 				69FADC851D3076E2001F2E11 /* CollectionViewHostItem.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

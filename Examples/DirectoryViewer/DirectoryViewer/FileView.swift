@@ -55,6 +55,25 @@ public final class FileView: NSView, View {
         filenameLabel.frame.insetBy(dx: 1, dy: 1).fill()
     }
 
+    public override func updateTrackingAreas() {
+        let oldTrackingAreas = trackingAreas
+        oldTrackingAreas.forEach { removeTrackingArea($0) }
+
+        let trackingArea = NSTrackingArea(
+            rect: visibleRect,
+            options: [.activeInActiveApp, .mouseEnteredAndExited],
+            owner: self,
+            userInfo: nil)
+        addTrackingArea(trackingArea)
+    }
+
+    // MARK: NSResponder
+
+    open override func mouseEntered(with event: NSEvent) {
+        super.mouseEntered(with: event)
+        NSSound(named: NSSound.Name("thud"))?.play()
+    }
+
     // MARK: Private
 
     private var fileViewModel: FileViewModel?
