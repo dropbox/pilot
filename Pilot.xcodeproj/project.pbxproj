@@ -956,7 +956,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0730;
-				LastUpgradeCheck = 0930;
+				LastUpgradeCheck = 1010;
 				ORGANIZATIONNAME = "Dropbox, Inc.";
 				TargetAttributes = {
 					69048A031C46FF23000CE840 = {
@@ -981,11 +981,11 @@
 					};
 					696534861D17100900DF97CB = {
 						CreatedOnToolsVersion = 7.3.1;
-						LastSwiftMigration = 0800;
+						LastSwiftMigration = 1010;
 					};
 					69FADB3E1D30518C001F2E11 = {
 						CreatedOnToolsVersion = 7.3.1;
-						LastSwiftMigration = 0920;
+						LastSwiftMigration = 1010;
 					};
 					69FADB471D30518C001F2E11 = {
 						CreatedOnToolsVersion = 7.3.1;
@@ -1399,6 +1399,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -1688,6 +1689,7 @@
 				PRODUCT_NAME = Pilot;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.2;
 			};
 			name = Debug;
 		};
@@ -1712,6 +1714,7 @@
 				PRODUCT_NAME = Pilot;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.2;
 			};
 			name = Test;
 		};
@@ -1736,6 +1739,7 @@
 				PRODUCT_NAME = Pilot;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.2;
 			};
 			name = Release;
 		};
@@ -1759,7 +1763,7 @@
 				PRODUCT_NAME = PilotUI;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 			};
 			name = Debug;
 		};
@@ -1783,7 +1787,7 @@
 				PRODUCT_NAME = PilotUI;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 			};
 			name = Test;
 		};
@@ -1807,7 +1811,7 @@
 				PRODUCT_NAME = PilotUI;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 			};
 			name = Release;
 		};

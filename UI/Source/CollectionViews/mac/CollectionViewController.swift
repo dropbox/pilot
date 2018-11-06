@@ -211,7 +211,7 @@ open class CollectionViewController: ModelCollectionViewController, CollectionVi
 
     // MARK: NSObject
 
-    open override func validateMenuItem(_ menuItem: NSMenuItem) -> Bool {
+    open func validateMenuItem(_ menuItem: NSMenuItem) -> Bool {
         if menuItem.action == #selector(copy(_:)) {
             return selectedViewModel()?.canHandleUserEvent(.copy) == true
         }

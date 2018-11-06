@@ -115,7 +115,7 @@ public extension NSCollectionView {
             }
         }
 
-        if fabs(topPoint.y - currentY) < fabs(bottomPoint.y - currentY) {
+        if abs(topPoint.y - currentY) < abs(bottomPoint.y - currentY) {
             scrollBlock(topPoint)
         } else {
             scrollBlock(bottomPoint)

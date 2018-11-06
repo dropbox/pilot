@@ -252,7 +252,7 @@ public class CollectionViewModelDataSource: NSObject, ProxyingObservable {
         guard let cv = collectionView else { return }
         guard let supplementaryViewBinder = supplementaryViewBinderMap[kind] else { return }
 
-        let supplementaryView = cv.supplementaryView(forElementKind: NSCollectionView.SupplementaryElementKind(rawValue: kind), at: indexPath)
+        let supplementaryView = cv.supplementaryView(forElementKind: kind, at: indexPath)
         guard let hostView = supplementaryView as? CollectionViewHostReusableView else { return }
         guard var hostedView = hostView.hostedView else { return }
 
@@ -1166,11 +1166,11 @@ extension CollectionViewModelDataSource: NSCollectionViewDataSource {
         viewForSupplementaryElementOfKind kind: NSCollectionView.SupplementaryElementKind,
         at indexPath: IndexPath
     ) -> NSView {
-        guard let supplementaryViewBinder = supplementaryViewBinderMap[kind.rawValue] else {
-            Log.fatal(message: "Request for supplementary kind (\(kind.rawValue)) that has no registered view binder.")
+        guard let supplementaryViewBinder = supplementaryViewBinderMap[kind] else {
+            Log.fatal(message: "Request for supplementary kind (\(kind)) that has no registered view binder.")
         }
 
-        let viewModel = viewModelForSupplementaryElementAtIndexPath(kind.rawValue, indexPath: indexPath)
+        let viewModel = viewModelForSupplementaryElementAtIndexPath(kind, indexPath: indexPath)
         let viewType = supplementaryViewBinder.viewTypeForViewModel(viewModel, context: context)
         let reuseId = reuseIdProvider.reuseIdForViewModel(viewModel, viewType: viewType)
 
