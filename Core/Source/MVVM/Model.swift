@@ -35,7 +35,7 @@ public struct ModelVersion: Equatable, Hashable {
     /// Returns a constant version number used in Models whose contents
     /// never change.
     public static var unit: ModelVersion {
-        return ModelVersion(0)
+        return ModelVersion(hash: 0)
     }
 
     /// Returns a version unique across this run of the program.
