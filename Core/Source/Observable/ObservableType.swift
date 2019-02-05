@@ -51,11 +51,11 @@ public protocol ProxyingObservable: ObservableType {
 }
 
 /// The default Observable implementations on ProxyingObservable.
-public extension ProxyingObservable {
-    func addObserver(_ observer: @escaping (Event) -> Void) -> ObserverToken {
+extension ProxyingObservable {
+    public func addObserver(_ observer: @escaping (Event) -> Void) -> ObserverToken {
         return proxiedObservable.addObserver(observer)
     }
-    func removeObserver(with token: ObserverToken) {
+    public func removeObserver(with token: ObserverToken) {
         return proxiedObservable.removeObserver(with: token)
     }
 }
@@ -121,9 +121,9 @@ public final class Observer {
     private let remover: () -> Void
 }
 
-public extension ObservableType {
+extension ObservableType {
 
-    func observe(_ handler: @escaping (Event) -> Void) -> Observer {
+    public func observe(_ handler: @escaping (Event) -> Void) -> Observer {
         let token = addObserver(handler)
         return Observer { [weak self] in
             self?.removeObserver(with: token)

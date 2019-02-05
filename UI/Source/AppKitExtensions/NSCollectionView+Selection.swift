@@ -1,11 +1,11 @@
 import AppKit
 import Foundation
 
-public extension NSCollectionView {
+extension NSCollectionView {
 
     /// Sets the selection to the first item in the collection view,
     /// and optionally calls the delegate's selection method.
-    func selectFirstItem(notifyingDelegate: Bool = false) {
+    public func selectFirstItem(notifyingDelegate: Bool = false) {
         for section in 0..<numberOfSections {
             if numberOfItems(inSection: section) > 0 {
                 setSingleSelection(0, section: section, notifyingDelegate: notifyingDelegate)
@@ -16,7 +16,7 @@ public extension NSCollectionView {
 
     /// Sets the selection to the last item in the collection view,
     /// and optionally calls the delegate's selection method.
-    func selectLastItem(notifyingDelegate: Bool = false) {
+    public func selectLastItem(notifyingDelegate: Bool = false) {
         for section in (0..<numberOfSections).reversed() {
             let itemCount = numberOfItems(inSection: section)
             if itemCount > 0 {
@@ -28,7 +28,7 @@ public extension NSCollectionView {
 
     /// Sets the selection to item immediately following the current selection, and optionally calls the delegate's
     /// selection method. Assumes the current selection has one item.
-    func selectNextItem(notifyingDelegate: Bool = false) {
+    public func selectNextItem(notifyingDelegate: Bool = false) {
         let sectionCount = numberOfSections
         if sectionCount == 0 { return }
 
@@ -57,7 +57,7 @@ public extension NSCollectionView {
 
     /// Sets the selection to item immediately preceding the current selection, and optionally calls the delegate's
     /// selection method. Assumes the current selection has one item.
-    func selectPreviousItem(notifyingDelegate: Bool = false) {
+    public func selectPreviousItem(notifyingDelegate: Bool = false) {
         let sectionCount = numberOfSections
         if sectionCount == 0 { return }
 
@@ -85,7 +85,7 @@ public extension NSCollectionView {
     }
 
     /// Scrolls to nearest edge taking into account the host scoll view's content inset.
-    func verticallyScrollTo(itemAtIndexPath indexPath: IndexPath, animated: Bool = false) {
+    public func verticallyScrollTo(itemAtIndexPath indexPath: IndexPath, animated: Bool = false) {
         guard
             let hostScrollView = hostScrollView,
             let layoutAttributes = layoutAttributesForItem(at: indexPath as IndexPath)

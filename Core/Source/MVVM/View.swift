@@ -264,30 +264,30 @@ public struct AvailableSize {
 
 /// Default implementations of view-specific methods so that all `Views` don't have to support specific scenarios
 /// that they may not need.
-public extension View {
+extension View {
 
-    func rebindToViewModel(_ viewModel: ViewModel) {
+    public func rebindToViewModel(_ viewModel: ViewModel) {
         unbindFromViewModel()
         bindToViewModel(viewModel)
     }
 
-    func willLayoutWithAvailableSize(_ availableSize: AvailableSize) { }
+    public func willLayoutWithAvailableSize(_ availableSize: AvailableSize) { }
 
-    func applyLayout(_ layout: ViewLayout) {}
+    public func applyLayout(_ layout: ViewLayout) {}
 
-    static func preferredLayout(
+    public static func preferredLayout(
         fitting availableSize: AvailableSize,
         for viewModel: ViewModel
     ) -> PreferredLayout {
         return .none
     }
 
-    var selected: Bool {
+    public var selected: Bool {
         get { return false }
         set {}
     }
 
-    var highlightStyle: ViewHighlightStyle {
+    public var highlightStyle: ViewHighlightStyle {
         get { return .none }
         set {}
     }

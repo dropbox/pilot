@@ -115,14 +115,14 @@ public func <(lhs: ModelPath, rhs: ModelPath) -> Bool {
     }
 }
 
-public extension ModelPath {
-    var indexPath: IndexPath {
+extension ModelPath {
+    public var indexPath: IndexPath {
         return IndexPath(indexes: [sectionIndex, itemIndex])
     }
 }
 
-public extension IndexPath {
-    var modelPath: ModelPath {
+extension IndexPath {
+    public var modelPath: ModelPath {
         return ModelPath(sectionIndex: self[0], itemIndex: self[1])
     }
 }
@@ -187,8 +187,8 @@ public protocol ModelCollection: class {
     var state: ModelCollectionState { get }
 }
 
-public extension ModelCollection {
-    func observe(_ handler: @escaping (CollectionEvent) -> Void) -> Observer {
+extension ModelCollection {
+    public func observe(_ handler: @escaping (CollectionEvent) -> Void) -> Observer {
         let token = addObserver(handler)
         return Observer { [weak self] in
             self?.removeObserver(with: token)
@@ -252,14 +252,14 @@ extension ModelCollection {
 }
 
 // Pilot does not depend on UIKit, so redefine similar section/item accessors and initializers here.
-public extension IndexPath {
-    var modelSection: Int {
+extension IndexPath {
+    public var modelSection: Int {
         return self[0]
     }
-    var modelItem: Int {
+    public var modelItem: Int {
         return self[1]
     }
-    init(forModelItem modelItem: Int, inSection modelSection: Int) {
+    public init(forModelItem modelItem: Int, inSection modelSection: Int) {
         self.init(indexes: [modelSection, modelItem])
     }
 }
