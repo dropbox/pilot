@@ -4,7 +4,7 @@ struct TM: Model {
     // swiftlint:disable:next variable_name
     init(id: ModelId, version: Int64) {
         self.modelId = id
-        self.modelVersion = ModelVersion(version)
+        self.modelVersion = ModelVersion(hash: version)
     }
 
     let modelId: ModelId
