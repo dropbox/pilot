@@ -8,7 +8,7 @@ public protocol NestedModelCollection: ModelCollection {
 }
 
 public extension ModelCollection {
-    public func asNested() -> NestedModelCollection {
+    func asNested() -> NestedModelCollection {
         if let nested = self as? NestedModelCollection { return nested }
         return SingleLevelNestedModelCollection(self)
     }

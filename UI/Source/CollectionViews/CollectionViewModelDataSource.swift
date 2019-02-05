@@ -359,13 +359,13 @@ public class CollectionViewModelDataSource: NSObject, ProxyingObservable {
         // because typically it's better for collection view updates to batch until actually active (instead of multiple
         // animations as the application is transitioning).
         notificationTokens.append(nc.addObserver(
-            forName: NSNotification.Name.UIApplicationDidBecomeActive,
+            forName: UIApplication.didBecomeActiveNotification,
             object: nil,
             queue: OperationQueue.main) { [weak self] _ in
                 self?.inBackground = false
             })
         notificationTokens.append(nc.addObserver(
-            forName: NSNotification.Name.UIApplicationDidEnterBackground,
+            forName: UIApplication.didEnterBackgroundNotification,
             object: nil,
             queue: OperationQueue.main) { [weak self] _ in
                 self?.inBackground = true

@@ -266,28 +266,28 @@ public struct AvailableSize {
 /// that they may not need.
 public extension View {
 
-    public func rebindToViewModel(_ viewModel: ViewModel) {
+    func rebindToViewModel(_ viewModel: ViewModel) {
         unbindFromViewModel()
         bindToViewModel(viewModel)
     }
 
-    public func willLayoutWithAvailableSize(_ availableSize: AvailableSize) { }
+    func willLayoutWithAvailableSize(_ availableSize: AvailableSize) { }
 
-    public func applyLayout(_ layout: ViewLayout) {}
+    func applyLayout(_ layout: ViewLayout) {}
 
-    public static func preferredLayout(
+    static func preferredLayout(
         fitting availableSize: AvailableSize,
         for viewModel: ViewModel
     ) -> PreferredLayout {
         return .none
     }
 
-    public var selected: Bool {
+    var selected: Bool {
         get { return false }
         set {}
     }
 
-    public var highlightStyle: ViewHighlightStyle {
+    var highlightStyle: ViewHighlightStyle {
         get { return .none }
         set {}
     }
