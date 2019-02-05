@@ -4,7 +4,7 @@ import Pilot
 /// View controller implementation which contains the core MVVM binding support to show a given `ModelCollection`
 /// in a collection view.
 /// Subclassing should typically be only for app-specific view controller behavior (and not cell configuration).
-open class CollectionViewController: ModelCollectionViewController, CollectionViewDelegate {
+open class CollectionViewController: ModelCollectionViewController, CollectionViewDelegate, NSMenuItemValidation {
 
     // MARK: Init
 
@@ -209,9 +209,9 @@ open class CollectionViewController: ModelCollectionViewController, CollectionVi
         }
     }
 
-    // MARK: NSObject
+    // MARK: NSMenuItemValidation
 
-    open override func validateMenuItem(_ menuItem: NSMenuItem) -> Bool {
+    open func validateMenuItem(_ menuItem: NSMenuItem) -> Bool {
         if menuItem.action == #selector(copy(_:)) {
             return selectedViewModel()?.canHandleUserEvent(.copy) == true
         }
