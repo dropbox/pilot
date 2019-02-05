@@ -17,7 +17,7 @@ public extension ModelCollection {
 
     /// If the target type is already a `SectionedModelCollection`, this method does nothing except downcast. Otherwise,
     /// returns a `SectionedModelCollection` with the target `ModelCollection` as the only section.
-    public func asSectioned() -> SectionedModelCollection {
+    func asSectioned() -> SectionedModelCollection {
         if let sectioned = self as? SectionedModelCollection {
             return sectioned
         }
@@ -34,7 +34,7 @@ public extension Sequence where Iterator.Element == ModelCollectionState {
     /// Common implementation to transform `[ModelCollectionState] -> ModelCollectionState`. Typically used by
     /// `SectionedModelCollection` implementations when they need to return a single representative
     /// `ModelCollectionState`.
-    public func flattenedState() -> ModelCollectionState {
+    func flattenedState() -> ModelCollectionState {
         var count = 0
         var consolidatedModels: [Model] = []
         var reducedStates = ModelCollectionStateReduction()
@@ -75,7 +75,7 @@ public extension Sequence where Iterator.Element == ModelCollectionState {
 
 public extension Sequence where Iterator.Element == [Model] {
     /// Convenience method for returning a `[ModelCollectionState]` from a two-dimentional `Model` array.
-    public func asSectionedState(loading: Bool = false) -> [ModelCollectionState] {
+    func asSectionedState(loading: Bool = false) -> [ModelCollectionState] {
         return self.map { loading ? .loading($0) : .loaded($0) }
     }
 }

@@ -23,12 +23,6 @@ public struct Token: Hashable, Equatable {
         return String(value)
     }
 
-    // MARK: Hashable
-
-    public var hashValue: Int {
-        return value.hashValue
-    }
-
     // MARK: Private
 
     private init(_ value: Int64) {

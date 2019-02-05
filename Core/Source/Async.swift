@@ -200,7 +200,7 @@ public extension Async {
     /// ```
     ///
     /// NOTE: This method must be called on the main thread.
-    public static func debounce(wait interval: DispatchTimeInterval, block: @escaping () -> Void) -> () -> Void {
+    static func debounce(wait interval: DispatchTimeInterval, block: @escaping () -> Void) -> () -> Void {
         precondition(Thread.isMainThread)
 
         var lastWorkItem: DispatchWorkItem?
@@ -224,7 +224,7 @@ public extension Async {
     /// ```
     ///
     /// NOTE: This method must be called on the main thread.
-    public static func throttle(wait interval: DispatchTimeInterval, block: @escaping () -> Void) -> () -> Void {
+    static func throttle(wait interval: DispatchTimeInterval, block: @escaping () -> Void) -> () -> Void {
         precondition(Thread.isMainThread)
 
         var resetThrottle: DispatchWorkItem?
@@ -244,7 +244,7 @@ public extension Async {
     /// Batching is done using a reducer, and `block` will be called on the provided time interval (after it is called
     /// with some argument).
     /// - Note: The provided queue must be serial.
-    public static func coalesce<T>(
+    static func coalesce<T>(
         coalesceTime: DispatchTimeInterval,
         queue: Queue = .main,
         reducer: @escaping (T, T) -> T,
@@ -282,7 +282,7 @@ public extension Async {
 
     /// A wrapper around the coalesce function above. Handles the common case of coalescing a list of items.
     /// - Note: The provided queue must be serial.
-    public static func coalesce<T>(
+    static func coalesce<T>(
         coalesceTime: DispatchTimeInterval,
         queue: Queue = .main,
         block: @escaping ([T]) -> Void
@@ -292,7 +292,7 @@ public extension Async {
 
     /// A wrapper around the coalesce function above. Handles the common case of coalescing a set of items.
     /// - Note: The provided queue must be serial.
-    public static func coalesce<T>(
+    static func coalesce<T>(
         coalesceTime: DispatchTimeInterval,
         queue: Queue = .main,
         block: @escaping (Set<T>) -> Void

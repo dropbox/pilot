@@ -99,12 +99,6 @@ public struct ModelPath: Equatable, Hashable {
 
     public var sectionIndex: Int
     public var itemIndex: Int
-
-    // MARK: Hashable
-
-    public var hashValue: Int {
-        return sectionIndex.hashValue ^ itemIndex.hashValue
-    }
 }
 
 public func ==(lhs: ModelPath, rhs: ModelPath) -> Bool {
@@ -122,13 +116,13 @@ public func <(lhs: ModelPath, rhs: ModelPath) -> Bool {
 }
 
 public extension ModelPath {
-    public var indexPath: IndexPath {
+    var indexPath: IndexPath {
         return IndexPath(indexes: [sectionIndex, itemIndex])
     }
 }
 
 public extension IndexPath {
-    public var modelPath: ModelPath {
+    var modelPath: ModelPath {
         return ModelPath(sectionIndex: self[0], itemIndex: self[1])
     }
 }
@@ -194,7 +188,7 @@ public protocol ModelCollection: class {
 }
 
 public extension ModelCollection {
-    public func observe(_ handler: @escaping (CollectionEvent) -> Void) -> Observer {
+    func observe(_ handler: @escaping (CollectionEvent) -> Void) -> Observer {
         let token = addObserver(handler)
         return Observer { [weak self] in
             self?.removeObserver(with: token)
@@ -259,13 +253,13 @@ extension ModelCollection {
 
 // Pilot does not depend on UIKit, so redefine similar section/item accessors and initializers here.
 public extension IndexPath {
-    public var modelSection: Int {
+    var modelSection: Int {
         return self[0]
     }
-    public var modelItem: Int {
+    var modelItem: Int {
         return self[1]
     }
-    public init(forModelItem modelItem: Int, inSection modelSection: Int) {
+    init(forModelItem modelItem: Int, inSection modelSection: Int) {
         self.init(indexes: [modelSection, modelItem])
     }
 }
