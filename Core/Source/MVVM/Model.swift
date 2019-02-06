@@ -56,3 +56,21 @@ extension ModelVersion: ExpressibleByIntegerLiteral {
         self.hash = value
     }
 }
+
+/// This is a shim to provide source compat while ripping out the Spooky hash implementation in favor of the built in
+/// swift Set/Dictionary hasher in 4.2; The intent is to provide this as a temporary bridge until we can more fully
+/// integrate Hashable into Pilot.Model in a source-breaking way. See https://github.com/dropbox/pilot/issues/158
+public struct ModelVersionMixer {
+
+    public init() {}
+
+    public mutating func mix<H>(_ value: H) where H: Hashable {
+        hasher.combine(value)
+    }
+
+    public mutating func result() -> ModelVersion {
+        return ModelVersion(hash: hasher.finalize())
+    }
+
+    private var hasher = Hasher()
+}
