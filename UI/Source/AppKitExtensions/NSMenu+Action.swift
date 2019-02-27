@@ -53,7 +53,7 @@ extension NSMenuItem {
             menuItem.state = info.metadata.state.toNSState()
             menuItem.representedObject = MenuItemActionWrapper(info.action)
             if let imageName =  info.metadata.imageName {
-                menuItem.image = NSImage(named: NSImage.Name(rawValue: imageName))
+                menuItem.image = NSImage(named: imageName)
             }
             menuItem.target = target
             return menuItem
@@ -75,7 +75,7 @@ extension NSMenuItem {
                 keyEquivalent: info.metadata.keyEquivalent)
             menuItem.isEnabled = info.metadata.enabled
             if let imageName =  info.metadata.imageName {
-                menuItem.image = NSImage(named: NSImage.Name(rawValue: imageName))
+                menuItem.image = NSImage(named: imageName)
             }
             menuItem.target = target    // There is no action, but target can be used for validation.
             menuItem.submenu = NSMenu.fromSecondaryActions(info.actions, action: action, target: target)

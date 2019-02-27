@@ -27,31 +27,31 @@ public struct Song: Model, Decodable {
     }
 
     public var modelVersion: ModelVersion {
-        var mixer = ModelVersionMixer()
-        mixer.mix(artistId)
-        mixer.mix(collectionId)
-        mixer.mix(trackId)
-        mixer.mix(artistName)
-        mixer.mix(collectionName)
-        mixer.mix(trackName)
-        mixer.mix(artistViewUrl.absoluteString)
-        mixer.mix(collectionViewUrl.absoluteString)
-        mixer.mix(trackViewUrl.absoluteString)
-        mixer.mix(previewUrl.absoluteString)
+        var hasher = Hasher()
+        hasher.combine(artistId)
+        hasher.combine(collectionId)
+        hasher.combine(trackId)
+        hasher.combine(artistName)
+        hasher.combine(collectionName)
+        hasher.combine(trackName)
+        hasher.combine(artistViewUrl)
+        hasher.combine(collectionViewUrl)
+        hasher.combine(trackViewUrl)
+        hasher.combine(previewUrl)
         if let artwork = artworkUrl100 {
-            mixer.mix(artwork.absoluteString)
+            hasher.combine(artwork)
         }
-        mixer.mix(Float64(collectionPrice))
-        mixer.mix(Float64(trackPrice))
-        mixer.mix(releaseDate)
-        mixer.mix(trackTimeMillis)
+        hasher.combine(collectionPrice)
+        hasher.combine(trackPrice)
+        hasher.combine(releaseDate)
+        hasher.combine(trackTimeMillis)
         if let trackNumber = trackNumber {
-            mixer.mix(trackNumber)
+            hasher.combine(trackNumber)
         }
         if let trackCount = trackCount {
-            mixer.mix(trackCount)
+            hasher.combine(trackCount)
         }
-        return mixer.result()
+        return ModelVersion(hash: hasher.finalize())
     }
 }
 
@@ -72,18 +72,18 @@ public struct TelevisionEpisode: Model, Decodable {
     }
 
     public var modelVersion: Pilot.ModelVersion {
-        var mixer = ModelVersionMixer()
-        mixer.mix(collectionId)
-        mixer.mix(trackId)
-        mixer.mix(collectionName)
-        mixer.mix(trackName)
-        mixer.mix(trackViewUrl.absoluteString)
-        mixer.mix(previewUrl.absoluteString)
+        var hasher = Hasher()
+        hasher.combine(collectionId)
+        hasher.combine(trackId)
+        hasher.combine(collectionName)
+        hasher.combine(trackName)
+        hasher.combine(trackViewUrl)
+        hasher.combine(previewUrl)
         if let artwork = artworkUrl100 {
-            mixer.mix(artwork.absoluteString)
+            hasher.combine(artwork)
         }
-        mixer.mix(shortDescription)
-        return mixer.result()
+        hasher.combine(shortDescription)
+        return ModelVersion(hash: hasher.finalize())
     }
 }
 
@@ -102,15 +102,15 @@ public struct Podcast: Model, Decodable {
     }
 
     public var modelVersion: ModelVersion {
-        var mixer = ModelVersionMixer()
-        mixer.mix(collectionId)
-        mixer.mix(trackId)
-        mixer.mix(collectionName)
-        mixer.mix(collectionViewUrl.absoluteString)
+        var hasher = Hasher()
+        hasher.combine(collectionId)
+        hasher.combine(trackId)
+        hasher.combine(collectionName)
+        hasher.combine(collectionViewUrl)
         if let artwork = artworkUrl100 {
-            mixer.mix(artwork.absoluteString)
+            hasher.combine(artwork)
         }
-        return mixer.result()
+        return ModelVersion(hash: hasher.finalize())
     }
 }
 

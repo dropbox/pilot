@@ -1,7 +1,7 @@
 import AppKit
 import Foundation
 
-public extension NSCollectionView {
+extension NSCollectionView {
 
     /// Sets the selection to the first item in the collection view,
     /// and optionally calls the delegate's selection method.
@@ -115,7 +115,7 @@ public extension NSCollectionView {
             }
         }
 
-        if fabs(topPoint.y - currentY) < fabs(bottomPoint.y - currentY) {
+        if abs(topPoint.y - currentY) < abs(bottomPoint.y - currentY) {
             scrollBlock(topPoint)
         } else {
             scrollBlock(bottomPoint)

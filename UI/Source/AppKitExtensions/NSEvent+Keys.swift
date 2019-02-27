@@ -3,7 +3,7 @@ import Pilot
 
 public typealias AppKitEventModifierFlags = NSEvent.ModifierFlags
 
-public extension NSEvent {
+extension NSEvent {
 
     /// Returns a semantic `EventKeyCode` value (or .Unknown) for the target event.
     public var eventKeyCode: EventKeyCode {
