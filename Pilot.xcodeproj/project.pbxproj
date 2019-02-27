@@ -22,8 +22,6 @@
 		022862561DB006EF00FCD03F /* DiffEngineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 022862521DB006D900FCD03F /* DiffEngineTests.swift */; };
 		022862581DB0070100FCD03F /* DiffEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 022862571DB0070100FCD03F /* DiffEngine.swift */; };
 		022862591DB0070500FCD03F /* DiffEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 022862571DB0070100FCD03F /* DiffEngine.swift */; };
-		0253F33D1D91FD1600B718CF /* SpookyV2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 021321411D91EF6900CDF026 /* SpookyV2.cpp */; };
-		0253F33E1D91FD1A00B718CF /* SpookyV2.h in Headers */ = {isa = PBXBuildFile; fileRef = 021321421D91EF6900CDF026 /* SpookyV2.h */; };
 		0263D8081D6CCE6C0042415E /* StaticModelCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021CB8E91D6767D90062D5B3 /* StaticModelCollection.swift */; };
 		02AADF501D6E433E00587167 /* SwitchableModelCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02AADF4F1D6E433E00587167 /* SwitchableModelCollection.swift */; };
 		02AADF511D6E433E00587167 /* SwitchableModelCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02AADF4F1D6E433E00587167 /* SwitchableModelCollection.swift */; };
@@ -39,11 +37,9 @@
 		654229B71E63D68E00C053FE /* SwitchableModelCollectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654229B51E63D68E00C053FE /* SwitchableModelCollectionTests.swift */; };
 		655664AE1EC8FCED005DB413 /* ScoredModelCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 022120341DFB807C007C4039 /* ScoredModelCollection.swift */; };
 		655664AF1EC8FCEE005DB413 /* ScoredModelCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 022120341DFB807C007C4039 /* ScoredModelCollection.swift */; };
-		655664B71EC90074005DB413 /* (null) in Sources */ = {isa = PBXBuildFile; };
 		655664B81EC90529005DB413 /* (null) in Sources */ = {isa = PBXBuildFile; };
 		655664BA1EC90654005DB413 /* MultiplexModelCollectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65032E321E5BE079008020BF /* MultiplexModelCollectionTests.swift */; };
 		655664BB1EC90677005DB413 /* MultiplexModelCollectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65032E321E5BE079008020BF /* MultiplexModelCollectionTests.swift */; };
-		65645FD11EE776E400ED694A /* (null) in Sources */ = {isa = PBXBuildFile; };
 		65645FD21EE776E500ED694A /* (null) in Sources */ = {isa = PBXBuildFile; };
 		69048A081C46FF23000CE840 /* Pilot.h in Headers */ = {isa = PBXBuildFile; fileRef = 69048A071C46FF23000CE840 /* Pilot.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		69048A0F1C46FF23000CE840 /* Pilot.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69048A041C46FF23000CE840 /* Pilot.framework */; };
@@ -476,7 +472,6 @@
 			children = (
 				6974F89B1C504BD50029ED48 /* Async.swift */,
 				A460CC821E56195F00F9AC6F /* Downcast.swift */,
-				0213213D1D91EEFC00CDF026 /* Hash */,
 				69048A091C46FF23000CE840 /* iOS-Info.plist */,
 				D560D44A1D12106A000DA826 /* Logging */,
 				6965348B1D17100900DF97CB /* Mac-Info.plist */,
@@ -768,8 +763,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				021321401D91EF0A00CDF026 /* Hash.h in Headers */,
-				0253F33E1D91FD1A00B718CF /* SpookyV2.h in Headers */,
 				69048A081C46FF23000CE840 /* Pilot.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -786,8 +779,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0213213F1D91EF0700CDF026 /* Hash.h in Headers */,
-				021321441D91EF6900CDF026 /* SpookyV2.h in Headers */,
 				693F039C1D21DB0800CAE010 /* Pilot.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1084,7 +1075,6 @@
 				69EAC5BB1D04C84E00584C7E /* Observable.swift in Sources */,
 				693A60CA1CAC80F800E0D2A3 /* ViewLayout.swift in Sources */,
 				6919D2C01C90DC3A0075F997 /* EmptyModelCollection.swift in Sources */,
-				0253F33D1D91FD1600B718CF /* SpookyV2.cpp in Sources */,
 				D560D44D1D1211A4000DA826 /* Logger.swift in Sources */,
 				69F89E7A1C52F06200F08E28 /* Context.swift in Sources */,
 				D560D4621D136E11000DA826 /* FileLogger.swift in Sources */,
@@ -1117,7 +1107,6 @@
 				022862591DB0070500FCD03F /* DiffEngine.swift in Sources */,
 				69F89E7D1C52F06200F08E28 /* View.swift in Sources */,
 				69F89E7C1C52F06200F08E28 /* ViewModel.swift in Sources */,
-				021321471D91F13700CDF026 /* Hash.cpp in Sources */,
 				A437EDAF1E5660CE00F67B37 /* AsyncModelCollection.swift in Sources */,
 				022137191DA444D20013487F /* ObservableData.swift in Sources */,
 			);
@@ -1198,14 +1187,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				021321431D91EF6900CDF026 /* SpookyV2.cpp in Sources */,
-				021321461D91F13700CDF026 /* Hash.cpp in Sources */,
 				021CB8EA1D6767D90062D5B3 /* StaticModelCollection.swift in Sources */,
 				696534A91D1710D400DF97CB /* ViewLayout.swift in Sources */,
 				6965349E1D1710C900DF97CB /* FileLogger.swift in Sources */,
 				022137181DA444D20013487F /* ObservableData.swift in Sources */,
 				696534A71D1710D400DF97CB /* StaticModel.swift in Sources */,
-				655664B71EC90074005DB413 /* (null) in Sources */,
 				696534A81D1710D400DF97CB /* StaticViewBindingProvider.swift in Sources */,
 				696534A21D1710D400DF97CB /* FilteredModelCollection.swift in Sources */,
 				69A8692F20339DF40076B36A /* SectionedModelCollection.swift in Sources */,
@@ -1223,7 +1209,6 @@
 				A460CC831E56195F00F9AC6F /* Downcast.swift in Sources */,
 				A437EDB51E567AE800F67B37 /* Async.swift in Sources */,
 				696534AB1D1710D400DF97CB /* View.swift in Sources */,
-				65645FD11EE776E400ED694A /* (null) in Sources */,
 				A4897B631F95582100727514 /* ViewModelUserEvents.swift in Sources */,
 				A42899711FA1393500EA4422 /* ViewModelBinding.swift in Sources */,
 				022862581DB0070100FCD03F /* DiffEngine.swift in Sources */,
@@ -1421,6 +1406,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.Dropbox.Pilot;
 				PRODUCT_NAME = Pilot;
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.2;
 			};
 			name = Debug;
 		};
@@ -1438,6 +1424,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.Dropbox.Pilot;
 				PRODUCT_NAME = Pilot;
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.2;
 			};
 			name = Release;
 		};
@@ -1525,6 +1512,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.Dropbox.Pilot;
 				PRODUCT_NAME = Pilot;
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.2;
 			};
 			name = Test;
 		};
@@ -1553,6 +1541,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.Dropbox.PilotUI;
 				PRODUCT_NAME = PilotUI;
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.2;
 			};
 			name = Debug;
 		};
@@ -1571,6 +1560,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.Dropbox.PilotUI;
 				PRODUCT_NAME = PilotUI;
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.2;
 			};
 			name = Test;
 		};
@@ -1589,6 +1579,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.Dropbox.PilotUI;
 				PRODUCT_NAME = PilotUI;
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.2;
 			};
 			name = Release;
 		};
@@ -1688,6 +1679,7 @@
 				PRODUCT_NAME = Pilot;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.2;
 			};
 			name = Debug;
 		};
@@ -1712,6 +1704,7 @@
 				PRODUCT_NAME = Pilot;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.2;
 			};
 			name = Test;
 		};
@@ -1736,6 +1729,7 @@
 				PRODUCT_NAME = Pilot;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.2;
 			};
 			name = Release;
 		};
@@ -1759,7 +1753,7 @@
 				PRODUCT_NAME = PilotUI;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 			};
 			name = Debug;
 		};
@@ -1783,7 +1777,7 @@
 				PRODUCT_NAME = PilotUI;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 			};
 			name = Test;
 		};
@@ -1807,7 +1801,7 @@
 				PRODUCT_NAME = PilotUI;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.1;
 			};
 			name = Release;
 		};

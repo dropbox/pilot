@@ -215,7 +215,7 @@ open class DerivedData<Result>: ProxyingObservable, ObservableData {
     private var retained: AnyObject?
 }
 
-public extension ObservableData {
+extension ObservableData {
     /// Same as `Observable.observe` except it calls the callback immediately with the initial value.
     /// Useful when binding some UI to an observable value.
     public func bind(_ cb: @escaping (Event) -> Void) -> Observer {

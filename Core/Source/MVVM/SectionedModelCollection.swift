@@ -13,7 +13,7 @@ public protocol SectionedModelCollection: ModelCollection {
     var sectionedState: [ModelCollectionState] { get }
 }
 
-public extension ModelCollection {
+extension ModelCollection {
 
     /// If the target type is already a `SectionedModelCollection`, this method does nothing except downcast. Otherwise,
     /// returns a `SectionedModelCollection` with the target `ModelCollection` as the only section.
@@ -29,7 +29,7 @@ public struct ModelCollectionStateFlattenError: Error {
     public var errors: [Error]
 }
 
-public extension Sequence where Iterator.Element == ModelCollectionState {
+extension Sequence where Iterator.Element == ModelCollectionState {
 
     /// Common implementation to transform `[ModelCollectionState] -> ModelCollectionState`. Typically used by
     /// `SectionedModelCollection` implementations when they need to return a single representative
@@ -73,7 +73,7 @@ public extension Sequence where Iterator.Element == ModelCollectionState {
     }
 }
 
-public extension Sequence where Iterator.Element == [Model] {
+extension Sequence where Iterator.Element == [Model] {
     /// Convenience method for returning a `[ModelCollectionState]` from a two-dimentional `Model` array.
     public func asSectionedState(loading: Bool = false) -> [ModelCollectionState] {
         return self.map { loading ? .loading($0) : .loaded($0) }

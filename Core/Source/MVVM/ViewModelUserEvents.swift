@@ -60,25 +60,26 @@ public struct EventKeyModifierFlags: OptionSet {
 }
 
 extension ViewModelUserEvent: Hashable {
-    public var hashValue: Int {
+
+    public func hash(into hasher: inout Hasher) {
         switch self {
         case .click(let flags):
-            return "click-\(flags)".hashValue
+            hasher.combine("click-\(flags)")
         case .keyDown(let key, let flags, let characters):
             let charValue = characters ?? "nil"
-            return "keyDown-\(key)-\(flags)-\(charValue)".hashValue
+            hasher.combine("keyDown-\(key)-\(flags)-\(charValue)")
         case .longPress:
-            return 1<<1
+            hasher.combine(1<<1)
         case .secondaryClick:
-            return 1<<2
+            hasher.combine(1<<2)
         case .select:
-            return 1<<3
+            hasher.combine(1<<3)
         case .tap:
-            return 1<<4
+            hasher.combine(1<<4)
         case .copy:
-            return 1<<5
+            hasher.combine(1<<5)
         case .doubleClick:
-            return 1<<6
+            hasher.combine(1<<6)
         }
     }
 

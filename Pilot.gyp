@@ -31,16 +31,12 @@
             'type': 'static_library',
             'mac_framework_headers': [
               'Core/Source/Pilot.h',
-              'Core/Source/Hash/Hash.h',
-            ],
-            'mac_framework_private_headers': [
-              'Core/Source/Hash/SpookyV2.h',
             ],
             'sources': [
                 '<@(pilot_core_sources)',
             ],
             'xcode_settings': {
-              'SWIFT_VERSION': '3.2',
+              'SWIFT_VERSION': '4.2',
               'INFOPLIST_FILE': 'Core/Source/iOS-Info.plist',
             },
             'xcode_config_file': 'Configuration/Pilot-Target.xcconfig',
@@ -63,7 +59,7 @@
               'Pilot',
             ],
             'xcode_settings': {
-              'SWIFT_VERSION': '3.2',
+              'SWIFT_VERSION': '4.2',
               'INFOPLIST_FILE': 'UI/Source/Info-iOS.plist',
             },
             'xcode_config_file': 'Configuration/Pilot-Target.xcconfig',
@@ -87,16 +83,12 @@
             'type': 'static_library',
             'mac_framework_headers': [
               'Core/Source/Pilot.h',
-              'Core/Source/Hash/Hash.h',
-            ],
-            'mac_framework_private_headers': [
-              'Core/Source/Hash/SpookyV2.h',
             ],
             'sources': [
                 '<@(pilot_core_sources)',
             ],
             'xcode_settings': {
-              'SWIFT_VERSION': '3.2',
+              'SWIFT_VERSION': '4.2',
               'INFOPLIST_FILE': 'Core/Source/Mac-Info.plist',
             },
             'xcode_config_file': 'Configuration/Pilot-Target.xcconfig',
@@ -116,7 +108,7 @@
               'Pilot',
             ],
             'xcode_settings': {
-              'SWIFT_VERSION': '3.2',
+              'SWIFT_VERSION': '4.2',
               'INFOPLIST_FILE': 'UI/Source/Info-macOS.plist',
             },
             'xcode_config_file': 'Configuration/Pilot-Target.xcconfig',

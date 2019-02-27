@@ -264,7 +264,7 @@ public struct AvailableSize {
 
 /// Default implementations of view-specific methods so that all `Views` don't have to support specific scenarios
 /// that they may not need.
-public extension View {
+extension View {
 
     public func rebindToViewModel(_ viewModel: ViewModel) {
         unbindFromViewModel()

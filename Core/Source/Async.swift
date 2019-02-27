@@ -186,7 +186,7 @@ public struct Async {
 }
 
 /// Async helper functions.
-public extension Async {
+extension Async {
 
     /// Creates and returns a new debounced version of the passed `block` which will postpone its execution until after
     /// `wait` milliseconds have elapsed since the last time it was invoked. Useful for implementing behavior that

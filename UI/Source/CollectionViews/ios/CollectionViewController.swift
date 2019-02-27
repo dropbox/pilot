@@ -124,7 +124,7 @@ open class CollectionViewController: UIViewController, UICollectionViewDelegate 
     open func showSpinner() {
         guard self.spinner == nil else { return }
 
-        let spinner = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+        let spinner = UIActivityIndicatorView(style: .gray)
         self.spinner = spinner
 
         collectionView.addSubview(spinner)
