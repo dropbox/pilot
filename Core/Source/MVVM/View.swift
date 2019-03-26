@@ -103,22 +103,22 @@ public protocol ViewBindingProvider {
     ) -> PreferredLayout
 }
 
-public extension ViewBindingProvider {
+extension ViewBindingProvider {
 
     /// Default implementation of `unbind`.
-    func unbind(_ view: View) {
+    public func unbind(_ view: View) {
         precondition(view.viewModel != nil, "Attempt to unbind view that has no view model.")
         view.unbindFromViewModel()
         assertWithLog(view.viewModel == nil, message: "View model for view is not nil after unbinding.")
     }
 
-    func viewTypeForViewModel(_ viewModel: ViewModel, context: Context) -> View.Type {
+    public func viewTypeForViewModel(_ viewModel: ViewModel, context: Context) -> View.Type {
         return viewBinding(for: viewModel, context: context).viewType
     }
 
     /// Default implementation. It grabs the binding from bindingForViewModel and uses it to construct
     /// a new View, optionally reusing the existing view if possible.
-    func view(
+    public func view(
         for viewModel: ViewModel,
         context: Context,
         reusing reuseView: View?,
@@ -134,7 +134,7 @@ public extension ViewBindingProvider {
     }
 
     /// Default implementation of `preferredLayout(fitting:with:context)`.
-    func preferredLayout(
+    public func preferredLayout(
         fitting availableSize: AvailableSize,
         for viewModel: ViewModel,
         context: Context
@@ -264,7 +264,7 @@ public struct AvailableSize {
 
 /// Default implementations of view-specific methods so that all `Views` don't have to support specific scenarios
 /// that they may not need.
-public extension View {
+extension View {
 
     public func rebindToViewModel(_ viewModel: ViewModel) {
         unbindFromViewModel()

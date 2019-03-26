@@ -998,6 +998,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 			);
 			mainGroup = 690489FA1C46FF23000CE840;
@@ -1422,6 +1423,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.Dropbox.Pilot;
 				PRODUCT_NAME = Pilot;
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -1439,6 +1441,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.Dropbox.Pilot;
 				PRODUCT_NAME = Pilot;
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
@@ -1526,6 +1529,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.Dropbox.Pilot;
 				PRODUCT_NAME = Pilot;
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Test;
 		};
@@ -1554,6 +1558,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.Dropbox.PilotUI;
 				PRODUCT_NAME = PilotUI;
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -1572,6 +1577,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.Dropbox.PilotUI;
 				PRODUCT_NAME = PilotUI;
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Test;
 		};
@@ -1590,6 +1596,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.Dropbox.PilotUI;
 				PRODUCT_NAME = PilotUI;
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
@@ -1689,7 +1696,7 @@
 				PRODUCT_NAME = Pilot;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -1714,7 +1721,7 @@
 				PRODUCT_NAME = Pilot;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Test;
 		};
@@ -1739,7 +1746,7 @@
 				PRODUCT_NAME = Pilot;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
@@ -1763,7 +1770,7 @@
 				PRODUCT_NAME = PilotUI;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -1787,7 +1794,7 @@
 				PRODUCT_NAME = PilotUI;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Test;
 		};
@@ -1811,7 +1818,7 @@
 				PRODUCT_NAME = PilotUI;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
