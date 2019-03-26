@@ -120,6 +120,8 @@ extension NSCollectionViewItem.HighlightState {
             return .deselection
         case .asDropTarget:
             return .drop
+        @unknown default:
+            return .none
         }
     }
 }

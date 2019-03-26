@@ -1,7 +1,7 @@
 import AppKit
 import Foundation
 
-public extension NSCollectionView {
+extension NSCollectionView {
 
     /// Sets the selection to the first item in the collection view,
     /// and optionally calls the delegate's selection method.

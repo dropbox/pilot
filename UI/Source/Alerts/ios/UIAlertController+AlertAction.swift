@@ -2,7 +2,7 @@ import Pilot
 
 /// Extensions to make it easy to create UIAlertController objects from an AlertAction
 extension AlertAction {
-    public var alertControllerStyle: UIAlertControllerStyle {
+    public var alertControllerStyle: UIAlertController.Style {
         switch style {
         case .sheet:
             return .actionSheet
@@ -31,7 +31,7 @@ extension AlertAction {
 }
 
 extension AlertAction.ButtonType {
-    public var alertActionStyle: UIAlertActionStyle {
+    public var alertActionStyle: UIAlertAction.Style {
         switch self {
         case .normal:
             return .default
