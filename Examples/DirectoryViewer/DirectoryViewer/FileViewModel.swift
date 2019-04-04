@@ -1,4 +1,5 @@
 import Pilot
+import Foundation
 
 public struct FileViewModel: ViewModel {
 

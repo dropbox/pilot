@@ -138,7 +138,7 @@ public final class MediaSearchViewController: CollectionViewController, UISearch
     }
 
     private func barItemForLoading() -> UIBarButtonItem {
-        let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+        let activityIndicator = UIActivityIndicatorView(style: .gray)
         let item = UIBarButtonItem(customView: activityIndicator)
         activityIndicator.startAnimating()
         return item

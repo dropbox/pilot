@@ -1,4 +1,5 @@
 import Pilot
+import Foundation
 
 public struct DirectoryModelBinder: ViewModelBindingProvider {
     public func viewModel(for model: Model, context: Context) -> ViewModel {

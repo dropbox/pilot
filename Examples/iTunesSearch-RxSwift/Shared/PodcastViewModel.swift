@@ -1,4 +1,5 @@
 import Pilot
+import Foundation
 
 public struct PodcastViewModel: ViewModel {
     public init(model: Model, context: Context) {

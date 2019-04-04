@@ -1,5 +1,7 @@
 import Foundation
 import Pilot
+import AppKit
+import CoreServices
 
 public typealias AppKitEventModifierFlags = NSEvent.ModifierFlags
 

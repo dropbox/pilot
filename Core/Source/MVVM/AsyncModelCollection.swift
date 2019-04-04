@@ -1,5 +1,7 @@
 /// AsyncModelCollection provides a simple interface for firing a single provider closure that can asynchronously return
 /// an error or sectioned models.
+import Foundation
+
 public final class AsyncModelCollection: SimpleModelCollection {
 
     public enum Result {

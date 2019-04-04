@@ -1,4 +1,5 @@
 import Pilot
+import Foundation
 
 public final class DirectoryModelCollection: NestedModelCollection, ProxyingCollectionEventObservable {
     public init(url: URL) {

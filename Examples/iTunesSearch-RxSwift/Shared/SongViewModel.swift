@@ -1,4 +1,5 @@
 import Pilot
+import Foundation
 
 public struct SongViewModel: ViewModel {
     public init(model: Model, context: Context) {

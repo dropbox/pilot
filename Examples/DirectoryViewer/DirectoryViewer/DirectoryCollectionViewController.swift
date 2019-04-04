@@ -1,6 +1,8 @@
 import Foundation
 import Pilot
 import PilotUI
+import AppKit
+import ApplicationServices
 
 public final class DirectoryCollectionViewController: CollectionViewController {
 

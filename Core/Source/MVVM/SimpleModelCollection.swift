@@ -1,5 +1,8 @@
 /// Simple class that provides ModelCollection conformance to a series of events, easiest way to quickly wrap something
 /// that will emit models into a ModelCollection.
+
+import Foundation
+
 open class SimpleModelCollection: ModelCollection, ProxyingCollectionEventObservable {
 
     public init(collectionId: ModelCollectionId = "simplemodelcollection-" + Token.makeUnique().stringValue) {

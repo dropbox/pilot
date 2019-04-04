@@ -69,7 +69,7 @@ public final class WindowController: NSWindowController, NSWindowDelegate {
         super.windowDidLoad()
         
         // Set up a toolbar.
-        let emptyToolbar = NSToolbar(identifier: NSToolbar.Identifier(rawValue: "EmptyToolbar"))
+        let emptyToolbar = NSToolbar(identifier: "EmptyToolbar")
         emptyToolbar.displayMode = .iconOnly
         window?.toolbar = emptyToolbar
     }
