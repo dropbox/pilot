@@ -64,7 +64,7 @@ public final class RootSplitViewController: NSSplitViewController {
     private func detachChildViewController(_ childViewController: NSViewController) {
         guard childViewController.parent != nil else { return }
         childViewController.view.removeFromSuperview()
-        childViewController.removeFromParentViewController()
+        childViewController.removeFromParent()
     }
     
     private func attachChildViewController(
@@ -76,7 +76,7 @@ public final class RootSplitViewController: NSSplitViewController {
         
         childView.translatesAutoresizingMaskIntoConstraints = false
         parentView.addSubview(childView)
-        parentViewController.addChildViewController(childViewController)
+        parentViewController.addChild(childViewController)
         
         NSLayoutConstraint.activate([
             childView.leadingAnchor.constraint(equalTo: parentView.leadingAnchor),

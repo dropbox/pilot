@@ -1,4 +1,5 @@
 import Foundation
+import libkern
 
 /// A unique value for use as an opaque token.  Commonly used as the key for observer lists.
 public struct Token: Hashable, Equatable {

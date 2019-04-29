@@ -138,7 +138,7 @@ Now that we have a model representing a Song, things can get more interesting.
 In Pilot, a `ViewModel` is bound to a specific `Model` type and has the following responsibilities:
 
 - Implement any necessary application business logic atop the bound `Model` object.
-- Expose properties for the view to display. If those properties change over time (e.g. a relative timestamp), those properties should be [observable](../Core/Source/Observable/ObservableData.swift).
+- Expose properties for the view to display. If those properties change over time (e.g. a relative timestamp), those properties should be [observable](https://github.com/ReactiveX/RxSwift/blob/master/Documentation/GettingStarted.md#observables-aka-sequences).
 - Handle all user interactions by emitting `Action` types.
 
 Given these responsibilities, the `View` that displays data from a `ViewModel` will be purposely underwhelming — it will simply connect `ViewModel` properties to whatever UI framework is being used.

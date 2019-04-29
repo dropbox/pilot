@@ -40,3 +40,18 @@ Packages/
 # GYP generated projects
 **/*.dxbuild.xcodeproj/project.*
 **/*.dxbuild.xcodeproj/xcuserdata/
+
+# Buck-related generated projects and workspaces
+Core/*.xcodeproj
+Core/*.xcworkspace
+UI/*.xcodeproj
+UI/*.xcworkspace
+Examples/*.xcodeproj
+Examples/*.xcworkspace
+External/*xcworkspace
+External/*xcodeproj
+External/xctool
+
+# buck stuff
+buck-out
+.buckd

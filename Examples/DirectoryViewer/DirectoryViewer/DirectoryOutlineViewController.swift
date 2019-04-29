@@ -1,5 +1,6 @@
 import Pilot
 import PilotUI
+import Foundation
 
 public final class DirectoryOutlineViewController: OutlineViewController {
     init(url: URL, context: Context) {

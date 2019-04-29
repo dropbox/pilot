@@ -1,3 +1,4 @@
+import UIKit
 import Pilot
 
 /// Extensions to make it easy to create UIAlertController objects from an AlertAction

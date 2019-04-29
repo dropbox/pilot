@@ -1,0 +1,35 @@
+[apple]
+    generate_missing_umbrella_headers = true
+    iphoneos_target_sdk_version = 11.0
+    iphonesimulator_target_sdk_version = 11.0
+    macos_target_sdk_version = 10.12
+    provisioning_profile_read_command = security cms -Di
+    use_header_maps_in_xcode = false
+    use_swift_delegate = false
+    xctool_default_destination_specifier = platform=iOS Simulator,OS=latest
+    xctool_path = External/xctool/bin/xctool
+
+[cxx]
+    cflags = -g -fmodules -fobjc-arc -D BUCK -w
+    combined_preprocess_and_compile = true
+    cxxflags = -fobjc-arc -std=c++14 -D DEBUG -g
+    default_platform = iphonesimulator-x86_64
+    ldflags = -Xlinker -objc_abi_version -Xlinker 2 -fobjc-arc -fobjc-link-runtime
+    pch_enabled = false
+
+[parser]
+    default_build_file_syntax = SKYLARK
+    polyglot_parsing_enabled = true
+
+[project]
+    allow_symlinks = forbid
+    ide = xcode
+    ide_force_kill = always
+    ignore = tools, .git, [build]
+    project_schemes = true
+    threads = 4
+
+[swift]
+    compiler_flags = -DBUCK -enable-testing -g -Onone
+    project_wmo = true
+    use_filelist = true

@@ -1,0 +1,12 @@
+apple_library(
+    name = 'RxSwift',
+    swift_version = '4.2',
+    modular = True,
+    module_name = 'RxSwift',
+    srcs = glob(['RxSwift/RxSwift/**/*.swift', 'RxSwift/Platform/**/*.swift'],
+                exclude=['RxSwift/RxSwift/Platform/**/*.swift']),
+    frameworks = [
+        '$SDKROOT/System/Library/Frameworks/Foundation.framework'
+    ],
+    visibility = ['PUBLIC']
+)

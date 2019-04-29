@@ -1,4 +1,5 @@
 import Pilot
+import Foundation
 
 public struct File: Model {
     public var url: URL

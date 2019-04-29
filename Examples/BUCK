@@ -1,0 +1,313 @@
+#
+#   CatalogCore
+# 
+
+apple_library(
+    name = 'CatalogCore',
+    swift_version = '4.2',
+    srcs = glob([
+        'Catalog/Core/**/*.swift',
+    ], exclude = [
+        '**/Tests/*',
+        '**/UITests/*'
+    ]),
+    deps = [
+        '//Core:Pilot',
+    ],
+    frameworks = [
+        '$SDKROOT/System/Library/Frameworks/Foundation.framework'
+    ]
+)
+
+#
+#   Catalog-iOS
+#
+apple_asset_catalog(
+    name = 'Catalog-iOS.assets',
+    dirs = ['Catalog/iOS/Resources/Assets.xcassets'],
+    app_icon = 'AppIcon',
+)
+
+apple_resource(
+    name = 'Catalog-iOS.resources',
+    variants = glob(['Catalog/iOS/Resources/Base.lproj/*'])
+)
+
+catalog_ios_settings = {
+    'DEVELOPMENT_LANGUAGE': 'en',
+    'PRODUCT_BUNDLE_IDENTIFIER': 'com.dropbox.pilot.catalog-ios'
+}
+
+catalog_ios_configs = {
+    'Debug': catalog_ios_settings,
+    'Profile': catalog_ios_settings,
+    'Release': catalog_ios_settings
+}
+
+apple_binary(
+    name = 'Catalog-iOS.binary',
+    module_name = "CatalogIOS",
+    swift_version = '4.2',
+    srcs = glob([
+        'Catalog/iOS/**/*.swift'
+    ], exclude = [
+        '**/Tests/*',
+        '**/UITests/*'
+    ]),
+    deps = [
+        ':Catalog-iOS.assets',
+        ':CatalogCore',
+        '//Core:Pilot',
+        '//UI:PilotUI-iOS'
+    ],
+    frameworks = [
+        '$SDKROOT/System/Library/Frameworks/Foundation.framework',
+        '$SDKROOT/System/Library/Frameworks/UIKit.framework'
+    ],
+    configs = catalog_ios_configs
+)
+
+apple_bundle(
+    name = 'Catalog-iOS',
+    extension = 'app',
+    binary = ':Catalog-iOS.binary',
+    deps = [':Catalog-iOS.resources'],
+    info_plist = 'Catalog/Info-iOS.plist',
+    info_plist_substitutions = catalog_ios_settings
+)
+
+apple_package(
+  name = 'Catalog-iOS.ipa',
+  bundle = ':Catalog-iOS',
+)
+
+#
+#   Catalog-macOS
+#
+
+catalog_macos_settings = {
+    'DEVELOPMENT_LANGUAGE': 'en',
+    'PRODUCT_BUNDLE_IDENTIFIER': 'com.dropbox.pilot.catalog-macOS',
+    'MACOSX_DEPLOYMENT_TARGET': '10.12'
+}
+
+catalog_macos_configs = {
+    'Debug': catalog_macos_settings,
+    'Profile': catalog_macos_settings,
+    'Release': catalog_macos_settings
+}
+
+apple_asset_catalog(
+    name = 'Catalog-macOS.assets',
+    dirs = ['Catalog/macOS/Resources/Assets.xcassets'],
+    app_icon = 'AppIcon',
+)
+
+apple_resource(
+    name = 'Catalog-macOS.resources',
+    files = ['Catalog/macOS/Resources/Catalog.xib']
+)
+
+apple_binary(
+    name = 'Catalog-macOS.binary',
+    module_name = 'Catalog',
+    swift_version = '4.2',
+    srcs = glob([
+        'Catalog/Core/**/*.swift',
+        'Catalog/macOS/**/*.swift'
+    ], exclude = [
+        '**/Tests/*',
+        '**/UITests/*'
+    ]),
+    entitlements_file = 'Catalog/Catalog-macOS.entitlements',
+    deps = [
+        ':CatalogCore',
+        '//Core:Pilot',
+        '//UI:PilotUI-macOS',
+        ':Catalog-macOS.resources',
+    ],
+    frameworks = [
+        '$SDKROOT/System/Library/Frameworks/Foundation.framework',
+        '$SDKROOT/System/Library/Frameworks/AppKit.framework'
+    ],
+    configs = catalog_macos_configs
+)
+
+apple_bundle(
+    name = 'Catalog-macOS',
+    extension = 'app',
+    binary = ':Catalog-macOS.binary',
+    deps = ['//UI:PilotUI-macOS', '//Core:Pilot'],
+    info_plist = 'Catalog/Info-macOS.plist',
+    info_plist_substitutions = catalog_macos_settings
+)
+
+#
+#  DirectoryViewer
+#
+
+directoryviewer_macos_settings = {
+    'DEVELOPMENT_LANGUAGE': 'en',
+    'PRODUCT_BUNDLE_IDENTIFIER': 'com.dropbox.pilot.directoryviewer',
+    'MACOSX_DEPLOYMENT_TARGET': '10.12'
+}
+
+directoryviewer_macos_configs = {
+    'Debug': directoryviewer_macos_settings,
+    'Profile': directoryviewer_macos_settings,
+    'Release': directoryviewer_macos_settings
+}
+
+apple_asset_catalog(
+    name = 'DirectoryViewer-macOS.assets',
+    dirs = ['DirectoryViewer/DirectoryViewer/Assets.xcassets'],
+    app_icon = 'AppIcon',
+)
+
+apple_resource(
+    name = 'DirectoryViewer-macOS.resources',
+    variants = glob(['DirectoryViewer/DirectoryViewer/Base.lproj/*'])
+)
+
+apple_binary(
+    name = 'DirectoryViewer-macOS.binary',
+    module_name = 'DirectoryViewer',
+    swift_version = '4.2',
+    srcs = glob([
+        'DirectoryViewer/**/*.swift',
+    ]),
+    entitlements_file = 'DirectoryViewer/DirectoryViewer/DirectoryViewer.entitlements',
+    deps = [
+        '//Core:Pilot',
+        '//UI:PilotUI-macOS',
+        ':DirectoryViewer-macOS.resources',
+    ],
+    frameworks = [
+        '$SDKROOT/System/Library/Frameworks/Foundation.framework',
+        '$SDKROOT/System/Library/Frameworks/AppKit.framework'
+    ],
+    configs = directoryviewer_macos_configs
+)
+
+apple_bundle(
+    name = 'DirectoryViewer-macOS',
+    extension = 'app',
+    binary = ':DirectoryViewer-macOS.binary',
+    deps = ['//UI:PilotUI-macOS', '//Core:Pilot'],
+    info_plist = 'DirectoryViewer/DirectoryViewer/Info.plist',
+    info_plist_substitutions = directoryviewer_macos_settings
+)
+
+#
+#   iTunesSearch
+#
+
+apple_asset_catalog(
+    name = 'iTunesSearch.assets',
+    dirs = ['iTunesSearch/Shared/Assets.xcassets'],
+    app_icon = 'AppIcon',
+)
+
+#
+#   iTunesSearch-iOS
+#
+
+apple_resource(
+    name = 'iTunesSearch-iOS.resources',
+    variants = glob(['iTunesSearch/iOS/Base.lproj/*'])
+)
+
+itunessearch_ios_settings = {
+    'DEVELOPMENT_LANGUAGE': 'en',
+    'PRODUCT_BUNDLE_IDENTIFIER': 'com.dropbox.pilot.itunessearch-ios'
+}
+
+itunessearch_ios_configs = {
+    'Debug': itunessearch_ios_settings,
+    'Profile': itunessearch_ios_settings,
+    'Release': itunessearch_ios_settings
+}
+
+apple_binary(
+    name = 'iTunesSearch-iOS.binary',
+    module_name = "iTunesSearch",
+    swift_version = '4.2',
+    srcs = glob([
+        'iTunesSearch/iOS/*.swift',
+        'iTunesSearch/Shared/*.swift'
+    ]),
+    deps = [
+        ':iTunesSearch.assets',
+        '//Core:Pilot',
+        '//UI:PilotUI-iOS'
+    ],
+    frameworks = [
+        '$SDKROOT/System/Library/Frameworks/Foundation.framework',
+        '$SDKROOT/System/Library/Frameworks/UIKit.framework'
+    ],
+    configs = itunessearch_ios_configs
+)
+
+apple_bundle(
+    name = 'iTunesSearch-iOS',
+    extension = 'app',
+    binary = ':iTunesSearch-iOS.binary',
+    deps = [':iTunesSearch-iOS.resources'],
+    info_plist = 'iTunesSearch/iOS/Info.plist',
+    info_plist_substitutions = itunessearch_ios_settings
+)
+
+apple_package(
+  name = 'iTunesSearch-iOS.ipa',
+  bundle = ':iTunesSearch-iOS',
+)
+
+#
+#   iTunesSearch-macOS
+#
+
+itunessearch_macos_settings = {
+    'DEVELOPMENT_LANGUAGE': 'en',
+    'PRODUCT_BUNDLE_IDENTIFIER': 'com.dropbox.pilot.itunessearch-macos',
+    'MACOSX_DEPLOYMENT_TARGET': '10.12'
+}
+
+itunessearch_macos_configs = {
+    'Debug': itunessearch_macos_settings,
+    'Profile': itunessearch_macos_settings,
+    'Release': itunessearch_macos_settings
+}
+
+apple_resource(
+    name = 'iTunesSearch-macOS.resources',
+    variants = glob(['iTunesSearch/macOS/Base.lproj/*'])
+)
+
+apple_binary(
+    name = 'iTunesSearch-macOS.binary',
+    module_name = 'iTunesSearch',
+    swift_version = '4.2',
+    srcs = glob([
+        'iTunesSearch/macOS/*.swift',
+        'iTunesSearch/Shared/*.swift'
+    ]),
+    deps = [
+        '//Core:Pilot',
+        '//UI:PilotUI-macOS',
+        ':iTunesSearch-macOS.resources',
+        ':iTunesSearch.assets'
+    ],
+    frameworks = [
+        '$SDKROOT/System/Library/Frameworks/Foundation.framework',
+        '$SDKROOT/System/Library/Frameworks/AppKit.framework'
+    ],
+    configs = itunessearch_macos_configs
+)
+
+apple_bundle(
+    name = 'iTunesSearch-macOS',
+    extension = 'app',
+    binary = ':iTunesSearch-macOS.binary',
+    info_plist = 'iTunesSearch/macOS/Info.plist',
+    info_plist_substitutions = itunessearch_macos_settings
+)

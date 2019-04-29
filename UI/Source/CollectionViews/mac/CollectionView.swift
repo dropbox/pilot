@@ -1,5 +1,6 @@
 import Foundation
 import Pilot
+import AppKit
 
 /// Protocol extending `NSCollectionViewDelegate` with a few missing callbacks around item clicking and key events.
 @objc

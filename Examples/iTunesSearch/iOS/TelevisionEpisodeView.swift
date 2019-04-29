@@ -27,7 +27,7 @@ final class TelevisionEpisodeView: UIView, View {
         if let localPreview = episode.localPreview {
             let asset = AVAsset(url: localPreview)
             let imageGenerator = AVAssetImageGenerator(asset: asset)
-            let middle = CMTimeMultiplyByRatio(asset.duration, 1, 2)
+            let middle = CMTimeMultiplyByRatio(asset.duration, multiplier: 1, divisor: 2)
             if let rawImage = try? imageGenerator.copyCGImage(at: middle, actualTime: nil) {
                 imageView.image = UIImage(cgImage: rawImage)
             }
