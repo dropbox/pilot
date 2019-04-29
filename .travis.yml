@@ -17,7 +17,6 @@ script:
   - xcodebuild test -project Pilot.xcodeproj -scheme "PilotUI macOS" -sdk "macosx10.14" -destination "arch=x86_64"
   - xcodebuild clean build -xcconfig ./travis-macos.xcconfig -project Examples/iTunesSearch/iTunesSearch.xcodeproj -target macOS -sdk "macosx10.14" -destination "arch=x86_64"
   - xcodebuild clean build -xcconfig ./travis-ios.xcconfig -project Examples/iTunesSearch/iTunesSearch.xcodeproj -target iOS -sdk "iphonesimulator" -destination "platform=iOS Simulator,OS=10.1,name=iPhone 7"
-  - xcodebuild clean build -xcconfig ./travis-ios.xcconfig -project Examples/iTunesSearch-RxSwift/iTunesSearch.xcodeproj -target iOS -sdk "iphonesimulator" -destination "platform=iOS Simulator,OS=10.1,name=iPhone 7"
   - xcodebuild clean build -xcconfig ./travis-macos.xcconfig -project Examples/Catalog/Catalog.xcodeproj -target Catalog -sdk "macosx10.14" -destination "arch=x86_64"
   - xcodebuild clean build -xcconfig ./travis-ios.xcconfig -project Examples/Catalog/Catalog.xcodeproj -target CatalogiOS -sdk "iphonesimulator" -destination "platform=iOS Simulator,OS=10.1,name=iPhone 7"
   - xcodebuild clean build -xcconfig ./travis-macos.xcconfig -project Examples/DirectoryViewer/DirectoryViewer.xcodeproj -target DirectoryViewer -sdk "macosx10.14" -destination "arch=x86_64"
