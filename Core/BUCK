@@ -4,7 +4,6 @@ apple_library(
     srcs = [
         'Source/Mutex.swift',
         'Source/Async.swift',
-        'Source/Observable/ObservableData.swift',
         'Source/Observable/ObservableType.swift',
         'Source/Token.swift',
         'Source/Downcast.swift',
