@@ -87,6 +87,7 @@ pilotui_shared_srcs = [
 apple_library(
     name = 'PilotUI-iOS',
     module_name = 'PilotUI',
+    header_path_prefix = 'PilotUI',
     swift_version = '4.2',
     srcs =  pilotui_shared_srcs + 
             [
