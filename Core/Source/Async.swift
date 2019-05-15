@@ -206,7 +206,7 @@ extension Async {
         var lastWorkItem: DispatchWorkItem?
         return {
             lastWorkItem?.cancel()
-            let time: DispatchTime = DispatchTime.now()
+            let time: DispatchTime = DispatchTime.now() + interval
             let nextWorkItem = DispatchWorkItem { lastWorkItem = nil; block() }
             DispatchQueue.main.asyncAfter(deadline: time, execute: nextWorkItem)
             lastWorkItem = nextWorkItem
