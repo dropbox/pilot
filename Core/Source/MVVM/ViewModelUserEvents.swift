@@ -5,6 +5,7 @@ public enum ViewModelUserEvent {
     /// On mouse-supporting platforms, represents a click by the user.
     /// Note: Event modifier key flags allows for things like `Cmd+Click` behaviour
     case click(EventKeyModifierFlags)
+    case clickUp(EventKeyModifierFlags)
 
     /// Represents the user typing a key with modifier flags.
     ///
@@ -64,6 +65,8 @@ extension ViewModelUserEvent: Hashable {
         switch self {
         case .click(let flags):
             return hasher.combine("click-\(flags)")
+        case .clickUp(let flags):
+            return hasher.combine("clickUp-\(flags)")
         case .keyDown(let key, let flags, let characters):
             let charValue = characters ?? "nil"
             return hasher.combine("keyDown-\(key)-\(flags)-\(charValue)")
@@ -86,12 +89,16 @@ extension ViewModelUserEvent: Hashable {
         switch (lhs, rhs) {
         case (.click(let lModifiers), .click(let rModifiers)):
             return lModifiers == rModifiers
+        case (.clickUp(let lModifiers), .clickUp(let rModifiers)):
+            return lModifiers == rModifiers
         case (.longPress, .longPress), (.secondaryClick, .secondaryClick), (.select, .select),
              (.tap, .tap), (.copy, .copy):
             return true
         case (.keyDown(let lKey, let lModifiers, let lCharacters), .keyDown(let rKey, let rModifiers, let rCharacters)):
             return lKey == rKey && lModifiers == rModifiers && lCharacters == rCharacters
-        case (.click, _), (.longPress, _), (.secondaryClick, _), (.select, _), (.tap, _), (.keyDown, _), (.copy, _):
+        case (.click, _), (.clickUp, _), (.longPress, _), (.secondaryClick, _), (.select, _), (.tap, _), (.keyDown, _), (.copy, _):
+            return false
+        default:
             return false
         }
     }

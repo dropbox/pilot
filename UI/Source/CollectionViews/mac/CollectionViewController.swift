@@ -156,6 +156,16 @@ open class CollectionViewController: ModelCollectionViewController, CollectionVi
         }
     }
 
+    open func collectionView(_ collectionView: NSCollectionView, didClickUpIndexPath indexPath: IndexPath) {
+        guard let vm = viewModelAtIndexPath(indexPath) else { return }
+
+        let modifierFlags = NSApp.currentEvent?.eventKeyModifierFlags ?? []
+        let event = ViewModelUserEvent.clickUp(modifierFlags)
+        if vm.canHandleUserEvent(event) {
+            vm.handleUserEvent(event)
+        }
+    }
+
     open func collectionView(_ collectionView: NSCollectionView, menuForIndexPath indexPath: IndexPath) -> NSMenu? {
         // If the event location is inside the current selection, generate menu for the entire current selection.
         // Otherwise, generate menu for the mapped item.

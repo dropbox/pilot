@@ -19,6 +19,9 @@ public protocol CollectionViewDelegate: NSCollectionViewDelegate {
     /// the typical `NSCollectionView` selection state (otherwise, underlying item views do not get all mouse events).
     @objc optional func collectionView(_ collectionView: NSCollectionView, didClickIndexPath indexPath: IndexPath)
 
+    /// mouseUp variant of the above.
+    @objc optional func collectionView(_ collectionView: NSCollectionView, didClickUpIndexPath indexPath: IndexPath)
+
     /// Invoked when a specific index path is right-clicked upon.
     @objc optional func collectionView(_ collectionView: NSCollectionView, menuForIndexPath: IndexPath) -> NSMenu?
 
@@ -120,6 +123,15 @@ public final class CollectionView: NSCollectionView {
         let point = convert(event.locationInWindow, from: nil)
         if let indexPath = indexPathForItem(at: point) {
             internalDelegate?.collectionView?(self, didClickIndexPath: indexPath)
+        }
+    }
+
+    public override func mouseUp(with event: NSEvent) {
+        super.mouseUp(with: event)
+
+        let point = convert(event.locationInWindow, from: nil)
+        if let indexPath = indexPathForItem(at: point) {
+            internalDelegate?.collectionView?(self, didClickUpIndexPath: indexPath)
         }
     }
 
