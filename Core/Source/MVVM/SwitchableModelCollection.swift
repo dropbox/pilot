@@ -1,7 +1,7 @@
 import Foundation
 
 /// A ModelCollection whose backing collection can be swapped out at runtime.
-public final class SwitchableModelCollection: SectionedModelCollection, ProxyingCollectionEventObservable {
+open class SwitchableModelCollection: SectionedModelCollection, ProxyingCollectionEventObservable {
 
     // MARK: Init
 
