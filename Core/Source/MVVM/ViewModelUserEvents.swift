@@ -88,11 +88,11 @@ extension ViewModelUserEvent: Hashable {
         case (.click(let lModifiers), .click(let rModifiers)):
             return lModifiers == rModifiers
         case (.longPress, .longPress), (.secondaryClick, .secondaryClick), (.select, .select),
-             (.tap, .tap), (.copy, .copy):
+             (.tap, .tap), (.copy, .copy), (.doubleClick, .doubleClick):
             return true
         case (.keyDown(let lKey, let lModifiers, let lCharacters), .keyDown(let rKey, let rModifiers, let rCharacters)):
             return lKey == rKey && lModifiers == rModifiers && lCharacters == rCharacters
-        case (.click, _), (.longPress, _), (.secondaryClick, _), (.select, _), (.tap, _), (.keyDown, _), (.copy, _):
+        case (.click, _), (.longPress, _), (.secondaryClick, _), (.select, _), (.tap, _), (.keyDown, _), (.copy, _), (.doubleClick, _):
             return false
         }
     }
