@@ -94,6 +94,8 @@ extension ViewModelUserEvent: Hashable {
             return lKey == rKey && lModifiers == rModifiers && lCharacters == rCharacters
         case (.click, _), (.longPress, _), (.secondaryClick, _), (.select, _), (.tap, _), (.keyDown, _), (.copy, _):
             return false
+        case (.doubleClick, _):
+            return false
         }
     }
 
