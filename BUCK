@@ -1,6 +1,21 @@
 #
 #   Pilot
 #
+#   Note on the `configs` section of apple_libraries below: setting SKIP_INSTALL to NO for static
+#   library configs would create a generic Xcode archive which can not be uploaded the App Store.
+#   Learn more at: https://developer.apple.com/library/archive/technotes/tn2215/_index.html
+#
+
+skip_install_configs = {
+    "SKIP_INSTALL": "YES",
+}
+
+library_configs = {
+    'Debug': skip_install_configs,
+    'Profile': skip_install_configs,
+    'Release': skip_install_configs
+}
+
 
 apple_library(
     name = 'Pilot',
@@ -51,7 +66,8 @@ apple_library(
         'PRODUCT_BUNDLE_IDENTIFIER': 'com.dropbox.Pilot',
         'CURRENT_PROJECT_VERSION': '1'
     },
-    visibility = ['PUBLIC']
+    configs = library_configs,
+    visibility = ['PUBLIC'],
 )
 
 apple_test(
@@ -107,7 +123,8 @@ apple_library(
         'PRODUCT_BUNDLE_IDENTIFIER': 'com.dropbox.PilotUI',
         'CURRENT_PROJECT_VERSION': '1'
     },
-    visibility = ['PUBLIC']
+    configs = library_configs,
+    visibility = ['PUBLIC'],
 )
 
 apple_library(
@@ -143,7 +160,8 @@ apple_library(
         'PRODUCT_BUNDLE_IDENTIFIER': 'com.dropbox.PilotUI',
         'CURRENT_PROJECT_VERSION': '1'
     },
-    visibility = ['PUBLIC']
+    configs = library_configs,
+    visibility = ['PUBLIC'],
 )
 
 apple_test(
@@ -182,9 +200,12 @@ apple_library(
     deps = [
         ':Pilot',
     ],
+    configs = {
+        "SKIP_INSTALL": "YES",
+    },
     frameworks = [
         '$SDKROOT/System/Library/Frameworks/Foundation.framework'
-    ]
+    ],
 )
 
 #
