@@ -200,9 +200,7 @@ apple_library(
     deps = [
         ':Pilot',
     ],
-    configs = {
-        "SKIP_INSTALL": "YES",
-    },
+    configs = library_configs,
     frameworks = [
         '$SDKROOT/System/Library/Frameworks/Foundation.framework'
     ],
