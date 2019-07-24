@@ -148,7 +148,7 @@ apple_library(
                 "UI/Source/AppKitExtensions/NestableScrollView.swift",
             ],
     deps = [':Pilot'],
-    tests = [':PilotUITests-macOS'] if read_config('custom', 'skip_tests') == 'false' else [ ],
+    tests = [':PilotUITests-macOS'] if read_config('custom', 'skip_tests') != 'true' else [ ],
     modular = True,
     frameworks = [
         '$SDKROOT/System/Library/Frameworks/Foundation.framework',
