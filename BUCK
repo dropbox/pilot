@@ -60,7 +60,7 @@ apple_library(
         '$SDKROOT/System/Library/Frameworks/Foundation.framework',
     ],
     modular = True,
-    tests = [':PilotTests'],
+    tests = [':PilotTests']  if read_config('custom', 'skip_tests') != 'true' else [ ],
     info_plist = "Core/Source/iOS-Info.plist",
     info_plist_substitutions = {
         'PRODUCT_BUNDLE_IDENTIFIER': 'com.dropbox.Pilot',
@@ -148,7 +148,7 @@ apple_library(
                 "UI/Source/AppKitExtensions/NestableScrollView.swift",
             ],
     deps = [':Pilot'],
-    tests = [':PilotUITests-macOS'],
+    tests = [':PilotUITests-macOS'] if read_config('custom', 'skip_tests') != 'true' else [ ],
     modular = True,
     frameworks = [
         '$SDKROOT/System/Library/Frameworks/Foundation.framework',
